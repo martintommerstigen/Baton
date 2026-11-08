@@ -12,7 +12,7 @@ The private `tokens.json` has one 32+ character bearer token per participant. Ne
 
 All requests use `Authorization: Bearer <token>`.
 
-- `POST /v1/send` with JSON `{"id":"unique-client-id","to":"ruben","body":"Hello"}`. Response `queued_not_delivered` is **not** proof of receipt.
+- `POST /v1/send` with JSON `{"id":"unique-client-id","to":"ruben","body":"Hello"}`. Response `queued` (or `already_queued` on retry) is **not** proof of receipt.
 - `GET /v1/inbox` returns unread messages addressed to the bearer identity.
 - `POST /v1/ack` with `{"id":"unique-client-id"}` marks the message acknowledged by the authenticated client. This does **not** prove a human or an AI processed it.
 
@@ -26,7 +26,7 @@ All requests use `Authorization: Bearer <token>`.
 
 ## Tests
 
-`python3 -m unittest -v test_baton.py`
+`python3 -m unittest -v test_baton.py test_security.py`
 
 ## Lifecycle clarification (ACK-02)
 New sends return `queued`; identical retries return `already_queued` or `client_acknowledged` if the recipient previously called `/v1/ack`. `/v1/ack` returns `client_acknowledged`, **not** proof of durable local storage, model processing, or human reading. A client that ACKs before durable storage can lose a message on crash. This reliability gap remains open; do not use this prototype for important delivery guarantees.
