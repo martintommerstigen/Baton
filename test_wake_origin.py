@@ -25,7 +25,9 @@ class OriginTests(unittest.TestCase):
         d=MultiReader({'one':'BATON_WAKE '+B+' m1','two':'BATON_WAKE '+B+' m1'})
         with self.assertRaises(RuntimeError): discover_source_turn(d,A,B,'m1')
     def test_exact_command(self):
-        self.assertTrue(source_requested_wake('I request a wake.\nBATON_WAKE '+B+' m1',B,'m1'))
+        self.assertTrue(source_requested_wake('BATON_WAKE '+B+' m1',B,'m1'))
+        self.assertFalse(source_requested_wake('I request a wake.\nBATON_WAKE '+B+' m1',B,'m1'))
+        self.assertFalse(source_requested_wake('```\nBATON_WAKE '+B+' m1\n```',B,'m1'))
         self.assertFalse(source_requested_wake('BATON_WAKE '+C+' m1',B,'m1'))
         self.assertFalse(source_requested_wake('BATON_WAKE '+B+' m2',B,'m1'))
         self.assertFalse(source_requested_wake('BATON_WAKE '+B+' m1\nBATON_WAKE '+B+' m1',B,'m1'))
