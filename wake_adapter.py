@@ -17,9 +17,10 @@ class ExistingChatDriver(Protocol):
     def observe_reply(self, conversation_id: str, message_id: str) -> Observation | None: ...
 
 def wake_once(ledger: WakeLedger, driver: ExistingChatDriver,
-              message_id: str, source: str, target: str, digest: str, body: str) -> str:
+              message_id: str, source: str, target: str, digest: str, body: str,
+              source_turn_id: str | None = None) -> str:
     """One authorized attempt. A crash leaves 'submitting', never auto-retries."""
-    ledger.request(message_id, source, target, digest)
+    ledger.request(message_id, source, target, digest, source_turn_id)
     if not ledger.begin_submission(message_id):
         return ledger.state(message_id)[1]
     try:
