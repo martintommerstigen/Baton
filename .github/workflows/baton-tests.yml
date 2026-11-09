@@ -5,6 +5,7 @@ on:
     paths:
       - 'server.py'
       - 'client.py'
+      - 'wake_contract.py'
       - 'test_*.py'
       - '.github/workflows/baton-tests.yml'
   pull_request:
@@ -29,4 +30,4 @@ jobs:
       - name: Python version
         run: python3 --version
       - name: Baton regression tests
-        run: python3 -m unittest -v test_baton.py test_security.py test_client.py
+        run: python3 -m unittest -v test_baton.py test_security.py test_client.py test_wake_contract.py
