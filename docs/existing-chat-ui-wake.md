@@ -108,3 +108,7 @@ Safety hardening: source and next-hop commands must occupy the **entire assistan
 `test_wake_browser_integration.py` exercises the real production ChatGPTUIDriver, WakeLedger and ChainPlan together against a deterministic in-memory DOM. This tests message-marker insertion, assistant response association, A→B→C decision and replay suppression, but it cannot validate the live ChatGPT page or demonstrate conversation activation. Source-turn discovery now rejects assistant messages while the source conversation is still generating, to prevent accepting transient partial text as a command.
 
 The live acceptance test remains pending while Greg's authorized remote execution is unavailable. No bypass of Desktop Commander quota or UI pause safeguards is authorized.
+
+## 2026-11-10 hosted CI verification
+
+GitHub Actions [run 42717352675](https://github.com/martintommerstigen/Baton/actions/runs/42717352675) completed successfully for commit `0c0e81fb9dcabf8d066d8bbb8b4de891ddb189fa`: `compileall` succeeded, offline A→B→C simulation succeeded, and **70/70 regression tests passed** (8.269 seconds). The job log confirms both fake-browser integration tests passed, including source-A assistant turn verification and replay-safe B→C. Subsequent commits modify receipt output and remove explicit CDP browser-close calls; verify their own CI results before claiming their status. The remaining blocker is still live authorized Greg execution and observing three existing ChatGPT conversations.
