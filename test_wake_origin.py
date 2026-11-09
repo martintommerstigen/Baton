@@ -17,6 +17,13 @@ class MultiReader:
     def read_assistant_turn(self,chat,turn): return self.turns[turn]
 
 class OriginTests(unittest.TestCase):
+    def test_streaming_source_is_not_authorized(self):
+        class StreamingReader(MultiReader):
+            def is_generating(self,chat): return True
+        d=StreamingReader({'origin':'BATON_WAKE '+B+' m1'})
+        self.assertIsNone(discover_source_turn(d,A,B,'m1'))
+        with self.assertRaises(RuntimeError):
+            verify_source_turn(d,A,'origin',B,'m1')
     def test_auto_discover_unique_source(self):
         d=MultiReader({'old':'ordinary response','origin':'BATON_WAKE '+B+' m1'})
         self.assertEqual(discover_source_turn(d,A,B,'m1'),'origin')
