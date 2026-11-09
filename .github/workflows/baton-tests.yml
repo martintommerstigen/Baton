@@ -16,6 +16,9 @@ on:
     paths:
       - 'server.py'
       - 'client.py'
+      - 'wake_*.py'
+      - 'chatgpt_ui_driver.py'
+      - 'run_chatgpt_wake.py'
       - 'test_*.py'
       - '.github/workflows/baton-tests.yml'
   workflow_dispatch:
