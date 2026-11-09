@@ -81,8 +81,18 @@ def main(argv=None):
           ledger=WakeLedger(args.db)
           result=run_chain(ledger,waiting[args.b],waiting[args.c],plan,
                            drivers[args.b].read_assistant_turn)
+          first_receipt=ledger.provenance(args.first_id)
+          second_receipt=ledger.provenance(args.second_id)
+          def receipt(row):
+              if row is None: return None
+              source,target,source_turn,digest,state,observed_turn,updated=row
+              return {'source_chat':source,'target_chat':target,
+                      'source_turn_id':source_turn,'target_assistant_turn_id':observed_turn,
+                      'state':state,'updated_unix':updated}
           print(json.dumps({'source_chat':args.a,'source_turn_id':source_turn_id,
-                            'source_request':'verified_in_existing_chat',**result}))
+                            'source_request':'verified_in_existing_chat',
+                            'a_to_b_receipt':receipt(first_receipt),
+                            'b_to_c_receipt':receipt(second_receipt),**result}))
           browser.close()
 
 if __name__=='__main__': main()
