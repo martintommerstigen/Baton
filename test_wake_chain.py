@@ -22,7 +22,9 @@ class ChainTests(unittest.TestCase):
         self.c=Driver('C')
     def tearDown(self): self.tmp.cleanup()
     def test_explicit_request(self):
-        self.assertEqual(next_target_from_reply('Hello\nBATON_NEXT C','C'),'C')
+        self.assertEqual(next_target_from_reply('BATON_NEXT C','C'),'C')
+        self.assertIsNone(next_target_from_reply('Hello\nBATON_NEXT C','C'))
+        self.assertIsNone(next_target_from_reply('```\nBATON_NEXT C\n```','C'))
         self.assertIsNone(next_target_from_reply('BATON_NEXT D','C'))
         self.assertIsNone(next_target_from_reply('BATON_NEXT C\nBATON_NEXT C','C'))
     def test_both_hops_have_source_turn_provenance(self):
