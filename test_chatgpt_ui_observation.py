@@ -29,21 +29,21 @@ class DriverObservationTests(unittest.TestCase):
         for bad in ("../x","", "id with spaces", "a"*101):
             with self.assertRaises(ValueError): marker_for(bad)
     def test_reply_must_follow_marker(self):
-        p=Page([Node("user","[BATON-WAKE:one] hello"),
+        p=Page([Node("user","[BATON-WAKE:one]\nhello"),
                 Node("assistant","done","turn-1")])
         d=ChatGPTUIDriver(p,frozenset({CID}))
         self.assertEqual(d.observe_reply(CID,"one").assistant_turn_id,"turn-1")
         p.nodes.insert(1,Node("user","another question"))
         self.assertIsNone(d.observe_reply(CID,"one"))
     def test_streaming_not_complete(self):
-        p=Page([Node("user","[BATON-WAKE:one] hello"),
+        p=Page([Node("user","[BATON-WAKE:one]\nhello"),
                 Node("assistant","partial","turn-1")],stop=True)
         d=ChatGPTUIDriver(p,frozenset({CID}))
         self.assertIsNone(d.observe_reply(CID,"one"))
     def test_duplicate_markers(self):
-        p=Page([Node("user","[BATON-WAKE:one]"),
+        p=Page([Node("user","[BATON-WAKE:one]\nhello"),
                 Node("assistant","done","turn-1"),
-                Node("user","[BATON-WAKE:one]")])
+                Node("user","[BATON-WAKE:one]\nhello")])
         self.assertIsNone(ChatGPTUIDriver(p,frozenset({CID})).observe_reply(CID,"one"))
     def test_exact_readback(self):
         p=Page([Node("assistant","BATON_NEXT C","turn-1")])
