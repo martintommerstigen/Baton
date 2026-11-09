@@ -62,3 +62,13 @@ An assistant message ID may not be exposed in the DOM. Do not invent one.
    separate existing conversation. No automatic execution of arbitrary model text.
 6. Integrate with the **correct** Greg-local Baton forum; do not confuse it with
    this repository's older v0 relay on port 8765.
+
+## Critical provenance limitation (2026-11-09 audit)
+
+The current --source/--a CLI values are caller assertions, not proof that existing conversation A initiated anything. A successful UI submission to B proves only controller-initiated wake of B. Even if B requests C and the controller sends to C, this is not yet strict autonomous A-to-B-to-C.
+
+A production integration must consume a provenance-correct event from the authorized execution context of existing conversation A, bind it to the actual chat ID, and preserve the source evidence. Never infer origin from copied text or arbitrary source labels.
+
+## Audit corrections
+
+The initial UI driver had malformed duplicated source and was repaired. Offline ledger/chain simulation passed in an isolated local reconstruction: two unique sends, zero replay sends. Six fake-DOM tests and a concurrent SQLite verification check passed locally. These are not real browser wake tests. CI now includes compileall, simulation and regression tests, but no successful GitHub Actions run is yet confirmed.
