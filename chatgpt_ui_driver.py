@@ -91,6 +91,14 @@ class ChatGPTUIDriver:
             return None
         return Observation(conversation_id, turn_id)
 
+    def list_assistant_turn_ids(self, conversation_id):
+        """Read-only enumeration; missing DOM IDs cannot prove provenance."""
+        self._check(conversation_id)
+        turns=self.page.locator('[data-message-author-role="assistant"]')
+        return tuple(turns.nth(i).get_attribute('data-message-id')
+                     for i in range(turns.count())
+                     if turns.nth(i).get_attribute('data-message-id'))
+
     def read_assistant_turn(self, conversation_id, assistant_turn_id):
         self._check(conversation_id)
         if not assistant_turn_id:
