@@ -24,9 +24,7 @@ def next_target_from_reply(reply_text, expected_target):
     # Exact one-line control statement; reject prose, multiple commands and
     # other targets. Treat model output as an untrusted request, not authority.
     expected=f'BATON_NEXT {expected_target}'
-    lines=[line.strip() for line in reply_text.splitlines() if line.strip()]
-    commands=[line for line in lines if line.startswith('BATON_NEXT')]
-    if commands != [expected]:
+    if not isinstance(reply_text,str) or reply_text.strip()!=expected:
         return None
     return expected_target
 
