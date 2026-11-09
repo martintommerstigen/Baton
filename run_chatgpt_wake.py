@@ -72,6 +72,6 @@ def main(argv=None):
             result=wake_once(ledger,waiting,args.id,args.source,args.target,digest,args.body)
         print(json.dumps({'message_id':args.id,'state':result,'target':args.target}))
         # CDP disconnect; do not close the user's browser.
-        browser.close()
+        # Leave the operator's authenticated browser and tabs untouched.
 
 if __name__=='__main__': main()
