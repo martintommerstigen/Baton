@@ -42,6 +42,21 @@ class ChainTests(unittest.TestCase):
         run_chain(self.ledger,self.b,self.c,self.plan,reader)
         self.assertEqual(len(self.b.sends),1)
         self.assertEqual(len(self.c.sends),1)
+    def test_reconcile_crashed_first_hop_without_resend(self):
+        self.ledger.request('one','A','B','d1')
+        self.ledger.begin_submission('one')
+        result=run_chain(self.ledger,self.b,self.c,self.plan,
+                         lambda chat,turn:'BATON_NEXT C')
+        self.assertEqual(result['a_to_b'],'verified')
+        self.assertEqual(self.b.sends,[])
+        self.assertEqual(len(self.c.sends),1)
+    def test_reconcile_crashed_second_hop_without_resend(self):
+        self.ledger.request('two','B','C','d2')
+        self.ledger.begin_submission('two')
+        result=run_chain(self.ledger,self.b,self.c,self.plan,
+                         lambda chat,turn:'BATON_NEXT C')
+        self.assertEqual(result['b_to_c'],'verified')
+        self.assertEqual(self.c.sends,[])
     def test_distinct_conversations(self):
         p=ChainPlan('A','A','C','one','two','x','y','d1','d2')
         with self.assertRaises(ValueError):
