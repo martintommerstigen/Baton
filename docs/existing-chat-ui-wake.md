@@ -100,3 +100,11 @@ Desktop Commander `who_am_i` on 2026-11-09 reported `remote_calls_left_pct: 0`; 
 GitHub Actions [run 42711608927](https://github.com/martintommerstigen/Baton/actions/runs/42711608927), for code commit `20b48812a7b4ffb4d6d05f68169b46cd0e73bbaa`, completed successfully on 2026-11-09. The runner passed `compileall`, the offline A→B→C simulation, and **63/63 regression tests** (including receipt-commit ordering). This confirms code-level behavior in the hosted CI environment, not access to the existing ChatGPT conversations on Greg. Earlier CI failures exposed a stray terminal annotation in `test_receipt_commit_order.py`, which was removed before the successful run.
 
 Safety hardening: source and next-hop commands must occupy the **entire assistant response**. A command quoted in prose or a Markdown code fence is not an operational request; negative-control tests enforce this.
+
+## Read-only preflight and browser-integration regression
+
+`inspect_chatgpt_wake_ui.py` inspects only already-open authorized conversation tabs and reports whether the composer, send button and assistant DOM message IDs can be observed. It never clicks or sends anything. Example: `python3 inspect_chatgpt_wake_ui.py --target A_UUID --target B_UUID --target C_UUID`. The tool does not read cookies or export transcripts. It must be run in the local authorized Chromium CDP session. Its `ready` result is a selector readiness check, not a verified wake.
+
+`test_wake_browser_integration.py` exercises the real production ChatGPTUIDriver, WakeLedger and ChainPlan together against a deterministic in-memory DOM. This tests message-marker insertion, assistant response association, A→B→C decision and replay suppression, but it cannot validate the live ChatGPT page or demonstrate conversation activation. Source-turn discovery now rejects assistant messages while the source conversation is still generating, to prevent accepting transient partial text as a command.
+
+The live acceptance test remains pending while Greg's authorized remote execution is unavailable. No bypass of Desktop Commander quota or UI pause safeguards is authorized.
