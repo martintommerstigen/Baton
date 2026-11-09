@@ -1,5 +1,5 @@
 import unittest
-from wake_origin import source_requested_wake, verify_source_turn
+from wake_origin import source_requested_wake, verify_source_turn, discover_source_turn
 
 A='aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa'
 B='bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb'
@@ -11,7 +11,19 @@ class Reader:
         self.calls.append((chat,turn))
         return self.reply
 
+class MultiReader:
+    def __init__(self,turns): self.turns=turns
+    def list_assistant_turn_ids(self,chat): return tuple(self.turns)
+    def read_assistant_turn(self,chat,turn): return self.turns[turn]
+
 class OriginTests(unittest.TestCase):
+    def test_auto_discover_unique_source(self):
+        d=MultiReader({'old':'ordinary response','origin':'BATON_WAKE '+B+' m1'})
+        self.assertEqual(discover_source_turn(d,A,B,'m1'),'origin')
+        self.assertIsNone(discover_source_turn(d,A,B,'m2'))
+    def test_duplicate_source_fails_closed(self):
+        d=MultiReader({'one':'BATON_WAKE '+B+' m1','two':'BATON_WAKE '+B+' m1'})
+        with self.assertRaises(RuntimeError): discover_source_turn(d,A,B,'m1')
     def test_exact_command(self):
         self.assertTrue(source_requested_wake('I request a wake.\nBATON_WAKE '+B+' m1',B,'m1'))
         self.assertFalse(source_requested_wake('BATON_WAKE '+C+' m1',B,'m1'))
