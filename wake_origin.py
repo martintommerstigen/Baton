@@ -11,9 +11,8 @@ def source_requested_wake(reply_text, target_chat, message_id):
         return False
     marker_for(message_id)
     expected=f"BATON_WAKE {target_chat} {message_id}"
-    commands=[line.strip() for line in reply_text.splitlines()
-              if line.strip().startswith("BATON_WAKE")]
-    return commands==[expected]
+    # An example or quoted command inside a longer answer is NOT consent.
+    return reply_text.strip()==expected
 
 def verify_source_turn(driver, source_chat, source_turn_id, target_chat, message_id):
     """Fail closed if the source assistant turn is missing or not an exact request."""
