@@ -59,7 +59,7 @@ class ChainTests(unittest.TestCase):
         self.assertEqual(self.b.sends,[])
         self.assertEqual(len(self.c.sends),1)
     def test_reconcile_crashed_second_hop_without_resend(self):
-        self.ledger.request('two','B','C','d2')
+        self.ledger.request('two','B','C','d2','one-assistant')
         self.ledger.begin_submission('two')
         result=run_chain(self.ledger,self.b,self.c,self.plan,
                          lambda chat,turn:'BATON_NEXT C')
