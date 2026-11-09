@@ -76,7 +76,8 @@ def main(argv=None):
           plan=ChainPlan(args.a,args.b,args.c,args.first_id,args.second_id,
                          args.first_body,args.second_body,
                          hashlib.sha256(args.first_body.encode()).hexdigest(),
-                         hashlib.sha256(args.second_body.encode()).hexdigest())
+                         hashlib.sha256(args.second_body.encode()).hexdigest(),
+                         source_turn_id)
           ledger=WakeLedger(args.db)
           result=run_chain(ledger,waiting[args.b],waiting[args.c],plan,
                            drivers[args.b].read_assistant_turn)
