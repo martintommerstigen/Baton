@@ -65,4 +65,3 @@ class CommitBeforeReceiptTest(unittest.TestCase):
 if __name__ == '__main__':
     unittest.main()
 
-[executed on device: Greg (59e04d52-5731-4d40-979f-9ab0df034684)]
