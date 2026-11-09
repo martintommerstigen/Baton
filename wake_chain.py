@@ -5,7 +5,7 @@ The controller, not a claimed independent ChatGPT API, performs the UI action.
 Only the predetermined harmless challenge is sent to C.
 """
 from dataclasses import dataclass
-from wake_adapter import wake_once
+from wake_adapter import wake_once, reconcile
 
 @dataclass(frozen=True)
 class ChainPlan:
@@ -34,6 +34,8 @@ def run_chain(ledger, driver_b, driver_c, plan, read_reply):
         raise ValueError('Distinct conversation and message IDs required')
     first=wake_once(ledger,driver_b,plan.first_id,plan.a,plan.b,
                     plan.first_digest,plan.first_body)
+    if first in ('submitting', 'uncertain'):
+        first=reconcile(ledger,driver_b,plan.first_id)
     if first!='verified':
         return {'a_to_b':first,'b_to_c':'not_attempted'}
     turn_id=ledger.state(plan.first_id)[2]
@@ -42,4 +44,6 @@ def run_chain(ledger, driver_b, driver_c, plan, read_reply):
         return {'a_to_b':'verified','b_to_c':'not_authorized'}
     second=wake_once(ledger,driver_c,plan.second_id,plan.b,plan.c,
                      plan.second_digest,plan.second_body)
+    if second in ('submitting','uncertain'):
+        second=reconcile(ledger,driver_c,plan.second_id)
     return {'a_to_b':'verified','b_to_c':second}
