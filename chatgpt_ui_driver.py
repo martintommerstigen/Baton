@@ -33,6 +33,18 @@ def marker_for(message_id):
     return f"[BATON-WAKE:{message_id}]"
 
 
+def is_marked_user_turn(text, marker):
+    """Recognize only the exact marker on the first line of a user turn.
+
+    An unrelated message quoting a marker must not be mistaken for delivery.
+    The sender constructs marker + newline + nonempty body.
+    """
+    if not isinstance(text, str):
+        return False
+    lines = text.splitlines()
+    return len(lines) >= 2 and lines[0] == marker and bool("\n".join(lines[1:]).strip())
+
+
 @dataclass
 class ChatGPTUIDriver:
     page: object
@@ -73,7 +85,8 @@ class ChatGPTUIDriver:
         markers = []
         for i in range(turns.count()):
             turn = turns.nth(i)
-            if turn.get_attribute("data-message-author-role") == "user" and marker in turn.inner_text():
+            if (turn.get_attribute("data-message-author-role") == "user"
+                    and is_marked_user_turn(turn.inner_text(), marker)):
                 markers.append(i)
         if len(markers) != 1:
             return None
