@@ -8,6 +8,7 @@ import argparse
 import hashlib
 import json
 import time
+import fcntl
 from pathlib import Path
 from urllib.parse import urlparse
 from wake_contract import WakeLedger
@@ -36,29 +37,33 @@ def main(argv=None):
     if Path('/home/olliver/GTRCM-newborn-bootstrap/transport/PAUSE_UI_WRITES').exists():
         raise RuntimeError('UI writes paused')
     from playwright.sync_api import sync_playwright
-    with sync_playwright() as pw:
-        browser=pw.chromium.connect_over_cdp(args.cdp)
-        pages=select_pages(browser,(args.b,args.c))
-        class WaitDriver:
-            def __init__(self, driver): self.driver=driver
-            def submit_once(self,*args): return self.driver.submit_once(*args)
-            def observe_reply(self,chat,message_id):
-                deadline=time.monotonic()+120
-                while True:
-                    result=self.driver.observe_reply(chat,message_id)
-                    if result is not None: return result
-                    if time.monotonic()>=deadline: return None
-                    time.sleep(1)
-        drivers={chat:ChatGPTUIDriver(page,frozenset({chat})) for chat,page in pages.items()}
-        waiting={chat:WaitDriver(driver) for chat,driver in drivers.items()}
-        plan=ChainPlan(args.a,args.b,args.c,args.first_id,args.second_id,
-                       args.first_body,args.second_body,
-                       hashlib.sha256(args.first_body.encode()).hexdigest(),
-                       hashlib.sha256(args.second_body.encode()).hexdigest())
-        ledger=WakeLedger(args.db)
-        result=run_chain(ledger,waiting[args.b],waiting[args.c],plan,
-                         drivers[args.b].read_assistant_turn)
-        print(json.dumps(result))
-        browser.close()
+    lock_path=Path(args.db).with_suffix('.wake.lock')
+    lock_path.parent.mkdir(parents=True,exist_ok=True)
+    with lock_path.open('a+') as lock_file:
+      fcntl.flock(lock_file, fcntl.LOCK_EX | fcntl.LOCK_NB)
+      with sync_playwright() as pw:
+          browser=pw.chromium.connect_over_cdp(args.cdp)
+          pages=select_pages(browser,(args.b,args.c))
+          class WaitDriver:
+              def __init__(self, driver): self.driver=driver
+              def submit_once(self,*args): return self.driver.submit_once(*args)
+              def observe_reply(self,chat,message_id):
+                  deadline=time.monotonic()+120
+                  while True:
+                      result=self.driver.observe_reply(chat,message_id)
+                      if result is not None: return result
+                      if time.monotonic()>=deadline: return None
+                      time.sleep(1)
+          drivers={chat:ChatGPTUIDriver(page,frozenset({chat})) for chat,page in pages.items()}
+          waiting={chat:WaitDriver(driver) for chat,driver in drivers.items()}
+          plan=ChainPlan(args.a,args.b,args.c,args.first_id,args.second_id,
+                         args.first_body,args.second_body,
+                         hashlib.sha256(args.first_body.encode()).hexdigest(),
+                         hashlib.sha256(args.second_body.encode()).hexdigest())
+          ledger=WakeLedger(args.db)
+          result=run_chain(ledger,waiting[args.b],waiting[args.c],plan,
+                           drivers[args.b].read_assistant_turn)
+          print(json.dumps(result))
+          browser.close()
 
 if __name__=='__main__': main()
