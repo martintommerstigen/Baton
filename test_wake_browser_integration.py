@@ -8,6 +8,7 @@ import unittest
 from chatgpt_ui_driver import ChatGPTUIDriver
 from wake_contract import WakeLedger
 from wake_chain import ChainPlan, run_chain
+from wake_origin import discover_source_turn, verify_source_turn
 
 A="aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa"
 B="bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb"
@@ -69,6 +70,14 @@ class Page:
         raise AssertionError(selector)
 
 class BrowserIntegrationTests(unittest.TestCase):
+    def test_source_a_must_have_real_assistant_turn(self):
+        pa=Page(A)
+        pa.turns.append(Turn('assistant','BATON_WAKE '+B+' msg1','origin-turn'))
+        da=ChatGPTUIDriver(pa,frozenset({A}))
+        self.assertEqual(discover_source_turn(da,A,B,'msg1'),'origin-turn')
+        self.assertTrue(verify_source_turn(da,A,'origin-turn',B,'msg1'))
+        with self.assertRaises(PermissionError):
+            verify_source_turn(da,A,'origin-turn',C,'msg1')
     def test_two_real_dom_drivers(self):
         with tempfile.TemporaryDirectory() as tmp:
             ledger=WakeLedger(tmp+"/db")
