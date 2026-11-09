@@ -18,6 +18,8 @@ def verify_source_turn(driver, source_chat, source_turn_id, target_chat, message
     """Fail closed if the source assistant turn is missing or not an exact request."""
     if not source_turn_id:
         raise ValueError("Source assistant turn ID required")
+    if hasattr(driver, 'is_generating') and driver.is_generating(source_chat):
+        raise RuntimeError('Source assistant response is still generating')
     text=driver.read_assistant_turn(source_chat,source_turn_id)
     if not source_requested_wake(text,target_chat,message_id):
         raise PermissionError("Source assistant turn did not request this exact wake")
@@ -28,6 +30,8 @@ def discover_source_turn(driver, source_chat, target_chat, message_id):
 
     No user message, quoted sender name or Baton queue receipt counts.
     """
+    if hasattr(driver, 'is_generating') and driver.is_generating(source_chat):
+        return None
     matches=[]
     for turn_id in driver.list_assistant_turn_ids(source_chat):
         if source_requested_wake(driver.read_assistant_turn(source_chat,turn_id),
