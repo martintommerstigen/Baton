@@ -1,5 +1,6 @@
 """Durable wake ledger. A queued message is not proof of a chat waking."""
 import sqlite3
+from contextlib import contextmanager
 import time
 
 class WakeLedger:
@@ -13,8 +14,14 @@ class WakeLedger:
             columns={row[1] for row in db.execute('PRAGMA table_info(wakes)')}
             if 'source_turn' not in columns:
                 db.execute('ALTER TABLE wakes ADD COLUMN source_turn TEXT')
+    @contextmanager
     def db(self):
-        return sqlite3.connect(self.path, timeout=10)
+        conn=sqlite3.connect(self.path, timeout=10)
+        try:
+            with conn:
+                yield conn
+        finally:
+            conn.close()
     def request(self, id, source, target, digest, source_turn=None):
         if not all(isinstance(x,str) and x.strip() for x in (id,source,target,digest)) or source==target:
             raise ValueError("invalid wake request")
