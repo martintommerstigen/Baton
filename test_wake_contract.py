@@ -1,4 +1,5 @@
 import tempfile
+import sqlite3
 import unittest
 from concurrent.futures import ThreadPoolExecutor
 from wake_contract import WakeLedger
@@ -10,6 +11,24 @@ class WakeTests(unittest.TestCase):
         self.w=WakeLedger(self.path)
     def tearDown(self): self.tmp.cleanup()
     def req(self): return self.w.request("id1","chat-A","chat-B","sha256:test")
+    def test_source_turn_persisted_and_conflict(self):
+        self.assertEqual(self.w.request('origin','A','B','digest','a-turn-1'),'requested')
+        self.assertEqual(self.w.provenance('origin')[2],'a-turn-1')
+        self.assertEqual(self.w.request('origin','A','B','digest','a-turn-1'),'requested')
+        with self.assertRaises(ValueError):
+            self.w.request('origin','A','B','digest','a-turn-2')
+        with self.assertRaises(ValueError):
+            self.w.request('origin','A','B','digest')
+    def test_migrate_legacy_ledger(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            path=tmp+'/old.sqlite'
+            with sqlite3.connect(path) as db:
+                db.execute('CREATE TABLE wakes (id TEXT PRIMARY KEY, source TEXT NOT NULL, target TEXT NOT NULL, digest TEXT NOT NULL, state TEXT NOT NULL, observed_turn TEXT, updated INTEGER NOT NULL)')
+                db.execute("INSERT INTO wakes VALUES ('old','A','B','d','requested',NULL,1)")
+            migrated=WakeLedger(path)
+            self.assertIsNone(migrated.provenance('old')[2])
+            self.assertEqual(migrated.request('new','A','C','d','a-turn'),'requested')
+            self.assertEqual(migrated.provenance('new')[2],'a-turn')
     def test_replay_conflict(self):
         self.assertEqual(self.req(),"requested")
         self.assertEqual(self.req(),"requested")
