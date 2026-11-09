@@ -25,6 +25,14 @@ class ChainTests(unittest.TestCase):
         self.assertEqual(next_target_from_reply('Hello\nBATON_NEXT C','C'),'C')
         self.assertIsNone(next_target_from_reply('BATON_NEXT D','C'))
         self.assertIsNone(next_target_from_reply('BATON_NEXT C\nBATON_NEXT C','C'))
+    def test_both_hops_have_source_turn_provenance(self):
+        from dataclasses import replace
+        plan=replace(self.plan,origin_turn_id='a-turn-123')
+        result=run_chain(self.ledger,self.b,self.c,plan,
+                         lambda chat,turn:'BATON_NEXT C')
+        self.assertEqual(result['b_to_c'],'verified')
+        self.assertEqual(self.ledger.provenance('one')[2],'a-turn-123')
+        self.assertEqual(self.ledger.provenance('two')[2],'one-assistant')
     def test_verified_chain(self):
         result=run_chain(self.ledger,self.b,self.c,self.plan,
                          lambda chat,turn:'BATON_NEXT C')
