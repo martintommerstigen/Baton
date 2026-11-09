@@ -2,6 +2,7 @@ import tempfile
 import sqlite3
 import unittest
 from concurrent.futures import ThreadPoolExecutor
+from contextlib import closing
 from wake_contract import WakeLedger
 
 class WakeTests(unittest.TestCase):
@@ -22,7 +23,7 @@ class WakeTests(unittest.TestCase):
     def test_migrate_legacy_ledger(self):
         with tempfile.TemporaryDirectory() as tmp:
             path=tmp+'/old.sqlite'
-            with sqlite3.connect(path) as db:
+            with closing(sqlite3.connect(path)) as db, db:
                 db.execute('CREATE TABLE wakes (id TEXT PRIMARY KEY, source TEXT NOT NULL, target TEXT NOT NULL, digest TEXT NOT NULL, state TEXT NOT NULL, observed_turn TEXT, updated INTEGER NOT NULL)')
                 db.execute("INSERT INTO wakes VALUES ('old','A','B','d','requested',NULL,1)")
             migrated=WakeLedger(path)
