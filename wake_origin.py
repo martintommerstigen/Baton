@@ -23,3 +23,17 @@ def verify_source_turn(driver, source_chat, source_turn_id, target_chat, message
     if not source_requested_wake(text,target_chat,message_id):
         raise PermissionError("Source assistant turn did not request this exact wake")
     return True
+
+def discover_source_turn(driver, source_chat, target_chat, message_id):
+    """Find a unique assistant turn containing the exact wake request.
+
+    No user message, quoted sender name or Baton queue receipt counts.
+    """
+    matches=[]
+    for turn_id in driver.list_assistant_turn_ids(source_chat):
+        if source_requested_wake(driver.read_assistant_turn(source_chat,turn_id),
+                                 target_chat,message_id):
+            matches.append(turn_id)
+    if len(matches)>1:
+        raise RuntimeError("Ambiguous source wake requests")
+    return matches[0] if matches else None
