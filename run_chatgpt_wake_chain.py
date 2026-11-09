@@ -93,6 +93,6 @@ def main(argv=None):
                             'source_request':'verified_in_existing_chat',
                             'a_to_b_receipt':receipt(first_receipt),
                             'b_to_c_receipt':receipt(second_receipt),**result}))
-          browser.close()
+          # Leave the operator's authenticated browser and tabs untouched.
 
 if __name__=='__main__': main()
