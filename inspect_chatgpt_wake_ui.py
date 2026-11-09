@@ -62,7 +62,7 @@ def main(argv=None):
     with sync_playwright() as pw:
         browser=pw.chromium.connect_over_cdp(args.cdp)
         print(json.dumps(inspect_browser(browser,args.target),sort_keys=True))
-        browser.close()
+        # Leave the operator's authenticated browser and tabs untouched.
 
 
 if __name__=="__main__":
