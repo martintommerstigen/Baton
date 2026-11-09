@@ -13,7 +13,7 @@ from pathlib import Path
 from urllib.parse import urlparse
 from wake_contract import WakeLedger
 from wake_chain import ChainPlan, run_chain
-from wake_origin import verify_source_turn
+from wake_origin import verify_source_turn, discover_source_turn
 from chatgpt_ui_driver import ChatGPTUIDriver, conversation_id
 from run_chatgpt_wake import local_cdp
 
@@ -32,11 +32,15 @@ def main(argv=None):
     p=argparse.ArgumentParser(description=__doc__)
     for name in ('a','b','c','first-id','second-id','db','first-body','second-body'):
         p.add_argument('--'+name,required=True)
-    p.add_argument('--source-turn-id',required=True,
+    p.add_argument('--source-turn-id',
                    help='DOM assistant turn ID in the EXISTING A chat containing BATON_WAKE B FIRST_ID')
+    p.add_argument('--wait-source-seconds',type=int,default=120,
+                   help='Poll the already-open A tab for its exact wake request')
     p.add_argument('--cdp',default='http://127.0.0.1:9222')
     args=p.parse_args(argv)
     local_cdp(args.cdp)
+    if not 0 <= args.wait_source_seconds <= 3600:
+        p.error('--wait-source-seconds must be between 0 and 3600')
     if Path('/home/olliver/GTRCM-newborn-bootstrap/transport/PAUSE_UI_WRITES').exists():
         raise RuntimeError('UI writes paused')
     from playwright.sync_api import sync_playwright
@@ -58,7 +62,16 @@ def main(argv=None):
                       if time.monotonic()>=deadline: return None
                       time.sleep(1)
           drivers={chat:ChatGPTUIDriver(page,frozenset({chat})) for chat,page in pages.items()}
-          verify_source_turn(drivers[args.a],args.a,args.source_turn_id,args.b,args.first_id)
+          source_turn_id=args.source_turn_id
+          if not source_turn_id:
+              deadline=time.monotonic()+args.wait_source_seconds
+              while True:
+                  source_turn_id=discover_source_turn(drivers[args.a],args.a,args.b,args.first_id)
+                  if source_turn_id is not None: break
+                  if time.monotonic()>=deadline:
+                      raise RuntimeError('No verified A source request; no UI submission')
+                  time.sleep(1)
+          verify_source_turn(drivers[args.a],args.a,source_turn_id,args.b,args.first_id)
           waiting={chat:WaitDriver(driver) for chat,driver in drivers.items()}
           plan=ChainPlan(args.a,args.b,args.c,args.first_id,args.second_id,
                          args.first_body,args.second_body,
@@ -67,7 +80,7 @@ def main(argv=None):
           ledger=WakeLedger(args.db)
           result=run_chain(ledger,waiting[args.b],waiting[args.c],plan,
                            drivers[args.b].read_assistant_turn)
-          print(json.dumps({'source_chat':args.a,'source_turn_id':args.source_turn_id,
+          print(json.dumps({'source_chat':args.a,'source_turn_id':source_turn_id,
                             'source_request':'verified_in_existing_chat',**result}))
           browser.close()
 
