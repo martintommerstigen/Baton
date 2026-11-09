@@ -38,4 +38,4 @@ jobs:
       - name: Python version
         run: python3 --version
       - name: Baton regression tests
-        run: python3 -m unittest -v test_baton.py test_security.py test_client.py test_wake_contract.py test_wake_adapter.py test_chatgpt_ui_driver.py test_run_chatgpt_wake.py test_wake_chain.py test_run_chatgpt_wake_chain.py
+        run: python3 -m unittest -v test_baton.py test_security.py test_client.py test_wake_contract.py test_wake_adapter.py test_chatgpt_ui_driver.py test_chatgpt_ui_observation.py test_run_chatgpt_wake.py test_wake_chain.py test_run_chatgpt_wake_chain.py
