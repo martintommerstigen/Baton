@@ -39,14 +39,16 @@ class WakeLedger:
         if not observed_chat or not observed_turn:
             raise ValueError("observed chat and turn required")
         with self.db() as db:
+            db.execute("BEGIN IMMEDIATE")
             row=db.execute("SELECT target,state,observed_turn FROM wakes WHERE id=?",(id,)).fetchone()
             if row is None or row[0]!=observed_chat:
                 raise ValueError("wrong target chat")
             if row[1]=="verified":
-                if row[2]!=observed_turn: raise ValueError("conflicting observed turn")
+                if row[2]!=observed_turn:
+                    raise ValueError("conflicting observed turn")
                 return False
             if row[1] not in ("submitting","uncertain"):
                 raise ValueError("no submission initiated")
-            updated=db.execute("UPDATE wakes SET state='verified',observed_turn=?,updated=? WHERE id=? AND state IN ('submitting','uncertain')",
-                       (observed_turn,int(time.time()),id)).rowcount
-            return bool(updated)
+            db.execute("UPDATE wakes SET state='verified',observed_turn=?,updated=? WHERE id=?",
+                       (observed_turn,int(time.time()),id))
+            return True
