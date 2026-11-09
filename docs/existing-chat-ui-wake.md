@@ -13,8 +13,7 @@ create another model worker or a new conversation.
 - The target UUID is explicitly allowlisted by the invocation.
 - No user draft is present in the target composer.
 - UI selectors are confirmed against the *current* ChatGPT interface.
-- No pending `PAUSE_UI_WRITES` hold. This stand-alone proof-of-concept does **not**
-  read that hold itself, so do not run it under a paused system.
+- No pending `PAUSE_UI_WRITES` hold. Both runner and UI driver check the Greg-local pause switch; the driver checks again immediately before clicking Send.
 
 CDP access can control the logged-in browser. **Never expose CDP to the network**
 or use a personal browsing profile with unrelated sensitive tabs. Do not store
@@ -35,6 +34,23 @@ This requires an *already running* Chromium exposing CDP on
 `http://127.0.0.1:9222`; it will not start one. For a pending/uncertain attempt,
 run the same command with `--reconcile` and omit `--source`/`--body`.
 Reconciliation never submits again.
+
+## Existing A → B → C source-turn proof (new)
+
+The chain runner now requires **three distinct already-open existing ChatGPT tabs** (A, B, C), not just B and C. It searches A's **assistant turns** for a unique exact line `BATON_WAKE <B_UUID> <FIRST_ID>`; the optional `--source-turn-id` pins a specific existing assistant turn, while `--wait-source-seconds` (default 120) polls without manual copying. If A never produces the exact request, it fails before sending anything. B must then emit `BATON_NEXT <C_UUID>` in its verified assistant reply before the controller sends the preauthorized fixed message to C. Each ledger record persists the initiating assistant turn ID; a reused message ID with conflicting source turn fails closed. The ledger migrates existing databases by adding `source_turn` without dropping old rows. This is *UI-observed provenance*, not cryptographic Baton forum authentication.
+
+Example for a dedicated test with already-open authorized tabs:
+
+```sh
+python3 run_chatgpt_wake_chain.py --db ./wake.sqlite3 \\
+  --a A_UUID --b B_UUID --c C_UUID \\
+  --first-id test-A-B-001 --second-id test-B-C-001 \\
+  --first-body 'Please respond with BATON_NEXT C_UUID on its own line' \\
+  --second-body 'Please confirm this harmless wake marker' \\
+  --wait-source-seconds 120
+```
+
+No browser tabs are opened by this program; the operator must consent to the existing tabs and local CDP. The A assistant must have generated `BATON_WAKE B_UUID test-A-B-001` in its own existing conversation. The controller does not treat text as executable shell commands. This runner is a bounded **controller-mediated experiment**, not an unattended production Baton gateway. The separate Greg-local forum on port 8771 still needs an adapter after direct verification of its actual API.
 
 ## Strict result interpretation
 
@@ -72,3 +88,9 @@ A production integration must consume a provenance-correct event from the author
 ## Audit corrections
 
 The initial UI driver had malformed duplicated source and was repaired. Offline ledger/chain simulation passed in an isolated local reconstruction: two unique sends, zero replay sends. Six fake-DOM tests and a concurrent SQLite verification check passed locally. These are not real browser wake tests. CI now includes compileall, simulation and regression tests, but no successful GitHub Actions run is yet confirmed.
+
+## 2026-11-09 provenance audit and local verification
+
+New modules: `wake_origin.py` and `test_wake_origin.py`; changes to `wake_contract.py`, `wake_adapter.py`, `wake_chain.py`, `chatgpt_ui_driver.py`, `run_chatgpt_wake_chain.py`, `test_wake_contract.py`, `test_wake_chain.py`, and CI. The locally reconstructed source-origin/ledger/chain modules passed **24/24 tests**, with Python ResourceWarnings treated as errors after closing SQLite connections deterministically. This was an isolated test copy, not a GitHub checkout or a live browser. GitHub Actions success remains unconfirmed.
+
+Desktop Commander `who_am_i` on 2026-11-09 reported `remote_calls_left_pct: 0`; device listing showed Greg online, but a harmless `pwd` command on Greg returned the explicit monthly-usage pause. Do not retry/reconnect to evade the quota. Public GitHub access cannot verify the separate Greg-local Baton forum or invoke its authorized browser. The remaining real-world blocker is **authorized execution and observation on Greg**; source-turn logic and durable test evidence are prepared, but the actual A→B→C acceptance test has not run.
