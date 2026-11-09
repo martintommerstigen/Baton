@@ -47,6 +47,6 @@ class WakeLedger:
                 return False
             if row[1] not in ("submitting","uncertain"):
                 raise ValueError("no submission initiated")
-            db.execute("UPDATE wakes SET state='verified',observed_turn=?,updated=? WHERE id=?",
-                       (observed_turn,int(time.time()),id))
-            return True
+            updated=db.execute("UPDATE wakes SET state='verified',observed_turn=?,updated=? WHERE id=? AND state IN ('submitting','uncertain')",
+                       (observed_turn,int(time.time()),id)).rowcount
+            return bool(updated)
