@@ -1,5 +1,6 @@
 import tempfile
 import unittest
+from concurrent.futures import ThreadPoolExecutor
 from wake_contract import WakeLedger
 
 class WakeTests(unittest.TestCase):
@@ -31,6 +32,15 @@ class WakeTests(unittest.TestCase):
         self.req();self.w.begin_submission("id1")
         self.assertEqual(WakeLedger(self.path).state("id1")[1],"submitting")
         self.assertFalse(WakeLedger(self.path).begin_submission("id1"))
+    def test_competing_verifications(self):
+        self.req();self.w.begin_submission('id1')
+        def attempt(turn):
+            try: return self.w.verify('id1','chat-B',turn)
+            except ValueError: return 'conflict'
+        with ThreadPoolExecutor(max_workers=2) as pool:
+            results=list(pool.map(attempt,('turn-A','turn-B')))
+        self.assertCountEqual(results,[True,'conflict'])
+        self.assertIn(self.w.state('id1')[2],('turn-A','turn-B'))
     def test_missing_turn(self):
         self.req();self.w.begin_submission("id1")
         with self.assertRaises(ValueError): self.w.verify("id1","chat-B","")
