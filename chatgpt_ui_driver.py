@@ -134,3 +134,15 @@ class ChatGPTUIDriver:
                 if turn_id and turn.inner_text().strip():
                     return Observation(conversation_id, turn_id)
         return None
+
+    def read_assistant_turn(self, conversation_id, assistant_turn_id):
+        """Read only the verified assistant turn, not arbitrary page instructions."""
+        self._check(conversation_id)
+        if not assistant_turn_id:
+            raise ValueError('Missing verified assistant turn ID')
+        turns = self.page.locator('[data-message-author-role="assistant"]')
+        matches = [turns.nth(i) for i in range(turns.count())
+                   if turns.nth(i).get_attribute('data-message-id') == assistant_turn_id]
+        if len(matches) != 1:
+            raise RuntimeError('Verified assistant turn missing or ambiguous')
+        return matches[0].inner_text()
