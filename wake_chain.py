@@ -18,6 +18,7 @@ class ChainPlan:
     second_body: str
     first_digest: str
     second_digest: str
+    origin_turn_id: str | None = None
 
 def next_target_from_reply(reply_text, expected_target):
     # Exact one-line control statement; reject prose, multiple commands and
@@ -33,7 +34,7 @@ def run_chain(ledger, driver_b, driver_c, plan, read_reply):
     if len({plan.a,plan.b,plan.c})!=3 or plan.first_id==plan.second_id:
         raise ValueError('Distinct conversation and message IDs required')
     first=wake_once(ledger,driver_b,plan.first_id,plan.a,plan.b,
-                    plan.first_digest,plan.first_body)
+                    plan.first_digest,plan.first_body,plan.origin_turn_id)
     if first in ('submitting', 'uncertain'):
         first=reconcile(ledger,driver_b,plan.first_id)
     if first!='verified':
@@ -43,7 +44,7 @@ def run_chain(ledger, driver_b, driver_c, plan, read_reply):
     if not isinstance(reply,str) or next_target_from_reply(reply,plan.c) is None:
         return {'a_to_b':'verified','b_to_c':'not_authorized'}
     second=wake_once(ledger,driver_c,plan.second_id,plan.b,plan.c,
-                     plan.second_digest,plan.second_body)
+                     plan.second_digest,plan.second_body,turn_id)
     if second in ('submitting','uncertain'):
         second=reconcile(ledger,driver_c,plan.second_id)
     return {'a_to_b':'verified','b_to_c':second}
