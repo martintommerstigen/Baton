@@ -13,6 +13,7 @@ from pathlib import Path
 from urllib.parse import urlparse
 from wake_contract import WakeLedger
 from wake_chain import ChainPlan, run_chain
+from wake_origin import verify_source_turn
 from chatgpt_ui_driver import ChatGPTUIDriver, conversation_id
 from run_chatgpt_wake import local_cdp
 
@@ -31,6 +32,8 @@ def main(argv=None):
     p=argparse.ArgumentParser(description=__doc__)
     for name in ('a','b','c','first-id','second-id','db','first-body','second-body'):
         p.add_argument('--'+name,required=True)
+    p.add_argument('--source-turn-id',required=True,
+                   help='DOM assistant turn ID in the EXISTING A chat containing BATON_WAKE B FIRST_ID')
     p.add_argument('--cdp',default='http://127.0.0.1:9222')
     args=p.parse_args(argv)
     local_cdp(args.cdp)
@@ -43,7 +46,7 @@ def main(argv=None):
       fcntl.flock(lock_file, fcntl.LOCK_EX | fcntl.LOCK_NB)
       with sync_playwright() as pw:
           browser=pw.chromium.connect_over_cdp(args.cdp)
-          pages=select_pages(browser,(args.b,args.c))
+          pages=select_pages(browser,(args.a,args.b,args.c))
           class WaitDriver:
               def __init__(self, driver): self.driver=driver
               def submit_once(self,*args): return self.driver.submit_once(*args)
@@ -55,6 +58,7 @@ def main(argv=None):
                       if time.monotonic()>=deadline: return None
                       time.sleep(1)
           drivers={chat:ChatGPTUIDriver(page,frozenset({chat})) for chat,page in pages.items()}
+          verify_source_turn(drivers[args.a],args.a,args.source_turn_id,args.b,args.first_id)
           waiting={chat:WaitDriver(driver) for chat,driver in drivers.items()}
           plan=ChainPlan(args.a,args.b,args.c,args.first_id,args.second_id,
                          args.first_body,args.second_body,
@@ -63,7 +67,8 @@ def main(argv=None):
           ledger=WakeLedger(args.db)
           result=run_chain(ledger,waiting[args.b],waiting[args.c],plan,
                            drivers[args.b].read_assistant_turn)
-          print(json.dumps(result))
+          print(json.dumps({'source_chat':args.a,'source_turn_id':args.source_turn_id,
+                            'source_request':'verified_in_existing_chat',**result}))
           browser.close()
 
 if __name__=='__main__': main()
