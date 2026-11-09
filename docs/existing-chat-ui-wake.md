@@ -37,7 +37,7 @@ Reconciliation never submits again.
 
 ## Existing A → B → C source-turn proof (new)
 
-The chain runner now requires **three distinct already-open existing ChatGPT tabs** (A, B, C), not just B and C. It searches A's **assistant turns** for a unique exact line `BATON_WAKE <B_UUID> <FIRST_ID>`; the optional `--source-turn-id` pins a specific existing assistant turn, while `--wait-source-seconds` (default 120) polls without manual copying. If A never produces the exact request, it fails before sending anything. B must then emit `BATON_NEXT <C_UUID>` in its verified assistant reply before the controller sends the preauthorized fixed message to C. Each ledger record persists the initiating assistant turn ID; a reused message ID with conflicting source turn fails closed. The ledger migrates existing databases by adding `source_turn` without dropping old rows. This is *UI-observed provenance*, not cryptographic Baton forum authentication.
+The chain runner now requires **three distinct already-open existing ChatGPT tabs** (A, B, C), not just B and C. It searches A's **assistant turns** for a unique assistant response containing **only** `BATON_WAKE <B_UUID> <FIRST_ID>`; the optional `--source-turn-id` pins a specific existing assistant turn, while `--wait-source-seconds` (default 120) polls without manual copying. If A never produces the exact request, it fails before sending anything. B must then emit **only** `BATON_NEXT <C_UUID>` in its verified assistant reply before the controller sends the preauthorized fixed message to C. Each ledger record persists the initiating assistant turn ID; a reused message ID with conflicting source turn fails closed. The ledger migrates existing databases by adding `source_turn` without dropping old rows. This is *UI-observed provenance*, not cryptographic Baton forum authentication.
 
 Example for a dedicated test with already-open authorized tabs:
 
@@ -98,3 +98,5 @@ Desktop Commander `who_am_i` on 2026-11-09 reported `remote_calls_left_pct: 0`; 
 ## Confirmed GitHub Actions regression result
 
 GitHub Actions [run 42711608927](https://github.com/martintommerstigen/Baton/actions/runs/42711608927), for code commit `20b48812a7b4ffb4d6d05f68169b46cd0e73bbaa`, completed successfully on 2026-11-09. The runner passed `compileall`, the offline A→B→C simulation, and **63/63 regression tests** (including receipt-commit ordering). This confirms code-level behavior in the hosted CI environment, not access to the existing ChatGPT conversations on Greg. Earlier CI failures exposed a stray terminal annotation in `test_receipt_commit_order.py`, which was removed before the successful run.
+
+Safety hardening: source and next-hop commands must occupy the **entire assistant response**. A command quoted in prose or a Markdown code fence is not an operational request; negative-control tests enforce this.
