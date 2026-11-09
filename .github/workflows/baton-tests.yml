@@ -1,0 +1,32 @@
+name: Baton Python regression tests
+
+on:
+  push:
+    paths:
+      - 'server.py'
+      - 'client.py'
+      - 'test_*.py'
+      - '.github/workflows/baton-tests.yml'
+  pull_request:
+    paths:
+      - 'server.py'
+      - 'client.py'
+      - 'test_*.py'
+      - '.github/workflows/baton-tests.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  regression:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Python version
+        run: python3 --version
+      - name: Baton regression tests
+        run: python3 -m unittest -v test_baton.py test_security.py test_client.py
