@@ -5,12 +5,14 @@ It does not open a new conversation, authenticate, extract credentials or use
 private APIs. DOM selectors must be verified against the live interface.
 """
 from dataclasses import dataclass
+from pathlib import Path
 import re
 from urllib.parse import urlparse
 from wake_adapter import Observation
 
 CHAT_ID = re.compile(r"^[0-9a-f]{8}(?:-[0-9a-f]{4}){3}-[0-9a-f]{12}$", re.I)
 MARKER_ID = re.compile(r"^[A-Za-z0-9_-]{1,100}$")
+PAUSE_FILE = Path('/home/olliver/GTRCM-newborn-bootstrap/transport/PAUSE_UI_WRITES')
 
 
 def conversation_id(url):
@@ -59,6 +61,8 @@ class ChatGPTUIDriver:
         send = self.page.locator('[data-testid="send-button"]')
         if send.count() != 1 or not send.is_enabled():
             raise RuntimeError("Send button missing or disabled; draft left unsent")
+        if PAUSE_FILE.exists():
+            raise RuntimeError('Greg-local UI writes paused; draft left unsent')
         send.click()
         self._check(conversation_id)
 
