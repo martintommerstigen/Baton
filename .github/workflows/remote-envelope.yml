@@ -3,6 +3,8 @@ on:
   push:
     paths:
       - 'remote_security/**'
+      - 'tools/gtrcm_branch_audit.py'
+      - 'tests/test_gtrcm_branch_audit.py'
       - 'deploy/systemd/**'
       - 'tests/test_remote_*.py'
       - 'tests/test_pause_guard.py'
@@ -12,6 +14,8 @@ on:
   pull_request:
     paths:
       - 'remote_security/**'
+      - 'tools/gtrcm_branch_audit.py'
+      - 'tests/test_gtrcm_branch_audit.py'
       - 'deploy/systemd/**'
       - 'tests/test_remote_*.py'
       - 'tests/test_pause_guard.py'
