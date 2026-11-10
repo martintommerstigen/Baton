@@ -47,5 +47,41 @@ class SubmissionTests(unittest.TestCase):
             ChatGPTUIDriver(p,frozenset({CID})).submit_once(CID,'msg-1','hello')
         self.assertEqual(p.editor.fills,[])
         self.assertEqual(p.send.clicks,0)
+    def test_composer_normalization_rejected_before_click(self):
+        # The adapter authorized a literal newline; a UI that silently
+        # replaces it must not send a different body.
+        p=Page()
+        def normalized_fill(value):
+            p.editor.fills.append(value)
+            p.editor.text=value.replace("\n"," ")
+        p.editor.fill=normalized_fill
+        with patch('chatgpt_ui_driver.PAUSE_FILE') as pause:
+            pause.exists.return_value=False
+            with self.assertRaisesRegex(RuntimeError,'Composer content differs'):
+                ChatGPTUIDriver(p,frozenset({CID})).submit_once(CID,'msg-1','hello')
+        self.assertEqual(p.send.clicks,0)
+
+    def test_concurrent_composer_edit_rejected_before_click(self):
+        # A browser extension or user edit may mutate the draft after fill,
+        # while the send button remains enabled.
+        p=Page()
+        def mutating_enabled():
+            p.editor.text += "\nINJECTED"
+            return True
+        p.send.is_enabled=mutating_enabled
+        with patch('chatgpt_ui_driver.PAUSE_FILE') as pause:
+            pause.exists.return_value=False
+            with self.assertRaisesRegex(RuntimeError,'Composer content differs'):
+                ChatGPTUIDriver(p,frozenset({CID})).submit_once(CID,'msg-1','hello')
+        self.assertEqual(p.send.clicks,0)
+
+    def test_composer_exact_payload_still_sends(self):
+        p=Page()
+        with patch('chatgpt_ui_driver.PAUSE_FILE') as pause:
+            pause.exists.return_value=False
+            ChatGPTUIDriver(p,frozenset({CID})).submit_once(CID,'msg-1','line 1\nline 2')
+        self.assertEqual(p.send.clicks,1)
+        self.assertEqual(p.editor.text,'[BATON-WAKE:msg-1]\nline 1\nline 2')
+
 
 if __name__=='__main__': unittest.main()
