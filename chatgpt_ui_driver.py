@@ -95,7 +95,7 @@ class ChatGPTUIDriver:
         if conversation_id(self.page.url) != target:
             raise RuntimeError("Page is not the target existing conversation")
 
-    def submit_once(self, conversation_id, message_id, body):
+    def submit_once(self, conversation_id, message_id, body, *, before_click=None):
         self._check(conversation_id)
         marker = marker_for(message_id)
         if not isinstance(body, str) or not body.strip():
@@ -122,6 +122,22 @@ class ChatGPTUIDriver:
         # Fail closed if the live UI normalizes line breaks or changes the text.
         if editor.inner_text() != payload:
             raise PreSubmissionRejected("Composer content differs from approved wake payload; draft left unsent")
+        # Optional B1 admission boundary. The callback must fail closed and
+        # durably record uncertainty BEFORE any click. It is injected by a
+        # separately authenticated broker client, not inferred from DOM text.
+        if before_click is not None:
+            before_click()
+            # Any failure after a committed begin_click is ambiguous: do not
+            # raise PreSubmissionRejected or authorize an automatic retry.
+            self._check(conversation_id)
+            if pause_active(PAUSE_FILE):
+                raise RuntimeError("Pause after click-start; outcome uncertain")
+            if not send.is_enabled():
+                raise RuntimeError("Send disabled after click-start; outcome uncertain")
+            # Final readback comes AFTER checking the send button, since even
+            # a UI query/extension can mutate the composer synchronously.
+            if editor.inner_text() != payload:
+                raise RuntimeError("Composer changed after click-start; outcome uncertain")
         send.click()
         self._check(conversation_id)
 
