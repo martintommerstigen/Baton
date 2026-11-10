@@ -7,6 +7,7 @@ No retries, shell, browser actions, network listener, or secret persistence.
 from __future__ import annotations
 
 import json
+import math
 import os
 from pathlib import Path
 import socket
@@ -73,6 +74,8 @@ def query_verified_broker(socket_path, expected_uid, request, *, timeout=3.0,
     it does NOT protect against a malicious same-UID socket replacement.
     The caller must not treat any broker response as proof of UI delivery.
     """
+    if type(timeout) not in (int, float) or not math.isfinite(timeout) or not 0 < timeout <= 10:
+        raise ValueError('timeout must be finite and within (0,10] seconds')
     if type(expected_uid) is not int or expected_uid < 0:
         raise ValueError('expected_uid must be a nonnegative integer')
     if require_distinct_uid and expected_uid == os.getuid():
