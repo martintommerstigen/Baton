@@ -137,6 +137,53 @@ class BrokerTests(unittest.TestCase):
         self.assertEqual(json.loads(self.exchange(frame()))["state"], "rejected_or_uncertain_no_retry")
         self.assertEqual(self.calls, ["reserved"])
 
+    def test_failed_chmod_rolls_back_only_new_socket_and_allows_restart(self):
+        # The endpoint is bound before chmod; a failed startup must not strand
+        # a dead socket requiring manual deletion or an unsafe blind unlink.
+        path = self.base / "failed.sock"
+        other = SourceBroker(str(path), {self.allowed}, {"rustworld-world"},
+                             self.broker.capture, self.broker.audit)
+        with patch("remote_security.source_broker.os.chmod",
+                   side_effect=PermissionError("synthetic chmod failure")):
+            with self.assertRaises(PermissionError):
+                other.start()
+        self.assertFalse(path.exists(), "own newly bound socket should be rolled back")
+        self.assertIsNone(other.sock)
+        other.start()
+        self.assertTrue(stat_is_socket(path.lstat().st_mode))
+        other.close()
+        self.assertFalse(path.exists())
+
+    def test_failed_listen_rolls_back_only_own_socket(self):
+        path = self.base / "listen-failed.sock"
+        other = SourceBroker(str(path), {self.allowed}, {"rustworld-world"},
+                             self.broker.capture, self.broker.audit)
+        with patch.object(socket.socket, "listen", side_effect=OSError("synthetic listen failure")):
+            with self.assertRaises(OSError):
+                other.start()
+        self.assertFalse(path.exists())
+        self.assertIsNone(other.sock)
+        other.start()
+        other.close()
+
+    def test_failed_start_never_unlinks_replaced_endpoint(self):
+        # A path changed between bind and chmod must not be unlinked by the
+        # cleanup path. No assertion of safety against same-UID compromise.
+        path = self.base / "replaced.sock"
+        other = SourceBroker(str(path), {self.allowed}, {"rustworld-world"},
+                             self.broker.capture, self.broker.audit)
+        def replace_and_fail(socket_path, _mode):
+            os.unlink(socket_path)
+            Path(socket_path).write_text("replacement belongs to another inode")
+            raise PermissionError("synthetic post-bind replacement")
+        with patch("remote_security.source_broker.os.chmod", side_effect=replace_and_fail):
+            with self.assertRaises(PermissionError):
+                other.start()
+        self.assertEqual(path.read_text(), "replacement belongs to another inode")
+        self.assertIsNone(other.sock)
+        with self.assertRaises(Rejected):
+            other.start()
+
     def test_socket_restart_refuses_stale_endpoint(self):
         other = SourceBroker(str(self.path), {self.allowed}, {"rustworld-world"}, self.broker.capture, self.broker.audit)
         with self.assertRaises(Rejected):

@@ -101,22 +101,42 @@ class SourceBroker:
         if self.path.exists() or self.path.is_symlink():
             raise Rejected("socket exists; never unlink or replace an uncertain endpoint")
         sock = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
+        bound_inode = None
         try:
             old_umask = os.umask(0o117)
             try:
                 sock.bind(str(self.path))
             finally:
                 os.umask(old_umask)
+            # Capture the inode created by THIS bind before any later operation
+            # can fail. A failed chmod/listen must not strand a dead endpoint,
+            # but must never remove an unrelated replacement or stale socket.
+            bound = self.path.lstat()
+            if not stat.S_ISSOCK(bound.st_mode) or bound.st_uid != os.geteuid():
+                raise Rejected("unsafe bound socket")
+            bound_inode = (bound.st_dev, bound.st_ino)
             os.chmod(self.path, 0o660)
             st = self.path.lstat()
-            if not stat.S_ISSOCK(st.st_mode) or st.st_uid != os.geteuid() or st.st_mode & 0o007:
+            if (not stat.S_ISSOCK(st.st_mode) or st.st_uid != os.geteuid()
+                    or (st.st_dev, st.st_ino) != bound_inode
+                    or st.st_mode & 0o007):
                 raise Rejected("unsafe bound socket")
             sock.listen(4)
             sock.settimeout(1.0)
-            self.inode = (st.st_dev, st.st_ino)
+            self.inode = bound_inode
             self.sock = sock
         except BaseException:
             sock.close()
+            if bound_inode is not None:
+                try:
+                    current = self.path.lstat()
+                    if (stat.S_ISSOCK(current.st_mode)
+                            and (current.st_dev, current.st_ino) == bound_inode):
+                        self.path.unlink()
+                except OSError:
+                    # Failure to clean up is fail-closed: the next start()
+                    # refuses an existing/uncertain endpoint, never replaces it.
+                    pass
             raise
 
     def _peer_uid(self, conn):
