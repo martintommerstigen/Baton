@@ -6,7 +6,7 @@
 
 The gateway is Python standard library only (no third-party runtime packages or copied external code). It binds **127.0.0.1:8787**, rejects non-loopback Host headers and requires an owner-owned, owner-only (0600/0400), non-symlink token file containing at least 32 ASCII bytes. It exposes authenticated GET /v1/health and GET /v1/pause-status only. All other GET paths and all POST/PUT/DELETE operations are denied. It never executes a shell, accesses ChatGPT cookies, creates a browser session, sends messages, reads arbitrary files or modifies the pause switch. Responses exclude credentials and are marked no-store.
 
-A present PAUSE_UI_WRITES file, dangling symlink or filesystem access error reports paused. An absent marker means only that the configured path was absent; it is **not** permission to send anything. The service has no UI-writing operation.
+A present PAUSE_UI_WRITES file, dangling symlink, missing parent directory, symlinked parent directory, relative path, `..` traversal, or filesystem access error reports paused. An absent marker reports unpaused **only when its entire absolute parent directory chain is real and accessible**. Even then, this is advisory status, **not** permission to send anything. Filesystem state may change after inspection (TOCTOU); the future UI-writing adapter must independently recheck the pause guard immediately before Send. The service has no UI-writing operation.
 
 **Security limitation:** This is an initial local read-only gateway, not a complete remote-control service or a production-grade authenticated tunnel. Token distribution, SSH key management, audit, rate limiting, rotation, supervision and authorization of future write operations require separate review. Do not expose port 8787 publicly.
 
@@ -44,7 +44,7 @@ python3 -m compileall -q baton_remote_b1 test_baton_remote_b1.py
 python3 -W error::ResourceWarning -m unittest -v test_baton_remote_b1
 ```
 
-Ten offline tests: authenticated health, missing/wrong token, forged Host, rejected shell/write, pause file and dangling symlink, client URL and operation allowlist, no-store headers, restart, token permissions and symlink rejection, and no credential leakage in health response. Tests use a real loopback HTTP server with a synthetic pause file; they do not establish Greg reachability or a real ChatGPT wake.
+Fourteen offline tests: authenticated health, missing/wrong token, forged Host, rejected shell/write, pause file and dangling symlink, client URL and operation allowlist, no-store headers, restart, token permissions and symlink rejection, no credential leakage in health response, and fail-closed handling of missing, symlinked or traversed pause-path ancestors. Tests use a real loopback HTTP server with a synthetic pause file; they do not establish Greg reachability or a real ChatGPT wake.
 
 ## Integration and next falsifiers
 
