@@ -1,0 +1,30 @@
+name: Baton local terminal smoke tests
+on:
+  push:
+    branches:
+      - feature/evening-local-terminal-2026-11-10
+    paths:
+      - baton_local_terminal.py
+      - test_baton_local_terminal.py
+      - install_evening.sh
+      - .github/workflows/local-terminal.yml
+  pull_request:
+    paths:
+      - baton_local_terminal.py
+      - test_baton_local_terminal.py
+      - install_evening.sh
+      - .github/workflows/local-terminal.yml
+permissions:
+  contents: read
+jobs:
+  offline:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - run: python3 -m unittest -v test_baton_local_terminal.py
+      - run: bash -n install_evening.sh
+      - run: python3 baton_local_terminal.py identity --workspace .
+      - run: python3 baton_local_terminal.py git-status --workspace .
