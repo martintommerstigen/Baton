@@ -1,0 +1,23 @@
+# B1/B5 launcher hardening and source gate — 2026-11-10
+
+## Provenance and scope
+- **Base:** Baton integration/baton-desktop-launcher-2026-11-10 at bda1839cc57d552dee185daef432b5b7c9746eb4 (independent integration branch; no Ronja B5 source files changed).
+- **Historical Baton boundary:** [issue #3](https://github.com/martintommerstigen/Baton/issues/3), [PR #4](https://github.com/martintommerstigen/Baton/pull/4), [PR #22](https://github.com/martintommerstigen/Baton/pull/22), [Ronja PR #23](https://github.com/martintommerstigen/Baton/pull/23), [forum #6](https://github.com/martintommerstigen/Baton/issues/6).
+- **GTRCM prior claim ledger:** [C01–C06](https://github.com/martintommerstigen/GTRCM/blob/audit/cross-branch-claim-ledger-2026-11-10/research/audit/2026-11-10_CROSS_BRANCH_CLAIM_LEDGER.md); [Eik C07–C12](https://github.com/martintommerstigen/GTRCM/blob/research/eik-kilde-retur-rolf-provenance-2026-11-10/research/eik/corpus/2026-11-10_G2_G4_ROLF_HANDOFF_AND_RUSTWORLD_ID_NEG.md). This is a software safety change, not a new GTRCM physical derivation.
+- **New paginated source inventory:** [285 GTRCM branch names and tip SHAs](2026-11-10-b1-gtrcm-285-head-inventory.json), 100+100+85+0. Two newly listed branches relative to B1's 283 inventory, no changed older heads. **0/285 complete branch histories** read. Original contents directly read this run: GTRCM C01 Kaja, C02 Egil, Rolf operative memory, Eik C07–C12, archived RustWorld network.rs and world.rs, plus Baton sources. This is **six named GTRCM original files from five branch refs**, not a comprehensive content audit. GitHub GTRCM main and many older/archived branches remain incompletely examined; Greg/Mac and private conversation histories unavailable.
+- **Specific historical delta:** the original launcher already rejects a symlink destination, but destination.parent.mkdir(parents=True, exist_ok=True) follows symlink ancestors, and the fixed temp pathname and untested workflow omit a security gate. Existing tests covered only the destination symlink. This PR adds a pinned openat directory descriptor and tests, without claiming an original security theorem. Relevant GTRCM equivalence: Egil R76 separates an observed report from the physical contact that produced it; Rolf separates O/K/I. An installed desktop entry is neither a remote wake nor an operative change in another conversation.
+
+## Concrete change
+- desktop/install_baton_launcher.py: Linux O_DIRECTORY|O_NOFOLLOW path walk from /, private newly created directories, final-directory owner/mode check, unpredictable exclusive temp file, fsync, descriptor-relative os.replace, cleanup. It never launches a server or opens a public shell.
+- tests/test_launcher_security.py: parent symlink, shared-writable parent, FIFO destination, repeat install and no stale temp.
+- .github/workflows/baton-tests.yml: desktop and test path filters, launcher tests and Python compile. Previously desktop changes were not tested by this workflow.
+- The generated desktop entry runs only python client.py --help in a terminal. It does **not** contact Greg, authenticate a broker, send a message, launch ChatGPT, or demonstrate A→B→C.
+- **Security boundary:** protects against a different local UID redirecting the install path. A malicious process with the same UID, an already compromised Python interpreter, or a malicious chosen client.py is out of scope. No private tokens are read or written.
+- **Licenses/reuse:** Baton source is Apache-2.0 (LICENSE); this patch uses Python/Linux standard system calls only, imports no third-party source. OpenSSH/WireGuard were not vendored or deployed. Any future inclusion of GPL/BSD code must receive separate source-specific license review.
+
+## Tests and status
+- Local isolated Linux Python test: seven combined original+negative launcher tests passed, py_compile passed (no network, no Greg). Hosted CI must be checked separately after PR creation; do not infer it from local tests.
+- **B5 launcher:** tested-simulated for filesystem behavior; Greg deployment implemented-unverified.
+- **B1 actual existing-chat A→B→C:** blocked, not tested-live. The authorized Greg browser, current PAUSE_UI_WRITES, three exact live assistant turns, and actual B/C receipts have **not** been observed.
+- **RFP/525:** no real packet capture or authenticated Greg↔iPhone smoke test; no claim of integrated product.
+- **Next action:** when an authorized no-subscription Greg channel exists, read-only verify PAUSE_UI_WRITES, inspect three existing allowlisted ChatGPT tabs and source-turn IDs, then perform a consented no-retry UI test; preserve B/C turn IDs, exact payload hashes and O/K/I follow-on control. No Desktop Commander quota bypass.
