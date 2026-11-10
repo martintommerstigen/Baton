@@ -20,6 +20,29 @@ class WakeTests(unittest.TestCase):
             self.w.request('origin','A','B','digest','a-turn-2')
         with self.assertRaises(ValueError):
             self.w.request('origin','A','B','digest')
+    def test_source_turn_cannot_authorize_two_distinct_wakes(self):
+        self.w.request('one','A','B','digest-1','a-turn-1')
+        with self.assertRaisesRegex(ValueError,'source assistant turn already used'):
+            self.w.request('two','A','C','digest-2','a-turn-1')
+        self.assertIsNone(self.w.state('two'))
+        # Another assistant turn from A remains independently eligible.
+        self.assertEqual(self.w.request('two','A','C','digest-2','a-turn-2'),'requested')
+        # B may separately authorize the next hop using its own turn.
+        self.assertEqual(self.w.request('three','B','C','digest-3','b-turn-1'),'requested')
+
+    def test_observed_turn_cannot_verify_two_distinct_wakes(self):
+        for mid in ('one','two'):
+            self.w.request(mid,'A','B','digest-'+mid)
+            self.w.begin_submission(mid)
+        self.assertTrue(self.w.verify('one','B','same-assistant-turn'))
+        with self.assertRaisesRegex(ValueError,'assistant turn already verifies'):
+            self.w.verify('two','B','same-assistant-turn')
+        self.assertEqual(self.w.state('two')[1],'submitting')
+        self.assertIsNone(self.w.state('two')[2])
+        # A distinct real assistant turn can verify the second message.
+        self.assertTrue(self.w.verify('two','B','different-assistant-turn'))
+        self.assertFalse(self.w.verify('one','B','same-assistant-turn'))
+
     def test_migrate_legacy_ledger(self):
         with tempfile.TemporaryDirectory() as tmp:
             path=tmp+'/old.sqlite'
