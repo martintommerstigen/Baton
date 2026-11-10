@@ -21,11 +21,22 @@ def claim_next(root):
     for path in sorted(queued.glob("*.json")):
         if not ID.fullmatch(path.stem) or path.is_symlink() or not path.is_file():
             continue
+        # Validate before claiming: malformed requests must not occupy the
+        # in-flight namespace or stop processing later valid requests.
+        try:
+            if path.stat().st_size > 8192:
+                continue
+            record = json.loads(path.read_text(encoding="utf-8"))
+            intent = WakeIntent(record["request_id"], record["chat_id"], record["message"])
+            if intent.request_id != path.stem or record.get("status") != "queued":
+                continue
+        except (OSError, ValueError, KeyError, TypeError, UnicodeError):
+            continue
         target = inflight / path.name
         if target.exists() or target.is_symlink():
             continue
         try:
-            # Atomic only on the same filesystem; no overwrite of prior claim.
+            # Atomic exclusive claim on same filesystem; no overwrite.
             target.hardlink_to(path)
         except FileExistsError:
             continue
@@ -35,9 +46,5 @@ def claim_next(root):
             path.unlink()
         except FileNotFoundError:
             pass
-        record = json.loads(target.read_text(encoding="utf-8"))
-        intent = WakeIntent(record["request_id"],record["chat_id"],record["message"])
-        if intent.request_id != target.stem or record.get("status") != "queued":
-            raise ValueError("invalid claimed intent")
         return intent
     return None
