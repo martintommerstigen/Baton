@@ -19,17 +19,20 @@ The research job runs entirely outside the UI writer. It never calls `admit`, `b
 
 ## One reproducible authorized job
 
-On a Linux machine with a real `/proc/stat`, use a dedicated unprivileged account and owner-only state directory. Generate the private HMAC key locally; never store it in GitHub or in CI secrets. This command is an illustrative local invocation, **not executed on Greg**:
+On a Linux machine with a real `/proc/stat`, use a dedicated unprivileged account and owner-only state directory. Generate the private HMAC key locally with 32 cryptographically random bytes and mode 0600; never store it in GitHub or in CI secrets. This command is an illustrative local invocation, **not executed on Greg**:
 
 ```python
 from pathlib import Path
-from remote_security.research_jobs import ResearchJobs
+from remote_security.research_jobs import ResearchJobs, _load_receipt_key
 from remote_security.proc_stat_capture import capture_once, verify_capture
 import json
 
 state = Path.home() / ".local/state/baton-research"
 state.mkdir(mode=0o700, parents=True, exist_ok=True)
-key = (state / "receipt.key").read_bytes()  # provision privately with mode 0600
+state.chmod(0o700)
+# Provision a private random key once, separately (umask 077; mode 0600).
+# The loader rejects symlinks, foreign owners and permissive key files.
+key = _load_receipt_key(state / "receipt.key")
 jobs = ResearchJobs(state / "jobs.sqlite", key, {"GTRCM": ["sha256-echo"]})
 bundle = capture_once(jobs, "GTRCM", "cpu-20261110-01")
 print(json.dumps(bundle, sort_keys=True))
