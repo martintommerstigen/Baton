@@ -15,7 +15,7 @@ from baton_embedded_send import prepare_send_script, send_click_script
 from baton_model_protocol import (
     parse_assistant_tool_call, tool_result_message, observe_assistant_script
 )
-from baton_exec_agent import execute_command
+from baton_core_client import execute_on_greg
 
 
 def bootstrap_message(nonce, cwd):
@@ -154,7 +154,7 @@ def attach_model_bridge(layout, view, page, parent):
                 report("Verktøykall "+request_id[:8]+" mottatt. Kjører på Greg ...")
                 def perform(request, request_nonce, cid):
                     try:
-                        outcome=execute_command(request["argv"],request["cwd"],request["timeout"])
+                        outcome=execute_on_greg(request["argv"],request["cwd"],request["timeout"])
                     except (ValueError, OSError, PermissionError, RuntimeError) as exc:
                         outcome={"exit_code":None,"output":"Baton execution error: "+type(exc).__name__}
                     results.put((request_nonce,cid,request["request_id"],outcome))
