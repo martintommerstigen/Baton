@@ -17,7 +17,7 @@
     }
   ],
   "branch_count": 276,
-  "tree_indexed": 60,
+  "tree_indexed": 75,
   "content_read_in_this_inventory": 0,
   "notes": [
     "branch_date_hint is parsed from branch name, NOT verified commit date",
@@ -1558,10 +1558,21 @@
       "commit_date": null,
       "theme": "kaja/klokkelokker-malehistorie-2026-10-17",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/kaja%2Fklokkelokker-malehistorie-2026-10-17",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 22,
+      "relevant_paths": [
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/kaja_katteluka_gentle_probe/README.md",
+        "experiments/kaja_katteluka_gentle_probe/kaja_katteluka_probe.py",
+        "experiments/microfluctuation_mass_gravity/README.md",
+        "experiments/microfluctuation_mass_gravity/falsify_shared_density.py",
+        "experiments/microfluctuation_mass_gravity/model.py"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "kaja/kritisk-forskningsmiljo-2026-10-18",
@@ -1570,10 +1581,24 @@
       "commit_date": null,
       "theme": "kaja/kritisk-forskningsmiljo-2026-10-18",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/kaja%2Fkritisk-forskningsmiljo-2026-10-18",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 38,
+      "relevant_paths": [
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/kaja_katteluka_gentle_probe/README.md",
+        "experiments/kaja_katteluka_gentle_probe/kaja_katteluka_probe.py",
+        "experiments/kaja_probevekst/README.md",
+        "experiments/kaja_probevekst/probevekst.py",
+        "experiments/kaja_virksom_historie/README.md",
+        "experiments/kaja_virksom_historie/virksom_historie.py",
+        "experiments/microfluctuation_mass_gravity/README.md",
+        "experiments/microfluctuation_mass_gravity/falsify_shared_density.py"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "kaja/kryptisk-hukommelse-og-skjult-virkning-2026-10-18",
@@ -1582,10 +1607,24 @@
       "commit_date": null,
       "theme": "kaja/kryptisk-hukommelse-og-skjult-virkning-2026-10-18",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/kaja%2Fkryptisk-hukommelse-og-skjult-virkning-2026-10-18",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 41,
+      "relevant_paths": [
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/kaja_katteluka_gentle_probe/README.md",
+        "experiments/kaja_katteluka_gentle_probe/kaja_katteluka_probe.py",
+        "experiments/kaja_probevekst/README.md",
+        "experiments/kaja_probevekst/probevekst.py",
+        "experiments/kaja_virksom_historie/README.md",
+        "experiments/kaja_virksom_historie/virksom_historie.py",
+        "experiments/microfluctuation_mass_gravity/README.md",
+        "experiments/microfluctuation_mass_gravity/falsify_shared_density.py"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "kaja/lokal-holonomi-og-noe-2026-10-18",
@@ -1594,10 +1633,24 @@
       "commit_date": null,
       "theme": "kaja/lokal-holonomi-og-noe-2026-10-18",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/kaja%2Flokal-holonomi-og-noe-2026-10-18",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 59,
+      "relevant_paths": [
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/kaja_katteluka_gentle_probe/README.md",
+        "experiments/kaja_katteluka_gentle_probe/kaja_katteluka_probe.py",
+        "experiments/kaja_probevekst/README.md",
+        "experiments/kaja_probevekst/probevekst.py",
+        "experiments/kaja_virksom_historie/README.md",
+        "experiments/kaja_virksom_historie/virksom_historie.py",
+        "experiments/microfluctuation_mass_gravity/README.md",
+        "experiments/microfluctuation_mass_gravity/falsify_shared_density.py"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "kaja/lokale-samvirker-globale-invarianser-2026-10-18",
@@ -1606,10 +1659,24 @@
       "commit_date": null,
       "theme": "kaja/lokale-samvirker-globale-invarianser-2026-10-18",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/kaja%2Flokale-samvirker-globale-invarianser-2026-10-18",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 49,
+      "relevant_paths": [
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/kaja_katteluka_gentle_probe/README.md",
+        "experiments/kaja_katteluka_gentle_probe/kaja_katteluka_probe.py",
+        "experiments/kaja_probevekst/README.md",
+        "experiments/kaja_probevekst/probevekst.py",
+        "experiments/kaja_virksom_historie/README.md",
+        "experiments/kaja_virksom_historie/virksom_historie.py",
+        "experiments/microfluctuation_mass_gravity/README.md",
+        "experiments/microfluctuation_mass_gravity/falsify_shared_density.py"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "kaja/lokalt-noe-uten-global-verdi-2026-10-18",
@@ -1618,10 +1685,24 @@
       "commit_date": null,
       "theme": "kaja/lokalt-noe-uten-global-verdi-2026-10-18",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/kaja%2Flokalt-noe-uten-global-verdi-2026-10-18",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 61,
+      "relevant_paths": [
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/kaja_katteluka_gentle_probe/README.md",
+        "experiments/kaja_katteluka_gentle_probe/kaja_katteluka_probe.py",
+        "experiments/kaja_probevekst/README.md",
+        "experiments/kaja_probevekst/probevekst.py",
+        "experiments/kaja_virksom_historie/README.md",
+        "experiments/kaja_virksom_historie/virksom_historie.py",
+        "experiments/microfluctuation_mass_gravity/README.md",
+        "experiments/microfluctuation_mass_gravity/falsify_shared_density.py"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "kaja/menneskelig-laering-og-metaplastisitet-2026-10-18",
@@ -1630,10 +1711,24 @@
       "commit_date": null,
       "theme": "kaja/menneskelig-laering-og-metaplastisitet-2026-10-18",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/kaja%2Fmenneskelig-laering-og-metaplastisitet-2026-10-18",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 33,
+      "relevant_paths": [
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/kaja_katteluka_gentle_probe/README.md",
+        "experiments/kaja_katteluka_gentle_probe/kaja_katteluka_probe.py",
+        "experiments/kaja_probevekst/README.md",
+        "experiments/kaja_probevekst/probevekst.py",
+        "experiments/kaja_virksom_historie/README.md",
+        "experiments/kaja_virksom_historie/virksom_historie.py",
+        "experiments/microfluctuation_mass_gravity/README.md",
+        "experiments/microfluctuation_mass_gravity/falsify_shared_density.py"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "kaja/noe-naer-det-trengs-lokal-tid-2026-10-18",
@@ -1642,10 +1737,24 @@
       "commit_date": null,
       "theme": "kaja/noe-naer-det-trengs-lokal-tid-2026-10-18",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/kaja%2Fnoe-naer-det-trengs-lokal-tid-2026-10-18",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 57,
+      "relevant_paths": [
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/kaja_katteluka_gentle_probe/README.md",
+        "experiments/kaja_katteluka_gentle_probe/kaja_katteluka_probe.py",
+        "experiments/kaja_probevekst/README.md",
+        "experiments/kaja_probevekst/probevekst.py",
+        "experiments/kaja_virksom_historie/README.md",
+        "experiments/kaja_virksom_historie/virksom_historie.py",
+        "experiments/microfluctuation_mass_gravity/README.md",
+        "experiments/microfluctuation_mass_gravity/falsify_shared_density.py"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "kaja/operativ-ting-minne-retur-2026-10-18",
@@ -1654,10 +1763,24 @@
       "commit_date": null,
       "theme": "kaja/operativ-ting-minne-retur-2026-10-18",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/kaja%2Foperativ-ting-minne-retur-2026-10-18",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 45,
+      "relevant_paths": [
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/kaja_katteluka_gentle_probe/README.md",
+        "experiments/kaja_katteluka_gentle_probe/kaja_katteluka_probe.py",
+        "experiments/kaja_probevekst/README.md",
+        "experiments/kaja_probevekst/probevekst.py",
+        "experiments/kaja_virksom_historie/README.md",
+        "experiments/kaja_virksom_historie/virksom_historie.py",
+        "experiments/microfluctuation_mass_gravity/README.md",
+        "experiments/microfluctuation_mass_gravity/falsify_shared_density.py"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "kaja/selvbygde-prober-2026-10-18",
@@ -1666,10 +1789,24 @@
       "commit_date": null,
       "theme": "kaja/selvbygde-prober-2026-10-18",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/kaja%2Fselvbygde-prober-2026-10-18",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 28,
+      "relevant_paths": [
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/kaja_katteluka_gentle_probe/README.md",
+        "experiments/kaja_katteluka_gentle_probe/kaja_katteluka_probe.py",
+        "experiments/kaja_probevekst/README.md",
+        "experiments/kaja_probevekst/probevekst.py",
+        "experiments/kaja_virksom_historie/README.md",
+        "experiments/kaja_virksom_historie/virksom_historie.py",
+        "experiments/microfluctuation_mass_gravity/README.md",
+        "experiments/microfluctuation_mass_gravity/falsify_shared_density.py"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "kaja/statisk-er-operativt-2026-10-18",
@@ -1678,10 +1815,24 @@
       "commit_date": null,
       "theme": "kaja/statisk-er-operativt-2026-10-18",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/kaja%2Fstatisk-er-operativt-2026-10-18",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 47,
+      "relevant_paths": [
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/kaja_katteluka_gentle_probe/README.md",
+        "experiments/kaja_katteluka_gentle_probe/kaja_katteluka_probe.py",
+        "experiments/kaja_probevekst/README.md",
+        "experiments/kaja_probevekst/probevekst.py",
+        "experiments/kaja_virksom_historie/README.md",
+        "experiments/kaja_virksom_historie/virksom_historie.py",
+        "experiments/microfluctuation_mass_gravity/README.md",
+        "experiments/microfluctuation_mass_gravity/falsify_shared_density.py"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "kaja/tapt-historie-og-arkivets-grenser-2026-10-18",
@@ -1690,10 +1841,24 @@
       "commit_date": null,
       "theme": "kaja/tapt-historie-og-arkivets-grenser-2026-10-18",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/kaja%2Ftapt-historie-og-arkivets-grenser-2026-10-18",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 40,
+      "relevant_paths": [
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/kaja_katteluka_gentle_probe/README.md",
+        "experiments/kaja_katteluka_gentle_probe/kaja_katteluka_probe.py",
+        "experiments/kaja_probevekst/README.md",
+        "experiments/kaja_probevekst/probevekst.py",
+        "experiments/kaja_virksom_historie/README.md",
+        "experiments/kaja_virksom_historie/virksom_historie.py",
+        "experiments/microfluctuation_mass_gravity/README.md",
+        "experiments/microfluctuation_mass_gravity/falsify_shared_density.py"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "kaja/tid-gravitasjon-2026-10-17",
@@ -1702,10 +1867,21 @@
       "commit_date": null,
       "theme": "kaja/tid-gravitasjon-2026-10-17",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/kaja%2Ftid-gravitasjon-2026-10-17",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 20,
+      "relevant_paths": [
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/kaja_katteluka_gentle_probe/README.md",
+        "experiments/kaja_katteluka_gentle_probe/kaja_katteluka_probe.py",
+        "experiments/microfluctuation_mass_gravity/README.md",
+        "experiments/microfluctuation_mass_gravity/falsify_shared_density.py",
+        "experiments/microfluctuation_mass_gravity/model.py"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "kaja/virksom-historie-2026-10-17",
@@ -1714,10 +1890,23 @@
       "commit_date": null,
       "theme": "kaja/virksom-historie-2026-10-17",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/kaja%2Fvirksom-historie-2026-10-17",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 25,
+      "relevant_paths": [
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/kaja_katteluka_gentle_probe/README.md",
+        "experiments/kaja_katteluka_gentle_probe/kaja_katteluka_probe.py",
+        "experiments/kaja_virksom_historie/README.md",
+        "experiments/kaja_virksom_historie/virksom_historie.py",
+        "experiments/microfluctuation_mass_gravity/README.md",
+        "experiments/microfluctuation_mass_gravity/falsify_shared_density.py",
+        "experiments/microfluctuation_mass_gravity/model.py"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "main",
@@ -1726,10 +1915,22 @@
       "commit_date": null,
       "theme": "main",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/main",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 18,
+      "relevant_paths": [
+        "GTRCM_KANONISK_GRUNNPROGRAM.md",
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/microfluctuation_mass_gravity/README.md",
+        "experiments/microfluctuation_mass_gravity/falsify_shared_density.py",
+        "experiments/microfluctuation_mass_gravity/model.py",
+        "research/2026-11-09_BATON_SPIRE_WAKE_BOUNDARY.md",
+        "research/BATON_INDEPENDENT_CONTINUATION_2026-11-09.md"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "mina/archaeology-notes-2026-10-07",
