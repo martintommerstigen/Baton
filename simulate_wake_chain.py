@@ -3,6 +3,7 @@
 Does NOT claim to wake real ChatGPT chats. No Playwright or network needed.
 """
 import tempfile
+import hashlib
 from wake_contract import WakeLedger
 from wake_adapter import Observation
 from wake_chain import ChainPlan, run_chain
@@ -26,7 +27,8 @@ def run():
         c=SimulatedExistingChat("C")
         plan=ChainPlan("A","B","C","A-B-001","B-C-001",
                        "Please request BATON_NEXT C","Hello from B",
-                       "digest1","digest2")
+                       hashlib.sha256(b"Please request BATON_NEXT C").hexdigest(),
+                       hashlib.sha256(b"Hello from B").hexdigest())
         result=run_chain(ledger,b,c,plan,lambda chat,turn:"BATON_NEXT C")
         assert result=={"a_to_b":"verified","b_to_c":"verified"},result
         assert len(b.sends)==1 and len(c.sends)==1
