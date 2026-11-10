@@ -15,11 +15,14 @@ import json
 import os
 import re
 import stat
+import threading
 
 from remote_security.envelope_gate import Gate, Rejected
 from remote_security.private_store import _validate_path
+from remote_security.admission_mac import admission_mac
 
 MAX_REQUEST_BYTES = 90000
+MAX_ACTIVE_REQUESTS = 16  # bounded worker count; backlog size alone is not a limit
 
 
 def load_private_key(path):
@@ -66,7 +69,27 @@ class IngressServer(ThreadingHTTPServer):
             raise ValueError('bearer token must be 32+ bytes')
         self.token = token
         self.gate = gate
+        self._request_slots = threading.BoundedSemaphore(MAX_ACTIVE_REQUESTS)
         super().__init__(('127.0.0.1', port), IngressHandler)
+
+    def process_request(self, request, client_address):
+        # ThreadingHTTPServer otherwise creates an unbounded number of worker
+        # threads for clients that never finish their HTTP headers. Refuse
+        # excess connections without queueing work or spawning a new thread.
+        if not self._request_slots.acquire(blocking=False):
+            self.shutdown_request(request)
+            return
+        try:
+            super().process_request(request, client_address)
+        except BaseException:
+            self._request_slots.release()
+            raise
+
+    def process_request_thread(self, request, client_address):
+        try:
+            super().process_request_thread(request, client_address)
+        finally:
+            self._request_slots.release()
 
     def get_request(self):
         sock, address = super().get_request()
@@ -82,11 +105,13 @@ class IngressHandler(BaseHTTPRequestHandler):
     def log_message(self, format, *args):
         pass  # Never log headers, secrets, paths or payloads.
 
-    def _reply(self, code, state):
+    def _reply(self, code, state, receipt_mac=None):
         raw = json.dumps({'state': state}, separators=(',', ':')).encode('ascii')
         self.send_response(code)
         self.send_header('Content-Type', 'application/json')
         self.send_header('Cache-Control', 'no-store')
+        if receipt_mac is not None:
+            self.send_header('X-Baton-Receipt-MAC', receipt_mac)
         self.send_header('X-Content-Type-Options', 'nosniff')
         self.send_header('Content-Length', str(len(raw)))
         self.send_header('Connection', 'close')
@@ -103,8 +128,12 @@ class IngressHandler(BaseHTTPRequestHandler):
         expected_auth = b'Bearer ' + self.server.token
         if len(auth) != 1 or not hmac.compare_digest(auth[0].encode('utf-8'), expected_auth):
             return self._reply(401, 'unauthorized')
-        if self.path != '/v1/envelopes' or self.headers.get('Content-Type') != 'application/json':
+        content_types = self.headers.get_all('Content-Type', [])
+        if (self.path != '/v1/envelopes' or content_types != ['application/json']):
             return self._reply(404, 'operation_not_allowlisted')
+        nonces = self.headers.get_all('X-Baton-Receipt-Nonce', [])
+        if nonces and (len(nonces) != 1 or not re.fullmatch('[0-9a-f]{32}', nonces[0])):
+            return self._reply(400, 'invalid_receipt_nonce')
         lengths = self.headers.get_all('Content-Length', [])
         if (len(lengths) != 1 or not re.fullmatch('[0-9]{1,6}', lengths[0])
                 or self.headers.get('Transfer-Encoding') is not None
@@ -124,9 +153,15 @@ class IngressHandler(BaseHTTPRequestHandler):
                 return self._reply(400, 'invalid_payload')
             payload = base64.b64decode(doc['payload_b64'], validate=True)
             state = self.server.gate.accept_payload(doc['envelope'], doc['signature'], payload)
+            # Only the authenticated sender's key can attest durable admission.
+            # A nonce-less legacy request receives no authenticated receipt;
+            # the one-shot client always requires the signed form.
+            mac = (admission_mac(self.server.gate.keys[doc['envelope']['sender']],
+                                 nonces[0], doc['envelope'], state)
+                   if nonces else None)
         except (UnicodeError, ValueError, TypeError, binascii.Error, RecursionError, Rejected):
             return self._reply(400, 'rejected')
-        return self._reply(202, state)
+        return self._reply(202, state, receipt_mac=mac)
 
     def do_GET(self):
         self._reply(405, 'method_not_allowed')
