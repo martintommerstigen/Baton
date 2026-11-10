@@ -27,4 +27,4 @@ jobs:
       - run: python3 -m unittest -v test_baton_local_terminal.py
       - run: bash -n install_evening.sh
       - run: python3 baton_local_terminal.py identity --workspace .
-      - run: python3 baton_local_terminal.py git-status --workspace .
+      - run: python3 baton_local_terminal.py git-revision --workspace .
