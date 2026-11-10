@@ -111,7 +111,8 @@ class AdmissionTests(unittest.TestCase):
         self.broker = Broker(self.sock, self.store, [os.getuid() + 100000])
         self.thread = threading.Thread(target=self.broker.serve_forever, kwargs={"poll_interval": .01}, daemon=True)
         self.thread.start()
-        with self.assertRaises(RuntimeError):
+        # A denied kernel UID may cause EOF or ECONNRESET depending on timing.
+        with self.assertRaises((RuntimeError, OSError)):
             self.ask({"op": "status"})
 
     def test_oversized_request_is_ignored(self):
