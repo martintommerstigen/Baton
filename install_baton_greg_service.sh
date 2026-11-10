@@ -12,6 +12,7 @@ override="$service_dir/baton-greg.service.d/ssh.conf"
 [[ -f "$checkout/baton_github_bus.py" ]] || { echo "Missing Baton checkout" >&2; exit 1; }
 [[ -f "$key" && ! -L "$key" ]] || { echo "Missing Baton SSH private key" >&2; exit 1; }
 [[ "$(stat -c %a "$key")" == "600" ]] || { echo "SSH key must have permissions 600" >&2; exit 1; }
+[[ ! -L "$service" ]] || { echo "Refusing symlinked service file" >&2; exit 1; }
 command -v systemctl >/dev/null
 mkdir -p "$service_dir" "$service_dir/baton-greg.service.d"
 chmod 700 "$service_dir/baton-greg.service.d"
