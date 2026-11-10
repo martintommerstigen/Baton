@@ -217,10 +217,13 @@ class ProcStatCaptureTests(unittest.TestCase):
         fake = self.root / "proc_stat"
         fake.write_bytes(RAW)
         nonroot_stat = SimpleNamespace(st_mode=stat.S_IFREG | 0o444, st_uid=12345)
+        from remote_security.proc_stat_capture import _read_proc_cpu_line
         with patch("remote_security.proc_stat_capture.SOURCE", str(fake)):
-            with patch("remote_security.proc_stat_capture.os.fstat", return_value=nonroot_stat):
+            with patch("remote_security.proc_stat_capture.os.fstat",
+                       return_value=nonroot_stat) as checked:
                 with self.assertRaises(JobRejected):
-                    capture_once(self.jobs, "GTRCM", "fakecpu01")
+                    _read_proc_cpu_line()
+                checked.assert_called_once()
         self.assertEqual(self.jobs.audit("GTRCM", "fakecpu01")["state"],
                          "not_found_not_proof_of_nonexecution")
 
