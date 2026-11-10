@@ -7,6 +7,13 @@ from dataclasses import dataclass
 from typing import Protocol
 from wake_contract import WakeLedger
 
+class PreexistingWakeMarker(RuntimeError):
+    """A marker was already in the target chat BEFORE this attempt clicked Send.
+
+    Only raise this before any UI submission; a collision is not an uncertain
+    delivery and must never be reconciled into a verified wake.
+    """
+
 @dataclass(frozen=True)
 class Observation:
     conversation_id: str
@@ -31,6 +38,11 @@ def wake_once(ledger: WakeLedger, driver: ExistingChatDriver,
             return "uncertain"
         ledger.verify(message_id, observation.conversation_id, observation.assistant_turn_id)
         return "verified"
+    except PreexistingWakeMarker:
+        # A matching old user turn + old assistant response must not turn this
+        # failed new attempt into a false verified wake on later reconciliation.
+        ledger.mark_collision(message_id)
+        raise
     except Exception:
         ledger.mark_uncertain(message_id)
         raise
