@@ -4,6 +4,7 @@ An admission is NOT proof of delivery. Never retry an admitted attempt automatic
 No network listener, shell execution, browser control, or token persistence.
 """
 import argparse
+from contextlib import closing
 import hashlib
 import json
 import os
@@ -57,7 +58,7 @@ class AdmissionStore:
         self.db_path = str(db_path)
         self.pause_path = str(pause_path)
         self.allowed = frozenset(allowed_conversations)
-        with self.connect() as db:
+        with closing(self.connect()) as db:
             db.executescript(SCHEMA)
 
     def connect(self):
@@ -71,7 +72,7 @@ class AdmissionStore:
         op = req["op"]
         if op not in ("status", "admit", "pause"):
             return {"state": "rejected", "reason": "unsupported_operation"}
-        with self.connect() as db:
+        with closing(self.connect()) as db:
             db.execute("BEGIN IMMEDIATE")
             try:
                 paused = db.execute("SELECT value FROM settings WHERE key='paused'").fetchone()
