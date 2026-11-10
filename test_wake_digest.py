@@ -22,6 +22,24 @@ class BodyDigestTests(unittest.TestCase):
         self.assertFalse(is_marked_user_turn("quoted " + marker + "\napproved", marker, approved))
         self.assertFalse(is_marked_user_turn(marker + "\napproved", marker, "wrong-digest"))
 
+    def test_no_newline_normalization_in_digest(self):
+        marker = marker_for("m1")
+        digest = hashlib.sha256("alpha\\nbeta".encode()).hexdigest()
+        self.assertTrue(is_marked_user_turn(marker + "\\nalpha\\nbeta", marker, digest))
+        # A CRLF, Unicode line separator, or trailing newline is a different
+        # payload. splitlines() used to normalize these into false positives.
+        self.assertFalse(is_marked_user_turn(marker + "\\nalpha\\r\\nbeta", marker, digest))
+        self.assertFalse(is_marked_user_turn(marker + "\\nalpha\\u2028beta", marker, digest))
+        self.assertFalse(is_marked_user_turn(marker + "\\nalpha\\nbeta\\n", marker, digest))
+        self.assertFalse(is_marked_user_turn(marker + "\\r\\nalpha\\nbeta", marker, digest))
+
+    def test_trailing_newline_is_valid_only_when_approved(self):
+        marker = marker_for("m2")
+        body = "approved\\n"
+        digest = hashlib.sha256(body.encode()).hexdigest()
+        self.assertTrue(is_marked_user_turn(marker + "\\n" + body, marker, digest))
+        self.assertFalse(is_marked_user_turn(marker + "\\napproved", marker, digest))
+
     def test_read_only_reconciliation_rejects_wrong_body(self):
         with tempfile.TemporaryDirectory() as tmp:
             ledger = WakeLedger(tmp + "/db")
