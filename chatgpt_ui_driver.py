@@ -120,9 +120,9 @@ class ChatGPTUIDriver:
             return None
         # The same DOM assistant-turn ID in multiple turns is ambiguous. It
         # cannot serve as a unique receipt or authorize the next chain hop.
-        assistant_turns = self.page.locator('[data-message-author-role="assistant"]')
-        if sum(assistant_turns.nth(j).get_attribute("data-message-id") == turn_id
-               for j in range(assistant_turns.count())) != 1:
+        if sum(turns.nth(j).get_attribute("data-message-author-role") == "assistant"
+               and turns.nth(j).get_attribute("data-message-id") == turn_id
+               for j in range(turns.count())) != 1:
             return None
         return Observation(conversation_id, turn_id)
 
