@@ -1,7 +1,7 @@
 """Baton-integrated ChatGPT view (optional PySide6 QtWebEngine dependency).
 
 Runs ChatGPT *inside* a Baton-owned window with a persistent, local browser
-profile. No cookie extraction, DOM injection, or automated UI writes.
+profile. No cookie extraction or unattended UI writes; native send requires a click.
 """
 import re
 from urllib.parse import urlparse
@@ -43,7 +43,7 @@ def main():
     target = conversation_url(args.chat_id) if args.chat_id else "https://chatgpt.com/"
     try:
         from PySide6.QtCore import QUrl
-        from PySide6.QtWidgets import QApplication, QMainWindow, QWidget, QVBoxLayout, QLabel, QPushButton
+        from PySide6.QtWidgets import QApplication, QMainWindow
         from PySide6.QtWebEngineCore import QWebEngineProfile
         from PySide6.QtWebEngineWidgets import QWebEngineView
     except ImportError as exc:
@@ -61,43 +61,10 @@ def main():
     view.setPage(page)
     window = QMainWindow()
     window.setWindowTitle("Baton · ChatGPT")
-    if args.message:
-        wrapper = QWidget()
-        layout = QVBoxLayout(wrapper)
-        layout.addWidget(QLabel("Baton target: " + args.chat_id))
-        layout.addWidget(view)
-        copy_button = QPushButton("Copy wake message (send manually in embedded ChatGPT)")
-        copy_button.setEnabled(False)
-        layout.addWidget(copy_button)
-        send_button = QPushButton("Send wake to this conversation")
-        send_button.setEnabled(False)
-        layout.addWidget(send_button)
-        from baton_embedded_send import prepare_send_script, send_click_script, may_send
-        view.urlChanged.connect(lambda url: send_button.setEnabled(may_send(url.toString(), args.chat_id)))
-        def send_message():
-            if not may_send(view.url().toString(), args.chat_id):
-                return
-            send_button.setEnabled(False)
-            def prepared(result):
-                if not isinstance(result, dict) or not result.get("ok"):
-                    send_button.setText("Composer unavailable — copy manually")
-                    return
-                if not may_send(view.url().toString(), args.chat_id):
-                    return
-                def clicked(result):
-                    send_button.setText("Send clicked — verify in chat" if isinstance(result,dict) and result.get("ok") else "Send unavailable")
-                page.runJavaScript(send_click_script(), clicked)
-            page.runJavaScript(prepare_send_script(args.message), prepared)
-        send_button.clicked.connect(send_message)
-        view.urlChanged.connect(lambda url: copy_button.setEnabled(
-            is_chatgpt_conversation_url(url.toString(), args.chat_id)))
-        def copy_message():
-            if is_chatgpt_conversation_url(view.url().toString(), args.chat_id):
-                QApplication.clipboard().setText(args.message)
-        copy_button.clicked.connect(copy_message)
-        window.setCentralWidget(wrapper)
-    else:
-        window.setCentralWidget(view)
+    from baton_conversation_panel import attach_baton_panel
+    window.setCentralWidget(view)
+    attach_baton_panel(window, view, page,
+                       initial_chat=args.chat_id, initial_message=args.message)
     window.resize(1200,800)
     view.setUrl(QUrl(target))
     window.show()
