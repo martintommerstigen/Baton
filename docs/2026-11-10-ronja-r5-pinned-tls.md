@@ -35,3 +35,33 @@ The committed `deploy/systemd/baton-remote-ingress.service` template now require
 - **Not demonstrated:** actual A→B→C existing ChatGPT conversation wake. `accepted_not_delivered` is only durable transport admission, not source completeness or a new assistant turn.
 
 The next falsifier is a controlled certificate rotation during in-flight admission and a TLS handshake flood that must not starve unrelated accepted work. Also verify whether the systemd unit's current `ExecStart` and `ProtectSystem` settings permit the dedicated service UID and certificate path before live installation. Preserve `PAUSE_UI_WRITES` and no blind retry.
+
+## B5 security correction — exact leaf pin vs CA trust (2026-11-10)
+
+The initial R5 client verified the peer against a PEM *trust anchor* and
+`127.0.0.1` IP SAN before disclosure. That is sufficient when the PEM is
+an uncompromised self-signed **leaf**, but it is not an exact certificate pin:
+if the supplied PEM is a CA, another valid IP-SAN leaf signed by that CA
+would be accepted by ordinary TLS verification. The earlier description
+overstated the pinning guarantee.
+
+The client now reads the owner-only PEM **once** to derive both the TLS
+verification context and the SHA-256 digest of the *exact certificate DER*.
+After a successful TLS handshake it compares the actual peer leaf DER digest
+in constant time, **before any HTTP request or bearer is sent**. A mismatch
+closes the socket and raises `DeliveryUncertain` (no automatic retry).
+PEM bundles with multiple certificates are rejected as ambiguous. The
+client therefore deliberately does **not** support CA-only trust in place
+of a leaf pin. Rotate an exact leaf deliberately and update the client pin
+out of band; never retry an uncertain admission without independent audit.
+
+Negative control: create a local test CA, issue a *different* leaf with
+the same valid IP SAN, and verify that an ordinary CA-trusting TLS handshake
+succeeds while the Baton client rejects the leaf and the fake server
+observes **zero Authorization headers**. Also reject multi-certificate PEM
+bundles. These are offline regression tests; not evidence of a Greg-live
+installation, a UI click, source completeness or an existing-chat turn.
+
+Task IDs: B5/B2. Files: `remote_security/tls_endpoint.py`,
+`remote_security/http_client.py`, `tests/test_http_tls_endpoint.py`.
+Status: **implemented-unverified until the final GitHub CI run is green**.
