@@ -1,5 +1,6 @@
 """Negative and smoke tests for local Baton terminal adapter."""
 import tempfile
+import os
 from pathlib import Path
 import unittest
 from baton_local_terminal import execute
@@ -20,7 +21,22 @@ class LocalTerminalTests(unittest.TestCase):
     def test_git_requires_checkout(self):
         with tempfile.TemporaryDirectory() as d:
             with self.assertRaises(ValueError):
-                execute("git-status", d)
+                execute("git-revision", d)
+
+    def test_workspace_symlink_rejected(self):
+        with tempfile.TemporaryDirectory() as d:
+            root = Path(d)
+            real = root / "real"
+            real.mkdir()
+            (root / "alias").symlink_to(real, target_is_directory=True)
+            with self.assertRaisesRegex(ValueError, "symlink"):
+                execute("identity", root / "alias")
+
+    def test_git_metadata_file_rejected(self):
+        with tempfile.TemporaryDirectory() as d:
+            (Path(d) / ".git").write_text("gitdir: /tmp/elsewhere")
+            with self.assertRaisesRegex(ValueError, "metadata"):
+                execute("git-revision", d)
 
 if __name__ == "__main__":
     unittest.main()
