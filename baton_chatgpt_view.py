@@ -1,7 +1,7 @@
 """Baton-integrated ChatGPT view (optional PySide6 QtWebEngine dependency).
 
 Runs ChatGPT *inside* a Baton-owned window with a persistent, local browser
-profile. No cookie extraction or unattended UI writes; native send requires a click.
+profile. No cookie extraction. Model-to-Core bridge requires explicit per-chat activation.
 """
 import re
 from urllib.parse import urlparse
