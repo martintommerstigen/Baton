@@ -24,15 +24,15 @@ The writer does **not** guarantee immediate cancellation of an in-flight send. T
 ## Falsifiers and limitations
 
 - A noncooperating pause writer, browser extension, person, or other machine is not serialized by the host `flock`.
-- Lock-file path replacement or different host/UID may break common-inode assumptions; test and harden lock path separately.
+- The shared host-lock implementation now rejects symlinked ancestor directories, hardlinked lock files, relative/traversed paths and an inode that differs from the just-opened descriptor before entering the critical section. **A malicious same-UID process can still unlink/replace the path after that check**, or a different host can use another inode. This is a cooperating-process contract, not a security boundary against an adversarial process with the same filesystem privileges.
 - A pause marker is not a command to clear the browser composer, terminate an active response, or retry an uncertain delivery.
 - An already-existing symlink marker is left untouched; `pause_active` treats it as paused. Missing/symlinked ancestors reject creation.
 - This implementation does not provide a public remote control endpoint or permission to change Greg's actual pause switch.
 
 ## Verification
 
-`python3 -m unittest -v test_wake_pause_writer.py` checks private marker creation, idempotence, leaf and ancestor symlink safety, missing ancestors, relative/traversal paths, sender-first and writer-first orderings, and cross-process lock contention. Offline synthetic pages are **not** real ChatGPT pages. Record the GitHub Actions run separately when available; a local pass does not imply CI or Greg-live.
+`python3 -m unittest -v test_wake_pause_writer.py` checks private marker creation, idempotence, leaf and ancestor symlink safety, missing ancestors, relative/traversal paths, sender-first and writer-first orderings, and cross-process lock contention. Offline synthetic pages are **not** real ChatGPT pages. `test_wake_lock_path.py` adds four lock-path regression tests. Local isolated execution of both new test modules: **12/12 PASS** using the extracted existing lock and pause logic with synthetic UI stand-ins. Record the GitHub Actions run separately when available; a local pass does not imply CI or Greg-live.
 
 ## Next test
 
-Create a test that swaps/replaces the shared lock directory or inode while a controller holds it. A successful second lock acquisition under a different inode must be treated as a safety failure, not as authorized concurrent UI work. Then integrate a single explicit pause request interface with documented pending/confirmed semantics if immediate cancellation is required; never silently retry an ambiguous send.
+Create a controlled inode-replacement race test under a disposable test UID and decide whether stronger supervision (e.g. an independent privileged lock broker) is necessary. The current shared file lock cannot prevent a noncooperating same-UID process from replacing its pathname. Integrate an explicit pause request interface with pending/confirmed semantics if immediate cancellation is required; never silently retry an ambiguous send.
