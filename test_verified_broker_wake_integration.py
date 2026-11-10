@@ -89,5 +89,62 @@ class VerifiedSingleHopIntegration(unittest.TestCase):
         self.assertEqual(len(self.calls), 2)
 
 
+    def test_a_command_mutated_during_admit_never_clicks_b(self):
+        source = SourceDriver('BATON_WAKE ' + CID + ' m1')
+        def mutating_broker(request):
+            response = self.broker(request)
+            if request['op'] == 'admit':
+                source.reply = 'A revoked the wake request'
+            return response
+        with self.assertRaises(PermissionError):
+            execute_once(self.ledger, source, self.target, SOURCE, CID,
+                         'turn-a', 'm1', 'harmless', mutating_broker, 0)
+        self.assertEqual([c['op'] for c in self.calls], ['admit'])
+        self.assertEqual(self.page.send.clicks, 0)
+        self.assertEqual(self.ledger.state('m1')[1], 'uncertain')
+
+    def test_a_command_mutated_after_begin_click_never_retries(self):
+        source = SourceDriver('BATON_WAKE ' + CID + ' m1')
+        def mutating_broker(request):
+            response = self.broker(request)
+            if request['op'] == 'begin_click':
+                source.reply = 'A revoked the wake request'
+            return response
+        with self.assertRaises(PermissionError):
+            execute_once(self.ledger, source, self.target, SOURCE, CID,
+                         'turn-a', 'm1', 'harmless', mutating_broker, 0)
+        self.assertEqual([c['op'] for c in self.calls], ['admit', 'begin_click'])
+        self.assertEqual(self.store_state(), 'uncertain')
+        self.assertEqual(self.page.send.clicks, 0)
+        self.assertEqual(self.ledger.state('m1')[1], 'uncertain')
+        source.reply = 'BATON_WAKE ' + CID + ' m1'
+        self.ledger = WakeLedger(self.ledger.path)
+        self.assertEqual(execute_once(self.ledger, source, self.target, SOURCE,
+                                      CID, 'turn-a', 'm1', 'harmless',
+                                      self.broker, 0), 'uncertain')
+        self.assertEqual(len(self.calls), 2)
+        self.assertEqual(self.page.send.clicks, 0)
+
+    def test_a_command_mutated_between_preflight_and_admit(self):
+        class ChangingSource(SourceDriver):
+            def __init__(self, reply):
+                super().__init__(reply)
+                self.reads = 0
+            def read_assistant_turn(self, chat, turn):
+                self.reads += 1
+                if self.reads == 2:
+                    self.reply = 'BATON_WAKE ' + CID + ' different-message-id'
+                return super().read_assistant_turn(chat, turn)
+        source = ChangingSource('BATON_WAKE ' + CID + ' m1')
+        with self.assertRaises(PermissionError):
+            execute_once(self.ledger, source, self.target, SOURCE, CID,
+                         'turn-a', 'm1', 'harmless', self.broker, 0)
+        self.assertGreaterEqual(source.reads, 2)
+        self.assertEqual(self.calls, [])
+        self.assertEqual(self.page.send.clicks, 0)
+        self.assertEqual(self.ledger.state('m1')[1], 'uncertain')
+
+
+
 if __name__ == '__main__':
     unittest.main()
