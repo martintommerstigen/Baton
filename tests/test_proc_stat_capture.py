@@ -210,13 +210,17 @@ class ProcStatCaptureTests(unittest.TestCase):
         self.assertEqual(self.jobs.audit("GTRCM", "symlink01")["state"],
                          "not_found_not_proof_of_nonexecution")
 
-    @unittest.skipIf(os.getuid() == 0, "requires unprivileged test UID")
     def test_unprivileged_fake_proc_file_cannot_impersonate_root_source(self):
+        # Deterministically model a non-root inode even on unusual CI mounts.
+        from types import SimpleNamespace
+        import stat
         fake = self.root / "proc_stat"
         fake.write_bytes(RAW)
+        nonroot_stat = SimpleNamespace(st_mode=stat.S_IFREG | 0o444, st_uid=12345)
         with patch("remote_security.proc_stat_capture.SOURCE", str(fake)):
-            with self.assertRaises(JobRejected):
-                capture_once(self.jobs, "GTRCM", "fakecpu01")
+            with patch("remote_security.proc_stat_capture.os.fstat", return_value=nonroot_stat):
+                with self.assertRaises(JobRejected):
+                    capture_once(self.jobs, "GTRCM", "fakecpu01")
         self.assertEqual(self.jobs.audit("GTRCM", "fakecpu01")["state"],
                          "not_found_not_proof_of_nonexecution")
 
