@@ -13,6 +13,8 @@ class ServiceManifestTests(unittest.TestCase):
         self.assertIn('--route sender000=target000', text)
         self.assertIn('--target target000', text)
         self.assertIn('--port 8788', text)
+        self.assertIn('--tls-cert-file %h/.config/baton-remote/tls/server.crt', text)
+        self.assertIn('--tls-key-file %h/.config/baton-remote/tls/server.key', text)
         self.assertNotIn('0.0.0.0', text)
         self.assertNotIn('chatgpt_ui_driver', text)
         self.assertNotIn('run_chatgpt_wake', text)
