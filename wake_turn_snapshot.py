@@ -44,6 +44,9 @@ class TurnSnapshotStore:
                 source_url TEXT NOT NULL,
                 extractor TEXT NOT NULL,
                 observed_utc TEXT NOT NULL)""")
+            db.execute("""CREATE TABLE IF NOT EXISTS wake_chain_invalidations (
+                second_id TEXT PRIMARY KEY,
+                observed_utc TEXT NOT NULL)""")
 
     def get(self, message_id):
         with self.ledger.db() as db:
@@ -51,6 +54,34 @@ class TurnSnapshotStore:
                 source_url,extractor,observed_utc FROM wake_turn_snapshots
                 WHERE message_id=?""", (message_id,)).fetchone()
         return TurnSnapshot(*row) if row else None
+
+    def assert_chain_not_invalidated(self, second_id):
+        """A later restored DOM must not erase an observed chain contradiction."""
+        with self.ledger.db() as db:
+            row = db.execute(
+                "SELECT 1 FROM wake_chain_invalidations WHERE second_id=?",
+                (second_id,),
+            ).fetchone()
+        if row is not None:
+            raise SourceEvidenceChanged(
+                "Prior post-C evidence contradiction is durable; no chain proof"
+            )
+
+    def invalidate_chain(self, second_id):
+        """Persist a fail-closed flag; never rewrite the verified delivery receipt.
+
+        The receipt may accurately describe a UI observation while the
+        *chain evidence* has subsequently contradicted its claimed source.
+        """
+        stamp = datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")
+        with self.ledger.db() as db:
+            db.execute("BEGIN IMMEDIATE")
+            db.execute(
+                "INSERT OR IGNORE INTO wake_chain_invalidations "
+                "(second_id, observed_utc) VALUES (?,?)",
+                (second_id, stamp),
+            )
+
 
     def record(self, message_id, chat, turn_id, text, url):
         if not all(type(x) is str and x for x in (message_id, chat, turn_id, text, url)):

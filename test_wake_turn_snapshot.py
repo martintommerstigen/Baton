@@ -202,6 +202,50 @@ class ObservedTurnDigestTests(unittest.TestCase):
         self.assertEqual(self.ledger.state("m2")[1], "uncertain")
         self.assertEqual(self.c.clicks, 1)
 
+    def test_b_source_mutates_during_c_click_and_stays_invalid_after_restore(self):
+        # Earlier B checks all pass; C's click then changes the same B turn.
+        # The old runner would have reported two verified hops and C snapshot.
+        original_submit = self.c.submit_once
+        def change_b_after_c_click(*args, **kwargs):
+            original_submit(*args, **kwargs)
+            self.b.next_text = "BATON_NEXT " + base.A
+        self.c.submit_once = change_b_after_c_click
+        with self.assertRaises(SourceEvidenceChanged):
+            self.run_chain()
+        self.assertEqual((self.b.clicks, self.c.clicks), (1, 1))
+        self.assertEqual(self.ledger.state("m2")[1], "verified")
+        self.assertIsNotNone(TurnSnapshotStore(self.ledger).get("m2"))
+        self.assertEqual(len(self.ops), 4)
+        with self.assertRaises(SourceEvidenceChanged):
+            TurnSnapshotStore(self.ledger).assert_chain_not_invalidated("m2")
+
+        # Restoring the DOM must not erase a witnessed contradiction.
+        self.b.next_text = "BATON_NEXT " + base.C
+        self.ledger = WakeLedger(self.db)
+        with self.assertRaises(SourceEvidenceChanged):
+            self.run_chain()
+        self.assertEqual((self.b.clicks, self.c.clicks), (1, 1))
+        self.assertEqual(len(self.ops), 4)
+
+    def test_c_source_mutation_after_snapshot_invalidates_chain_on_restart(self):
+        original_read = self.c.read_assistant_turn
+        calls = [0]
+        def mutate_c_on_final_read(*args):
+            calls[0] += 1
+            if calls[0] == 2:
+                self.c.next_text = "changed C reply"
+            return original_read(*args)
+        self.c.read_assistant_turn = mutate_c_on_final_read
+        with self.assertRaises(SourceEvidenceChanged):
+            self.run_chain()
+        self.assertEqual(self.ledger.state("m2")[1], "verified")
+        self.c.next_text = "synthetic assistant response"
+        self.ledger = WakeLedger(self.db)
+        with self.assertRaises(SourceEvidenceChanged):
+            self.run_chain()
+        self.assertEqual((self.b.clicks, self.c.clicks), (1, 1))
+        self.assertEqual(len(self.ops), 4)
+
 
 if __name__ == "__main__":
     unittest.main()
