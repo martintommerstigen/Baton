@@ -1,6 +1,6 @@
 # B1/B5: experimental local admission broker — 2026-11-10
 
-**Evidence status:** implemented, offline tests pending GitHub Actions at first commit. NOT deployed on Greg. NOT live ChatGPT wake.
+**Evidence status:** GitHub Actions run [42833837542](https://github.com/martintommerstigen/Baton/actions/runs/42833837542) passed 143/143 after a rejected-peer ECONNRESET test correction. Two additional negative tests (forged B→C claim and symlinked parent) were added afterward; their CI status must be checked separately. NOT deployed on Greg. NOT live ChatGPT wake.
 
 ## Why this branch exists
 
@@ -20,7 +20,7 @@
 python3 -m unittest -v test_wake_admission_broker.py
 ```
 
-A disposable Unix socket and SQLite database are created under `TemporaryDirectory`. Tests cover concurrent admission, duplicate/collision, crash/restart, sticky pause, missing/symlinked pause marker, kernel UID rejection, oversized input and socket-path collision.
+A disposable Unix socket and SQLite database are created under `TemporaryDirectory`. Tests cover concurrent admission, duplicate/collision, crash/restart, sticky pause, missing/symlinked pause marker and parent, kernel UID rejection, oversized input, socket-path collision and the *negative* fact that a same-UID caller can claim B→C without a verified B turn.
 
 ## Manual lab launch (not a deployment instruction)
 
