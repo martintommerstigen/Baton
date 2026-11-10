@@ -130,6 +130,31 @@ class HardeningTests(unittest.TestCase):
         finally:
             g2.db.close()
 
+    def test_atomic_payload_persistence_survives_restart(self):
+        g = self.gate()
+        sig = Gate.sign(self.e, self.key)
+        self.assertEqual(g.accept_payload(self.e, sig, b'approved'), 'accepted_not_delivered')
+        g.db.close()
+        g2 = self.gate()
+        try:
+            row = g2.db.execute('SELECT envelope,payload,signature FROM payloads').fetchone()
+            self.assertEqual(row, (Gate.canonical(self.e), b'approved', sig))
+        finally:
+            g2.db.close()
+
+    def test_failed_payload_insert_rolls_back_receipt(self):
+        g = self.gate()
+        sig = Gate.sign(self.e, self.key)
+        try:
+            g.db.execute("CREATE TRIGGER fail_payload BEFORE INSERT ON payloads BEGIN SELECT RAISE(ABORT, 'failure'); END")
+            with self.assertRaises(Exception):
+                g.accept_payload(self.e, sig, b'approved')
+            self.assertEqual(g.db.execute('SELECT COUNT(*) FROM receipts').fetchone()[0], 0)
+            g.db.execute('DROP TRIGGER fail_payload')
+            self.assertEqual(g.accept_payload(self.e, sig, b'approved'), 'accepted_not_delivered')
+        finally:
+            g.db.close()
+
     def test_malformed_action_rejected_without_type_error(self):
         g = self.gate()
         self.e['action'] = ['wake_request']

@@ -29,6 +29,7 @@ class Gate:
         # accept transactions use independent connections, safe across threads.
         self.db = connect_private(self.database)
         self.db.execute("CREATE TABLE IF NOT EXISTS receipts (sender TEXT NOT NULL, msg TEXT NOT NULL, digest TEXT NOT NULL, state TEXT NOT NULL, PRIMARY KEY(sender,msg))")
+        self.db.execute("CREATE TABLE IF NOT EXISTS payloads (sender TEXT NOT NULL, msg TEXT NOT NULL, envelope BLOB NOT NULL, payload BLOB NOT NULL, signature TEXT NOT NULL, PRIMARY KEY(sender,msg))")
 
     @staticmethod
     def canonical(envelope):
@@ -46,10 +47,13 @@ class Gate:
             raise Rejected('schema')
         if not hmac.compare_digest(hashlib.sha256(payload).hexdigest(), envelope['payload_sha256']):
             raise Rejected('payload mismatch')
-        return self.accept(envelope, signature)
+        return self._accept(envelope, signature, payload)
 
     def accept(self, envelope, signature):
         """Authenticate envelope only; payload remains UNVERIFIED until bound."""
+        return self._accept(envelope, signature, None)
+
+    def _accept(self, envelope, signature, payload):
         if not isinstance(envelope, dict) or set(envelope) != {"version", "sender", "target", "message_id", "issued_at", "action", "payload_sha256"}:
             raise Rejected("schema")
         if type(envelope["version"]) is not int or envelope["version"] != 1:
@@ -80,6 +84,11 @@ class Gate:
                 db.execute("ROLLBACK")
                 raise Rejected("replay" if existing[0] == fingerprint else "collision")
             db.execute("INSERT INTO receipts VALUES (?,?,?,?)", (sender, mid, fingerprint, "accepted_not_delivered"))
+            if payload is not None:
+                # The envelope and exact bytes are persisted in the SAME
+                # transaction; no receipt may survive a failed payload write.
+                db.execute("INSERT INTO payloads VALUES (?,?,?,?,?)",
+                           (sender, mid, self.canonical(envelope), payload, signature))
             db.execute("COMMIT")
         except sqlite3.Error:
             if db.in_transaction:
