@@ -16,7 +16,7 @@
 - **Licenses/reuse:** Baton source is Apache-2.0 (LICENSE); this patch uses Python/Linux standard system calls only, imports no third-party source. OpenSSH/WireGuard were not vendored or deployed. Any future inclusion of GPL/BSD code must receive separate source-specific license review.
 
 ## Tests and status
-- Local isolated Linux Python test: seven combined original+negative launcher tests passed, py_compile passed (no network, no Greg). Hosted CI must be checked separately after PR creation; do not infer it from local tests.
+- Local isolated Linux Python test: seven combined original+negative launcher tests passed, py_compile passed (no network, no Greg). [Hosted GitHub Actions run 42895778761](https://github.com/martintommerstigen/Baton/actions/runs/42895778761) **success** at code+workflow SHA dfef4594: 15 relay tests + 7 launcher tests, Python compile passed. This was a push run for executable code and workflow; later commits only added source documentation and inventory. It is not a Greg or ChatGPT live test.
 - **B5 launcher:** tested-simulated for filesystem behavior; Greg deployment implemented-unverified.
 - **B1 actual existing-chat A→B→C:** blocked, not tested-live. The authorized Greg browser, current PAUSE_UI_WRITES, three exact live assistant turns, and actual B/C receipts have **not** been observed.
 - **RFP/525:** no real packet capture or authenticated Greg↔iPhone smoke test; no claim of integrated product.
