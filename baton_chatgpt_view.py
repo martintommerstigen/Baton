@@ -26,11 +26,14 @@ def main():
     from pathlib import Path
     parser = argparse.ArgumentParser(description="Baton embedded ChatGPT")
     parser.add_argument("--chat-id", help="Open a known existing ChatGPT conversation")
+    parser.add_argument("--message", help="Prepare a message for manual send")
     args = parser.parse_args()
+    if args.message and not args.chat_id:
+        parser.error("--message requires --chat-id")
     target = conversation_url(args.chat_id) if args.chat_id else "https://chatgpt.com/"
     try:
         from PySide6.QtCore import QUrl
-        from PySide6.QtWidgets import QApplication, QMainWindow
+        from PySide6.QtWidgets import QApplication, QMainWindow, QWidget, QVBoxLayout, QLabel, QPushButton
         from PySide6.QtWebEngineCore import QWebEngineProfile
         from PySide6.QtWebEngineWidgets import QWebEngineView
     except ImportError as exc:
@@ -48,7 +51,23 @@ def main():
     view.setPage(page)
     window = QMainWindow()
     window.setWindowTitle("Baton · ChatGPT")
-    window.setCentralWidget(view)
+    if args.message:
+        wrapper = QWidget()
+        layout = QVBoxLayout(wrapper)
+        layout.addWidget(QLabel("Baton target: " + args.chat_id))
+        layout.addWidget(view)
+        copy_button = QPushButton("Copy wake message (send manually in embedded ChatGPT)")
+        copy_button.setEnabled(False)
+        layout.addWidget(copy_button)
+        view.urlChanged.connect(lambda url: copy_button.setEnabled(
+            is_chatgpt_conversation_url(url.toString(), args.chat_id)))
+        def copy_message():
+            if is_chatgpt_conversation_url(view.url().toString(), args.chat_id):
+                QApplication.clipboard().setText(args.message)
+        copy_button.clicked.connect(copy_message)
+        window.setCentralWidget(wrapper)
+    else:
+        window.setCentralWidget(view)
     window.resize(1200,800)
     view.setUrl(QUrl(target))
     window.show()
