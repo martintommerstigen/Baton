@@ -21,4 +21,6 @@ jobs:
         with:
           persist-credentials: false
       - name: Validate task registry and dependency graph
-        run: python3 project-map/validate.py
+        run: |
+          python3 project-map/validate.py
+          python3 project-map/validate_evidence.py
