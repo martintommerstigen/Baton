@@ -145,6 +145,16 @@ def verify_capture(jobs, bundle):
     if job != {k: stored[k] for k in ("receipt", "mac", "output")}:
         raise UntrustedReceipt("job differs from durable receipt")
     receipt = stored["receipt"]
+    try:
+        started = datetime.fromisoformat(receipt["started_utc"])
+        finished = datetime.fromisoformat(receipt["finished_utc"])
+    except (ValueError, TypeError, KeyError) as exc:
+        raise UntrustedReceipt("malformed durable job timestamps") from exc
+    if (started.tzinfo is None or finished.tzinfo is None
+            or started.utcoffset().total_seconds() != 0
+            or finished.utcoffset().total_seconds() != 0
+            or not stamp <= started <= finished):
+        raise UntrustedReceipt("capture/job time order invalid")
     if (capture["job_receipt_sha256"] != _sha(canonical(receipt))
             or capture["adapter_source_sha256"] != receipt["adapter_source_sha256"]
             or capture["project"] != receipt["project"]
