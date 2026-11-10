@@ -17,7 +17,7 @@
     }
   ],
   "branch_count": 276,
-  "tree_indexed": 210,
+  "tree_indexed": 225,
   "content_read_in_this_inventory": 0,
   "notes": [
     "branch_date_hint is parsed from branch name, NOT verified commit date",
@@ -5412,10 +5412,24 @@
       "commit_date": null,
       "theme": "research/roger-r20-r23-relative-observables-2026-11-03",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/research%2Froger-r20-r23-relative-observables-2026-11-03",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 57,
+      "relevant_paths": [
+        "GTRCM_KANONISK_GRUNNPROGRAM.md",
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/microfluctuation_mass_gravity/README.md",
+        "experiments/microfluctuation_mass_gravity/falsify_shared_density.py",
+        "experiments/microfluctuation_mass_gravity/model.py",
+        "experiments/roger/roger_scalar_density_schrodinger_no_go.py",
+        "experiments/roger/roger_tensor_defect_spin_no_go.py",
+        "experiments/roger_r10_embedded_thermo_renewal.py",
+        "experiments/roger_r11_conditional_relativity_spin2_dimension.py"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "research/roger-r28-dynamic-relations-and-self-access-2026-11-03",
@@ -5424,10 +5438,24 @@
       "commit_date": null,
       "theme": "research/roger-r28-dynamic-relations-and-self-access-2026-11-03",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/research%2Froger-r28-dynamic-relations-and-self-access-2026-11-03",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 57,
+      "relevant_paths": [
+        "GTRCM_KANONISK_GRUNNPROGRAM.md",
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/microfluctuation_mass_gravity/README.md",
+        "experiments/microfluctuation_mass_gravity/falsify_shared_density.py",
+        "experiments/microfluctuation_mass_gravity/model.py",
+        "experiments/roger/roger_scalar_density_schrodinger_no_go.py",
+        "experiments/roger/roger_tensor_defect_spin_no_go.py",
+        "experiments/roger_r10_embedded_thermo_renewal.py",
+        "experiments/roger_r11_conditional_relativity_spin2_dimension.py"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "research/roger-r28-r34-degree-preserving-self-rewiring-2026-11-03",
@@ -5436,10 +5464,24 @@
       "commit_date": null,
       "theme": "research/roger-r28-r34-degree-preserving-self-rewiring-2026-11-03",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/research%2Froger-r28-r34-degree-preserving-self-rewiring-2026-11-03",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 68,
+      "relevant_paths": [
+        "GTRCM_KANONISK_GRUNNPROGRAM.md",
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/microfluctuation_mass_gravity/README.md",
+        "experiments/microfluctuation_mass_gravity/falsify_shared_density.py",
+        "experiments/microfluctuation_mass_gravity/model.py",
+        "experiments/roger/roger_scalar_density_schrodinger_no_go.py",
+        "experiments/roger/roger_tensor_defect_spin_no_go.py",
+        "experiments/roger_r10_embedded_thermo_renewal.py",
+        "experiments/roger_r11_conditional_relativity_spin2_dimension.py"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "research/roger-r37-noaa-representation-geometry-2026-11-03",
@@ -5448,10 +5490,24 @@
       "commit_date": null,
       "theme": "research/roger-r37-noaa-representation-geometry-2026-11-03",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/research%2Froger-r37-noaa-representation-geometry-2026-11-03",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 81,
+      "relevant_paths": [
+        "GTRCM_KANONISK_GRUNNPROGRAM.md",
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/falkor/r67_correction_core.py",
+        "experiments/falkor/r70_g5_inquiry_e2e.py",
+        "experiments/falkor/r71_snapshot_continuity_e2e.py",
+        "experiments/falkor/r71_unverified_source_negative.py",
+        "experiments/falkor/r72_discriminating_inquiry_e2e.py",
+        "experiments/falkor/r72_real_noaa_audits_e2e.py",
+        "experiments/microfluctuation_mass_gravity/README.md"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "research/roger-r38-r41-micro-for-whom-2026-11-03",
@@ -5460,10 +5516,24 @@
       "commit_date": null,
       "theme": "research/roger-r38-r41-micro-for-whom-2026-11-03",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/research%2Froger-r38-r41-micro-for-whom-2026-11-03",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 86,
+      "relevant_paths": [
+        "GTRCM_KANONISK_GRUNNPROGRAM.md",
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/falkor/r67_correction_core.py",
+        "experiments/falkor/r70_g5_inquiry_e2e.py",
+        "experiments/falkor/r71_snapshot_continuity_e2e.py",
+        "experiments/falkor/r71_unverified_source_negative.py",
+        "experiments/falkor/r72_discriminating_inquiry_e2e.py",
+        "experiments/falkor/r72_real_noaa_audits_e2e.py",
+        "experiments/microfluctuation_mass_gravity/README.md"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "research/roger-r42-r46-cross-audited-clocks-2026-11-03",
@@ -5472,10 +5542,24 @@
       "commit_date": null,
       "theme": "research/roger-r42-r46-cross-audited-clocks-2026-11-03",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/research%2Froger-r42-r46-cross-audited-clocks-2026-11-03",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 92,
+      "relevant_paths": [
+        "GTRCM_KANONISK_GRUNNPROGRAM.md",
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/falkor/r67_correction_core.py",
+        "experiments/falkor/r70_g5_inquiry_e2e.py",
+        "experiments/falkor/r71_snapshot_continuity_e2e.py",
+        "experiments/falkor/r71_unverified_source_negative.py",
+        "experiments/falkor/r72_discriminating_inquiry_e2e.py",
+        "experiments/falkor/r72_real_noaa_audits_e2e.py",
+        "experiments/microfluctuation_mass_gravity/README.md"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "research/roger-r47-r48-individuation-physics-2026-11-04",
@@ -5484,10 +5568,24 @@
       "commit_date": null,
       "theme": "research/roger-r47-r48-individuation-physics-2026-11-04",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/research%2Froger-r47-r48-individuation-physics-2026-11-04",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 113,
+      "relevant_paths": [
+        "GTRCM_KANONISK_GRUNNPROGRAM.md",
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/eik/adaptive_repertoire_gate.py",
+        "experiments/eik/anonymous_reversible_contact_birth.py",
+        "experiments/eik/balanced_signature_from_role_reversal.py",
+        "experiments/eik/boundary_closure_refinement.py",
+        "experiments/eik/causal_trace_history_quotient.py",
+        "experiments/eik/cfs_quadratic_lagrangian_uniqueness.py",
+        "experiments/eik/closure_lattice_relative_self.py"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "research/roger-r50-r54-individuation-composition-2026-11-04",
@@ -5496,10 +5594,24 @@
       "commit_date": null,
       "theme": "research/roger-r50-r54-individuation-composition-2026-11-04",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/research%2Froger-r50-r54-individuation-composition-2026-11-04",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 121,
+      "relevant_paths": [
+        "GTRCM_KANONISK_GRUNNPROGRAM.md",
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/eik/adaptive_repertoire_gate.py",
+        "experiments/eik/anonymous_reversible_contact_birth.py",
+        "experiments/eik/balanced_signature_from_role_reversal.py",
+        "experiments/eik/boundary_closure_refinement.py",
+        "experiments/eik/causal_trace_history_quotient.py",
+        "experiments/eik/cfs_quadratic_lagrangian_uniqueness.py",
+        "experiments/eik/closure_lattice_relative_self.py"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "research/roger-self-provenance-2026-11-02",
@@ -5508,10 +5620,21 @@
       "commit_date": null,
       "theme": "research/roger-self-provenance-2026-11-02",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/research%2Froger-self-provenance-2026-11-02",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 17,
+      "relevant_paths": [
+        "GTRCM_KANONISK_GRUNNPROGRAM.md",
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/microfluctuation_mass_gravity/README.md",
+        "experiments/microfluctuation_mass_gravity/falsify_shared_density.py",
+        "experiments/microfluctuation_mass_gravity/model.py",
+        "research/roger/2026-11-02_R0_SELVIDENTITET_PROVENIENS_NEG.md"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "research/self-audit-50-antibuild-2026-11-07",
@@ -5520,10 +5643,24 @@
       "commit_date": null,
       "theme": "research/self-audit-50-antibuild-2026-11-07",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/research%2Fself-audit-50-antibuild-2026-11-07",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 219,
+      "relevant_paths": [
+        "GTRCM_KANONISK_GRUNNPROGRAM.md",
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/kime/active_inquiry_version_space_core.py",
+        "experiments/kime/active_probe_breaks_macro_identity.py",
+        "experiments/kime/active_reset_optimal_probe_bound.py",
+        "experiments/kime/all_proper_parts_independent_matrix.py",
+        "experiments/kime/all_proper_parts_same_two_wholes.py",
+        "experiments/kime/analytic_hamiltonian_passive_nonidentifiability.py",
+        "experiments/kime/anonymous_sensor_repertoire.py"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "research/som-s4-greg-core-continuity-2026-11-07",
@@ -5532,10 +5669,24 @@
       "commit_date": null,
       "theme": "research/som-s4-greg-core-continuity-2026-11-07",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/research%2Fsom-s4-greg-core-continuity-2026-11-07",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 70,
+      "relevant_paths": [
+        "GTRCM_KANONISK_GRUNNPROGRAM.md",
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/falkor/r67_correction_core.py",
+        "experiments/falkor/r70_g5_inquiry_e2e.py",
+        "experiments/falkor/r71_snapshot_continuity_e2e.py",
+        "experiments/falkor/r71_unverified_source_negative.py",
+        "experiments/falkor/r72_discriminating_inquiry_e2e.py",
+        "experiments/falkor/r72_real_noaa_audits_e2e.py",
+        "experiments/microfluctuation_mass_gravity/README.md"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "research/som-s5-admission-loss-2026-11-08",
@@ -5544,10 +5695,24 @@
       "commit_date": null,
       "theme": "research/som-s5-admission-loss-2026-11-08",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/research%2Fsom-s5-admission-loss-2026-11-08",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 76,
+      "relevant_paths": [
+        "GTRCM_KANONISK_GRUNNPROGRAM.md",
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/falkor/r67_correction_core.py",
+        "experiments/falkor/r70_g5_inquiry_e2e.py",
+        "experiments/falkor/r71_snapshot_continuity_e2e.py",
+        "experiments/falkor/r71_unverified_source_negative.py",
+        "experiments/falkor/r72_discriminating_inquiry_e2e.py",
+        "experiments/falkor/r72_real_noaa_audits_e2e.py",
+        "experiments/microfluctuation_mass_gravity/README.md"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "research/source-return-attribution-2026-11-07",
@@ -5556,10 +5721,24 @@
       "commit_date": null,
       "theme": "research/source-return-attribution-2026-11-07",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/research%2Fsource-return-attribution-2026-11-07",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 113,
+      "relevant_paths": [
+        "GTRCM_KANONISK_GRUNNPROGRAM.md",
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/eik_nested_self_feedback.py",
+        "experiments/eik_operational_quotient.py",
+        "experiments/eik_transient_individuation.py",
+        "experiments/microfluctuation_mass_gravity/README.md",
+        "experiments/microfluctuation_mass_gravity/falsify_shared_density.py",
+        "experiments/microfluctuation_mass_gravity/model.py",
+        "experiments/roger/roger_scalar_density_schrodinger_no_go.py"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "research/vanja-r18-physical-rate-common-gate-2026-11-10",
@@ -5568,10 +5747,24 @@
       "commit_date": null,
       "theme": "research/vanja-r18-physical-rate-common-gate-2026-11-10",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/research%2Fvanja-r18-physical-rate-common-gate-2026-11-10",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 56,
+      "relevant_paths": [
+        "GTRCM_KANONISK_GRUNNPROGRAM.md",
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/microfluctuation_mass_gravity/README.md",
+        "experiments/microfluctuation_mass_gravity/falsify_shared_density.py",
+        "experiments/microfluctuation_mass_gravity/model.py",
+        "experiments/vanja/2026-10-26_common_action_dynamic_kink.py",
+        "experiments/vanja/2026-10-26_flrw_schwarzschild_junction_no_shell.py",
+        "experiments/vanja/2026-10-26_iben_h2_hidden_phase_embedding.py",
+        "experiments/vanja/2026-10-26_iben_kaja_bridge_change_cost.py"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "research/vanja-r19-capture-independence-audit-2026-11-10",
@@ -5580,10 +5773,24 @@
       "commit_date": null,
       "theme": "research/vanja-r19-capture-independence-audit-2026-11-10",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/research%2Fvanja-r19-capture-independence-audit-2026-11-10",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 60,
+      "relevant_paths": [
+        "GTRCM_KANONISK_GRUNNPROGRAM.md",
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/microfluctuation_mass_gravity/README.md",
+        "experiments/microfluctuation_mass_gravity/falsify_shared_density.py",
+        "experiments/microfluctuation_mass_gravity/model.py",
+        "experiments/vanja/2026-10-26_common_action_dynamic_kink.py",
+        "experiments/vanja/2026-10-26_flrw_schwarzschild_junction_no_shell.py",
+        "experiments/vanja/2026-10-26_iben_h2_hidden_phase_embedding.py",
+        "experiments/vanja/2026-10-26_iben_kaja_bridge_change_cost.py"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "research/vanja-r20-two-ledger-audit-backaction-2026-11-10",
