@@ -5,12 +5,14 @@ on:
       - 'remote_security/**'
       - 'tests/test_remote_*.py'
       - 'tests/test_pause_guard.py'
+      - 'tests/test_http_ingress.py'
       - '.github/workflows/remote-envelope.yml'
   pull_request:
     paths:
       - 'remote_security/**'
       - 'tests/test_remote_*.py'
       - 'tests/test_pause_guard.py'
+      - 'tests/test_http_ingress.py'
 jobs:
   unittest:
     runs-on: ubuntu-latest
