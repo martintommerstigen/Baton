@@ -15,11 +15,13 @@ import json
 import os
 import re
 import stat
+import threading
 
 from remote_security.envelope_gate import Gate, Rejected
 from remote_security.private_store import _validate_path
 
 MAX_REQUEST_BYTES = 90000
+MAX_ACTIVE_REQUESTS = 16  # bounded worker count; backlog size alone is not a limit
 
 
 def load_private_key(path):
@@ -66,7 +68,27 @@ class IngressServer(ThreadingHTTPServer):
             raise ValueError('bearer token must be 32+ bytes')
         self.token = token
         self.gate = gate
+        self._request_slots = threading.BoundedSemaphore(MAX_ACTIVE_REQUESTS)
         super().__init__(('127.0.0.1', port), IngressHandler)
+
+    def process_request(self, request, client_address):
+        # ThreadingHTTPServer otherwise creates an unbounded number of worker
+        # threads for clients that never finish their HTTP headers. Refuse
+        # excess connections without queueing work or spawning a new thread.
+        if not self._request_slots.acquire(blocking=False):
+            self.shutdown_request(request)
+            return
+        try:
+            super().process_request(request, client_address)
+        except BaseException:
+            self._request_slots.release()
+            raise
+
+    def process_request_thread(self, request, client_address):
+        try:
+            super().process_request_thread(request, client_address)
+        finally:
+            self._request_slots.release()
 
     def get_request(self):
         sock, address = super().get_request()
@@ -103,7 +125,8 @@ class IngressHandler(BaseHTTPRequestHandler):
         expected_auth = b'Bearer ' + self.server.token
         if len(auth) != 1 or not hmac.compare_digest(auth[0].encode('utf-8'), expected_auth):
             return self._reply(401, 'unauthorized')
-        if self.path != '/v1/envelopes' or self.headers.get('Content-Type') != 'application/json':
+        content_types = self.headers.get_all('Content-Type', [])
+        if (self.path != '/v1/envelopes' or content_types != ['application/json']):
             return self._reply(404, 'operation_not_allowlisted')
         lengths = self.headers.get_all('Content-Length', [])
         if (len(lengths) != 1 or not re.fullmatch('[0-9]{1,6}', lengths[0])
