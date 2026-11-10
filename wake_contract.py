@@ -74,6 +74,18 @@ class WakeLedger:
         with self.db() as db:
             return bool(db.execute("UPDATE wakes SET state='uncertain',updated=? WHERE id=? AND state='submitting'",
                                    (int(time.time()),id)).rowcount)
+    def mark_aborted(self,id):
+        """Terminal proven pre-click rejection; never eligible for reconciliation.
+
+        The caller must use this ONLY after a typed pre-submission rejection
+        proving no UI Send click occurred. Uncertain/post-click errors remain
+        in the unresolved state and continue blocking competing sends.
+        """
+        with self.db() as db:
+            return bool(db.execute(
+                "UPDATE wakes SET state='aborted',updated=? WHERE id=? AND state='submitting'",
+                (int(time.time()),id)).rowcount)
+
     def mark_collision(self,id):
         """Terminal pre-send marker conflict; never eligible for reconciliation.
 
