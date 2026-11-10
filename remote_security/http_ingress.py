@@ -19,6 +19,7 @@ import threading
 
 from remote_security.envelope_gate import Gate, Rejected
 from remote_security.private_store import _validate_path
+from remote_security.admission_mac import admission_mac
 
 MAX_REQUEST_BYTES = 90000
 MAX_ACTIVE_REQUESTS = 16  # bounded worker count; backlog size alone is not a limit
@@ -104,11 +105,13 @@ class IngressHandler(BaseHTTPRequestHandler):
     def log_message(self, format, *args):
         pass  # Never log headers, secrets, paths or payloads.
 
-    def _reply(self, code, state):
+    def _reply(self, code, state, receipt_mac=None):
         raw = json.dumps({'state': state}, separators=(',', ':')).encode('ascii')
         self.send_response(code)
         self.send_header('Content-Type', 'application/json')
         self.send_header('Cache-Control', 'no-store')
+        if receipt_mac is not None:
+            self.send_header('X-Baton-Receipt-MAC', receipt_mac)
         self.send_header('X-Content-Type-Options', 'nosniff')
         self.send_header('Content-Length', str(len(raw)))
         self.send_header('Connection', 'close')
@@ -128,6 +131,9 @@ class IngressHandler(BaseHTTPRequestHandler):
         content_types = self.headers.get_all('Content-Type', [])
         if (self.path != '/v1/envelopes' or content_types != ['application/json']):
             return self._reply(404, 'operation_not_allowlisted')
+        nonces = self.headers.get_all('X-Baton-Receipt-Nonce', [])
+        if nonces and (len(nonces) != 1 or not re.fullmatch('[0-9a-f]{32}', nonces[0])):
+            return self._reply(400, 'invalid_receipt_nonce')
         lengths = self.headers.get_all('Content-Length', [])
         if (len(lengths) != 1 or not re.fullmatch('[0-9]{1,6}', lengths[0])
                 or self.headers.get('Transfer-Encoding') is not None
@@ -147,9 +153,15 @@ class IngressHandler(BaseHTTPRequestHandler):
                 return self._reply(400, 'invalid_payload')
             payload = base64.b64decode(doc['payload_b64'], validate=True)
             state = self.server.gate.accept_payload(doc['envelope'], doc['signature'], payload)
+            # Only the authenticated sender's key can attest durable admission.
+            # A nonce-less legacy request receives no authenticated receipt;
+            # the one-shot client always requires the signed form.
+            mac = (admission_mac(self.server.gate.keys[doc['envelope']['sender']],
+                                 nonces[0], doc['envelope'], state)
+                   if nonces else None)
         except (UnicodeError, ValueError, TypeError, binascii.Error, RecursionError, Rejected):
             return self._reply(400, 'rejected')
-        return self._reply(202, state)
+        return self._reply(202, state, receipt_mac=mac)
 
     def do_GET(self):
         self._reply(405, 'method_not_allowed')
