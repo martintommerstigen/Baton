@@ -1,6 +1,5 @@
 """Negative and smoke tests for local Baton terminal adapter."""
 import tempfile
-import os
 from pathlib import Path
 import unittest
 from baton_local_terminal import execute
