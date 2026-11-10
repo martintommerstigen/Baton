@@ -52,8 +52,11 @@ def _serve_until_crash(database, key, token, phase, pipe):
     with IngressServer(0, token, gate) as server:
         pipe.send(server.server_port)
         pipe.close()
-        server.handle_request()
-    # Expected path is os._exit above. A return indicates failed injection.
+        # ThreadingHTTPServer.handle_request() only spawns a handler thread
+        # and returns immediately. Keep the parent loop alive so the handler
+        # reaches the actual SQLite COMMIT before the injected process death.
+        server.serve_forever(poll_interval=0.01)
+    # The expected path is os._exit in the request thread.
     os._exit(73)
 
 
