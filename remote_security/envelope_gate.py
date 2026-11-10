@@ -30,6 +30,8 @@ class Gate:
         # behavior. The production HTTP CLI REQUIRES explicit routes.
         # A route is a sender-specific authorization, not a global target set.
         if allowed_routes is None:
+            if len(self.senders) > 1 and len(self.targets) > 1:
+                raise Rejected("explicit route policy required for multi-sender multi-target gate")
             self.routes = {sender: self.targets for sender in self.senders}
         else:
             if not isinstance(allowed_routes, dict) or set(allowed_routes) != self.senders:
