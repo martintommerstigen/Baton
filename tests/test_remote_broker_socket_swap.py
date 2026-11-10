@@ -8,6 +8,7 @@ Requires an isolated root Linux runner; hosted non-root CI skips.
 import os
 from pathlib import Path
 import socket
+import select
 import subprocess
 import sys
 import tempfile
@@ -63,6 +64,8 @@ p.query_verified_broker(sys.argv[1], 65534, {'op':'admit','payload':'never-discl
                      '--clear-groups', sys.executable, '-c', client_script, str(path)],
                     stdin=subprocess.PIPE, stdout=subprocess.PIPE,
                     stderr=subprocess.PIPE, text=True, env=env)
+                ready, _, _ = select.select([client.stdout], [], [], 3)
+                self.assertTrue(ready, 'client never reached checked-path checkpoint')
                 self.assertEqual(client.stdout.readline().strip(), 'CHECKED')
                 path.rename(original)
                 fake = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
