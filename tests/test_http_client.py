@@ -1,4 +1,6 @@
 import hashlib
+import io
+from contextlib import redirect_stdout
 import tempfile
 import time
 import unittest
@@ -6,6 +8,7 @@ from pathlib import Path
 from remote_security.envelope_gate import Gate
 from remote_security.http_ingress import IngressServer
 from remote_security.http_client import send_once, DeliveryUncertain, load_private_payload
+from remote_security import http_client
 import threading
 
 
@@ -49,6 +52,25 @@ class ClientTests(unittest.TestCase):
                     'https://127.0.0.1:8788', 'http://127.0.0.1:8788/evil'):
             with self.subTest(url=url), self.assertRaises(ValueError):
                 send_once(url, self.token, self.key, self.e, self.payload)
+
+    def test_cli_defaults_to_https_and_fails_before_plaintext_disclosure(self):
+        token_path = self.root / 'cli-token'
+        key_path = self.root / 'cli-key'
+        payload_path = self.root / 'cli-payload'
+        for path, data in ((token_path, self.token), (key_path, self.key),
+                           (payload_path, self.payload)):
+            path.write_bytes(data)
+            path.chmod(0o600)
+        args = [
+            '--sender', 'sender000', '--target', 'target000',
+            '--message-id', 'cli-default-test', '--token-file', str(token_path),
+            '--sender-key-file', str(key_path), '--payload-file', str(payload_path),
+        ]
+        with redirect_stdout(io.StringIO()), self.assertRaisesRegex(
+                ValueError, 'HTTPS requires an explicit pinned server certificate'):
+            http_client.main(args)
+        self.assertEqual(self.g.db.execute(
+            'SELECT COUNT(*) FROM receipts').fetchone()[0], 0)
 
     def test_private_payload_file_rejects_symlink(self):
         p = self.root / 'payload'

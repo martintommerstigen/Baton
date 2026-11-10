@@ -20,6 +20,7 @@ import threading
 from remote_security.envelope_gate import Gate, Rejected
 from remote_security.private_store import _validate_path
 from remote_security.admission_mac import admission_mac
+from remote_security.tls_endpoint import server_tls_context
 
 MAX_REQUEST_BYTES = 90000
 MAX_ACTIVE_REQUESTS = 16  # bounded worker count; backlog size alone is not a limit
@@ -95,6 +96,25 @@ class IngressServer(ThreadingHTTPServer):
         sock, address = super().get_request()
         sock.settimeout(3)
         return sock, address
+
+
+class TLSIngressServer(IngressServer):
+    """Opt-in TLS ingress; handshake occurs in a bounded worker, not accept()."""
+
+    def __init__(self, port, token, gate, tls_context):
+        self._tls_context = tls_context
+        super().__init__(port, token, gate)
+
+    def process_request_thread(self, request, client_address):
+        # The base class owns exactly one semaphore slot per accepted socket.
+        # Handshake must not block the accept loop; failures release that slot.
+        try:
+            wrapped = self._tls_context.wrap_socket(request, server_side=True)
+        except OSError:
+            self.shutdown_request(request)
+            self._request_slots.release()
+            return
+        super().process_request_thread(wrapped, client_address)
 
 
 class IngressHandler(BaseHTTPRequestHandler):
@@ -192,6 +212,8 @@ def main(argv=None):
     parser = argparse.ArgumentParser(description='Loopback-only receive-only Baton ingress')
     parser.add_argument('--port', type=int, default=8788)
     parser.add_argument('--database', required=True)
+    parser.add_argument('--tls-cert-file', help='owner-only server certificate PEM')
+    parser.add_argument('--tls-key-file', help='owner-only server private key PEM')
     parser.add_argument('--token-file', required=True)
     parser.add_argument('--sender-key-file', action='append', required=True, metavar='SENDER=PATH')
     parser.add_argument('--target', action='append', required=True)
@@ -211,10 +233,21 @@ def main(argv=None):
         routes = parse_routes(args.route, keys, set(args.target))
     except ValueError as exc:
         parser.error(str(exc))
+    if bool(args.tls_cert_file) != bool(args.tls_key_file):
+        parser.error('--tls-cert-file and --tls-key-file must be provided together')
+    tls_context = (server_tls_context(args.tls_cert_file, args.tls_key_file)
+                   if args.tls_cert_file else None)
     gate = Gate(args.database, keys, keys, args.target, allowed_routes=routes)
     try:
-        with IngressServer(args.port, load_bearer_token(args.token_file), gate) as server:
-            print('Baton receive-only ingress on 127.0.0.1:%d' % server.server_port, flush=True)
+        token = load_bearer_token(args.token_file)
+        if tls_context is not None:
+            server = TLSIngressServer(args.port, token, gate, tls_context)
+        else:
+            server = IngressServer(args.port, token, gate)
+        with server:
+            scheme = 'https' if tls_context is not None else 'http'
+            print('Baton receive-only ingress on %s://127.0.0.1:%d' %
+                  (scheme, server.server_port), flush=True)
             server.serve_forever()
     finally:
         gate.db.close()
