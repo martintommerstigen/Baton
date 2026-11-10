@@ -257,6 +257,61 @@ class TLSEndpointTests(unittest.TestCase):
             gate.db.close()
 
 
+    def test_ca_trust_is_not_an_exact_leaf_pin(self):
+        """A valid CA-signed IP leaf must not receive a bearer when only CA is pinned."""
+        root_cert, root_key = self.root / 'root.crt', self.root / 'root.key'
+        subprocess.run([
+            'openssl', 'req', '-x509', '-newkey', 'rsa:2048', '-nodes',
+            '-days', '1', '-keyout', str(root_key), '-out', str(root_cert),
+            '-subj', '/CN=Test Baton CA',
+            '-addext', 'basicConstraints=critical,CA:TRUE',
+            '-addext', 'keyUsage=critical,keyCertSign,cRLSign',
+        ], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, check=True)
+        leaf_cert = self.root / 'signed-leaf.crt'
+        leaf_key = self.root / 'signed-leaf.key'
+        csr = self.root / 'signed-leaf.csr'
+        ext = self.root / 'signed-leaf.ext'
+        ext.write_text('subjectAltName=IP:127.0.0.1\\n'
+                       'extendedKeyUsage=serverAuth\\n', encoding='ascii')
+        subprocess.run([
+            'openssl', 'req', '-newkey', 'rsa:2048', '-nodes',
+            '-keyout', str(leaf_key), '-out', str(csr),
+            '-subj', '/CN=127.0.0.1',
+        ], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, check=True)
+        subprocess.run([
+            'openssl', 'x509', '-req', '-in', str(csr), '-CA', str(root_cert),
+            '-CAkey', str(root_key), '-CAcreateserial', '-days', '1',
+            '-extfile', str(ext), '-out', str(leaf_cert),
+        ], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, check=True)
+        for p in (root_cert, root_key, leaf_cert, leaf_key):
+            p.chmod(0o600)
+        server, runner = self.start_server(leaf_cert, leaf_key)
+        try:
+            # Prove this is a genuine counterexample to CA-only pinning:
+            # TLS chain and IP SAN validate successfully against root.crt.
+            with socket.create_connection(server.server_address, timeout=2) as raw:
+                with pinned_client_context(root_cert).wrap_socket(
+                        raw, server_hostname='127.0.0.1') as verified:
+                    self.assertTrue(verified.getpeercert(binary_form=True))
+            # Baton must reject the *different* leaf after TLS handshake,
+            # but before any Authorization header or signed payload is sent.
+            envelope, payload = self._envelope()
+            with self.assertRaises(DeliveryUncertain):
+                send_once('https://127.0.0.1:%d' % server.server_port,
+                          b'T' * 48, b'K' * 48, envelope, payload,
+                          server_cert_file=str(root_cert))
+            self.assertEqual(server.received, [])
+        finally:
+            server.shutdown(); server.server_close(); runner.join(timeout=3)
+
+    def test_multiple_certificates_are_not_an_unambiguous_pin(self):
+        combined = self.root / 'combined.crt'
+        combined.write_bytes(self.cert.read_bytes() + self.other_cert.read_bytes())
+        combined.chmod(0o600)
+        with self.assertRaises(ValueError):
+            pinned_client_context(combined)
+
+
 
 if __name__ == '__main__':
     unittest.main()
