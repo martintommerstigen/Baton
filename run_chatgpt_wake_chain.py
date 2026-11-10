@@ -54,10 +54,10 @@ def main(argv=None):
           class WaitDriver:
               def __init__(self, driver): self.driver=driver
               def submit_once(self,*args): return self.driver.submit_once(*args)
-              def observe_reply(self,chat,message_id):
+              def observe_reply(self,chat,message_id,digest):
                   deadline=time.monotonic()+120
                   while True:
-                      result=self.driver.observe_reply(chat,message_id)
+                      result=self.driver.observe_reply(chat,message_id,digest)
                       if result is not None: return result
                       if time.monotonic()>=deadline: return None
                       time.sleep(1)
