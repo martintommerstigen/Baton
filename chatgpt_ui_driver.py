@@ -9,7 +9,7 @@ from pathlib import Path
 import re
 import hashlib
 from urllib.parse import urlparse
-from wake_adapter import Observation, PreexistingWakeMarker
+from wake_adapter import Observation, PreexistingWakeMarker, PreSubmissionRejected
 
 CHAT_ID = re.compile(r"^[0-9a-f]{8}(?:-[0-9a-f]{4}){3}-[0-9a-f]{12}$", re.I)
 MARKER_ID = re.compile(r"^[A-Za-z0-9_-]{1,100}$")
@@ -72,14 +72,14 @@ class ChatGPTUIDriver:
         self._check(conversation_id)
         marker = marker_for(message_id)
         if not isinstance(body, str) or not body.strip():
-            raise ValueError("Nonempty body required")
+            raise PreSubmissionRejected("Nonempty body required before UI submission")
         if self.page.locator('[data-message-author-role="user"]').filter(has_text=marker).count():
             raise PreexistingWakeMarker("Marker already present before UI submission; collision")
         editor = self.page.locator("#prompt-textarea")
         if editor.count() != 1 or not editor.is_visible():
-            raise RuntimeError("Composer missing or ambiguous")
+            raise PreSubmissionRejected("Composer missing or ambiguous")
         if editor.inner_text().strip():
-            raise RuntimeError("Composer contains a draft")
+            raise PreSubmissionRejected("Composer contains a draft")
         # Bind the approved payload to what the composer actually contains.
         # A UI transformation, extension, or concurrent edit after fill must
         # not turn an approved digest into a different submitted message.
@@ -88,13 +88,13 @@ class ChatGPTUIDriver:
         self._check(conversation_id)
         send = self.page.locator('[data-testid="send-button"]')
         if send.count() != 1 or not send.is_enabled():
-            raise RuntimeError("Send button missing or disabled; draft left unsent")
+            raise PreSubmissionRejected("Send button missing or disabled; draft left unsent")
         if PAUSE_FILE.exists():
-            raise RuntimeError('Greg-local UI writes paused; draft left unsent')
+            raise PreSubmissionRejected('Greg-local UI writes paused; draft left unsent')
         # Read back *after* all pre-click checks, immediately before clicking.
         # Fail closed if the live UI normalizes line breaks or changes the text.
         if editor.inner_text() != payload:
-            raise RuntimeError("Composer content differs from approved wake payload; draft left unsent")
+            raise PreSubmissionRejected("Composer content differs from approved wake payload; draft left unsent")
         send.click()
         self._check(conversation_id)
 
