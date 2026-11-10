@@ -271,8 +271,8 @@ class TLSEndpointTests(unittest.TestCase):
         leaf_key = self.root / 'signed-leaf.key'
         csr = self.root / 'signed-leaf.csr'
         ext = self.root / 'signed-leaf.ext'
-        ext.write_text('subjectAltName=IP:127.0.0.1\\n'
-                       'extendedKeyUsage=serverAuth\\n', encoding='ascii')
+        ext.write_text('subjectAltName=IP:127.0.0.1\n'
+                       'extendedKeyUsage=serverAuth\n', encoding='ascii')
         subprocess.run([
             'openssl', 'req', '-newkey', 'rsa:2048', '-nodes',
             '-keyout', str(leaf_key), '-out', str(csr),
