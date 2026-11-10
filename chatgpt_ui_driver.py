@@ -42,10 +42,12 @@ def is_marked_user_turn(text, marker, expected_digest=None):
     """
     if not isinstance(text, str):
         return False
-    lines = text.splitlines()
-    if len(lines) < 2 or lines[0] != marker:
+    # Preserve the *exact* body bytes represented by the DOM text. splitlines()
+    # silently normalizes CRLF, Unicode separators and trailing newlines; that
+    # could validate a body different from the approved SHA-256 payload.
+    first_line, separator, body = text.partition("\n")
+    if not separator or first_line != marker:
         return False
-    body = "\n".join(lines[1:])
     if not body.strip():
         return False
     # When verifying a durable receipt, require the body originally approved
@@ -115,6 +117,12 @@ class ChatGPTUIDriver:
             return None
         turn_id = reply.get_attribute("data-message-id")
         if not turn_id or not reply.inner_text().strip():
+            return None
+        # The same DOM assistant-turn ID in multiple turns is ambiguous. It
+        # cannot serve as a unique receipt or authorize the next chain hop.
+        assistant_turns = self.page.locator('[data-message-author-role="assistant"]')
+        if sum(assistant_turns.nth(j).get_attribute("data-message-id") == turn_id
+               for j in range(assistant_turns.count())) != 1:
             return None
         return Observation(conversation_id, turn_id)
 
