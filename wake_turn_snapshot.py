@@ -110,6 +110,28 @@ class CapturingTarget:
         return observation
 
 
+def verify_current_reply(ledger, store, driver, message_id, chat):
+    """Recheck a persisted assistant reply without assuming it authorizes a hop.
+
+    Read-only verification: exact first-observed text, URL, turn and ledger
+    state must still agree. DOM evidence is not server-side authorship proof.
+    """
+    snap = store.get(message_id)
+    row = ledger.provenance(message_id)
+    if (snap is None or row is None or row[1] != chat or row[4] != "verified"
+            or row[5] != snap.turn_id or snap.chat != chat
+            or snap.extractor != EXTRACTOR):
+        raise SourceEvidenceChanged("Verified reply snapshot missing/mismatched")
+    if driver.is_generating(chat):
+        raise SourceEvidenceChanged("Reply still generating")
+    if driver.page.url != snap.source_url or conversation_id(driver.page.url) != chat:
+        raise SourceEvidenceChanged("Reply source URL changed")
+    text = driver.read_assistant_turn(chat, snap.turn_id)
+    if not text.strip() or hashlib.sha256(text.encode("utf-8")).hexdigest() != snap.text_sha256:
+        raise SourceEvidenceChanged("Reply text changed at same turn ID")
+    return snap
+
+
 def verify_current_b_turn(ledger, store, driver, first_id, chat, target):
     """Check the immutable first observation against the current B DOM turn."""
     snap = store.get(first_id)

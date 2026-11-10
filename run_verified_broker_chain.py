@@ -27,7 +27,7 @@ from wake_contract import WakeLedger
 from wake_ui_lock import ui_controller_lock
 from wake_turn_snapshot import (
     CapturingTarget, SourceEvidenceChanged, TurnSnapshotStore,
-    guarded_second_hop, verify_current_b_turn,
+    guarded_second_hop, verify_current_b_turn, verify_current_reply,
 )
 
 
@@ -115,7 +115,9 @@ def run_verified_chain(ledger, driver_a, driver_b, driver_c, *,
     guarded_request = guarded_second_hop(
         broker_request, ledger, snapshots, driver_b, first_id, b, c,
     )
-    gated_c = BrokerGatedUIDriver(driver_c, guarded_request, b, b_turn_id)
+    gated_c = BrokerGatedUIDriver(
+        CapturingTarget(driver_c, snapshots, second_id), guarded_request, b, b_turn_id
+    )
     digest_c = hashlib.sha256(second_body.encode("utf-8")).hexdigest()
     second = wake_once(
         ledger, WaitForReply(gated_c, wait_seconds),
@@ -123,6 +125,15 @@ def run_verified_chain(ledger, driver_a, driver_b, driver_c, *,
     )
     outcome["b_to_c"] = second
     outcome["b_to_c_receipt"] = _receipt(ledger, second_id)
+    if second == "verified":
+        # The second hop also needs a byte-bound first observation, not just
+        # a DOM turn ID. A post-observation mutation cannot be live proof.
+        snap_c = verify_current_reply(ledger, snapshots, driver_c, second_id, c)
+        outcome["c_reply_snapshot"] = {
+            "chat": snap_c.chat, "turn_id": snap_c.turn_id,
+            "text_sha256": snap_c.text_sha256, "extractor": snap_c.extractor,
+            "source_url": snap_c.source_url, "observed_utc": snap_c.observed_utc,
+        }
     return outcome
 
 

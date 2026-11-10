@@ -10,6 +10,7 @@ from wake_adapter import Observation
 from wake_contract import WakeLedger
 from wake_turn_snapshot import (
     SourceEvidenceChanged, TurnSnapshotStore, verify_current_b_turn,
+    verify_current_reply,
 )
 
 
@@ -145,6 +146,61 @@ class ObservedTurnDigestTests(unittest.TestCase):
         self.assertEqual(result["b_to_c"], "not_authorized")
         self.assertEqual(self.c.clicks, 1)
         self.assertEqual(len(self.ops), before)
+
+    def test_c_reply_snapshot_is_durable_and_read_only_rechecked(self):
+        result = self.run_chain()
+        self.assertEqual(result["b_to_c"], "verified")
+        snap = TurnSnapshotStore(self.ledger).get("m2")
+        self.assertEqual(snap.chat, base.C)
+        self.assertEqual(snap.turn_id, "turn-c")
+        self.assertEqual(snap.text_sha256,
+                         hashlib.sha256(self.c.next_text.encode()).hexdigest())
+        self.assertEqual(result["c_reply_snapshot"]["text_sha256"], snap.text_sha256)
+        self.ledger = WakeLedger(self.db)
+        self.assertEqual(verify_current_reply(
+            self.ledger, TurnSnapshotStore(self.ledger), self.c, "m2", base.C), snap)
+
+    def test_c_reply_changes_after_observation_before_snapshot(self):
+        original = self.c.observe_reply
+        def mutate_after_observe(*args):
+            obs = original(*args)
+            self.c.next_text = "changed C text, same DOM turn"
+            return obs
+        self.c.observe_reply = mutate_after_observe
+        with self.assertRaises(SourceEvidenceChanged):
+            self.run_chain()
+        self.assertEqual(self.ledger.state("m2")[1], "uncertain")
+        self.assertIsNone(TurnSnapshotStore(self.ledger).get("m2"))
+        self.assertEqual(self.c.clicks, 1)
+        self.ledger = WakeLedger(self.db)
+        self.assertEqual(self.run_chain()["b_to_c"], "uncertain")
+        self.assertEqual(self.c.clicks, 1)
+
+    def test_c_reply_changes_after_snapshot_before_final_readback(self):
+        original = self.c.read_assistant_turn
+        count = [0]
+        def mutate_on_final_read(*args):
+            count[0] += 1
+            if count[0] == 2:
+                self.c.next_text = "C reply mutated after durable snapshot"
+            return original(*args)
+        self.c.read_assistant_turn = mutate_on_final_read
+        with self.assertRaises(SourceEvidenceChanged):
+            self.run_chain()
+        # Delivery may have happened; never resubmit. A verified ledger
+        # alone is insufficient to certify the final C content.
+        self.assertEqual(self.ledger.state("m2")[1], "verified")
+        self.assertEqual(self.c.clicks, 1)
+        with self.assertRaises(SourceEvidenceChanged):
+            verify_current_reply(self.ledger, TurnSnapshotStore(self.ledger),
+                                 self.c, "m2", base.C)
+
+    def test_empty_c_assistant_reply_is_not_verified(self):
+        self.c.next_text = ""
+        with self.assertRaises(SourceEvidenceChanged):
+            self.run_chain()
+        self.assertEqual(self.ledger.state("m2")[1], "uncertain")
+        self.assertEqual(self.c.clicks, 1)
 
 
 if __name__ == "__main__":
