@@ -1,4 +1,5 @@
 import tempfile
+import hashlib
 import unittest
 from wake_contract import WakeLedger
 from wake_adapter import Observation
@@ -17,7 +18,9 @@ class ChainTests(unittest.TestCase):
     def setUp(self):
         self.tmp=tempfile.TemporaryDirectory()
         self.ledger=WakeLedger(self.tmp.name+'/db')
-        self.plan=ChainPlan('A','B','C','one','two','ask B','ask C','d1','d2')
+        self.plan=ChainPlan('A','B','C','one','two','ask B','ask C',
+                            hashlib.sha256(b'ask B').hexdigest(),
+                            hashlib.sha256(b'ask C').hexdigest())
         self.b=Driver('B')
         self.c=Driver('C')
     def tearDown(self): self.tmp.cleanup()
@@ -53,7 +56,7 @@ class ChainTests(unittest.TestCase):
         self.assertEqual(len(self.b.sends),1)
         self.assertEqual(len(self.c.sends),1)
     def test_reconcile_crashed_first_hop_without_resend(self):
-        self.ledger.request('one','A','B','d1')
+        self.ledger.request('one','A','B',self.plan.first_digest)
         self.ledger.begin_submission('one')
         result=run_chain(self.ledger,self.b,self.c,self.plan,
                          lambda chat,turn:'BATON_NEXT C')
@@ -61,7 +64,7 @@ class ChainTests(unittest.TestCase):
         self.assertEqual(self.b.sends,[])
         self.assertEqual(len(self.c.sends),1)
     def test_reconcile_crashed_second_hop_without_resend(self):
-        self.ledger.request('two','B','C','d2','one-assistant')
+        self.ledger.request('two','B','C',self.plan.second_digest,'one-assistant')
         self.ledger.begin_submission('two')
         result=run_chain(self.ledger,self.b,self.c,self.plan,
                          lambda chat,turn:'BATON_NEXT C')
