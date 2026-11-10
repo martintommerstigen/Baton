@@ -154,6 +154,18 @@ class BrokerTests(unittest.TestCase):
         other.close()
         self.assertFalse(path.exists())
 
+    def test_failed_listen_rolls_back_only_own_socket(self):
+        path = self.base / "listen-failed.sock"
+        other = SourceBroker(str(path), {self.allowed}, {"rustworld-world"},
+                             self.broker.capture, self.broker.audit)
+        with patch.object(socket.socket, "listen", side_effect=OSError("synthetic listen failure")):
+            with self.assertRaises(OSError):
+                other.start()
+        self.assertFalse(path.exists())
+        self.assertIsNone(other.sock)
+        other.start()
+        other.close()
+
     def test_failed_start_never_unlinks_replaced_endpoint(self):
         # A path changed between bind and chmod must not be unlinked by the
         # cleanup path. No assertion of safety against same-UID compromise.
