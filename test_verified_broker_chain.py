@@ -68,7 +68,7 @@ class TwoHopTests(unittest.TestCase):
             "begin_click": {"state": "click_started_uncertain"},
         }[envelope["op"]]
 
-    def run(self, **changes):
+    def attempt(self, **changes):
         options = dict(
             a=A, b=B, c=C, source_turn_id="turn-a",
             first_id="m1", second_id="m2",
@@ -82,7 +82,7 @@ class TwoHopTests(unittest.TestCase):
         )
 
     def test_two_verified_turns_and_exact_source_provenance(self):
-        result = self.run()
+        result = self.attempt()
         self.assertEqual((result["a_to_b"], result["b_to_c"]),
                          ("verified", "verified"))
         self.assertEqual((self.b.clicks, self.c.clicks), (1, 1))
@@ -101,13 +101,13 @@ class TwoHopTests(unittest.TestCase):
     def test_unverified_A_source_never_sends(self):
         self.a.text = "A quoted example: BATON_WAKE " + B + " m1"
         with self.assertRaises(PermissionError):
-            self.run()
+            self.attempt()
         self.assertEqual((self.b.clicks, self.c.clicks, len(self.ops)), (0, 0, 0))
         self.assertIsNone(self.ledger.state("m1"))
 
     def test_B_reply_not_observed_never_sends_C(self):
         self.b.reply_id = None
-        result = self.run()
+        result = self.attempt()
         self.assertEqual((result["a_to_b"], result["b_to_c"]),
                          ("uncertain", "not_attempted"))
         self.assertEqual((self.b.clicks, self.c.clicks), (1, 0))
@@ -115,44 +115,44 @@ class TwoHopTests(unittest.TestCase):
 
     def test_B_reply_wrong_target_never_sends_C(self):
         self.b.next_text = "BATON_NEXT " + A
-        result = self.run()
+        result = self.attempt()
         self.assertEqual(result["b_to_c"], "not_authorized")
         self.assertEqual(self.c.clicks, 0)
         self.assertEqual(len(self.ops), 2)
 
     def test_B_reply_quoted_or_extra_prose_never_sends_C(self):
         self.b.next_text = "Please send: BATON_NEXT " + C
-        self.assertEqual(self.run()["b_to_c"], "not_authorized")
+        self.assertEqual(self.attempt()["b_to_c"], "not_authorized")
         self.assertEqual(self.c.clicks, 0)
 
     def test_B_still_generating_never_sends_C(self):
         self.b.generating = True
-        self.assertEqual(self.run()["b_to_c"], "not_authorized")
+        self.assertEqual(self.attempt()["b_to_c"], "not_authorized")
         self.assertEqual(self.c.clicks, 0)
 
     def test_duplicate_message_ids_rejected_before_any_write(self):
         with self.assertRaises(ValueError):
-            self.run(second_id="m1")
+            self.attempt(second_id="m1")
         self.assertEqual((self.b.clicks, self.c.clicks), (0, 0))
 
     def test_duplicate_conversation_ids_rejected_before_any_write(self):
         with self.assertRaises(ValueError):
-            self.run(c=B)
+            self.attempt(c=B)
         self.assertEqual((self.b.clicks, self.c.clicks), (0, 0))
 
     def test_uncertain_B_restart_never_resends(self):
         self.b.reply_id = None
-        self.assertEqual(self.run()["a_to_b"], "uncertain")
+        self.assertEqual(self.attempt()["a_to_b"], "uncertain")
         self.ledger = WakeLedger(self.path)
-        self.assertEqual(self.run()["a_to_b"], "uncertain")
+        self.assertEqual(self.attempt()["a_to_b"], "uncertain")
         self.assertEqual((self.b.clicks, self.c.clicks), (1, 0))
         self.assertEqual(len(self.ops), 2)
 
     def test_uncertain_C_restart_never_resends(self):
         self.c.reply_id = None
-        self.assertEqual(self.run()["b_to_c"], "uncertain")
+        self.assertEqual(self.attempt()["b_to_c"], "uncertain")
         self.ledger = WakeLedger(self.path)
-        self.assertEqual(self.run()["b_to_c"], "uncertain")
+        self.assertEqual(self.attempt()["b_to_c"], "uncertain")
         self.assertEqual((self.b.clicks, self.c.clicks), (1, 1))
         self.assertEqual(len(self.ops), 4)
 
@@ -161,11 +161,11 @@ class TwoHopTests(unittest.TestCase):
             self.ops.append(request)
             raise ConnectionError("broker unavailable")
         with self.assertRaises(Exception):
-            self.run(broker_request=fail)
+            self.attempt(broker_request=fail)
         self.assertEqual((self.b.clicks, self.c.clicks), (0, 0))
         self.assertEqual(self.ledger.state("m1")[1], "uncertain")
         self.ledger = WakeLedger(self.path)
-        self.assertEqual(self.run()["a_to_b"], "uncertain")
+        self.assertEqual(self.attempt()["a_to_b"], "uncertain")
         self.assertEqual(self.b.clicks, 0)
 
 
