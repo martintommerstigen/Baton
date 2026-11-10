@@ -16,30 +16,42 @@ from urllib.parse import urlsplit
 from remote_security.envelope_gate import Gate, MAX_PAYLOAD_BYTES
 from remote_security.http_ingress import load_bearer_token, load_private_key
 from remote_security.admission_mac import admission_mac
+from remote_security.tls_endpoint import pinned_client_context
 
 
 class DeliveryUncertain(RuntimeError):
     """The server may have committed; never automatically resend."""
 
 
-def send_once(base_url, bearer, sender_key, envelope, payload, timeout=3):
+def send_once(base_url, bearer, sender_key, envelope, payload, timeout=3, server_cert_file=None):
     parsed = urlsplit(base_url)
-    if (parsed.scheme != 'http' or parsed.hostname != '127.0.0.1'
+    if (parsed.scheme not in ('http', 'https') or parsed.hostname != '127.0.0.1'
             or parsed.username is not None or parsed.password is not None
             or parsed.path not in ('', '/') or parsed.query or parsed.fragment
             or parsed.port is None):
-        raise ValueError('only explicit http://127.0.0.1:PORT accepted; use SSH forwarding')
+        raise ValueError('only explicit http(s)://127.0.0.1:PORT accepted; use SSH forwarding')
     if not isinstance(payload, bytes) or len(payload) > MAX_PAYLOAD_BYTES:
         raise ValueError('payload must be at most 65536 bytes')
     if not isinstance(bearer, bytes) or not 32 <= len(bearer) <= 128 or any(c < 33 or c > 126 for c in bearer):
         raise ValueError('invalid bearer')
+    if parsed.scheme == 'https' and server_cert_file is None:
+        raise ValueError('HTTPS requires an explicit pinned server certificate')
+    if parsed.scheme == 'http' and server_cert_file is not None:
+        raise ValueError('server certificate cannot protect plaintext HTTP')
     signature = Gate.sign(envelope, sender_key)
     body = json.dumps({'envelope': envelope, 'signature': signature,
                        'payload_b64': base64.b64encode(payload).decode('ascii')},
                       separators=(',', ':'), sort_keys=True).encode('utf-8')
     nonce = secrets.token_hex(16)
     expected_mac = admission_mac(sender_key, nonce, envelope, 'accepted_not_delivered')
-    connection = http.client.HTTPConnection('127.0.0.1', parsed.port, timeout=timeout)
+    if parsed.scheme == 'https':
+        # TLS validates the server's IP SAN before any bearer or payload is sent.
+        connection = http.client.HTTPSConnection(
+            '127.0.0.1', parsed.port, timeout=timeout,
+            context=pinned_client_context(server_cert_file))
+    else:
+        # Legacy loopback/SSH forwarding mode: NOT authenticated before disclosure.
+        connection = http.client.HTTPConnection('127.0.0.1', parsed.port, timeout=timeout)
     try:
         # No proxy or redirect handler; a 302 is an error, never followed.
         connection.request('POST', '/v1/envelopes', body=body, headers={
@@ -90,6 +102,7 @@ def load_private_payload(path):
 def main(argv=None):
     parser = argparse.ArgumentParser(description='Send one signed envelope to loopback Baton ingress')
     parser.add_argument('--url', default='http://127.0.0.1:8788')
+    parser.add_argument('--server-cert-file', help='owner-only pinned TLS certificate PEM; required for https://')
     parser.add_argument('--sender', required=True)
     parser.add_argument('--target', required=True)
     parser.add_argument('--message-id', required=True, help='stable caller-provisioned unique ID; never silently regenerate on failure')
@@ -104,7 +117,8 @@ def main(argv=None):
     # Print ID before submission so a timeout does not erase its identity.
     print('message_id=' + args.message_id, flush=True)
     print('state=' + send_once(args.url, load_bearer_token(args.token_file),
-                               load_private_key(args.sender_key_file), envelope, payload))
+                               load_private_key(args.sender_key_file), envelope, payload,
+                               server_cert_file=args.server_cert_file))
 
 
 if __name__ == '__main__':
