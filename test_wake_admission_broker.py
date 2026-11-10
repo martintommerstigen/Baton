@@ -145,5 +145,88 @@ class AdmissionTests(unittest.TestCase):
             Broker(self.sock, self.store, [os.getuid()])
 
 
+    def test_begin_click_requires_prior_admission(self):
+        req = self.envelope()
+        req["op"] = "begin_click"
+        self.assertEqual(self.ask(req), {"state": "rejected", "reason": "no_admission"})
+        self.assertEqual(self.ask({"op": "status"})["outstanding"], 0)
+
+    def test_begin_click_binds_exact_envelope(self):
+        original = self.envelope()
+        self.assertEqual(self.ask(original)["state"], "admitted_not_delivered")
+        for field, wrong in (("message_id", "m2"), ("sender_id", "chat-B"),
+                             ("origin_turn_id", "different-turn"),
+                             ("payload_sha256", hashlib.sha256(b"changed").hexdigest())):
+            req = dict(original, op="begin_click")
+            req[field] = wrong
+            self.assertEqual(self.ask(req)["reason"], "envelope_mismatch_or_attempt_closed")
+        self.assertEqual(self.ask(dict(original, op="begin_click"))["state"], "click_started_uncertain")
+
+    def test_begin_click_is_one_way_and_no_second_send(self):
+        req = self.envelope()
+        self.assertEqual(self.ask(req)["state"], "admitted_not_delivered")
+        begin = dict(req, op="begin_click")
+        self.assertEqual(self.ask(begin)["state"], "click_started_uncertain")
+        self.assertEqual(self.ask(begin)["reason"], "envelope_mismatch_or_attempt_closed")
+        self.assertEqual(self.ask(req)["reason"], "outstanding_attempt")
+        self.assertEqual(self.ask(self.envelope(message="another"))["reason"], "outstanding_attempt")
+
+    def test_click_started_persists_across_broker_restart(self):
+        req = self.envelope()
+        self.ask(req)
+        self.assertEqual(self.ask(dict(req, op="begin_click"))["state"], "click_started_uncertain")
+        self.stop()
+        self.store = AdmissionStore(self.db, self.pause, self.allowed)
+        self.broker = Broker(self.sock, self.store, [os.getuid()])
+        self.thread = threading.Thread(target=self.broker.serve_forever, kwargs={"poll_interval": .01}, daemon=True)
+        self.thread.start()
+        self.assertEqual(self.ask(dict(req, op="begin_click"))["reason"],
+                         "envelope_mismatch_or_attempt_closed")
+        self.assertEqual(self.ask(req)["reason"], "outstanding_attempt")
+
+    def test_pause_before_begin_click_blocks_transition(self):
+        req = self.envelope()
+        self.ask(req)
+        self.assertEqual(self.ask({"op": "pause"})["state"], "pause_recorded_not_revocation")
+        self.assertEqual(self.ask(dict(req, op="begin_click"))["reason"], "paused_or_untrusted")
+        db = self.store.connect()
+        try:
+            self.assertEqual(db.execute("SELECT state FROM admissions").fetchone()[0], "admitted")
+        finally:
+            db.close()
+
+    def test_concurrent_begin_click_only_one_transition(self):
+        req = self.envelope()
+        self.ask(req)
+        begin = dict(req, op="begin_click")
+        barrier = threading.Barrier(5)
+        states = []
+        lock = threading.Lock()
+        def worker():
+            barrier.wait()
+            response = self.ask(begin)
+            with lock:
+                states.append(response["state"])
+        workers = [threading.Thread(target=worker) for _ in range(5)]
+        for worker_thread in workers:
+            worker_thread.start()
+        for worker_thread in workers:
+            worker_thread.join()
+        self.assertEqual(states.count("click_started_uncertain"), 1)
+        self.assertEqual(states.count("rejected"), 4)
+
+    def test_pause_after_begin_click_cannot_revoke_uncertainty(self):
+        req = self.envelope()
+        self.ask(req)
+        self.assertEqual(self.ask(dict(req, op="begin_click"))["state"], "click_started_uncertain")
+        self.assertEqual(self.ask({"op": "pause"})["state"], "pause_recorded_not_revocation")
+        self.assertEqual(self.ask(req)["reason"], "paused_or_untrusted")
+        db = self.store.connect()
+        try:
+            self.assertEqual(db.execute("SELECT state FROM admissions").fetchone()[0], "uncertain")
+        finally:
+            db.close()
+
+
 if __name__ == "__main__":
     unittest.main()
