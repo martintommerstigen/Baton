@@ -2,10 +2,18 @@
 import argparse
 import json
 from urllib.parse import urlsplit
-from urllib.request import Request, build_opener, ProxyHandler
+from urllib.request import Request, build_opener, ProxyHandler, HTTPRedirectHandler
 from .agent import load_token_file
 
 ALLOWED = {'health': '/v1/health', 'pause-status': '/v1/pause-status'}
+
+
+class NoRedirect(HTTPRedirectHandler):
+    """Never forward the bearer token to a redirected endpoint."""
+
+    def redirect_request(self, req, fp, code, msg, headers, newurl):
+        raise ValueError('gateway redirect refused')
+
 
 
 def request_status(base_url, token, operation, timeout=3):
@@ -20,7 +28,7 @@ def request_status(base_url, token, operation, timeout=3):
     req = Request('http://127.0.0.1:%d%s' % (parsed.port, ALLOWED[operation]),
                   headers={'Authorization': 'Bearer ' + token}, method='GET')
     # Do not leak the local authorization header to an environment-configured proxy.
-    with build_opener(ProxyHandler({})).open(req, timeout=timeout) as response:
+    with build_opener(ProxyHandler({}), NoRedirect()).open(req, timeout=timeout) as response:
         if response.status != 200:
             raise RuntimeError('unexpected response')
         raw = response.read(2049)
