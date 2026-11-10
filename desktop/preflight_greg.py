@@ -1,10 +1,8 @@
 #!/usr/bin/env python3
 """Offline, read-only preflight. No network, credentials, or browser automation."""
 import json
-import os
 from pathlib import Path
 import shutil
-import subprocess
 import sys
 
 def check():
@@ -24,7 +22,8 @@ def check():
     }
     # Fail closed: a missing marker alone is not proof of permission.
     try:
-        if pause.parent.is_dir() and not pause.parent.is_symlink():
+        ancestors = list(reversed(pause.parents))
+        if all(p.is_dir() and not p.is_symlink() for p in ancestors):
             result["ui_writes_paused_or_unverifiable"] = pause.exists() or pause.is_symlink()
     except OSError:
         pass
