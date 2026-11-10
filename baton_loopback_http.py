@@ -27,6 +27,12 @@ def dispatch(path, body, token, expected, workspace):
 
 class Handler(BaseHTTPRequestHandler):
     def do_POST(self):
+        if self.path != "/v1/execute":
+            return self.reply(404, {"error": "not found"})
+        header = self.headers.get("Authorization", "")
+        token = header[7:] if header.startswith("Bearer ") else ""
+        if not self.server.token or not hmac.compare_digest(token, self.server.token):
+            return self.reply(401, {"error": "unauthorized"})
         length = self.headers.get("Content-Length", "")
         if not length.isdecimal() or int(length) > MAX_BODY:
             return self.reply(413, {"error": "invalid length"})
@@ -34,8 +40,6 @@ class Handler(BaseHTTPRequestHandler):
             payload = json.loads(self.rfile.read(int(length)))
         except (ValueError, UnicodeDecodeError):
             return self.reply(400, {"error": "invalid JSON"})
-        header = self.headers.get("Authorization", "")
-        token = header[7:] if header.startswith("Bearer ") else ""
         status, result = dispatch(self.path, payload, token, self.server.token, self.server.workspace)
         self.reply(status, result)
     def do_GET(self):
