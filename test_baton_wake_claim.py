@@ -24,6 +24,21 @@ class WakeClaimTests(unittest.TestCase):
         self.addCleanup(alias.unlink)
         with self.assertRaises(ValueError):
             claim_next(alias)
+    def test_invalid_request_does_not_block_valid_request(self):
+        bad = self.root/"queued"/("0"*32+".json")
+        bad.write_text("{invalid", encoding="utf-8")
+        self.assertEqual(claim_next(self.root), self.intent)
+        self.assertFalse((self.root/"inflight"/bad.name).exists())
+    def test_mismatched_id_does_not_claim(self):
+        bad = self.root/"queued"/("0"*32+".json")
+        bad.write_text((self.root/"queued"/("a"*32+".json")).read_text())
+        self.assertEqual(claim_next(self.root), self.intent)
+        self.assertFalse((self.root/"inflight"/bad.name).exists())
+    def test_oversized_request_does_not_claim(self):
+        bad = self.root/"queued"/("0"*32+".json")
+        bad.write_text("x"*8193)
+        self.assertEqual(claim_next(self.root), self.intent)
+        self.assertFalse((self.root/"inflight"/bad.name).exists())
     def test_existing_claim_is_not_overwritten(self):
         (self.root/"inflight").mkdir()
         (self.root/"inflight"/("a"*32+".json")).write_text("existing")
