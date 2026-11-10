@@ -1,0 +1,57 @@
+[
+  {
+    "name": "audit/ronja-b5-research-job-provenance-2026-11-10",
+    "sha": "765dd72cede534584379391791d4a95df42bea4f",
+    "commit_date": "2026-11-10T18:48:44Z"
+  },
+  {
+    "name": "audit/test-coverage-index-2026-11-10",
+    "sha": "51554c5f3855d0ef3630b5e19254f1c1d0a226af",
+    "commit_date": "2026-11-10T18:05:57Z"
+  },
+  {
+    "name": "integration/eik-rustworld-zero-desktop-2026-11-10",
+    "sha": "a025c2980da93c37282af4a790d0a3d611ef0a17",
+    "commit_date": "2026-11-10T21:24:53Z"
+  },
+  {
+    "name": "research/eik-kilde-retur-r25-priority-2026-11-10",
+    "sha": "48350d1a10ba574ed9be3f27971b3051feee5d4b",
+    "commit_date": "2026-11-10T18:13:42Z"
+  },
+  {
+    "name": "research/eik-kilde-retur-rolf-provenance-2026-11-10",
+    "sha": "f418870cfa92d69a5271d7a86d08a73f38518c6c",
+    "commit_date": "2026-11-10T19:32:40Z"
+  },
+  {
+    "name": "research/rolf-gaia-memory-continuity-2026-11-10",
+    "sha": "d9e9e33522be66fd9baace7c0b09ce5bb8f29501",
+    "commit_date": "2026-11-10T18:56:26Z"
+  },
+  {
+    "name": "research/rolf-operative-memory-rustworld-2026-11-10",
+    "sha": "7d172b4afa476643f9e3ae6033ca2409276cf45e",
+    "commit_date": "2026-11-10T19:54:57Z"
+  },
+  {
+    "name": "research/vanja-r26-historical-closure-selector-clock-audit-2026-11-10",
+    "sha": "2348356522c4cec6d472f91b99993eb1f94017f8",
+    "commit_date": "2026-11-10T16:55:30Z"
+  },
+  {
+    "name": "research/vanja-r27-source-gate-prospective-physics-2026-11-10",
+    "sha": "a5172da4aaf252e0c8e650dd2409db94b66d3e5d",
+    "commit_date": "2026-11-10T17:35:05Z"
+  },
+  {
+    "name": "research/vanja-r28-oki-release-gate-2026-11-10",
+    "sha": "e13e464671cd0a416ce9bb6c9564f5693f656101",
+    "commit_date": "2026-11-10T21:18:59Z"
+  },
+  {
+    "name": "transport/baton-greg-bus-2026-11-10",
+    "sha": "1fe898ee989ea5b10273bdc1e0825c5715245794",
+    "commit_date": "2026-11-10T21:25:11Z"
+  }
+]
