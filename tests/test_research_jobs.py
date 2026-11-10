@@ -171,6 +171,15 @@ class ResearchJobsTests(unittest.TestCase):
         req = self.request(project="GTRCM")
         self.assertEqual(obj.run_once(req, b"hello")["receipt"]["project"], "GTRCM")
 
+    def test_audit_only_does_not_create_missing_database(self):
+        missing = self.root / "absent.db"
+        auditor = ResearchJobs(missing, self.key, self.allowed, audit_only=True)
+        with self.assertRaises(FileNotFoundError):
+            auditor.audit("GTRCM_TEST", "job00001")
+        self.assertFalse(missing.exists())
+        with self.assertRaises(JobRejected):
+            auditor.run_once(self.request(), b"hello")
+
     def test_audit_not_found_is_not_delivery_proof(self):
         self.assertEqual(self.jobs.audit("GTRCM_TEST", "missing00"),
                          {"state": "not_found_not_proof_of_nonexecution"})
