@@ -186,7 +186,15 @@ def attach_baton_panel(window, view, page, *, initial_chat=None, initial_message
                     log_event(request_id, chat_id, "send_not_ready")
                     set_status("Sendeknappen var ikke klar. Levering IKKE verifisert.")
                 refresh_send()
-            page.runJavaScript(send_click_script(), clicked)
+            def click_once():
+                if not is_chatgpt_conversation_url(view.url().toString(), chat_id):
+                    in_flight[0] = False
+                    log_event(request_id, chat_id, "target_changed")
+                    set_status("STOPP: Samtalen ble endret før sendeknappen var klar.")
+                    refresh_send()
+                    return
+                page.runJavaScript(send_click_script(), clicked)
+            QTimer.singleShot(350, click_once)
         page.runJavaScript(script, prepared)
 
     def inspect_live_chat():
