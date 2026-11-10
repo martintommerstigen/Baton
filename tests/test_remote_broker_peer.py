@@ -12,6 +12,7 @@ from remote_security.broker_peer import (BrokerUncertain, UntrustedBroker,
 
 
 @unittest.skipUnless(hasattr(socket, 'SO_PEERCRED'), 'Linux SO_PEERCRED required')
+@unittest.skipIf(os.getuid() == 0, 'client peer tests require unprivileged UID')
 class BrokerPeerTests(unittest.TestCase):
     def setUp(self):
         self.tmp = tempfile.TemporaryDirectory()
