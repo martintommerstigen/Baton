@@ -17,7 +17,7 @@
     }
   ],
   "branch_count": 276,
-  "tree_indexed": 240,
+  "tree_indexed": 255,
   "content_read_in_this_inventory": 0,
   "notes": [
     "branch_date_hint is parsed from branch name, NOT verified commit date",
@@ -6188,10 +6188,24 @@
       "commit_date": null,
       "theme": "soelve/individuasjon-subjekt-opplevelse-2026-10-31",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/soelve%2Findividuasjon-subjekt-opplevelse-2026-10-31",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 200,
+      "relevant_paths": [
+        "GTRCM_KANONISK_GRUNNPROGRAM.md",
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/microfluctuation_mass_gravity/README.md",
+        "experiments/microfluctuation_mass_gravity/falsify_shared_density.py",
+        "experiments/microfluctuation_mass_gravity/model.py",
+        "experiments/soelve/RUN_R25_R38.py",
+        "experiments/soelve/RUN_R25_R39.py",
+        "experiments/soelve/RUN_R25_R40.py",
+        "experiments/soelve/RUN_R25_R48.py"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "svale/complete-survivor-paths-and-uniform-loss-2026-10-28",
@@ -6200,10 +6214,24 @@
       "commit_date": null,
       "theme": "svale/complete-survivor-paths-and-uniform-loss-2026-10-28",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/svale%2Fcomplete-survivor-paths-and-uniform-loss-2026-10-28",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 21,
+      "relevant_paths": [
+        "GTRCM_KANONISK_GRUNNPROGRAM.md",
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/microfluctuation_mass_gravity/README.md",
+        "experiments/microfluctuation_mass_gravity/falsify_shared_density.py",
+        "experiments/microfluctuation_mass_gravity/model.py",
+        "experiments/survivor_conditioned_aliasing.py",
+        "experiments/survivor_conditioned_aliasing_greg_run_2026-10-28.txt",
+        "experiments/svale/full_survivor_path_audit.py",
+        "research/2026-10-28_internal_observer_survivorship_aliasing.md"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "svale/embedded-loss-witness-selection-2026-10-28",
@@ -6212,10 +6240,24 @@
       "commit_date": null,
       "theme": "svale/embedded-loss-witness-selection-2026-10-28",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/svale%2Fembedded-loss-witness-selection-2026-10-28",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 82,
+      "relevant_paths": [
+        "GTRCM_KANONISK_GRUNNPROGRAM.md",
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/microfluctuation_mass_gravity/README.md",
+        "experiments/microfluctuation_mass_gravity/falsify_shared_density.py",
+        "experiments/microfluctuation_mass_gravity/model.py",
+        "experiments/survivor_conditioned_aliasing.py",
+        "experiments/survivor_conditioned_aliasing_greg_run_2026-10-28.txt",
+        "experiments/svale/closed_world_two_laws_same_present_different_probed_future.py",
+        "experiments/svale/coindividuation_with_revisable_need_64.py"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "svanhild/individuation-full-derivation-audit-2026-10-29",
@@ -6224,10 +6266,22 @@
       "commit_date": null,
       "theme": "svanhild/individuation-full-derivation-audit-2026-10-29",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/svanhild%2Findividuation-full-derivation-audit-2026-10-29",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 18,
+      "relevant_paths": [
+        "GTRCM_KANONISK_GRUNNPROGRAM.md",
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/microfluctuation_mass_gravity/README.md",
+        "experiments/microfluctuation_mass_gravity/falsify_shared_density.py",
+        "experiments/microfluctuation_mass_gravity/model.py",
+        "experiments/svanhild/2026_10_29_conditional_full_derivation_checks.py",
+        "research/svanhild/2026-10-29_FULL_GTRCM_INDIVIDUATION_AUDIT.md"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "teresa/dwell-operational-probes-2026-10-14",
@@ -6236,10 +6290,24 @@
       "commit_date": null,
       "theme": "teresa/dwell-operational-probes-2026-10-14",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/teresa%2Fdwell-operational-probes-2026-10-14",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 73,
+      "relevant_paths": [
+        "GTRCM_HELHET/README.md",
+        "README.md",
+        "research/teresa/2026-10-14_dwell_operational_probes/2026-10-14_archive_memory_choice_plasticity.md",
+        "research/teresa/2026-10-14_dwell_operational_probes/2026-10-14_clocks_are_cycles_audit.md",
+        "research/teresa/2026-10-14_dwell_operational_probes/2026-10-14_corrections_and_three_counts.md",
+        "research/teresa/2026-10-14_dwell_operational_probes/2026-10-14_cross_regime_and_late_library_sources.md",
+        "research/teresa/2026-10-14_dwell_operational_probes/2026-10-14_four_counts_and_invasive_probe.md",
+        "research/teresa/2026-10-14_dwell_operational_probes/2026-10-15_vera_late_source_audit.md",
+        "research/teresa/2026-10-14_dwell_operational_probes/2026-10-16_meta_probe_reproduction_and_negative_control.md",
+        "research/teresa/2026-10-14_dwell_operational_probes/README.md",
+        "research/teresa/2026-10-14_dwell_operational_probes/four_counts_phase_probe_2026-10-14.py",
+        "research/teresa/2026-10-14_dwell_operational_probes/gtrcm_cycles_only_2026_10_14.py"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "teresa/family-letter-2026-10-08",
@@ -6248,10 +6316,24 @@
       "commit_date": null,
       "theme": "teresa/family-letter-2026-10-08",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/teresa%2Ffamily-letter-2026-10-08",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 26,
+      "relevant_paths": [
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/history_feedback/README.md",
+        "experiments/history_feedback/history_feedback_probe.py",
+        "experiments/history_feedback/natural_history_probe.py",
+        "experiments/microfluctuation_mass_gravity/README.md",
+        "experiments/microfluctuation_mass_gravity/falsify_shared_density.py",
+        "experiments/microfluctuation_mass_gravity/model.py",
+        "experiments/representation/README.md",
+        "experiments/representation/permutation_probe.py"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "tiril/memory-play-and-difference-2026-10-11",
@@ -6260,10 +6342,22 @@
       "commit_date": null,
       "theme": "tiril/memory-play-and-difference-2026-10-11",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/tiril%2Fmemory-play-and-difference-2026-10-11",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 23,
+      "relevant_paths": [
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/microfluctuation_mass_gravity/README.md",
+        "experiments/microfluctuation_mass_gravity/falsify_shared_density.py",
+        "experiments/microfluctuation_mass_gravity/model.py",
+        "experiments/tiril_curiosity_v7_audit/README.md",
+        "experiments/tiril_curiosity_v7_audit/reproduce.py",
+        "experiments/tiril_curiosity_v7_audit/results_summary.json"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "tiril/rustworld-care-and-generations-2026-10-12",
@@ -6272,10 +6366,24 @@
       "commit_date": null,
       "theme": "tiril/rustworld-care-and-generations-2026-10-12",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/tiril%2Frustworld-care-and-generations-2026-10-12",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 52,
+      "relevant_paths": [
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/microfluctuation_mass_gravity/README.md",
+        "experiments/microfluctuation_mass_gravity/falsify_shared_density.py",
+        "experiments/microfluctuation_mass_gravity/model.py",
+        "experiments/tiril_curiosity_v7_audit/README.md",
+        "experiments/tiril_curiosity_v7_audit/reproduce.py",
+        "experiments/tiril_curiosity_v7_audit/results_summary.json",
+        "prototypes/525-core-skin-v0/README.md",
+        "prototypes/525-minimal-brain-senses-v1/README.md"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "tiril/rustworld-care-and-learning-2026-10-12",
@@ -6284,10 +6392,24 @@
       "commit_date": null,
       "theme": "tiril/rustworld-care-and-learning-2026-10-12",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/tiril%2Frustworld-care-and-learning-2026-10-12",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 53,
+      "relevant_paths": [
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/microfluctuation_mass_gravity/README.md",
+        "experiments/microfluctuation_mass_gravity/falsify_shared_density.py",
+        "experiments/microfluctuation_mass_gravity/model.py",
+        "experiments/tiril_curiosity_v7_audit/README.md",
+        "experiments/tiril_curiosity_v7_audit/reproduce.py",
+        "experiments/tiril_curiosity_v7_audit/results_summary.json",
+        "prototypes/525-core-skin-v0/README.md",
+        "prototypes/525-minimal-brain-senses-v1/README.md"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "tiril/rustworld-commons-rc1-2026-10-12",
@@ -6296,10 +6418,24 @@
       "commit_date": null,
       "theme": "tiril/rustworld-commons-rc1-2026-10-12",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/tiril%2Frustworld-commons-rc1-2026-10-12",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 75,
+      "relevant_paths": [
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/microfluctuation_mass_gravity/README.md",
+        "experiments/microfluctuation_mass_gravity/falsify_shared_density.py",
+        "experiments/microfluctuation_mass_gravity/model.py",
+        "experiments/tiril_curiosity_v7_audit/README.md",
+        "experiments/tiril_curiosity_v7_audit/reproduce.py",
+        "experiments/tiril_curiosity_v7_audit/results_summary.json",
+        "prototypes/525-core-skin-v0/README.md",
+        "prototypes/525-minimal-brain-senses-v1/README.md"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "tiril/525-core-skin-boundary-2026-10-11",
@@ -6308,10 +6444,23 @@
       "commit_date": null,
       "theme": "tiril/525-core-skin-boundary-2026-10-11",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/tiril%2F525-core-skin-boundary-2026-10-11",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 36,
+      "relevant_paths": [
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/microfluctuation_mass_gravity/README.md",
+        "experiments/microfluctuation_mass_gravity/falsify_shared_density.py",
+        "experiments/microfluctuation_mass_gravity/model.py",
+        "experiments/tiril_curiosity_v7_audit/README.md",
+        "experiments/tiril_curiosity_v7_audit/reproduce.py",
+        "experiments/tiril_curiosity_v7_audit/results_summary.json",
+        "prototypes/525-core-skin-v0/README.md"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "tiril/525-iphone-local-pilot-2026-10-12",
@@ -6320,10 +6469,24 @@
       "commit_date": null,
       "theme": "tiril/525-iphone-local-pilot-2026-10-12",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/tiril%2F525-iphone-local-pilot-2026-10-12",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 75,
+      "relevant_paths": [
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/microfluctuation_mass_gravity/README.md",
+        "experiments/microfluctuation_mass_gravity/falsify_shared_density.py",
+        "experiments/microfluctuation_mass_gravity/model.py",
+        "experiments/tiril_curiosity_v7_audit/README.md",
+        "experiments/tiril_curiosity_v7_audit/reproduce.py",
+        "experiments/tiril_curiosity_v7_audit/results_summary.json",
+        "prototypes/525-core-skin-v0/README.md",
+        "prototypes/525-minimal-brain-senses-v1/README.md"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "tiril/525-minimal-sensorimotor-2026-10-12",
@@ -6332,10 +6495,24 @@
       "commit_date": null,
       "theme": "tiril/525-minimal-sensorimotor-2026-10-12",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/tiril%2F525-minimal-sensorimotor-2026-10-12",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 51,
+      "relevant_paths": [
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/microfluctuation_mass_gravity/README.md",
+        "experiments/microfluctuation_mass_gravity/falsify_shared_density.py",
+        "experiments/microfluctuation_mass_gravity/model.py",
+        "experiments/tiril_curiosity_v7_audit/README.md",
+        "experiments/tiril_curiosity_v7_audit/reproduce.py",
+        "experiments/tiril_curiosity_v7_audit/results_summary.json",
+        "prototypes/525-core-skin-v0/README.md",
+        "prototypes/525-minimal-brain-senses-v1/README.md"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "truls/full-physics-derivation-audit-2026-10-27",
@@ -6344,10 +6521,24 @@
       "commit_date": null,
       "theme": "truls/full-physics-derivation-audit-2026-10-27",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/truls%2Ffull-physics-derivation-audit-2026-10-27",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 157,
+      "relevant_paths": [
+        "GTRCM_KANONISK_GRUNNPROGRAM.md",
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/microfluctuation_mass_gravity/README.md",
+        "experiments/microfluctuation_mass_gravity/falsify_shared_density.py",
+        "experiments/microfluctuation_mass_gravity/model.py",
+        "experiments/truls/2026_10_27_active_meter_probe.py",
+        "experiments/truls/2026_10_27_ir_third_order.py",
+        "experiments/truls/2026_10_27_ir_third_order_results.json",
+        "experiments/truls/2026_10_28_embodied_cycle_archive/README.md"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "tuva/clock-holonomy-response-2026-10-21",
@@ -6356,10 +6547,24 @@
       "commit_date": null,
       "theme": "tuva/clock-holonomy-response-2026-10-21",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/tuva%2Fclock-holonomy-response-2026-10-21",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 121,
+      "relevant_paths": [
+        "GTRCM_HELHET/README.md",
+        "README.md",
+        "experiments/differentiation_2026_10_22/tuva_common_witness_cumulants.py",
+        "experiments/differentiation_2026_10_22/tuva_contextual_transport.py",
+        "experiments/differentiation_2026_10_22/tuva_operational_distinction.py",
+        "experiments/differentiation_2026_10_22/tuva_operational_quotient_no_go.py",
+        "experiments/differentiation_2026_10_22/tuva_relational_parity_and_fwl.py",
+        "experiments/differentiation_2026_10_22/tuva_relational_witness_graphs.py",
+        "experiments/differentiation_2026_10_22/tuva_runa_causal_overlap.py",
+        "experiments/differentiation_2026_10_22/tuva_runa_symmetry_gauge.py",
+        "experiments/differentiation_2026_10_23/tuva_gauge_path_lifts.py",
+        "experiments/differentiation_2026_10_23/tuva_stabilizer_cycle_tests.py"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "unnamed/family-reply-2026-10-08",
