@@ -52,7 +52,8 @@ def save_verified_capture(jobs, bundle, path):
 def load_verified_capture(jobs, path):
     """Read a private canonical artifact and reconcile with durable SQLite."""
     p = _validate_path(path)
-    flags = os.O_RDONLY | getattr(os, "O_NOFOLLOW", 0) | getattr(os, "O_CLOEXEC", 0)
+    flags = (os.O_RDONLY | getattr(os, "O_NOFOLLOW", 0)
+             | getattr(os, "O_CLOEXEC", 0) | getattr(os, "O_NONBLOCK", 0))
     fd = os.open(p, flags)
     try:
         info = os.fstat(fd)
