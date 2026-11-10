@@ -127,7 +127,8 @@ def load_private_payload(path):
 
 def main(argv=None):
     parser = argparse.ArgumentParser(description='Send one signed envelope to loopback Baton ingress')
-    parser.add_argument('--url', default='http://127.0.0.1:8788')
+    parser.add_argument('--url', default='https://127.0.0.1:8788',
+                        help='HTTPS loopback by default; plaintext requires an explicit http:// URL')
     parser.add_argument('--server-cert-file', help='owner-only pinned TLS certificate PEM; required for https://')
     parser.add_argument('--sender', required=True)
     parser.add_argument('--target', required=True)
