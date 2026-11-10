@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Verify a full local HTTP MCP exchange on Greg without exposing a port publicly.
 set -euo pipefail
-cd "${HOME}/.local/share/baton-evening"
+cd "${BATON_WORKTREE:-${HOME}/.local/share/baton-evening}"
 secret="$(python3 -c 'import secrets; print(secrets.token_urlsafe(36))')"
 port="$(python3 -c 'import socket; s=socket.socket(); s.bind(("127.0.0.1",0)); print(s.getsockname()[1]); s.close()')"
 BATON_MCP_TOKEN="$secret" python3 baton_mcp.py --port "$port" >/dev/null 2>&1 &
