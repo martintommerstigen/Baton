@@ -29,7 +29,7 @@
 - `test_wake_turn_snapshot.py` tests mutation between observation and snapshot, before C, after admission, after committed begin, source URL swap, missing digest, and missing persisted snapshot after restart. Existing two-hop fake observations were updated to match the stricter contract.
 - New third-party software: **none**; Python standard library and existing B1/Ronja interfaces only. Ronja's [R7 read-only research adapter](https://github.com/martintommerstigen/Baton/pull/19) is not copied or modified.
 
-**Test status:** pending GitHub CI at creation of this note; local standalone Python compile of the new module passed. No real Greg/CDP/UI test. CI success, if obtained, is **tested-simulated**, never `tested-live`.
+**Test status:** [GitHub Actions 42884629864](https://github.com/martintommerstigen/Baton/actions/runs/42884629864) **success** on commit `f40502c`: **194/194 Python tests passed** (including eight new mutation/restart/URL negatives), Python compilation and offline A→B→C simulation passed. [Draft PR #22](https://github.com/martintommerstigen/Baton/pull/22) also passed [CI 42884825801](https://github.com/martintommerstigen/Baton/actions/runs/42884825801) at `5f12a4a` before this documentation-only correction. This is **tested-simulated**, not live Greg/CDP/UI.
 
 ## Exact minimal live blocker / next execution
 
