@@ -1,7 +1,7 @@
 """Explicitly authorized two-hop existing-chat wake test (no background daemon).
 
-Requires TWO already open logged-in ChatGPT tabs for B and C, local CDP,
-and a predetermined C message. The assistant in B must emit BATON_NEXT <C UUID>.
+Requires THREE already open logged-in ChatGPT tabs for A, B and C,
+local CDP, and a predetermined C message. The assistant in B must emit BATON_NEXT <C UUID>.
 No model-generated body or arbitrary command is executed.
 """
 import argparse
