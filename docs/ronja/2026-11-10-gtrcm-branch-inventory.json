@@ -17,7 +17,7 @@
     }
   ],
   "branch_count": 276,
-  "tree_indexed": 75,
+  "tree_indexed": 90,
   "content_read_in_this_inventory": 0,
   "notes": [
     "branch_date_hint is parsed from branch name, NOT verified commit date",
@@ -1939,10 +1939,24 @@
       "commit_date": null,
       "theme": "mina/archaeology-notes-2026-10-07",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/mina%2Farchaeology-notes-2026-10-07",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 916,
+      "relevant_paths": [
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "archive/525/GTRCM/525-utløpt-første-forsøk/525.2/LLM.swift-main/README.md",
+        "archive/525/GTRCM/525.scnd.try/TinyLlama-main/README.md",
+        "archive/525/GTRCM/525.scnd.try/TinyLlama-main/chat_gradio/README.md",
+        "archive/525/GTRCM/525.scnd.try/TinyLlama-main/speculative_decoding/README.md",
+        "archive/525/GTRCM/525.scnd.try/llama-stack-client-swift-main/README.md",
+        "archive/525/GTRCM/525.scnd.try/llama-stack-client-swift-main/examples/ios_calendar_assistant/README.md",
+        "archive/525/GTRCM/525.scnd.try/llama-stack-client-swift-main/examples/ios_quick_demo/README.md",
+        "archive/525/README.md"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "notes/2026-10-11-difference-retention",
@@ -1951,10 +1965,21 @@
       "commit_date": null,
       "theme": "notes/2026-10-11-difference-retention",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/notes%2F2026-10-11-difference-retention",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 22,
+      "relevant_paths": [
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/difference_retention/same_first_probe.py",
+        "experiments/difference_retention/third_probe_audit.py",
+        "experiments/microfluctuation_mass_gravity/README.md",
+        "experiments/microfluctuation_mass_gravity/falsify_shared_density.py",
+        "experiments/microfluctuation_mass_gravity/model.py"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "reading/family-history-and-dogma-2026-10-13",
@@ -1963,10 +1988,20 @@
       "commit_date": null,
       "theme": "reading/family-history-and-dogma-2026-10-13",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/reading%2Ffamily-history-and-dogma-2026-10-13",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 23,
+      "relevant_paths": [
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/gtrcm_causal_audit_2026_10_13.py",
+        "experiments/microfluctuation_mass_gravity/README.md",
+        "experiments/microfluctuation_mass_gravity/falsify_shared_density.py",
+        "experiments/microfluctuation_mass_gravity/model.py"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "reconstruction-2026-10-06",
@@ -1975,10 +2010,19 @@
       "commit_date": null,
       "theme": "reconstruction-2026-10-06",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/reconstruction-2026-10-06",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 15,
+      "relevant_paths": [
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/microfluctuation_mass_gravity/README.md",
+        "experiments/microfluctuation_mass_gravity/falsify_shared_density.py",
+        "experiments/microfluctuation_mass_gravity/model.py"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "research/andreas-ab5-difference-changes-difference-2026-11-04",
@@ -1987,10 +2031,24 @@
       "commit_date": null,
       "theme": "research/andreas-ab5-difference-changes-difference-2026-11-04",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/research%2Fandreas-ab5-difference-changes-difference-2026-11-04",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 133,
+      "relevant_paths": [
+        "GTRCM_KANONISK_GRUNNPROGRAM.md",
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/andreas/2026_11_04/ab5_difference_changes_difference.py",
+        "experiments/andreas/2026_11_04/g20_antibuild_no_minimum.py",
+        "experiments/andreas/2026_11_04/g21_interchangeability_boundary.py",
+        "experiments/andreas/2026_11_04/g22_endogenous_distinction_carrier.py",
+        "experiments/andreas/2026_11_04/g23_distinction_fates.py",
+        "experiments/egil/egil_r0_response_residual_antibygge_2026_11_04.py",
+        "experiments/eik/adaptive_repertoire_gate.py"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "research/andreas-ab6-endogenous-repertoire-2026-11-04",
@@ -1999,10 +2057,24 @@
       "commit_date": null,
       "theme": "research/andreas-ab6-endogenous-repertoire-2026-11-04",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/research%2Fandreas-ab6-endogenous-repertoire-2026-11-04",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 135,
+      "relevant_paths": [
+        "GTRCM_KANONISK_GRUNNPROGRAM.md",
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/andreas/2026_11_04/ab5_difference_changes_difference.py",
+        "experiments/andreas/2026_11_04/ab6_endogenous_repertoire.py",
+        "experiments/andreas/2026_11_04/g20_antibuild_no_minimum.py",
+        "experiments/andreas/2026_11_04/g21_interchangeability_boundary.py",
+        "experiments/andreas/2026_11_04/g22_endogenous_distinction_carrier.py",
+        "experiments/andreas/2026_11_04/g23_distinction_fates.py",
+        "experiments/egil/egil_r0_response_residual_antibygge_2026_11_04.py"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "research/andreas-antibuild-core-2026-11-04",
@@ -2011,10 +2083,24 @@
       "commit_date": null,
       "theme": "research/andreas-antibuild-core-2026-11-04",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/research%2Fandreas-antibuild-core-2026-11-04",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 131,
+      "relevant_paths": [
+        "GTRCM_KANONISK_GRUNNPROGRAM.md",
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/andreas/2026_11_04/g20_antibuild_no_minimum.py",
+        "experiments/andreas/2026_11_04/g21_interchangeability_boundary.py",
+        "experiments/andreas/2026_11_04/g22_endogenous_distinction_carrier.py",
+        "experiments/andreas/2026_11_04/g23_distinction_fates.py",
+        "experiments/egil/egil_r0_response_residual_antibygge_2026_11_04.py",
+        "experiments/eik/adaptive_repertoire_gate.py",
+        "experiments/eik/anonymous_reversible_contact_birth.py"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "research/andreas-g14-analogy-audit-topology-2026-11-03",
@@ -2023,10 +2109,24 @@
       "commit_date": null,
       "theme": "research/andreas-g14-analogy-audit-topology-2026-11-03",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/research%2Fandreas-g14-analogy-audit-topology-2026-11-03",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 42,
+      "relevant_paths": [
+        "GTRCM_KANONISK_GRUNNPROGRAM.md",
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/gaia_self_influence/andreas_2026_11_03/exhaustive_version_space.py",
+        "experiments/gaia_self_influence/andreas_2026_11_03/g10_contradiction_individuation.py",
+        "experiments/gaia_self_influence/andreas_2026_11_03/g11_continuation_individuation.py",
+        "experiments/gaia_self_influence/andreas_2026_11_03/g12_distributed_counterfactuals.py",
+        "experiments/gaia_self_influence/andreas_2026_11_03/g13_probe_relative_analogy.py",
+        "experiments/gaia_self_influence/andreas_2026_11_03/g14_analogy_audit_topology.py",
+        "experiments/gaia_self_influence/andreas_2026_11_03/g8_inquiry_geometry.py"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "research/andreas-g18-error-budget-2026-11-03",
@@ -2035,10 +2135,24 @@
       "commit_date": null,
       "theme": "research/andreas-g18-error-budget-2026-11-03",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/research%2Fandreas-g18-error-budget-2026-11-03",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 44,
+      "relevant_paths": [
+        "GTRCM_KANONISK_GRUNNPROGRAM.md",
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/gaia_self_influence/andreas_2026_11_03/exhaustive_version_space.py",
+        "experiments/gaia_self_influence/andreas_2026_11_03/g10_contradiction_individuation.py",
+        "experiments/gaia_self_influence/andreas_2026_11_03/g11_continuation_individuation.py",
+        "experiments/gaia_self_influence/andreas_2026_11_03/g12_distributed_counterfactuals.py",
+        "experiments/gaia_self_influence/andreas_2026_11_03/g13_probe_relative_analogy.py",
+        "experiments/gaia_self_influence/andreas_2026_11_03/g14_analogy_audit_topology.py",
+        "experiments/gaia_self_influence/andreas_2026_11_03/g18_error_budget_bound.py"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "research/andreas-g19-error-explanation-cosets-2026-11-03",
@@ -2047,10 +2161,24 @@
       "commit_date": null,
       "theme": "research/andreas-g19-error-explanation-cosets-2026-11-03",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/research%2Fandreas-g19-error-explanation-cosets-2026-11-03",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 46,
+      "relevant_paths": [
+        "GTRCM_KANONISK_GRUNNPROGRAM.md",
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/gaia_self_influence/andreas_2026_11_03/exhaustive_version_space.py",
+        "experiments/gaia_self_influence/andreas_2026_11_03/g10_contradiction_individuation.py",
+        "experiments/gaia_self_influence/andreas_2026_11_03/g11_continuation_individuation.py",
+        "experiments/gaia_self_influence/andreas_2026_11_03/g12_distributed_counterfactuals.py",
+        "experiments/gaia_self_influence/andreas_2026_11_03/g13_probe_relative_analogy.py",
+        "experiments/gaia_self_influence/andreas_2026_11_03/g14_analogy_audit_topology.py",
+        "experiments/gaia_self_influence/andreas_2026_11_03/g18_error_budget_bound.py"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "research/andreas-g20-antibuild-no-minimum-2026-11-04",
@@ -2059,10 +2187,24 @@
       "commit_date": null,
       "theme": "research/andreas-g20-antibuild-no-minimum-2026-11-04",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/research%2Fandreas-g20-antibuild-no-minimum-2026-11-04",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 125,
+      "relevant_paths": [
+        "GTRCM_KANONISK_GRUNNPROGRAM.md",
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/andreas/2026_11_04/g20_antibuild_no_minimum.py",
+        "experiments/egil/egil_r0_response_residual_antibygge_2026_11_04.py",
+        "experiments/eik/adaptive_repertoire_gate.py",
+        "experiments/eik/anonymous_reversible_contact_birth.py",
+        "experiments/eik/balanced_signature_from_role_reversal.py",
+        "experiments/eik/boundary_closure_refinement.py",
+        "experiments/eik/causal_trace_history_quotient.py"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "research/andreas-g20-cross-epoch-budget-identifiability-2026-11-04",
@@ -2071,10 +2213,24 @@
       "commit_date": null,
       "theme": "research/andreas-g20-cross-epoch-budget-identifiability-2026-11-04",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/research%2Fandreas-g20-cross-epoch-budget-identifiability-2026-11-04",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 48,
+      "relevant_paths": [
+        "GTRCM_KANONISK_GRUNNPROGRAM.md",
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/gaia_self_influence/andreas_2026_11_03/exhaustive_version_space.py",
+        "experiments/gaia_self_influence/andreas_2026_11_03/g10_contradiction_individuation.py",
+        "experiments/gaia_self_influence/andreas_2026_11_03/g11_continuation_individuation.py",
+        "experiments/gaia_self_influence/andreas_2026_11_03/g12_distributed_counterfactuals.py",
+        "experiments/gaia_self_influence/andreas_2026_11_03/g13_probe_relative_analogy.py",
+        "experiments/gaia_self_influence/andreas_2026_11_03/g14_analogy_audit_topology.py",
+        "experiments/gaia_self_influence/andreas_2026_11_03/g18_error_budget_bound.py"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "research/andreas-g21-antibuild-interchangeability-2026-11-04",
@@ -2083,10 +2239,24 @@
       "commit_date": null,
       "theme": "research/andreas-g21-antibuild-interchangeability-2026-11-04",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/research%2Fandreas-g21-antibuild-interchangeability-2026-11-04",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 127,
+      "relevant_paths": [
+        "GTRCM_KANONISK_GRUNNPROGRAM.md",
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/andreas/2026_11_04/g20_antibuild_no_minimum.py",
+        "experiments/andreas/2026_11_04/g21_interchangeability_boundary.py",
+        "experiments/egil/egil_r0_response_residual_antibygge_2026_11_04.py",
+        "experiments/eik/adaptive_repertoire_gate.py",
+        "experiments/eik/anonymous_reversible_contact_birth.py",
+        "experiments/eik/balanced_signature_from_role_reversal.py",
+        "experiments/eik/boundary_closure_refinement.py"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "research/andreas-g21-temporal-continuity-graph-2026-11-04",
@@ -2095,10 +2265,24 @@
       "commit_date": null,
       "theme": "research/andreas-g21-temporal-continuity-graph-2026-11-04",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/research%2Fandreas-g21-temporal-continuity-graph-2026-11-04",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 50,
+      "relevant_paths": [
+        "GTRCM_KANONISK_GRUNNPROGRAM.md",
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/gaia_self_influence/andreas_2026_11_03/exhaustive_version_space.py",
+        "experiments/gaia_self_influence/andreas_2026_11_03/g10_contradiction_individuation.py",
+        "experiments/gaia_self_influence/andreas_2026_11_03/g11_continuation_individuation.py",
+        "experiments/gaia_self_influence/andreas_2026_11_03/g12_distributed_counterfactuals.py",
+        "experiments/gaia_self_influence/andreas_2026_11_03/g13_probe_relative_analogy.py",
+        "experiments/gaia_self_influence/andreas_2026_11_03/g14_analogy_audit_topology.py",
+        "experiments/gaia_self_influence/andreas_2026_11_03/g18_error_budget_bound.py"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "research/andreas-g22-endogenous-distinction-carrier-2026-11-04",
@@ -2107,10 +2291,24 @@
       "commit_date": null,
       "theme": "research/andreas-g22-endogenous-distinction-carrier-2026-11-04",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/research%2Fandreas-g22-endogenous-distinction-carrier-2026-11-04",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 129,
+      "relevant_paths": [
+        "GTRCM_KANONISK_GRUNNPROGRAM.md",
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/andreas/2026_11_04/g20_antibuild_no_minimum.py",
+        "experiments/andreas/2026_11_04/g21_interchangeability_boundary.py",
+        "experiments/andreas/2026_11_04/g22_endogenous_distinction_carrier.py",
+        "experiments/egil/egil_r0_response_residual_antibygge_2026_11_04.py",
+        "experiments/eik/adaptive_repertoire_gate.py",
+        "experiments/eik/anonymous_reversible_contact_birth.py",
+        "experiments/eik/balanced_signature_from_role_reversal.py"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "research/andreas-g22-temporal-certification-budget-2026-11-04",
