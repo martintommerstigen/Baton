@@ -80,6 +80,30 @@ class BatonRemoteTests(unittest.TestCase):
         self.assertEqual(headers['Cache-Control'], 'no-store')
         self.assertEqual(headers['X-Content-Type-Options'], 'nosniff')
 
+    def test_missing_pause_parent_fails_closed(self):
+        self.server.pause_file = self.pause.parent / 'missing-dir' / 'PAUSE_UI_WRITES'
+        self.assertTrue(request_status(self.url, TOKEN, 'pause-status')['ui_writes_paused'])
+
+    def test_symlinked_pause_parent_fails_closed(self):
+        real = self.pause.parent / 'real'
+        real.mkdir()
+        link = self.pause.parent / 'alias'
+        link.symlink_to(real, target_is_directory=True)
+        self.server.pause_file = link / 'PAUSE_UI_WRITES'
+        self.assertTrue(request_status(self.url, TOKEN, 'pause-status')['ui_writes_paused'])
+
+    def test_dangling_symlinked_pause_parent_fails_closed(self):
+        link = self.pause.parent / 'dangling-parent'
+        link.symlink_to(self.pause.parent / 'missing', target_is_directory=True)
+        self.server.pause_file = link / 'PAUSE_UI_WRITES'
+        self.assertTrue(request_status(self.url, TOKEN, 'pause-status')['ui_writes_paused'])
+
+    def test_relative_and_parent_traversal_paths_fail_closed(self):
+        self.server.pause_file = Path('PAUSE_UI_WRITES')
+        self.assertTrue(request_status(self.url, TOKEN, 'pause-status')['ui_writes_paused'])
+        self.server.pause_file = self.pause.parent / '..' / 'PAUSE_UI_WRITES'
+        self.assertTrue(request_status(self.url, TOKEN, 'pause-status')['ui_writes_paused'])
+
     def test_restart_reuses_token_without_side_effects(self):
         self.assertFalse(request_status(self.url, TOKEN, 'pause-status')['ui_writes_paused'])
         self.server.shutdown()
