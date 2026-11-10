@@ -10,7 +10,7 @@ class Driver:
         self.sends=[]
     def submit_once(self, chat, mid, body):
         self.sends.append((chat,mid,body))
-    def observe_reply(self, chat, mid):
+    def observe_reply(self, chat, mid, digest):
         return Observation(self.chat,mid+'-assistant')
 
 class ChainTests(unittest.TestCase):
