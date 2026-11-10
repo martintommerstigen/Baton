@@ -5,7 +5,6 @@ The caller must already have a trusted local path to this process.
 """
 import argparse
 import json
-import os
 from pathlib import Path
 import subprocess
 import sys
@@ -15,7 +14,6 @@ COMMANDS = {
     "system": ("/usr/bin/uname", "-a"),
     "git-status": ("/usr/bin/git", "status", "--short", "--branch"),
     "git-revision": ("/usr/bin/git", "rev-parse", "HEAD"),
-    "cargo-version": ("/usr/bin/cargo", "--version"),
     "python-version": (sys.executable, "--version"),
 }
 MAX_OUTPUT = 16384
