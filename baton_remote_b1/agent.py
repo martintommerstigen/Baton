@@ -34,14 +34,30 @@ def load_token_file(path):
 
 
 def pause_active(path):
-    """A symlink (including dangling) or unreadable path is a pause, not clearance."""
+    """Advisory status only: missing or untrusted ancestors never grant clearance.
+
+    The leaf may be absent only when its full directory chain is real and
+    accessible. A symlinked or missing ancestor can otherwise make an active
+    pause elsewhere look absent. This check is NOT a send authorization:
+    the UI driver must recheck its own pause guard immediately before Send.
+    """
+    path = Path(path)
+    if not path.is_absolute() or '..' in path.parts:
+        return True
+    for parent in reversed(path.parents):
+        try:
+            info = os.lstat(parent)
+        except OSError:
+            return True
+        if not stat.S_ISDIR(info.st_mode):
+            return True
     try:
         os.lstat(path)
-        return True
     except FileNotFoundError:
         return False
     except OSError:
         return True
+    return True
 
 
 class Gateway(ThreadingHTTPServer):
