@@ -46,3 +46,20 @@ If the raw bundle is lost, the R7 durable receipt remains but does not reconstru
 ## Status and ownership
 
 Files owned by Ronja B5/B2: `remote_security/proc_stat_capture.py`, `tests/test_proc_stat_capture.py`, this document. No edits to B1 code, GTRCM/RustWorld sources, project-map/tasks.json, or UI pause state. Local Linux CI evidence must be checked against the exact code commit after push. Greg-live and existing-chat A→B→C remain **blocked/unverified**. The previous R7 job tests and B1 PR #20 remain distinct.
+
+## R8b — preserve raw bytes rather than only a signed digest
+
+A completed receipt alone cannot reconstruct its raw input. [capture_bundle_store.py](../../remote_security/capture_bundle_store.py) therefore offers `save_verified_capture(jobs, bundle, absolute_path)` and `load_verified_capture(audit_only_jobs, absolute_path)`. Save validates both HMAC layers and the durable SQLite receipt before creating a canonical JSON file with the **actual raw CPU line**, source and job evidence. It uses a private mode-0600 file in a checked owner-only directory, `O_EXCL|O_NOFOLLOW`, fsync of file and directory, and no overwrite/retry. Load rejects symlinks, permissive modes, malformed/noncanonical data and database disagreement.
+
+Example after the `bundle = capture_once(...)` line above:
+
+```python
+from remote_security.capture_bundle_store import save_verified_capture, load_verified_capture
+artifact = state / "cpu-20261110-01.json"
+saved = save_verified_capture(jobs, bundle, artifact)
+print(saved["sha256"])  # artifact digest, not independent physical proof
+audit = ResearchJobs(state / "jobs.sqlite", key, {"GTRCM": ["sha256-echo"]}, audit_only=True)
+assert load_verified_capture(audit, artifact)["raw_cpu_line"] == bundle["raw_cpu_line"]
+```
+
+A crash between job completion and artifact fsync can leave an absent or incomplete raw file; **never rerun the same job ID**. The retained SQLite receipt then remains evidence of the local check but not a reconstruction of source bytes. A malicious same-UID process can still tamper with the private state; dedicated UID is a deployment requirement. CI regression covers atomic exclusive creation, symlink/path traversal, mode, tampering, restart and loss. Actual Greg deployment remains blocked.
