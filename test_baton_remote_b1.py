@@ -1,5 +1,6 @@
 """Offline B1/B5 security and transport checks; never exercises ChatGPT UI."""
 from pathlib import Path
+from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 import tempfile
 import threading
 import unittest
@@ -74,11 +75,79 @@ class BatonRemoteTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             request_status(self.url, TOKEN, 'shell')
 
+    def test_redirect_cannot_exfiltrate_authorization_header(self):
+        # urllib's default redirect handler forwards Authorization across ports.
+        # A malicious process impersonating the loopback gateway must not
+        # redirect our bearer token to a second listener.
+        class Sink(BaseHTTPRequestHandler):
+            def do_GET(self):
+                self.server.captured.append(self.headers.get('Authorization'))
+                self.send_response(200)
+                self.end_headers()
+                self.wfile.write(b'{}')
+
+            def log_message(self, *args):
+                pass
+
+        class Redirect(BaseHTTPRequestHandler):
+            def do_GET(self):
+                self.send_response(302)
+                self.send_header('Location', self.server.redirect_to)
+                self.end_headers()
+
+            def log_message(self, *args):
+                pass
+
+        sink = ThreadingHTTPServer(('127.0.0.1', 0), Sink)
+        source = ThreadingHTTPServer(('127.0.0.1', 0), Redirect)
+        sink.captured = []
+        source.redirect_to = 'http://127.0.0.1:%d/capture' % sink.server_port
+        threads = []
+        try:
+            for server in (sink, source):
+                t = threading.Thread(target=server.serve_forever, daemon=True)
+                t.start()
+                threads.append(t)
+            with self.assertRaises(ValueError):
+                request_status('http://127.0.0.1:%d' % source.server_port,
+                               TOKEN, 'health')
+            self.assertEqual(sink.captured, [])
+        finally:
+            for server in (sink, source):
+                server.shutdown()
+                server.server_close()
+            for t in threads:
+                t.join(timeout=2)
+
     def test_no_store_headers(self):
         code, _, headers = self.raw('/v1/health', TOKEN)
         self.assertEqual(code, 200)
         self.assertEqual(headers['Cache-Control'], 'no-store')
         self.assertEqual(headers['X-Content-Type-Options'], 'nosniff')
+
+    def test_missing_pause_parent_fails_closed(self):
+        self.server.pause_file = self.pause.parent / 'missing-dir' / 'PAUSE_UI_WRITES'
+        self.assertTrue(request_status(self.url, TOKEN, 'pause-status')['ui_writes_paused'])
+
+    def test_symlinked_pause_parent_fails_closed(self):
+        real = self.pause.parent / 'real'
+        real.mkdir()
+        link = self.pause.parent / 'alias'
+        link.symlink_to(real, target_is_directory=True)
+        self.server.pause_file = link / 'PAUSE_UI_WRITES'
+        self.assertTrue(request_status(self.url, TOKEN, 'pause-status')['ui_writes_paused'])
+
+    def test_dangling_symlinked_pause_parent_fails_closed(self):
+        link = self.pause.parent / 'dangling-parent'
+        link.symlink_to(self.pause.parent / 'missing', target_is_directory=True)
+        self.server.pause_file = link / 'PAUSE_UI_WRITES'
+        self.assertTrue(request_status(self.url, TOKEN, 'pause-status')['ui_writes_paused'])
+
+    def test_relative_and_parent_traversal_paths_fail_closed(self):
+        self.server.pause_file = Path('PAUSE_UI_WRITES')
+        self.assertTrue(request_status(self.url, TOKEN, 'pause-status')['ui_writes_paused'])
+        self.server.pause_file = self.pause.parent / '..' / 'PAUSE_UI_WRITES'
+        self.assertTrue(request_status(self.url, TOKEN, 'pause-status')['ui_writes_paused'])
 
     def test_restart_reuses_token_without_side_effects(self):
         self.assertFalse(request_status(self.url, TOKEN, 'pause-status')['ui_writes_paused'])
