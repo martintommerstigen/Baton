@@ -5,10 +5,12 @@ from pathlib import Path
 import shutil
 import sys
 
+PAUSE_PATH = Path("/home/olliver/GTRCM-newborn-bootstrap/transport/PAUSE_UI_WRITES")
+
 def check():
     home = Path.home()
     commands = {name: shutil.which(name) for name in ("git", "python3", "systemctl")}
-    pause = Path("/home/olliver/GTRCM-newborn-bootstrap/transport/PAUSE_UI_WRITES")
+    pause = PAUSE_PATH
     target = home / ".local/share/baton-evening"
     result = {
         "platform": sys.platform,
