@@ -30,8 +30,8 @@ class PreSendAbortTests(unittest.TestCase):
                          self.digest, self.body)
 
     def test_pause_before_click_aborts_and_frees_target(self):
-        with patch("chatgpt_ui_driver.PAUSE_FILE") as pause:
-            pause.exists.return_value = True
+        with patch("chatgpt_ui_driver.pause_active") as pause:
+            pause.return_value = True
             with self.assertRaisesRegex(PreSubmissionRejected, "paused"):
                 self.wake("paused-1")
         self.assertEqual(self.page.send_count, 0)
@@ -43,8 +43,8 @@ class PreSendAbortTests(unittest.TestCase):
         # the user's composer. It must be explicitly cleared before a new ID.
         self.assertIn("[BATON-WAKE:paused-1]", self.page.composer.text)
         self.page.composer.text = ""
-        with patch("chatgpt_ui_driver.PAUSE_FILE") as pause:
-            pause.exists.return_value = False
+        with patch("chatgpt_ui_driver.pause_active") as pause:
+            pause.return_value = False
             self.assertEqual(self.wake("after-pause"), "verified")
         self.assertEqual(self.page.send_count, 1)
 
@@ -56,8 +56,8 @@ class PreSendAbortTests(unittest.TestCase):
         self.assertEqual(self.page.send_count, 0)
         self.assertEqual(self.ledger.state("draft-1")[1], "aborted")
         self.page.composer.text = ""
-        with patch("chatgpt_ui_driver.PAUSE_FILE") as pause:
-            pause.exists.return_value = False
+        with patch("chatgpt_ui_driver.pause_active") as pause:
+            pause.return_value = False
             self.assertEqual(self.wake("draft-cleared"), "verified")
         self.assertEqual(self.page.send_count, 1)
 
@@ -65,8 +65,8 @@ class PreSendAbortTests(unittest.TestCase):
         def normalized_fill(value):
             self.page.composer.text = value.replace("\n", " ")
         self.page.composer.fill = normalized_fill
-        with patch("chatgpt_ui_driver.PAUSE_FILE") as pause:
-            pause.exists.return_value = False
+        with patch("chatgpt_ui_driver.pause_active") as pause:
+            pause.return_value = False
             with self.assertRaisesRegex(PreSubmissionRejected, "differs"):
                 self.wake("mutated-1")
         self.assertEqual(self.page.send_count, 0)
@@ -84,8 +84,8 @@ class PreSendAbortTests(unittest.TestCase):
             def observe_reply(self, *args):
                 return self.driver.observe_reply(*args)
 
-        with patch("chatgpt_ui_driver.PAUSE_FILE") as pause:
-            pause.exists.return_value = False
+        with patch("chatgpt_ui_driver.pause_active") as pause:
+            pause.return_value = False
             with self.assertRaisesRegex(RuntimeError, "AFTER Send"):
                 self.wake("clicked-1", PostClickFailure(self.driver))
         self.assertEqual(self.page.send_count, 1)
@@ -101,8 +101,8 @@ class PreSendAbortTests(unittest.TestCase):
             original_click()
             self.page.turns[-1].mid = "fresh-second-assistant-turn"
         self.page.send.click = click_with_new_turn_id
-        with patch("chatgpt_ui_driver.PAUSE_FILE") as pause:
-            pause.exists.return_value = False
+        with patch("chatgpt_ui_driver.pause_active") as pause:
+            pause.return_value = False
             self.assertEqual(self.wake("after-reconcile"), "verified")
         self.assertEqual(self.page.send_count, 2)
 

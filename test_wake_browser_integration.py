@@ -6,6 +6,7 @@ verify selectors on ChatGPT's live interface.
 import tempfile
 import hashlib
 import unittest
+from unittest.mock import patch
 from chatgpt_ui_driver import ChatGPTUIDriver
 from wake_contract import WakeLedger
 from wake_chain import ChainPlan, run_chain
@@ -88,7 +89,8 @@ class BrowserIntegrationTests(unittest.TestCase):
             plan=ChainPlan(A,B,C,"msg1","msg2","ask B","ask C",
                            hashlib.sha256(b"ask B").hexdigest(),
                            hashlib.sha256(b"ask C").hexdigest())
-            result=run_chain(ledger,db,dc,plan,db.read_assistant_turn)
+            with patch('chatgpt_ui_driver.pause_active', return_value=False):
+                result=run_chain(ledger,db,dc,plan,db.read_assistant_turn)
             self.assertEqual(result,{"a_to_b":"verified","b_to_c":"verified"})
             self.assertEqual((pb.send_count,pc.send_count),(1,1))
             again=run_chain(ledger,db,dc,plan,db.read_assistant_turn)

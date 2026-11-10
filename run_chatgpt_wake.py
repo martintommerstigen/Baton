@@ -11,11 +11,10 @@ import argparse
 import json
 import os
 import time
-from pathlib import Path
 from urllib.parse import urlparse
 from wake_contract import WakeLedger
 from wake_adapter import wake_once, reconcile
-from chatgpt_ui_driver import ChatGPTUIDriver, conversation_id
+from chatgpt_ui_driver import ChatGPTUIDriver, conversation_id, pause_active, PAUSE_FILE
 from wake_ui_lock import ui_controller_lock
 
 def local_cdp(url):
@@ -36,7 +35,7 @@ def main(argv=None):
     p.add_argument('--wait-seconds',type=int,default=120)
     args=p.parse_args(argv)
     local_cdp(args.cdp)
-    if not args.reconcile and Path('/home/olliver/GTRCM-newborn-bootstrap/transport/PAUSE_UI_WRITES').exists():
+    if not args.reconcile and pause_active(PAUSE_FILE):
         raise RuntimeError('UI writes paused by Greg-local safety switch')
     if not 0 <= args.wait_seconds <= 600:
         p.error('--wait-seconds must be between 0 and 600')
