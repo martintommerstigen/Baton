@@ -1,6 +1,6 @@
 # B1/B5 source gate and verified-peer single-hop delta — 2026-11-10
 
-**Process:** Baton B1 session-bound implementation. **Status:** local negative tests with import stubs; GitHub CI pending at first commit; NOT deployed, NOT live A→B→C. No GTRCM GEN claim.
+**Process:** Baton B1 session-bound implementation. **Status:** [GitHub Actions 42865072846](https://github.com/martintommerstigen/Baton/actions/runs/42865072846) **175/175 Python tests PASS**, compile PASS, offline A→B→C simulation PASS at executable code commit [b5c62f0](https://github.com/martintommerstigen/Baton/commit/b5c62f0493f67e63cde134124a3af7446513de34). **NOT deployed, NOT live A→B→C.** No GTRCM GEN claim.
 
 ## Coverage (measured, not extrapolated)
 
@@ -25,4 +25,4 @@
 - `test_verified_broker_wake.py`: negative cases for missing B5 module, same/root UID, relative socket path, missing/duplicate tabs, wrong source request, source still generating, unsupported broker operation; positive mocked bridge contract.
 - Existing default runners are unchanged; this new CLI **does not** complete B→C or solve noncooperating pause-vs-click race. Without merging/installing B5 client and a real distinct-UID broker, the runner intentionally refuses execution.
 
-**Next falsifier:** Run on a genuine Linux two-UID setup; replace socket with an attacker-owned same-UID endpoint and prove zero request bytes leave; crash after durable `begin_click` and before Send, then after Send but before observation. Require source assistant turn IDs and exact approved payload for A→B→C. Do not mark tested-live from GitHub Actions.
+**Deployment blocker:** B1's current broker creates a mode-0600 Unix socket. That socket is not usable from a separate UI-worker UID until a reviewed broker-owned directory and explicit group-authorized socket policy are implemented. Do not weaken it ad hoc or call the bridge deployable.\n\n**Next falsifier:** Run on a genuine Linux two-UID setup; replace socket with an attacker-owned same-UID endpoint and prove zero request bytes leave; crash after durable `begin_click` and before Send, then after Send but before observation. Require source assistant turn IDs and exact approved payload for A→B→C. Do not mark tested-live from GitHub Actions.
