@@ -17,7 +17,7 @@
     }
   ],
   "branch_count": 276,
-  "tree_indexed": 270,
+  "tree_indexed": 276,
   "content_read_in_this_inventory": 0,
   "notes": [
     "branch_date_hint is parsed from branch name, NOT verified commit date",
@@ -6950,10 +6950,24 @@
       "commit_date": null,
       "theme": "vilde/operativ-geometri-nullbalanse-2026-10-24",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/vilde%2Foperativ-geometri-nullbalanse-2026-10-24",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 29,
+      "relevant_paths": [
+        "GTRCM_KANONISK_GRUNNPROGRAM.md",
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/affect_gain_probe.py",
+        "experiments/microfluctuation_mass_gravity/README.md",
+        "experiments/microfluctuation_mass_gravity/falsify_shared_density.py",
+        "experiments/microfluctuation_mass_gravity/model.py",
+        "experiments/vilde_belief_relevance_temporal_probe.py",
+        "experiments/vilde_gauge_and_report_feedback.py",
+        "experiments/vilde_hankel_noise.py"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "vilde/p0-ingen-fundamental-begynnelse-2026-10-25",
@@ -6962,10 +6976,24 @@
       "commit_date": null,
       "theme": "vilde/p0-ingen-fundamental-begynnelse-2026-10-25",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/vilde%2Fp0-ingen-fundamental-begynnelse-2026-10-25",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 49,
+      "relevant_paths": [
+        "GTRCM_KANONISK_GRUNNPROGRAM.md",
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/affect_gain_probe.py",
+        "experiments/microfluctuation_mass_gravity/README.md",
+        "experiments/microfluctuation_mass_gravity/falsify_shared_density.py",
+        "experiments/microfluctuation_mass_gravity/model.py",
+        "experiments/vilde_belief_relevance_temporal_probe.py",
+        "experiments/vilde_boundary_selection_check.py",
+        "experiments/vilde_bounded_focus_witness_2026.py"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "vilde/reversibel-geometri-lokalitet-2026-10-24",
@@ -6974,10 +7002,24 @@
       "commit_date": null,
       "theme": "vilde/reversibel-geometri-lokalitet-2026-10-24",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/vilde%2Freversibel-geometri-lokalitet-2026-10-24",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 40,
+      "relevant_paths": [
+        "GTRCM_KANONISK_GRUNNPROGRAM.md",
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/affect_gain_probe.py",
+        "experiments/microfluctuation_mass_gravity/README.md",
+        "experiments/microfluctuation_mass_gravity/falsify_shared_density.py",
+        "experiments/microfluctuation_mass_gravity/model.py",
+        "experiments/vilde_belief_relevance_temporal_probe.py",
+        "experiments/vilde_boundary_selection_check.py",
+        "experiments/vilde_bounded_focus_witness_2026.py"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "vilde/tid-som-relasjonell-forandring-for-klokker-2026-10-25",
@@ -6986,10 +7028,24 @@
       "commit_date": null,
       "theme": "vilde/tid-som-relasjonell-forandring-for-klokker-2026-10-25",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/vilde%2Ftid-som-relasjonell-forandring-for-klokker-2026-10-25",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 60,
+      "relevant_paths": [
+        "GTRCM_KANONISK_GRUNNPROGRAM.md",
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/affect_gain_probe.py",
+        "experiments/microfluctuation_mass_gravity/README.md",
+        "experiments/microfluctuation_mass_gravity/falsify_shared_density.py",
+        "experiments/microfluctuation_mass_gravity/model.py",
+        "experiments/vilde_belief_relevance_temporal_probe.py",
+        "experiments/vilde_boundary_selection_check.py",
+        "experiments/vilde_bounded_focus_witness_2026.py"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "vilde/utledningsberedskap-kilde-og-bevisregister-2026-10-25",
@@ -6998,10 +7054,24 @@
       "commit_date": null,
       "theme": "vilde/utledningsberedskap-kilde-og-bevisregister-2026-10-25",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/vilde%2Futledningsberedskap-kilde-og-bevisregister-2026-10-25",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 58,
+      "relevant_paths": [
+        "GTRCM_KANONISK_GRUNNPROGRAM.md",
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/affect_gain_probe.py",
+        "experiments/microfluctuation_mass_gravity/README.md",
+        "experiments/microfluctuation_mass_gravity/falsify_shared_density.py",
+        "experiments/microfluctuation_mass_gravity/model.py",
+        "experiments/vilde_belief_relevance_temporal_probe.py",
+        "experiments/vilde_boundary_selection_check.py",
+        "experiments/vilde_bounded_focus_witness_2026.py"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "yrsa/operational-probes-2026-10-29",
@@ -7010,10 +7080,24 @@
       "commit_date": null,
       "theme": "yrsa/operational-probes-2026-10-29",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/yrsa%2Foperational-probes-2026-10-29",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 24,
+      "relevant_paths": [
+        "GTRCM_KANONISK_GRUNNPROGRAM.md",
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/microfluctuation_mass_gravity/README.md",
+        "experiments/microfluctuation_mass_gravity/falsify_shared_density.py",
+        "experiments/microfluctuation_mass_gravity/model.py",
+        "research/yrsa/ADAPTIVE_PROBES_2026-10-29.md",
+        "research/yrsa/ALDA_CORRECT_BUT_INSUFFICIENT_OBSERVER_2026-10-31.md",
+        "research/yrsa/ALDA_RECIPROCAL_LEARNING_XOR_CONTROL_2026-10-31.md",
+        "research/yrsa/GRAMMAR_GROWTH_NEGATIVE_CONTROLS_2026-10-31.md"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     }
   ]
 }
