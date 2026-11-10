@@ -1,6 +1,7 @@
 import unittest
 from unittest.mock import patch
 from chatgpt_ui_driver import ChatGPTUIDriver
+from wake_adapter import PreSubmissionRejected
 
 CID='6af04e14-3e68-83eb-b53b-e4b352c84091'
 
@@ -38,12 +39,12 @@ class SubmissionTests(unittest.TestCase):
         p=Page()
         with patch('chatgpt_ui_driver.PAUSE_FILE') as pause:
             pause.exists.return_value=True
-            with self.assertRaises(RuntimeError):
+            with self.assertRaises(PreSubmissionRejected):
                 ChatGPTUIDriver(p,frozenset({CID})).submit_once(CID,'msg-1','hello')
         self.assertEqual(p.send.clicks,0)
     def test_existing_draft_untouched(self):
         p=Page();p.editor.text='unfinished user draft'
-        with self.assertRaises(RuntimeError):
+        with self.assertRaises(PreSubmissionRejected):
             ChatGPTUIDriver(p,frozenset({CID})).submit_once(CID,'msg-1','hello')
         self.assertEqual(p.editor.fills,[])
         self.assertEqual(p.send.clicks,0)
@@ -57,7 +58,7 @@ class SubmissionTests(unittest.TestCase):
         p.editor.fill=normalized_fill
         with patch('chatgpt_ui_driver.PAUSE_FILE') as pause:
             pause.exists.return_value=False
-            with self.assertRaisesRegex(RuntimeError,'Composer content differs'):
+            with self.assertRaisesRegex(PreSubmissionRejected,'Composer content differs'):
                 ChatGPTUIDriver(p,frozenset({CID})).submit_once(CID,'msg-1','hello')
         self.assertEqual(p.send.clicks,0)
 
