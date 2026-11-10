@@ -129,6 +129,13 @@ class BrokerPeerTests(unittest.TestCase):
             query_verified_broker(self.path, self.uid, {'op':'x'*8192},
                                   require_distinct_uid=False)
 
+    def test_unbounded_timeout_rejected(self):
+        self.serve()
+        for value in (None, 0, -1, float('inf'), float('nan'), 100):
+            with self.subTest(value=value), self.assertRaises(ValueError):
+                query_verified_broker(self.path, self.uid, self.request,
+                                      timeout=value, require_distinct_uid=False)
+
     def test_path_traversal_rejected(self):
         self.serve()
         with self.assertRaises(UntrustedBroker):
