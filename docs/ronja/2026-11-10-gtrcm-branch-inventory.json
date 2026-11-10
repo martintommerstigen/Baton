@@ -17,7 +17,7 @@
     }
   ],
   "branch_count": 276,
-  "tree_indexed": 15,
+  "tree_indexed": 30,
   "content_read_in_this_inventory": 0,
   "notes": [
     "branch_date_hint is parsed from branch name, NOT verified commit date",
@@ -395,10 +395,24 @@
       "commit_date": null,
       "theme": "eldrid/gpu-individuated-subwholes-2026-10-29",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/eldrid%2Fgpu-individuated-subwholes-2026-10-29",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 134,
+      "relevant_paths": [
+        "GTRCM_KANONISK_GRUNNPROGRAM.md",
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/microfluctuation_mass_gravity/README.md",
+        "experiments/microfluctuation_mass_gravity/falsify_shared_density.py",
+        "experiments/microfluctuation_mass_gravity/model.py",
+        "research/eldrid/2026-10-29_525_ALLE_KILDEVERSJONER_MAC_GREG.md",
+        "research/eldrid/2026-10-29_525_HUGIN_GTRCM_END_TO_END_AUDIT.md",
+        "research/eldrid/2026-10-29_525_PLAN_TILBAKE_TIL_UTGANGSPUNKTET.md",
+        "research/eldrid/2026-10-29_GPU_STRATEGI_OG_MOTPROVER.md"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "experiments/andreas-g8-inquiry-geometry-2026-11-03",
@@ -407,10 +421,24 @@
       "commit_date": null,
       "theme": "experiments/andreas-g8-inquiry-geometry-2026-11-03",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/experiments%2Fandreas-g8-inquiry-geometry-2026-11-03",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 28,
+      "relevant_paths": [
+        "GTRCM_KANONISK_GRUNNPROGRAM.md",
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/gaia_self_influence/andreas_2026_11_03/exhaustive_version_space.py",
+        "experiments/gaia_self_influence/andreas_2026_11_03/g8_inquiry_geometry.py",
+        "experiments/gaia_self_influence/andreas_2026_11_03/provenance_version_core.py",
+        "experiments/gaia_self_influence/andreas_2026_11_03/source_truth_gauge.py",
+        "experiments/gaia_self_influence/independent_review_2026_11_03/counterexample.py",
+        "experiments/gaia_self_influence/operativ_selvpaavirkning.py",
+        "experiments/microfluctuation_mass_gravity/README.md"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "experiments/andreas-g9-model-class-inquiry-2026-11-03",
@@ -419,10 +447,24 @@
       "commit_date": null,
       "theme": "experiments/andreas-g9-model-class-inquiry-2026-11-03",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/experiments%2Fandreas-g9-model-class-inquiry-2026-11-03",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 32,
+      "relevant_paths": [
+        "GTRCM_KANONISK_GRUNNPROGRAM.md",
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/gaia_self_influence/andreas_2026_11_03/exhaustive_version_space.py",
+        "experiments/gaia_self_influence/andreas_2026_11_03/g8_inquiry_geometry.py",
+        "experiments/gaia_self_influence/andreas_2026_11_03/g9_model_class_inquiry.py",
+        "experiments/gaia_self_influence/andreas_2026_11_03/provenance_version_core.py",
+        "experiments/gaia_self_influence/andreas_2026_11_03/relational_model_holonomy.py",
+        "experiments/gaia_self_influence/andreas_2026_11_03/source_truth_gauge.py",
+        "experiments/gaia_self_influence/independent_review_2026_11_03/counterexample.py"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "experiments/andreas-g10-contradiction-individuation-2026-11-03",
@@ -431,10 +473,24 @@
       "commit_date": null,
       "theme": "experiments/andreas-g10-contradiction-individuation-2026-11-03",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/experiments%2Fandreas-g10-contradiction-individuation-2026-11-03",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 34,
+      "relevant_paths": [
+        "GTRCM_KANONISK_GRUNNPROGRAM.md",
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/gaia_self_influence/andreas_2026_11_03/exhaustive_version_space.py",
+        "experiments/gaia_self_influence/andreas_2026_11_03/g10_contradiction_individuation.py",
+        "experiments/gaia_self_influence/andreas_2026_11_03/g8_inquiry_geometry.py",
+        "experiments/gaia_self_influence/andreas_2026_11_03/g9_model_class_inquiry.py",
+        "experiments/gaia_self_influence/andreas_2026_11_03/provenance_version_core.py",
+        "experiments/gaia_self_influence/andreas_2026_11_03/relational_model_holonomy.py",
+        "experiments/gaia_self_influence/andreas_2026_11_03/source_truth_gauge.py"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "experiments/andreas-g11-continuation-individuation-2026-11-03",
@@ -443,10 +499,24 @@
       "commit_date": null,
       "theme": "experiments/andreas-g11-continuation-individuation-2026-11-03",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/experiments%2Fandreas-g11-continuation-individuation-2026-11-03",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 36,
+      "relevant_paths": [
+        "GTRCM_KANONISK_GRUNNPROGRAM.md",
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/gaia_self_influence/andreas_2026_11_03/exhaustive_version_space.py",
+        "experiments/gaia_self_influence/andreas_2026_11_03/g10_contradiction_individuation.py",
+        "experiments/gaia_self_influence/andreas_2026_11_03/g11_continuation_individuation.py",
+        "experiments/gaia_self_influence/andreas_2026_11_03/g8_inquiry_geometry.py",
+        "experiments/gaia_self_influence/andreas_2026_11_03/g9_model_class_inquiry.py",
+        "experiments/gaia_self_influence/andreas_2026_11_03/provenance_version_core.py",
+        "experiments/gaia_self_influence/andreas_2026_11_03/relational_model_holonomy.py"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "experiments/andreas-g12-distributed-counterfactuals-2026-11-03",
@@ -455,10 +525,24 @@
       "commit_date": null,
       "theme": "experiments/andreas-g12-distributed-counterfactuals-2026-11-03",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/experiments%2Fandreas-g12-distributed-counterfactuals-2026-11-03",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 38,
+      "relevant_paths": [
+        "GTRCM_KANONISK_GRUNNPROGRAM.md",
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/gaia_self_influence/andreas_2026_11_03/exhaustive_version_space.py",
+        "experiments/gaia_self_influence/andreas_2026_11_03/g10_contradiction_individuation.py",
+        "experiments/gaia_self_influence/andreas_2026_11_03/g11_continuation_individuation.py",
+        "experiments/gaia_self_influence/andreas_2026_11_03/g12_distributed_counterfactuals.py",
+        "experiments/gaia_self_influence/andreas_2026_11_03/g8_inquiry_geometry.py",
+        "experiments/gaia_self_influence/andreas_2026_11_03/g9_model_class_inquiry.py",
+        "experiments/gaia_self_influence/andreas_2026_11_03/provenance_version_core.py"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "experiments/andreas-g13-probe-relative-analogy-2026-11-03",
@@ -467,10 +551,24 @@
       "commit_date": null,
       "theme": "experiments/andreas-g13-probe-relative-analogy-2026-11-03",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/experiments%2Fandreas-g13-probe-relative-analogy-2026-11-03",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 40,
+      "relevant_paths": [
+        "GTRCM_KANONISK_GRUNNPROGRAM.md",
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/gaia_self_influence/andreas_2026_11_03/exhaustive_version_space.py",
+        "experiments/gaia_self_influence/andreas_2026_11_03/g10_contradiction_individuation.py",
+        "experiments/gaia_self_influence/andreas_2026_11_03/g11_continuation_individuation.py",
+        "experiments/gaia_self_influence/andreas_2026_11_03/g12_distributed_counterfactuals.py",
+        "experiments/gaia_self_influence/andreas_2026_11_03/g13_probe_relative_analogy.py",
+        "experiments/gaia_self_influence/andreas_2026_11_03/g8_inquiry_geometry.py",
+        "experiments/gaia_self_influence/andreas_2026_11_03/g9_model_class_inquiry.py"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "experiments/andreas-g15-capability-directed-inquiry-2026-11-03",
@@ -479,10 +577,24 @@
       "commit_date": null,
       "theme": "experiments/andreas-g15-capability-directed-inquiry-2026-11-03",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/experiments%2Fandreas-g15-capability-directed-inquiry-2026-11-03",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 44,
+      "relevant_paths": [
+        "GTRCM_KANONISK_GRUNNPROGRAM.md",
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/gaia_self_influence/andreas_2026_11_03/exhaustive_version_space.py",
+        "experiments/gaia_self_influence/andreas_2026_11_03/g10_contradiction_individuation.py",
+        "experiments/gaia_self_influence/andreas_2026_11_03/g11_continuation_individuation.py",
+        "experiments/gaia_self_influence/andreas_2026_11_03/g12_distributed_counterfactuals.py",
+        "experiments/gaia_self_influence/andreas_2026_11_03/g13_probe_relative_analogy.py",
+        "experiments/gaia_self_influence/andreas_2026_11_03/g14_analogy_audit_topology.py",
+        "experiments/gaia_self_influence/andreas_2026_11_03/g15_capability_directed_inquiry.py"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "experiments/falkor-r67-correction-core-2026-11-02",
@@ -491,10 +603,24 @@
       "commit_date": null,
       "theme": "experiments/falkor-r67-correction-core-2026-11-02",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/experiments%2Ffalkor-r67-correction-core-2026-11-02",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 39,
+      "relevant_paths": [
+        "GTRCM_KANONISK_GRUNNPROGRAM.md",
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/falkor/r67_correction_core.py",
+        "experiments/microfluctuation_mass_gravity/README.md",
+        "experiments/microfluctuation_mass_gravity/falsify_shared_density.py",
+        "experiments/microfluctuation_mass_gravity/model.py",
+        "research/falkor/2026-11-02_R67_CORRECTION_NOT_ANSWER_KEY_AUDIT.md",
+        "research/gaia/2026-11-02_NEO_R60_SKIN_CORE_INNBOKS_OG_KILDE_NEG.md",
+        "research/gaia/2026-11-02_NEO_R61_R62_WORLD_BINDING_OG_GRENER.md"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "experiments/falkor-r68-core-experience-2026-11-02",
@@ -503,10 +629,24 @@
       "commit_date": null,
       "theme": "experiments/falkor-r68-core-experience-2026-11-02",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/experiments%2Ffalkor-r68-core-experience-2026-11-02",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 41,
+      "relevant_paths": [
+        "GTRCM_KANONISK_GRUNNPROGRAM.md",
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/falkor/r67_correction_core.py",
+        "experiments/microfluctuation_mass_gravity/README.md",
+        "experiments/microfluctuation_mass_gravity/falsify_shared_density.py",
+        "experiments/microfluctuation_mass_gravity/model.py",
+        "research/falkor/2026-11-02_R67_CORRECTION_NOT_ANSWER_KEY_AUDIT.md",
+        "research/falkor/2026-11-02_R68_G4_CORE_LEARNS_FROM_EXPERIENCE.md",
+        "research/gaia/2026-11-02_NEO_R60_SKIN_CORE_INNBOKS_OG_KILDE_NEG.md"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "experiments/falkor-r69-unverified-skin-learning-2026-11-02",
@@ -515,10 +655,24 @@
       "commit_date": null,
       "theme": "experiments/falkor-r69-unverified-skin-learning-2026-11-02",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/experiments%2Ffalkor-r69-unverified-skin-learning-2026-11-02",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 43,
+      "relevant_paths": [
+        "GTRCM_KANONISK_GRUNNPROGRAM.md",
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/falkor/r67_correction_core.py",
+        "experiments/microfluctuation_mass_gravity/README.md",
+        "experiments/microfluctuation_mass_gravity/falsify_shared_density.py",
+        "experiments/microfluctuation_mass_gravity/model.py",
+        "research/falkor/2026-11-02_R67_CORRECTION_NOT_ANSWER_KEY_AUDIT.md",
+        "research/falkor/2026-11-02_R68_G4_CORE_LEARNS_FROM_EXPERIENCE.md",
+        "research/falkor/2026-11-02_R69_NOAA_SKIN_G4_TENTATIVE_LEARNING.md"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "experiments/falkor-r70-core-owned-inquiry-2026-11-02",
@@ -527,10 +681,24 @@
       "commit_date": null,
       "theme": "experiments/falkor-r70-core-owned-inquiry-2026-11-02",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/experiments%2Ffalkor-r70-core-owned-inquiry-2026-11-02",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 48,
+      "relevant_paths": [
+        "GTRCM_KANONISK_GRUNNPROGRAM.md",
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/falkor/r67_correction_core.py",
+        "experiments/falkor/r70_g5_inquiry_e2e.py",
+        "experiments/microfluctuation_mass_gravity/README.md",
+        "experiments/microfluctuation_mass_gravity/falsify_shared_density.py",
+        "experiments/microfluctuation_mass_gravity/model.py",
+        "research/falkor/2026-11-02_R67_CORRECTION_NOT_ANSWER_KEY_AUDIT.md",
+        "research/falkor/2026-11-02_R68_G4_CORE_LEARNS_FROM_EXPERIENCE.md"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "experiments/falkor-r71-snapshot-continuity-2026-11-03",
@@ -539,10 +707,24 @@
       "commit_date": null,
       "theme": "experiments/falkor-r71-snapshot-continuity-2026-11-03",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/experiments%2Ffalkor-r71-snapshot-continuity-2026-11-03",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 54,
+      "relevant_paths": [
+        "GTRCM_KANONISK_GRUNNPROGRAM.md",
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/falkor/r67_correction_core.py",
+        "experiments/falkor/r70_g5_inquiry_e2e.py",
+        "experiments/falkor/r71_snapshot_continuity_e2e.py",
+        "experiments/falkor/r71_unverified_source_negative.py",
+        "experiments/microfluctuation_mass_gravity/README.md",
+        "experiments/microfluctuation_mass_gravity/falsify_shared_density.py",
+        "experiments/microfluctuation_mass_gravity/model.py"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "experiments/falkor-r72-discriminating-inquiry-2026-11-03",
@@ -551,10 +733,24 @@
       "commit_date": null,
       "theme": "experiments/falkor-r72-discriminating-inquiry-2026-11-03",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/experiments%2Ffalkor-r72-discriminating-inquiry-2026-11-03",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 61,
+      "relevant_paths": [
+        "GTRCM_KANONISK_GRUNNPROGRAM.md",
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/falkor/r67_correction_core.py",
+        "experiments/falkor/r70_g5_inquiry_e2e.py",
+        "experiments/falkor/r71_snapshot_continuity_e2e.py",
+        "experiments/falkor/r71_unverified_source_negative.py",
+        "experiments/falkor/r72_discriminating_inquiry_e2e.py",
+        "experiments/falkor/r72_real_noaa_audits_e2e.py",
+        "experiments/microfluctuation_mass_gravity/README.md"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "experiments/gaia-self-influence-2026-11-02",
@@ -563,10 +759,22 @@
       "commit_date": null,
       "theme": "experiments/gaia-self-influence-2026-11-02",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/experiments%2Fgaia-self-influence-2026-11-02",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 18,
+      "relevant_paths": [
+        "GTRCM_KANONISK_GRUNNPROGRAM.md",
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/gaia_self_influence/operativ_selvpaavirkning.py",
+        "experiments/microfluctuation_mass_gravity/README.md",
+        "experiments/microfluctuation_mass_gravity/falsify_shared_density.py",
+        "experiments/microfluctuation_mass_gravity/model.py",
+        "research/gaia/2026-11-02_GAIA_OPERATIV_SELVPAVIRKNING.md"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "experiments/neo_access_witness_2026-11-02",
