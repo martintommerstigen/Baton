@@ -14,7 +14,7 @@ class Observation:
 
 class ExistingChatDriver(Protocol):
     def submit_once(self, conversation_id: str, message_id: str, body: str) -> None: ...
-    def observe_reply(self, conversation_id: str, message_id: str) -> Observation | None: ...
+    def observe_reply(self, conversation_id: str, message_id: str, expected_digest: str) -> Observation | None: ...
 
 def wake_once(ledger: WakeLedger, driver: ExistingChatDriver,
               message_id: str, source: str, target: str, digest: str, body: str,
@@ -25,7 +25,7 @@ def wake_once(ledger: WakeLedger, driver: ExistingChatDriver,
         return ledger.state(message_id)[1]
     try:
         driver.submit_once(target, message_id, body)
-        observation = driver.observe_reply(target, message_id)
+        observation = driver.observe_reply(target, message_id, digest)
         if observation is None:
             ledger.mark_uncertain(message_id)
             return "uncertain"
@@ -42,7 +42,8 @@ def reconcile(ledger: WakeLedger, driver: ExistingChatDriver, message_id: str) -
     target,state,_=row
     if state=="verified": return state
     if state not in ("submitting","uncertain"): return state
-    observation=driver.observe_reply(target,message_id)
+    digest=ledger.provenance(message_id)[3]
+    observation=driver.observe_reply(target,message_id,digest)
     if observation is None: return state
     ledger.verify(message_id,observation.conversation_id,observation.assistant_turn_id)
     return "verified"
