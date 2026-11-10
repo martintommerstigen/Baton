@@ -112,3 +112,13 @@ The live acceptance test remains pending while Greg's authorized remote executio
 ## 2026-11-10 hosted CI verification
 
 GitHub Actions [run 42717352675](https://github.com/martintommerstigen/Baton/actions/runs/42717352675) completed successfully for commit `0c0e81fb9dcabf8d066d8bbb8b4de891ddb189fa`: `compileall` succeeded, offline A→B→C simulation succeeded, and **70/70 regression tests passed** (8.269 seconds). The job log confirms both fake-browser integration tests passed, including source-A assistant turn verification and replay-safe B→C. Subsequent commits modify receipt output and remove explicit CDP browser-close calls; verify their own CI results before claiming their status. The remaining blocker is still live authorized Greg execution and observing three existing ChatGPT conversations.
+
+## 2026-11-10 preexisting-marker collision correction
+
+An already present user message containing the same `[BATON-WAKE:id]` marker can be followed by an old assistant response. Previously the new attempt would fail to send, enter `uncertain`, and later read-only reconciliation could mistake that old response for successful new delivery.
+
+`ChatGPTUIDriver.submit_once` now raises a typed `PreexistingWakeMarker` **before clicking Send**. `wake_once` persists a terminal `collision` state, distinct from `uncertain`. `reconcile` cannot promote a `collision` to `verified`, and replay never sends again. Only an attempt that could actually have clicked Send may remain `uncertain`. The DOM observer also rejects repeated markers even when only one repeated message has the approved SHA-256 body.
+
+Regression coverage: `test_wake_collision.py` (4 tests). GitHub Actions run 42742088399 on commit `236a70fe9075c12fc3280712198fba64640d3307` passed **87/87 Python tests**, compileall, and offline A→B→C simulation. This remains synthetic DOM testing; it is not a live historical ChatGPT conversation wake.
+
+Source: Baton issue #3 and existing `wake_adapter.py`, `wake_contract.py`, `chatgpt_ui_driver.py`, and synthetic browser tests; GTRCM `research/newborn-learning-dna-2026-11-07` root README (`NEI ≠ ikke-NEI ≠ JA`). RustWorld was not accessible through the connected GitHub identity. The only unresolved acceptance gate is authorized access to three real existing ChatGPT conversation UIs with observable new assistant turn IDs. Greg Desktop Commander currently reports `remote_calls_left_pct: 0`. No Greg installation or credentials were used.
