@@ -58,6 +58,41 @@ class WakeTests(unittest.TestCase):
         self.assertEqual(sum(self.w.state(mid)[1]=='verified'
                              for mid in ('one','two')),1)
 
+    def test_same_target_inflight_blocks_new_submission(self):
+        self.w.request('first','A','B','digest-1','a-turn-1')
+        self.w.request('second','C','B','digest-2','c-turn-1')
+        self.assertTrue(self.w.begin_submission('first'))
+        with self.assertRaisesRegex(RuntimeError,'unresolved wake'):
+            self.w.begin_submission('second')
+        self.assertEqual(self.w.state('second')[1],'requested')
+        self.assertTrue(self.w.mark_uncertain('first'))
+        with self.assertRaisesRegex(RuntimeError,'unresolved wake'):
+            self.w.begin_submission('second')
+        self.assertTrue(self.w.verify('first','B','b-turn-1'))
+        self.assertTrue(self.w.begin_submission('second'))
+
+    def test_distinct_targets_can_submit_concurrently(self):
+        self.w.request('first','A','B','d1')
+        self.w.request('second','A','C','d2')
+        self.assertTrue(self.w.begin_submission('first'))
+        self.assertTrue(self.w.begin_submission('second'))
+
+    def test_concurrent_same_target_claims_are_serialized(self):
+        self.w.request('first','A','B','d1')
+        self.w.request('second','C','B','d2')
+        def start(mid):
+            try:
+                return self.w.begin_submission(mid)
+            except RuntimeError:
+                return False
+        with ThreadPoolExecutor(max_workers=2) as pool:
+            results=list(pool.map(start,('first','second')))
+        self.assertCountEqual(results,[True,False])
+        self.assertEqual(sum(self.w.state(mid)[1]=='submitting'
+                             for mid in ('first','second')),1)
+        self.assertEqual(sum(self.w.state(mid)[1]=='requested'
+                             for mid in ('first','second')),1)
+
     def test_migrate_legacy_ledger(self):
         with tempfile.TemporaryDirectory() as tmp:
             path=tmp+'/old.sqlite'
