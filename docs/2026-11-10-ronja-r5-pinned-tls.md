@@ -55,6 +55,11 @@ client therefore deliberately does **not** support CA-only trust in place
 of a leaf pin. Rotate an exact leaf deliberately and update the client pin
 out of band; never retry an uncertain admission without independent audit.
 
+The one-shot CLI now defaults to `https://127.0.0.1:8788` and fails
+closed if `--server-cert-file` is omitted. Legacy plaintext requires an
+explicit `--url http://127.0.0.1:PORT`; it is not endpoint-authenticated
+before disclosure and must not be used against an untrusted listener.
+
 Negative control: create a local test CA, issue a *different* leaf with
 the same valid IP SAN, and verify that an ordinary CA-trusting TLS handshake
 succeeds while the Baton client rejects the leaf and the fake server
