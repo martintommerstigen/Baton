@@ -43,6 +43,21 @@ class WakeTests(unittest.TestCase):
         self.assertTrue(self.w.verify('two','B','different-assistant-turn'))
         self.assertFalse(self.w.verify('one','B','same-assistant-turn'))
 
+    def test_concurrent_turn_claims_are_serialized(self):
+        for mid in ('one','two'):
+            self.w.request(mid,'A','B','digest-'+mid)
+            self.w.begin_submission(mid)
+        def claim(mid):
+            try:
+                return self.w.verify(mid,'B','same-turn')
+            except ValueError:
+                return False
+        with ThreadPoolExecutor(max_workers=2) as pool:
+            results=list(pool.map(claim,('one','two')))
+        self.assertCountEqual(results,[True,False])
+        self.assertEqual(sum(self.w.state(mid)[1]=='verified'
+                             for mid in ('one','two')),1)
+
     def test_migrate_legacy_ledger(self):
         with tempfile.TemporaryDirectory() as tmp:
             path=tmp+'/old.sqlite'
