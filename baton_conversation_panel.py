@@ -71,6 +71,8 @@ def attach_baton_panel(window, view, page, *, initial_chat=None, initial_message
     layout.addWidget(send)
     layout.addWidget(copy)
     layout.addWidget(status)
+    from baton_model_bridge import attach_model_bridge
+    attach_model_bridge(layout, view, page, dock)
     layout.addStretch(1)
     dock.setWidget(body)
     window.addDockWidget(Qt.DockWidgetArea.RightDockWidgetArea, dock)
