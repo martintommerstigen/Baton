@@ -149,6 +149,13 @@ class PinnedSourceTests(unittest.TestCase):
         with self.assertRaises(UntrustedReceipt):
             verify_pinned_source(self.jobs, changed, bundle)
 
+    def test_root_source_inspector_rejected(self):
+        with patch.object(os, "geteuid", return_value=0):
+            with self.assertRaises(JobRejected):
+                self.capture()
+        self.assertEqual(self.jobs.audit("RustWorld", "source001")["state"],
+                         "not_found_not_proof_of_nonexecution")
+
     def test_missing_linux_nofollow_support_fails_closed(self):
         with patch.object(os, "O_NOFOLLOW", 0):
             with self.assertRaises(JobRejected):
