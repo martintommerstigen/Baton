@@ -170,6 +170,35 @@ class ProcStatCaptureTests(unittest.TestCase):
         self.assertEqual(broker_calls, [])
         self.assertEqual(marker.read_bytes(), before)
 
+    def test_fixed_source_symlink_cannot_be_followed(self):
+        link = self.root / "fake_proc_stat"
+        link.symlink_to(SOURCE)
+        with patch("remote_security.proc_stat_capture.SOURCE", str(link)):
+            with self.assertRaises(OSError):
+                capture_once(self.jobs, "GTRCM", "symlink01")
+        self.assertEqual(self.jobs.audit("GTRCM", "symlink01")["state"],
+                         "not_found_not_proof_of_nonexecution")
+
+    @unittest.skipIf(os.getuid() == 0, "requires unprivileged test UID")
+    def test_unprivileged_fake_proc_file_cannot_impersonate_root_source(self):
+        fake = self.root / "proc_stat"
+        fake.write_bytes(RAW)
+        with patch("remote_security.proc_stat_capture.SOURCE", str(fake)):
+            with self.assertRaises(JobRejected):
+                capture_once(self.jobs, "GTRCM", "fakecpu01")
+        self.assertEqual(self.jobs.audit("GTRCM", "fakecpu01")["state"],
+                         "not_found_not_proof_of_nonexecution")
+
+    def test_key_rotation_and_lost_raw_bundle_fail_closed(self):
+        bundle = self.capture()
+        other = ResearchJobs(self.db, b"Q" * 32, POLICY, audit_only=True)
+        with self.assertRaises(UntrustedReceipt):
+            verify_capture(other, bundle)
+        changed = deepcopy(bundle)
+        del changed["raw_cpu_line"]
+        with self.assertRaises(UntrustedReceipt):
+            verify_capture(self.jobs, changed)
+
     @unittest.skipUnless(sys.platform.startswith("linux") and os.path.exists(SOURCE),
                          "requires a real Linux /proc/stat")
     def test_real_linux_procfs_counter_not_greg(self):
