@@ -1,5 +1,6 @@
 """Offline B1/B5 security and transport checks; never exercises ChatGPT UI."""
 from pathlib import Path
+from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 import tempfile
 import threading
 import unittest
@@ -73,6 +74,50 @@ class BatonRemoteTests(unittest.TestCase):
                 request_status(url, TOKEN, 'health')
         with self.assertRaises(ValueError):
             request_status(self.url, TOKEN, 'shell')
+
+    def test_redirect_cannot_exfiltrate_authorization_header(self):
+        # urllib's default redirect handler forwards Authorization across ports.
+        # A malicious process impersonating the loopback gateway must not
+        # redirect our bearer token to a second listener.
+        class Sink(BaseHTTPRequestHandler):
+            def do_GET(self):
+                self.server.captured.append(self.headers.get('Authorization'))
+                self.send_response(200)
+                self.end_headers()
+                self.wfile.write(b'{}')
+
+            def log_message(self, *args):
+                pass
+
+        class Redirect(BaseHTTPRequestHandler):
+            def do_GET(self):
+                self.send_response(302)
+                self.send_header('Location', self.server.redirect_to)
+                self.end_headers()
+
+            def log_message(self, *args):
+                pass
+
+        sink = ThreadingHTTPServer(('127.0.0.1', 0), Sink)
+        source = ThreadingHTTPServer(('127.0.0.1', 0), Redirect)
+        sink.captured = []
+        source.redirect_to = 'http://127.0.0.1:%d/capture' % sink.server_port
+        threads = []
+        try:
+            for server in (sink, source):
+                t = threading.Thread(target=server.serve_forever, daemon=True)
+                t.start()
+                threads.append(t)
+            with self.assertRaises(ValueError):
+                request_status('http://127.0.0.1:%d' % source.server_port,
+                               TOKEN, 'health')
+            self.assertEqual(sink.captured, [])
+        finally:
+            for server in (sink, source):
+                server.shutdown()
+                server.server_close()
+            for t in threads:
+                t.join(timeout=2)
 
     def test_no_store_headers(self):
         code, _, headers = self.raw('/v1/health', TOKEN)
