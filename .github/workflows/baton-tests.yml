@@ -6,12 +6,18 @@ on:
       - 'server.py'
       - 'client.py'
       - 'test_*.py'
+      - 'desktop/**'
+      - 'tests/test_desktop_launcher.py'
+      - 'tests/test_launcher_security.py'
       - '.github/workflows/baton-tests.yml'
   pull_request:
     paths:
       - 'server.py'
       - 'client.py'
       - 'test_*.py'
+      - 'desktop/**'
+      - 'tests/test_desktop_launcher.py'
+      - 'tests/test_launcher_security.py'
       - '.github/workflows/baton-tests.yml'
   workflow_dispatch:
 
@@ -28,5 +34,9 @@ jobs:
           persist-credentials: false
       - name: Python version
         run: python3 --version
-      - name: Baton regression tests
+      - name: Baton relay regression tests
         run: python3 -m unittest -v test_baton.py test_security.py test_client.py
+      - name: Local desktop launcher regression and security tests
+        run: |
+          python3 -m unittest discover -s tests -p 'test_*launcher*.py' -v
+          python3 -m py_compile desktop/install_baton_launcher.py desktop/diagnose_local.py
