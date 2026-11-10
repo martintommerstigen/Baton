@@ -16,7 +16,7 @@ from run_chatgpt_wake import local_cdp
 from wake_adapter import wake_once
 from wake_broker_ui import BrokerGatedUIDriver
 from wake_contract import WakeLedger
-from wake_origin import verify_source_turn
+from wake_origin import verify_source_turn, guarded_source_broker_request
 from wake_ui_lock import ui_controller_lock
 
 
@@ -85,7 +85,9 @@ def execute_once(ledger, source_driver, target_driver, source, target,
     if not 0 <= wait_seconds <= 600:
         raise ValueError("Invalid observation window")
     verify_source_turn(source_driver, source, source_turn_id, target, message_id)
-    gated = BrokerGatedUIDriver(target_driver, broker_request, source, source_turn_id)
+    guarded_request = guarded_source_broker_request(
+        source_driver, source, source_turn_id, target, message_id, broker_request)
+    gated = BrokerGatedUIDriver(target_driver, guarded_request, source, source_turn_id)
     digest = hashlib.sha256(body.encode('utf-8')).hexdigest()
     return wake_once(ledger, WaitForReply(gated, wait_seconds), message_id,
                      source, target, digest, body, source_turn_id)
