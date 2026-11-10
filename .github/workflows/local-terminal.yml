@@ -12,6 +12,9 @@ on:
       - test_baton_loopback_http.py
       - baton_mcp.py
       - baton_github_bus.py
+      - baton_wake_receipt.py
+      - test_baton_wake_receipt.py
+      - install_baton_greg_service.sh
       - test_baton_github_bus.py
       - test_baton_mcp.py
       - test_greg_mcp_http_e2e.sh
@@ -40,8 +43,8 @@ jobs:
       - uses: actions/checkout@v4
         with:
           persist-credentials: false
-      - run: python3 -m unittest -v test_baton_local_terminal.py test_preflight_greg.py test_baton_loopback_http.py test_baton_mcp.py test_baton_github_bus.py
-      - run: bash -n install_evening.sh test_greg_mcp_http_e2e.sh
+      - run: python3 -m unittest -v test_baton_local_terminal.py test_preflight_greg.py test_baton_loopback_http.py test_baton_mcp.py test_baton_github_bus.py test_baton_wake_receipt.py
+      - run: bash -n install_evening.sh install_baton_greg_service.sh test_greg_mcp_http_e2e.sh
       - run: BATON_WORKTREE="$PWD" bash test_greg_mcp_http_e2e.sh
       - run: python3 baton_local_terminal.py identity --workspace .
       - run: python3 baton_local_terminal.py git-revision --workspace .
