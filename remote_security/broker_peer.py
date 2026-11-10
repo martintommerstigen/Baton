@@ -76,8 +76,8 @@ def query_verified_broker(socket_path, expected_uid, request, *, timeout=3.0,
     """
     if type(timeout) not in (int, float) or not math.isfinite(timeout) or not 0 < timeout <= 10:
         raise ValueError('timeout must be finite and within (0,10] seconds')
-    if type(expected_uid) is not int or expected_uid < 0:
-        raise ValueError('expected_uid must be a nonnegative integer')
+    if type(expected_uid) is not int or expected_uid <= 0:
+        raise ValueError('expected_uid must be a dedicated non-root UID')
     if require_distinct_uid and expected_uid == os.getuid():
         raise UntrustedBroker('same-UID broker is not a security boundary')
     if not hasattr(socket, 'SO_PEERCRED'):
