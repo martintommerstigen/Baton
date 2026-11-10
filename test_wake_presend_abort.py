@@ -39,6 +39,10 @@ class PreSendAbortTests(unittest.TestCase):
         self.assertEqual(reconcile(self.ledger, self.driver, "paused-1"), "aborted")
         self.assertEqual(self.wake("paused-1"), "aborted")
         self.assertEqual(self.page.send_count, 0)
+        # The rejected pre-click attempt deliberately leaves the draft in
+        # the user's composer. It must be explicitly cleared before a new ID.
+        self.assertIn("[BATON-WAKE:paused-1]", self.page.composer.text)
+        self.page.composer.text = ""
         with patch("chatgpt_ui_driver.PAUSE_FILE") as pause:
             pause.exists.return_value = False
             self.assertEqual(self.wake("after-pause"), "verified")
@@ -90,6 +94,13 @@ class PreSendAbortTests(unittest.TestCase):
             self.wake("blocked-2")
         self.assertEqual(self.page.send_count, 1)
         self.assertEqual(reconcile(self.ledger, self.driver, "clicked-1"), "verified")
+        # A second response must have its OWN unique assistant-turn ID.
+        # The synthetic Page normally reuses a fixed ID for every click.
+        original_click = self.page.send.click
+        def click_with_new_turn_id():
+            original_click()
+            self.page.turns[-1].mid = "fresh-second-assistant-turn"
+        self.page.send.click = click_with_new_turn_id
         with patch("chatgpt_ui_driver.PAUSE_FILE") as pause:
             pause.exists.return_value = False
             self.assertEqual(self.wake("after-reconcile"), "verified")
