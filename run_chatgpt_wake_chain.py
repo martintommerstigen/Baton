@@ -8,12 +8,11 @@ import argparse
 import hashlib
 import json
 import time
-from pathlib import Path
 from urllib.parse import urlparse
 from wake_contract import WakeLedger
 from wake_chain import ChainPlan, run_chain
 from wake_origin import verify_source_turn, discover_source_turn
-from chatgpt_ui_driver import ChatGPTUIDriver, conversation_id
+from chatgpt_ui_driver import ChatGPTUIDriver, conversation_id, pause_active, PAUSE_FILE
 from run_chatgpt_wake import local_cdp
 from wake_ui_lock import ui_controller_lock
 
@@ -41,7 +40,7 @@ def main(argv=None):
     local_cdp(args.cdp)
     if not 0 <= args.wait_source_seconds <= 3600:
         p.error('--wait-source-seconds must be between 0 and 3600')
-    if Path('/home/olliver/GTRCM-newborn-bootstrap/transport/PAUSE_UI_WRITES').exists():
+    if pause_active(PAUSE_FILE):
         raise RuntimeError('UI writes paused')
     from playwright.sync_api import sync_playwright
     # One host lock covers both runners even when their SQLite DB paths differ.
