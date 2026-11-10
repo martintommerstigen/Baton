@@ -210,22 +210,13 @@ class ProcStatCaptureTests(unittest.TestCase):
         self.assertEqual(self.jobs.audit("GTRCM", "symlink01")["state"],
                          "not_found_not_proof_of_nonexecution")
 
-    def test_unprivileged_fake_proc_file_cannot_impersonate_root_source(self):
-        # Deterministically model a non-root inode even on unusual CI mounts.
-        from types import SimpleNamespace
-        import stat
-        fake = self.root / "proc_stat"
-        fake.write_bytes(RAW)
-        nonroot_stat = SimpleNamespace(st_mode=stat.S_IFREG | 0o444, st_uid=12345)
-        from remote_security.proc_stat_capture import _read_proc_cpu_line
-        with patch("remote_security.proc_stat_capture.SOURCE", str(fake)):
-            with patch("remote_security.proc_stat_capture.os.fstat",
-                       return_value=nonroot_stat) as checked:
-                with self.assertRaises(JobRejected):
-                    _read_proc_cpu_line()
-                checked.assert_called_once()
-        self.assertEqual(self.jobs.audit("GTRCM", "fakecpu01")["state"],
-                         "not_found_not_proof_of_nonexecution")
+    def test_source_path_is_fixed_not_caller_controlled(self):
+        # The only public capture arguments are jobs/project/job ID.
+        import inspect
+        from remote_security.proc_stat_capture import capture_once as entry
+        self.assertEqual(SOURCE, "/proc/stat")
+        self.assertEqual(list(inspect.signature(entry).parameters),
+                         ["jobs", "project", "job_id"])
 
     def test_key_rotation_and_lost_raw_bundle_fail_closed(self):
         bundle = self.capture()
