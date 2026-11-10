@@ -32,6 +32,9 @@ class FakeReceiptHandler(BaseHTTPRequestHandler):
         elif mode == 'old_nonce':
             mac = admission_mac(b'K' * 48, 'b' * 32, doc['envelope'],
                                 'accepted_not_delivered')
+        elif mode == 'duplicate_mac':
+            mac = admission_mac(b'K' * 48, nonce, doc['envelope'],
+                                'accepted_not_delivered')
         elif mode == 'wrong_envelope':
             other = dict(doc['envelope'])
             other['message_id'] = 'different000'
@@ -67,7 +70,7 @@ class ReceiptAuthenticationTests(unittest.TestCase):
         thread = threading.Thread(target=server.serve_forever, daemon=True)
         thread.start()
         try:
-            for mode in ('unsigned', 'wrong_key', 'old_nonce', 'wrong_envelope'):
+            for mode in ('unsigned', 'wrong_key', 'old_nonce', 'wrong_envelope', 'duplicate_mac'):
                 with self.subTest(mode=mode):
                     server.mode = mode
                     payload = b'approved'
@@ -78,7 +81,7 @@ class ReceiptAuthenticationTests(unittest.TestCase):
                     with self.assertRaises(DeliveryUncertain):
                         send_once('http://127.0.0.1:%d' % server.server_port,
                                   b'T' * 48, b'K' * 48, envelope, payload)
-            self.assertEqual(len(server.seen), 4)
+            self.assertEqual(len(server.seen), 5)
             self.assertTrue(all(len(nonce) == 32 for _, nonce in server.seen))
         finally:
             server.shutdown()
