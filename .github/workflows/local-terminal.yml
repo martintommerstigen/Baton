@@ -23,7 +23,7 @@ on:
       - baton_wake_receipt.py
       - test_baton_wake_receipt.py
       - install_baton_greg_service.sh
-      - test_baton_github_bus.py test_baton_exec_agent.py
+      - test_baton_github_bus.py test_baton_exec_agent.py test_baton_local_api.py
       - test_baton_mcp.py
       - test_greg_mcp_http_e2e.sh
       - install_evening.sh
