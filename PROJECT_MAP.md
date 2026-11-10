@@ -7,7 +7,7 @@ Opprettet 2026-11-10. Koordineringsdokument, ikke en ny teori eller et nytt CORE
 |---|---|---|
 | GTRCM | Ontologi, matematikk, fysisk forskning, moteksempler | [GTRCM](https://github.com/martintommerstigen/GTRCM) |
 | Baton | Transport, eksisterende chat-wake, LLM-/kommunikasjonsadaptere, sikkerhet | [Baton](https://github.com/martintommerstigen/Baton) |
-| RustWorld | Individuasjoner, Core/Skin, barnehager, skoler, rom, Hugin og 525 | Foreløpig [GTRCM-grenen RustWorld](https://github.com/martintommerstigen/GTRCM/tree/RustWorld); eget repo ikke bekreftet |
+| RustWorld | Individuasjoner, Core/Skin, barnehager, skoler, rom, Hugin og 525 | [GTRCM-grenen RustWorld](https://github.com/martintommerstigen/GTRCM/tree/RustWorld), en kildebevart programsamling; separat GitHub-repo under dette navnet ble ikke funnet |
 
 **Viktig:** GTRCM er et forskningsarkiv med mange selvstendige grener, ikke en ordinær applikasjonsbacklog. Dets `main` inneholder kanoniske premisser, `METHOD.md`, `NEGATIVE_RESULTS.md`, `OPEN_PROBLEMS.md`; `CORE.md` er med hensikt tom. Ikke gjør koordinering til fysikkpåstand, ikke flytt/merge forskningsgrener automatisk, og ikke overskriv negativt arbeid.
 
@@ -53,7 +53,7 @@ F0/F1 = forskningsprioritet, ikke programvareferdigstilling. P0/P1/P2 = implemen
 
 - B1: [Baton issue #3](https://github.com/martintommerstigen/Baton/issues/3), [PR #4](https://github.com/martintommerstigen/Baton/pull/4). Hosted CI har passert; faktisk historisk chat-wake er ikke bevist.
 - G3: [GTRCM issue #1](https://github.com/martintommerstigen/GTRCM/issues/1) for uavhengig målt treghet og kildestyrke; [issue #4](https://github.com/martintommerstigen/GTRCM/issues/4) for GEN/prøvevekst. Bevar negative resultater.
-- R1/R2: Kartlegg eksisterende RustWorld-kode og `architecture/rustworld-zero-2026-11-02`, `audit/barnehage-coupling-2026-10-30`, `eldrid/gpu-individuated-subwholes-2026-10-29` før nye implementasjoner.
+- R1/R2: Bruk [RustWorld/README](https://github.com/martintommerstigen/GTRCM/blob/RustWorld/README.md), [OVERSIKT](https://github.com/martintommerstigen/GTRCM/blob/RustWorld/OVERSIKT.md) og kildebevart `manifest.json`; kartlegg også `architecture/rustworld-zero-2026-11-02`, `audit/barnehage-coupling-2026-10-30`, `eldrid/gpu-individuated-subwholes-2026-10-29` før nye implementasjoner.
 - B3/B4: GTRCM [issue #7](https://github.com/martintommerstigen/GTRCM/issues/7) er kanalguide, ikke bevis for faktisk ekstern kontakt.
 
 ## Fremdriftsstatus
