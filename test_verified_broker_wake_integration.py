@@ -10,6 +10,7 @@ from run_verified_broker_wake import execute_once
 from test_chatgpt_ui_submission import CID, Page
 from wake_admission_broker import AdmissionStore
 from wake_contract import WakeLedger
+from wake_broker_ui import BrokerOutcomeUncertain
 
 SOURCE = 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa'
 
@@ -96,7 +97,7 @@ class VerifiedSingleHopIntegration(unittest.TestCase):
             if request['op'] == 'admit':
                 source.reply = 'A revoked the wake request'
             return response
-        with self.assertRaises(PermissionError):
+        with self.assertRaises(BrokerOutcomeUncertain):
             execute_once(self.ledger, source, self.target, SOURCE, CID,
                          'turn-a', 'm1', 'harmless', mutating_broker, 0)
         self.assertEqual([c['op'] for c in self.calls], ['admit'])
@@ -110,7 +111,7 @@ class VerifiedSingleHopIntegration(unittest.TestCase):
             if request['op'] == 'begin_click':
                 source.reply = 'A revoked the wake request'
             return response
-        with self.assertRaises(PermissionError):
+        with self.assertRaises(BrokerOutcomeUncertain):
             execute_once(self.ledger, source, self.target, SOURCE, CID,
                          'turn-a', 'm1', 'harmless', mutating_broker, 0)
         self.assertEqual([c['op'] for c in self.calls], ['admit', 'begin_click'])
@@ -136,7 +137,7 @@ class VerifiedSingleHopIntegration(unittest.TestCase):
                     self.reply = 'BATON_WAKE ' + CID + ' different-message-id'
                 return super().read_assistant_turn(chat, turn)
         source = ChangingSource('BATON_WAKE ' + CID + ' m1')
-        with self.assertRaises(PermissionError):
+        with self.assertRaises(BrokerOutcomeUncertain):
             execute_once(self.ledger, source, self.target, SOURCE, CID,
                          'turn-a', 'm1', 'harmless', self.broker, 0)
         self.assertGreaterEqual(source.reads, 2)
