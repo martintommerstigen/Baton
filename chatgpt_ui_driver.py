@@ -9,7 +9,7 @@ from pathlib import Path
 import re
 import hashlib
 from urllib.parse import urlparse
-from wake_adapter import Observation
+from wake_adapter import Observation, PreexistingWakeMarker
 
 CHAT_ID = re.compile(r"^[0-9a-f]{8}(?:-[0-9a-f]{4}){3}-[0-9a-f]{12}$", re.I)
 MARKER_ID = re.compile(r"^[A-Za-z0-9_-]{1,100}$")
@@ -72,7 +72,7 @@ class ChatGPTUIDriver:
         if not isinstance(body, str) or not body.strip():
             raise ValueError("Nonempty body required")
         if self.page.locator('[data-message-author-role="user"]').filter(has_text=marker).count():
-            raise RuntimeError("Marker already present; reconcile without resending")
+            raise PreexistingWakeMarker("Marker already present before UI submission; collision")
         editor = self.page.locator("#prompt-textarea")
         if editor.count() != 1 or not editor.is_visible():
             raise RuntimeError("Composer missing or ambiguous")
@@ -96,9 +96,13 @@ class ChatGPTUIDriver:
         for i in range(turns.count()):
             turn = turns.nth(i)
             if (turn.get_attribute("data-message-author-role") == "user"
-                    and is_marked_user_turn(turn.inner_text(), marker, expected_digest)):
+                    and is_marked_user_turn(turn.inner_text(), marker)):
                 markers.append(i)
+        # Any second use of the marker is ambiguous, even if its body digest
+        # differs from the approved one. Do not silently ignore collisions.
         if len(markers) != 1:
+            return None
+        if not is_marked_user_turn(turns.nth(markers[0]).inner_text(), marker, expected_digest):
             return None
         if self.page.locator('[data-testid="stop-button"]').count():
             return None
