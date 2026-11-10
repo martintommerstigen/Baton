@@ -4,7 +4,7 @@ set -euo pipefail
 cd "${BATON_WORKTREE:-${HOME}/.local/share/baton-evening}"
 secret="$(python3 -c 'import secrets; print(secrets.token_urlsafe(36))')"
 port="$(python3 -c 'import socket; s=socket.socket(); s.bind(("127.0.0.1",0)); print(s.getsockname()[1]); s.close()')"
-BATON_MCP_TOKEN="$secret" python3 baton_mcp.py --port "$port" >/dev/null 2>&1 &
+BATON_MCP_TOKEN="$secret" python3 baton_mcp.py --workspace "$PWD" --port "$port" >/dev/null 2>&1 &
 pid=$!
 cleanup() { kill "$pid" 2>/dev/null || true; wait "$pid" 2>/dev/null || true; }
 trap cleanup EXIT
