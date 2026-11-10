@@ -59,6 +59,16 @@ class WakeLedger:
         with self.db() as db:
             return bool(db.execute("UPDATE wakes SET state='uncertain',updated=? WHERE id=? AND state='submitting'",
                                    (int(time.time()),id)).rowcount)
+    def mark_collision(self,id):
+        """Terminal pre-send marker conflict; never eligible for reconciliation.
+
+        Call only if UI driver proves it did NOT click Send.
+        """
+        with self.db() as db:
+            return bool(db.execute(
+                "UPDATE wakes SET state='collision',updated=? WHERE id=? AND state='submitting'",
+                (int(time.time()),id)).rowcount)
+
     def verify(self,id,observed_chat,observed_turn):
         if not observed_chat or not observed_turn:
             raise ValueError("observed chat and turn required")
