@@ -8,6 +8,14 @@ import hashlib
 from typing import Protocol
 from wake_contract import WakeLedger
 
+class PreSubmissionRejected(RuntimeError):
+    """UI preflight proved Send was not clicked.
+
+    This exception MUST NOT be raised after clicking Send. Only a typed
+    pre-click failure may be recorded as terminal 'aborted'; every ambiguous
+    or post-click exception stays 'uncertain' and is never auto-retried.
+    """
+
 class PreexistingWakeMarker(RuntimeError):
     """A marker was already in the target chat BEFORE this attempt clicked Send.
 
@@ -47,9 +55,13 @@ def wake_once(ledger: WakeLedger, driver: ExistingChatDriver,
         ledger.verify(message_id, observation.conversation_id, observation.assistant_turn_id)
         return "verified"
     except PreexistingWakeMarker:
-        # A matching old user turn + old assistant response must not turn this
-        # failed new attempt into a false verified wake on later reconciliation.
+        # A preexisting marker is a terminal collision, never a delivered wake.
         ledger.mark_collision(message_id)
+        raise
+    except PreSubmissionRejected:
+        # The UI driver guarantees that Send was not clicked. This must not
+        # permanently block unrelated future wakes to the same target.
+        ledger.mark_aborted(message_id)
         raise
     except Exception:
         ledger.mark_uncertain(message_id)
