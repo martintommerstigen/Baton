@@ -17,7 +17,7 @@
     }
   ],
   "branch_count": 276,
-  "tree_indexed": 135,
+  "tree_indexed": 150,
   "content_read_in_this_inventory": 0,
   "notes": [
     "branch_date_hint is parsed from branch name, NOT verified commit date",
@@ -3480,10 +3480,24 @@
       "commit_date": null,
       "theme": "research/egil-r77-gtrcm-coinductive-individuation-2026-11-05",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/research%2Fegil-r77-gtrcm-coinductive-individuation-2026-11-05",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 257,
+      "relevant_paths": [
+        "GTRCM_KANONISK_GRUNNPROGRAM.md",
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/egil/egil_r0_response_residual_antibygge_2026_11_04.py",
+        "experiments/egil/egil_r10_relativity_parameter.py",
+        "experiments/egil/egil_r11_reversible_coarse_entropy.py",
+        "experiments/egil/egil_r12_steering_no_signalling.py",
+        "experiments/egil/egil_r15_relative_phase_observer.py",
+        "experiments/egil/egil_r15b_unseen_phase_witness.py",
+        "experiments/egil/egil_r16_phase_density_action.py"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "research/eik-full-physics-2026-11-03",
@@ -3492,10 +3506,24 @@
       "commit_date": null,
       "theme": "research/eik-full-physics-2026-11-03",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/research%2Feik-full-physics-2026-11-03",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 172,
+      "relevant_paths": [
+        "GTRCM_KANONISK_GRUNNPROGRAM.md",
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/eik/actualization_information_fork.py",
+        "experiments/eik/actualization_without_finest_scale.py",
+        "experiments/eik/adaptive_repertoire_gate.py",
+        "experiments/eik/anonymous_recursive_contact_grammar.py",
+        "experiments/eik/anonymous_reversible_contact_birth.py",
+        "experiments/eik/automorphism_not_label_gauge.py",
+        "experiments/eik/balanced_phase_composition_complex_tensor.py"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "research/eik-kilde-retur-anytime-source-completeness-2026-11-10",
@@ -3504,10 +3532,24 @@
       "commit_date": null,
       "theme": "research/eik-kilde-retur-anytime-source-completeness-2026-11-10",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/research%2Feik-kilde-retur-anytime-source-completeness-2026-11-10",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 112,
+      "relevant_paths": [
+        "GTRCM_KANONISK_GRUNNPROGRAM.md",
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/eik_nested_self_feedback.py",
+        "experiments/eik_operational_quotient.py",
+        "experiments/eik_transient_individuation.py",
+        "experiments/microfluctuation_mass_gravity/README.md",
+        "experiments/microfluctuation_mass_gravity/falsify_shared_density.py",
+        "experiments/microfluctuation_mass_gravity/model.py",
+        "experiments/roger/roger_scalar_density_schrodinger_no_go.py"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "research/eik-kilde-retur-bounded-buffer-duality-2026-11-10",
@@ -3516,10 +3558,24 @@
       "commit_date": null,
       "theme": "research/eik-kilde-retur-bounded-buffer-duality-2026-11-10",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/research%2Feik-kilde-retur-bounded-buffer-duality-2026-11-10",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 105,
+      "relevant_paths": [
+        "GTRCM_KANONISK_GRUNNPROGRAM.md",
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/eik_nested_self_feedback.py",
+        "experiments/eik_operational_quotient.py",
+        "experiments/eik_transient_individuation.py",
+        "experiments/microfluctuation_mass_gravity/README.md",
+        "experiments/microfluctuation_mass_gravity/falsify_shared_density.py",
+        "experiments/microfluctuation_mass_gravity/model.py",
+        "experiments/roger/roger_scalar_density_schrodinger_no_go.py"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "research/eik-kilde-retur-corpus-audit-2026-11-10",
@@ -3528,10 +3584,24 @@
       "commit_date": null,
       "theme": "research/eik-kilde-retur-corpus-audit-2026-11-10",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/research%2Feik-kilde-retur-corpus-audit-2026-11-10",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 21,
+      "relevant_paths": [
+        "GTRCM_KANONISK_GRUNNPROGRAM.md",
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/microfluctuation_mass_gravity/README.md",
+        "experiments/microfluctuation_mass_gravity/falsify_shared_density.py",
+        "experiments/microfluctuation_mass_gravity/model.py",
+        "research/2026-11-09_BATON_SPIRE_WAKE_BOUNDARY.md",
+        "research/BATON_INDEPENDENT_CONTINUATION_2026-11-09.md",
+        "research/eik/corpus/2026-11-10_GTRCM_ALL_BRANCH_HEADS.json",
+        "research/eik/corpus/2026-11-10_PRIORITY_TREE_INDEX_01.json"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "research/eik-kilde-retur-dual-recorder-common-loss-2026-11-10",
@@ -3540,10 +3610,24 @@
       "commit_date": null,
       "theme": "research/eik-kilde-retur-dual-recorder-common-loss-2026-11-10",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/research%2Feik-kilde-retur-dual-recorder-common-loss-2026-11-10",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 93,
+      "relevant_paths": [
+        "GTRCM_KANONISK_GRUNNPROGRAM.md",
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/eik_nested_self_feedback.py",
+        "experiments/eik_operational_quotient.py",
+        "experiments/eik_transient_individuation.py",
+        "experiments/microfluctuation_mass_gravity/README.md",
+        "experiments/microfluctuation_mass_gravity/falsify_shared_density.py",
+        "experiments/microfluctuation_mass_gravity/model.py",
+        "experiments/roger/roger_scalar_density_schrodinger_no_go.py"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "research/eik-kilde-retur-initial-occupancy-2026-11-10",
@@ -3552,10 +3636,24 @@
       "commit_date": null,
       "theme": "research/eik-kilde-retur-initial-occupancy-2026-11-10",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/research%2Feik-kilde-retur-initial-occupancy-2026-11-10",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 107,
+      "relevant_paths": [
+        "GTRCM_KANONISK_GRUNNPROGRAM.md",
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/eik_nested_self_feedback.py",
+        "experiments/eik_operational_quotient.py",
+        "experiments/eik_transient_individuation.py",
+        "experiments/microfluctuation_mass_gravity/README.md",
+        "experiments/microfluctuation_mass_gravity/falsify_shared_density.py",
+        "experiments/microfluctuation_mass_gravity/model.py",
+        "experiments/roger/roger_scalar_density_schrodinger_no_go.py"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "research/eik-kilde-retur-order-cycle-2026-11-10",
@@ -3564,10 +3662,24 @@
       "commit_date": null,
       "theme": "research/eik-kilde-retur-order-cycle-2026-11-10",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/research%2Feik-kilde-retur-order-cycle-2026-11-10",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 89,
+      "relevant_paths": [
+        "GTRCM_KANONISK_GRUNNPROGRAM.md",
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/eik_nested_self_feedback.py",
+        "experiments/eik_operational_quotient.py",
+        "experiments/eik_transient_individuation.py",
+        "experiments/microfluctuation_mass_gravity/README.md",
+        "experiments/microfluctuation_mass_gravity/falsify_shared_density.py",
+        "experiments/microfluctuation_mass_gravity/model.py",
+        "experiments/roger/roger_scalar_density_schrodinger_no_go.py"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "research/eik-kilde-retur-placebo-audit-alias-2026-11-10",
@@ -3576,10 +3688,24 @@
       "commit_date": null,
       "theme": "research/eik-kilde-retur-placebo-audit-alias-2026-11-10",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/research%2Feik-kilde-retur-placebo-audit-alias-2026-11-10",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 99,
+      "relevant_paths": [
+        "GTRCM_KANONISK_GRUNNPROGRAM.md",
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/eik_nested_self_feedback.py",
+        "experiments/eik_operational_quotient.py",
+        "experiments/eik_transient_individuation.py",
+        "experiments/microfluctuation_mass_gravity/README.md",
+        "experiments/microfluctuation_mass_gravity/falsify_shared_density.py",
+        "experiments/microfluctuation_mass_gravity/model.py",
+        "experiments/roger/roger_scalar_density_schrodinger_no_go.py"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "research/eik-kilde-retur-probe-tag-blindspot-2026-11-10",
@@ -3588,10 +3714,24 @@
       "commit_date": null,
       "theme": "research/eik-kilde-retur-probe-tag-blindspot-2026-11-10",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/research%2Feik-kilde-retur-probe-tag-blindspot-2026-11-10",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 103,
+      "relevant_paths": [
+        "GTRCM_KANONISK_GRUNNPROGRAM.md",
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/eik_nested_self_feedback.py",
+        "experiments/eik_operational_quotient.py",
+        "experiments/eik_transient_individuation.py",
+        "experiments/microfluctuation_mass_gravity/README.md",
+        "experiments/microfluctuation_mass_gravity/falsify_shared_density.py",
+        "experiments/microfluctuation_mass_gravity/model.py",
+        "experiments/roger/roger_scalar_density_schrodinger_no_go.py"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "research/eik-kilde-retur-random-audit-loss-2026-11-10",
@@ -3600,10 +3740,24 @@
       "commit_date": null,
       "theme": "research/eik-kilde-retur-random-audit-loss-2026-11-10",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/research%2Feik-kilde-retur-random-audit-loss-2026-11-10",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 95,
+      "relevant_paths": [
+        "GTRCM_KANONISK_GRUNNPROGRAM.md",
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/eik_nested_self_feedback.py",
+        "experiments/eik_operational_quotient.py",
+        "experiments/eik_transient_individuation.py",
+        "experiments/microfluctuation_mass_gravity/README.md",
+        "experiments/microfluctuation_mass_gravity/falsify_shared_density.py",
+        "experiments/microfluctuation_mass_gravity/model.py",
+        "experiments/roger/roger_scalar_density_schrodinger_no_go.py"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "research/eik-kilde-retur-randomization-selection-2026-11-10",
@@ -3612,10 +3766,24 @@
       "commit_date": null,
       "theme": "research/eik-kilde-retur-randomization-selection-2026-11-10",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/research%2Feik-kilde-retur-randomization-selection-2026-11-10",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 91,
+      "relevant_paths": [
+        "GTRCM_KANONISK_GRUNNPROGRAM.md",
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/eik_nested_self_feedback.py",
+        "experiments/eik_operational_quotient.py",
+        "experiments/eik_transient_individuation.py",
+        "experiments/microfluctuation_mass_gravity/README.md",
+        "experiments/microfluctuation_mass_gravity/falsify_shared_density.py",
+        "experiments/microfluctuation_mass_gravity/model.py",
+        "experiments/roger/roger_scalar_density_schrodinger_no_go.py"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "research/eik-kilde-retur-read-order-budget-2026-11-10",
@@ -3624,10 +3792,24 @@
       "commit_date": null,
       "theme": "research/eik-kilde-retur-read-order-budget-2026-11-10",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/research%2Feik-kilde-retur-read-order-budget-2026-11-10",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 88,
+      "relevant_paths": [
+        "GTRCM_KANONISK_GRUNNPROGRAM.md",
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/eik_nested_self_feedback.py",
+        "experiments/eik_operational_quotient.py",
+        "experiments/eik_transient_individuation.py",
+        "experiments/microfluctuation_mass_gravity/README.md",
+        "experiments/microfluctuation_mass_gravity/falsify_shared_density.py",
+        "experiments/microfluctuation_mass_gravity/model.py",
+        "experiments/roger/roger_scalar_density_schrodinger_no_go.py"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "research/eik-kilde-retur-source-anchor-bounds-2026-11-10",
@@ -3636,10 +3818,24 @@
       "commit_date": null,
       "theme": "research/eik-kilde-retur-source-anchor-bounds-2026-11-10",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/research%2Feik-kilde-retur-source-anchor-bounds-2026-11-10",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 116,
+      "relevant_paths": [
+        "GTRCM_KANONISK_GRUNNPROGRAM.md",
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/eik_nested_self_feedback.py",
+        "experiments/eik_operational_quotient.py",
+        "experiments/eik_transient_individuation.py",
+        "experiments/microfluctuation_mass_gravity/README.md",
+        "experiments/microfluctuation_mass_gravity/falsify_shared_density.py",
+        "experiments/microfluctuation_mass_gravity/model.py",
+        "experiments/roger/roger_scalar_density_schrodinger_no_go.py"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "research/eik-kilde-retur-swap-fault-2026-11-10",
@@ -3648,10 +3844,24 @@
       "commit_date": null,
       "theme": "research/eik-kilde-retur-swap-fault-2026-11-10",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/research%2Feik-kilde-retur-swap-fault-2026-11-10",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 87,
+      "relevant_paths": [
+        "GTRCM_KANONISK_GRUNNPROGRAM.md",
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/eik_nested_self_feedback.py",
+        "experiments/eik_operational_quotient.py",
+        "experiments/eik_transient_individuation.py",
+        "experiments/microfluctuation_mass_gravity/README.md",
+        "experiments/microfluctuation_mass_gravity/falsify_shared_density.py",
+        "experiments/microfluctuation_mass_gravity/model.py",
+        "experiments/roger/roger_scalar_density_schrodinger_no_go.py"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "research/eik-self-location-2026-11-03",
