@@ -39,5 +39,4 @@ jobs:
       - name: Local desktop launcher regression and security tests
         run: |
           python3 -m unittest discover -s tests -p 'test_*launcher*.py' -v
-          python3 -m unittest discover -s tests -p 'test_launcher_security.py' -v
           python3 -m py_compile desktop/install_baton_launcher.py desktop/diagnose_local.py
