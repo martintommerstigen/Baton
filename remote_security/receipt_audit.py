@@ -17,8 +17,8 @@ import stat
 
 from remote_security.private_store import _validate_path
 
-IDENT = re.compile(r"[A-Za-z0-9_-]{8,96}\\Z")
-DIGEST = re.compile(r"[0-9a-f]{64}\\Z")
+IDENT = re.compile(r"[A-Za-z0-9_-]{8,96}\Z")
+DIGEST = re.compile(r"[0-9a-f]{64}\Z")
 EXPECTED_KEYS = frozenset({
     'version', 'sender', 'target', 'message_id', 'issued_at',
     'action', 'payload_sha256',
