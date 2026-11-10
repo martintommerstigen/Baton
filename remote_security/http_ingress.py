@@ -24,7 +24,8 @@ MAX_REQUEST_BYTES = 90000
 
 def load_private_key(path):
     p = _validate_path(path)
-    flags = os.O_RDONLY | getattr(os, 'O_NOFOLLOW', 0) | getattr(os, 'O_CLOEXEC', 0)
+    flags = (os.O_RDONLY | getattr(os, 'O_NOFOLLOW', 0)
+             | getattr(os, 'O_CLOEXEC', 0) | getattr(os, 'O_NONBLOCK', 0))
     fd = os.open(p, flags)
     try:
         s = os.fstat(fd)

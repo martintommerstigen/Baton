@@ -2,6 +2,7 @@ import base64
 import hashlib
 import http.client
 import json
+import os
 from pathlib import Path
 import tempfile
 import threading
@@ -82,6 +83,12 @@ class IngressTests(unittest.TestCase):
 
     def test_read_only_methods(self):
         self.assertEqual(self.request(method='GET')[0], 405)
+
+    def test_fifo_key_rejected_without_blocking(self):
+        fifo = self.root / 'fifo'
+        os.mkfifo(fifo, 0o600)
+        with self.assertRaises(PermissionError):
+            load_private_key(fifo)
 
     def test_bearer_token_rejects_newlines(self):
         token_file = self.root / 'token'
