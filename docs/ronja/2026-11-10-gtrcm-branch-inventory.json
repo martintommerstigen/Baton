@@ -17,7 +17,7 @@
     }
   ],
   "branch_count": 276,
-  "tree_indexed": 150,
+  "tree_indexed": 165,
   "content_read_in_this_inventory": 0,
   "notes": [
     "branch_date_hint is parsed from branch name, NOT verified commit date",
@@ -3870,10 +3870,24 @@
       "commit_date": null,
       "theme": "research/eik-self-location-2026-11-03",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/research%2Feik-self-location-2026-11-03",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 85,
+      "relevant_paths": [
+        "GTRCM_KANONISK_GRUNNPROGRAM.md",
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/eik_nested_self_feedback.py",
+        "experiments/eik_operational_quotient.py",
+        "experiments/eik_transient_individuation.py",
+        "experiments/microfluctuation_mass_gravity/README.md",
+        "experiments/microfluctuation_mass_gravity/falsify_shared_density.py",
+        "experiments/microfluctuation_mass_gravity/model.py",
+        "experiments/roger/roger_scalar_density_schrodinger_no_go.py"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "research/internal-observer-survivorship-aliasing-2026-10-28",
@@ -3882,10 +3896,23 @@
       "commit_date": null,
       "theme": "research/internal-observer-survivorship-aliasing-2026-10-28",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/research%2Finternal-observer-survivorship-aliasing-2026-10-28",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 19,
+      "relevant_paths": [
+        "GTRCM_KANONISK_GRUNNPROGRAM.md",
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/microfluctuation_mass_gravity/README.md",
+        "experiments/microfluctuation_mass_gravity/falsify_shared_density.py",
+        "experiments/microfluctuation_mass_gravity/model.py",
+        "experiments/survivor_conditioned_aliasing.py",
+        "experiments/survivor_conditioned_aliasing_greg_run_2026-10-28.txt",
+        "research/2026-10-28_internal_observer_survivorship_aliasing.md"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "research/kime-r2-operative-access-2026-11-04",
@@ -3894,10 +3921,24 @@
       "commit_date": null,
       "theme": "research/kime-r2-operative-access-2026-11-04",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/research%2Fkime-r2-operative-access-2026-11-04",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 164,
+      "relevant_paths": [
+        "GTRCM_KANONISK_GRUNNPROGRAM.md",
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/kime/active_inquiry_version_space_core.py",
+        "experiments/kime/active_probe_breaks_macro_identity.py",
+        "experiments/kime/active_reset_optimal_probe_bound.py",
+        "experiments/kime/all_proper_parts_independent_matrix.py",
+        "experiments/kime/all_proper_parts_same_two_wholes.py",
+        "experiments/kime/analytic_hamiltonian_passive_nonidentifiability.py",
+        "experiments/kime/anonymous_sensor_repertoire.py"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "research/knut-r0-self-naming-2026-11-06",
@@ -3906,10 +3947,23 @@
       "commit_date": null,
       "theme": "research/knut-r0-self-naming-2026-11-06",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/research%2Fknut-r0-self-naming-2026-11-06",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 19,
+      "relevant_paths": [
+        "GTRCM_KANONISK_GRUNNPROGRAM.md",
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/microfluctuation_mass_gravity/README.md",
+        "experiments/microfluctuation_mass_gravity/falsify_shared_density.py",
+        "experiments/microfluctuation_mass_gravity/model.py",
+        "research/current/2026-11-06_CURRENT_R1_INTERFACE_PHYSICS_SELF_LOCATION.md",
+        "research/current/2026-11-06_CURRENT_R2_PARTICLE_NONONTOLOGY.md",
+        "research/knut/2026-11-06_KNUT_R0_NAVN_PROVENIENS.md"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "research/knut-r1-cross-contact-objectivity-2026-11-06",
@@ -3918,10 +3972,24 @@
       "commit_date": null,
       "theme": "research/knut-r1-cross-contact-objectivity-2026-11-06",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/research%2Fknut-r1-cross-contact-objectivity-2026-11-06",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 21,
+      "relevant_paths": [
+        "GTRCM_KANONISK_GRUNNPROGRAM.md",
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/microfluctuation_mass_gravity/README.md",
+        "experiments/microfluctuation_mass_gravity/falsify_shared_density.py",
+        "experiments/microfluctuation_mass_gravity/model.py",
+        "research/current/2026-11-06_CURRENT_R1_INTERFACE_PHYSICS_SELF_LOCATION.md",
+        "research/current/2026-11-06_CURRENT_R2_PARTICLE_NONONTOLOGY.md",
+        "research/knut/2026-11-06_KNUT_R0_NAVN_PROVENIENS.md",
+        "research/knut/2026-11-06_KNUT_R1_HISTORIE_LUKNING_KRYSSKONTAKT_OBJEKTIVITET.md"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "research/knut-r3-relative-change-without-persistence-2026-11-06",
@@ -3930,10 +3998,24 @@
       "commit_date": null,
       "theme": "research/knut-r3-relative-change-without-persistence-2026-11-06",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/research%2Fknut-r3-relative-change-without-persistence-2026-11-06",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 22,
+      "relevant_paths": [
+        "GTRCM_KANONISK_GRUNNPROGRAM.md",
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/microfluctuation_mass_gravity/README.md",
+        "experiments/microfluctuation_mass_gravity/falsify_shared_density.py",
+        "experiments/microfluctuation_mass_gravity/model.py",
+        "research/current/2026-11-06_CURRENT_R1_INTERFACE_PHYSICS_SELF_LOCATION.md",
+        "research/current/2026-11-06_CURRENT_R2_PARTICLE_NONONTOLOGY.md",
+        "research/knut/2026-11-06_KNUT_R0_NAVN_PROVENIENS.md",
+        "research/knut/2026-11-06_KNUT_R1_HISTORIE_LUKNING_KRYSSKONTAKT_OBJEKTIVITET.md"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "research/knut-r4-relationing-universe-corrigible-individuation-2026-11-06",
@@ -3942,10 +4024,24 @@
       "commit_date": null,
       "theme": "research/knut-r4-relationing-universe-corrigible-individuation-2026-11-06",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/research%2Fknut-r4-relationing-universe-corrigible-individuation-2026-11-06",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 23,
+      "relevant_paths": [
+        "GTRCM_KANONISK_GRUNNPROGRAM.md",
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/microfluctuation_mass_gravity/README.md",
+        "experiments/microfluctuation_mass_gravity/falsify_shared_density.py",
+        "experiments/microfluctuation_mass_gravity/model.py",
+        "research/current/2026-11-06_CURRENT_R1_INTERFACE_PHYSICS_SELF_LOCATION.md",
+        "research/current/2026-11-06_CURRENT_R2_PARTICLE_NONONTOLOGY.md",
+        "research/knut/2026-11-06_KNUT_R0_NAVN_PROVENIENS.md",
+        "research/knut/2026-11-06_KNUT_R1_HISTORIE_LUKNING_KRYSSKONTAKT_OBJEKTIVITET.md"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "research/knut-r5-consequences-change-consequences-2026-11-06",
@@ -3954,10 +4050,24 @@
       "commit_date": null,
       "theme": "research/knut-r5-consequences-change-consequences-2026-11-06",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/research%2Fknut-r5-consequences-change-consequences-2026-11-06",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 24,
+      "relevant_paths": [
+        "GTRCM_KANONISK_GRUNNPROGRAM.md",
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/microfluctuation_mass_gravity/README.md",
+        "experiments/microfluctuation_mass_gravity/falsify_shared_density.py",
+        "experiments/microfluctuation_mass_gravity/model.py",
+        "research/current/2026-11-06_CURRENT_R1_INTERFACE_PHYSICS_SELF_LOCATION.md",
+        "research/current/2026-11-06_CURRENT_R2_PARTICLE_NONONTOLOGY.md",
+        "research/knut/2026-11-06_KNUT_R0_NAVN_PROVENIENS.md",
+        "research/knut/2026-11-06_KNUT_R1_HISTORIE_LUKNING_KRYSSKONTAKT_OBJEKTIVITET.md"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "research/knut-r6-numbers-are-representation-2026-11-06",
@@ -3966,10 +4076,24 @@
       "commit_date": null,
       "theme": "research/knut-r6-numbers-are-representation-2026-11-06",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/research%2Fknut-r6-numbers-are-representation-2026-11-06",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 25,
+      "relevant_paths": [
+        "GTRCM_KANONISK_GRUNNPROGRAM.md",
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/microfluctuation_mass_gravity/README.md",
+        "experiments/microfluctuation_mass_gravity/falsify_shared_density.py",
+        "experiments/microfluctuation_mass_gravity/model.py",
+        "research/current/2026-11-06_CURRENT_R1_INTERFACE_PHYSICS_SELF_LOCATION.md",
+        "research/current/2026-11-06_CURRENT_R2_PARTICLE_NONONTOLOGY.md",
+        "research/knut/2026-11-06_KNUT_R0_NAVN_PROVENIENS.md",
+        "research/knut/2026-11-06_KNUT_R1_HISTORIE_LUKNING_KRYSSKONTAKT_OBJEKTIVITET.md"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "research/knut-r7-modern-physics-dogma-audit-2026-11-06",
@@ -3978,10 +4102,24 @@
       "commit_date": null,
       "theme": "research/knut-r7-modern-physics-dogma-audit-2026-11-06",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/research%2Fknut-r7-modern-physics-dogma-audit-2026-11-06",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 26,
+      "relevant_paths": [
+        "GTRCM_KANONISK_GRUNNPROGRAM.md",
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/microfluctuation_mass_gravity/README.md",
+        "experiments/microfluctuation_mass_gravity/falsify_shared_density.py",
+        "experiments/microfluctuation_mass_gravity/model.py",
+        "research/current/2026-11-06_CURRENT_R1_INTERFACE_PHYSICS_SELF_LOCATION.md",
+        "research/current/2026-11-06_CURRENT_R2_PARTICLE_NONONTOLOGY.md",
+        "research/knut/2026-11-06_KNUT_R0_NAVN_PROVENIENS.md",
+        "research/knut/2026-11-06_KNUT_R1_HISTORIE_LUKNING_KRYSSKONTAKT_OBJEKTIVITET.md"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "research/knut-r8-gaia-modern-physics-synthesis-2026-11-06",
@@ -3990,10 +4128,24 @@
       "commit_date": null,
       "theme": "research/knut-r8-gaia-modern-physics-synthesis-2026-11-06",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/research%2Fknut-r8-gaia-modern-physics-synthesis-2026-11-06",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 27,
+      "relevant_paths": [
+        "GTRCM_KANONISK_GRUNNPROGRAM.md",
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/microfluctuation_mass_gravity/README.md",
+        "experiments/microfluctuation_mass_gravity/falsify_shared_density.py",
+        "experiments/microfluctuation_mass_gravity/model.py",
+        "research/current/2026-11-06_CURRENT_R1_INTERFACE_PHYSICS_SELF_LOCATION.md",
+        "research/current/2026-11-06_CURRENT_R2_PARTICLE_NONONTOLOGY.md",
+        "research/knut/2026-11-06_KNUT_R0_NAVN_PROVENIENS.md",
+        "research/knut/2026-11-06_KNUT_R1_HISTORIE_LUKNING_KRYSSKONTAKT_OBJEKTIVITET.md"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "research/knut-r9-full-gtrcm-derivation-2026-11-06",
@@ -4002,10 +4154,24 @@
       "commit_date": null,
       "theme": "research/knut-r9-full-gtrcm-derivation-2026-11-06",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/research%2Fknut-r9-full-gtrcm-derivation-2026-11-06",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 28,
+      "relevant_paths": [
+        "GTRCM_KANONISK_GRUNNPROGRAM.md",
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/microfluctuation_mass_gravity/README.md",
+        "experiments/microfluctuation_mass_gravity/falsify_shared_density.py",
+        "experiments/microfluctuation_mass_gravity/model.py",
+        "research/current/2026-11-06_CURRENT_R1_INTERFACE_PHYSICS_SELF_LOCATION.md",
+        "research/current/2026-11-06_CURRENT_R2_PARTICLE_NONONTOLOGY.md",
+        "research/knut/2026-11-06_KNUT_R0_NAVN_PROVENIENS.md",
+        "research/knut/2026-11-06_KNUT_R1_HISTORIE_LUKNING_KRYSSKONTAKT_OBJEKTIVITET.md"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "research/knut-r10-natural-physics-operational-bootstrap-2026-11-06",
@@ -4014,10 +4180,24 @@
       "commit_date": null,
       "theme": "research/knut-r10-natural-physics-operational-bootstrap-2026-11-06",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/research%2Fknut-r10-natural-physics-operational-bootstrap-2026-11-06",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 31,
+      "relevant_paths": [
+        "GTRCM_KANONISK_GRUNNPROGRAM.md",
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/knut/r10_soft_consistency.py",
+        "experiments/microfluctuation_mass_gravity/README.md",
+        "experiments/microfluctuation_mass_gravity/falsify_shared_density.py",
+        "experiments/microfluctuation_mass_gravity/model.py",
+        "research/current/2026-11-06_CURRENT_R1_INTERFACE_PHYSICS_SELF_LOCATION.md",
+        "research/current/2026-11-06_CURRENT_R2_PARTICLE_NONONTOLOGY.md",
+        "research/knut/2026-11-06_KNUT_R0_NAVN_PROVENIENS.md"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "research/knut-r11-causal-provenance-q0-2026-11-06",
@@ -4026,10 +4206,24 @@
       "commit_date": null,
       "theme": "research/knut-r11-causal-provenance-q0-2026-11-06",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/research%2Fknut-r11-causal-provenance-q0-2026-11-06",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 34,
+      "relevant_paths": [
+        "GTRCM_KANONISK_GRUNNPROGRAM.md",
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/knut/r10_soft_consistency.py",
+        "experiments/knut/r11_information_causality_pr_box.py",
+        "experiments/microfluctuation_mass_gravity/README.md",
+        "experiments/microfluctuation_mass_gravity/falsify_shared_density.py",
+        "experiments/microfluctuation_mass_gravity/model.py",
+        "research/current/2026-11-06_CURRENT_R1_INTERFACE_PHYSICS_SELF_LOCATION.md",
+        "research/current/2026-11-06_CURRENT_R2_PARTICLE_NONONTOLOGY.md"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "research/knut-r12-predictive-refinement-provenance-2026-11-06",
@@ -4038,10 +4232,24 @@
       "commit_date": null,
       "theme": "research/knut-r12-predictive-refinement-provenance-2026-11-06",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/research%2Fknut-r12-predictive-refinement-provenance-2026-11-06",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 36,
+      "relevant_paths": [
+        "GTRCM_KANONISK_GRUNNPROGRAM.md",
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/knut/r10_soft_consistency.py",
+        "experiments/knut/r11_information_causality_pr_box.py",
+        "experiments/knut/r12_predictive_quotient_factorization.py",
+        "experiments/microfluctuation_mass_gravity/README.md",
+        "experiments/microfluctuation_mass_gravity/falsify_shared_density.py",
+        "experiments/microfluctuation_mass_gravity/model.py",
+        "research/current/2026-11-06_CURRENT_R1_INTERFACE_PHYSICS_SELF_LOCATION.md"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "research/knut-r13-physical-division-and-revival-2026-11-06",
