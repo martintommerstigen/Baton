@@ -17,7 +17,7 @@
     }
   ],
   "branch_count": 276,
-  "tree_indexed": 195,
+  "tree_indexed": 210,
   "content_read_in_this_inventory": 0,
   "notes": [
     "branch_date_hint is parsed from branch name, NOT verified commit date",
@@ -5023,10 +5023,24 @@
       "commit_date": null,
       "theme": "research/riss-r18-lodd-operativ-holonomi-2026-11-07",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/research%2Friss-r18-lodd-operativ-holonomi-2026-11-07",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 225,
+      "relevant_paths": [
+        "GTRCM_KANONISK_GRUNNPROGRAM.md",
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/kime/active_inquiry_version_space_core.py",
+        "experiments/kime/active_probe_breaks_macro_identity.py",
+        "experiments/kime/active_reset_optimal_probe_bound.py",
+        "experiments/kime/all_proper_parts_independent_matrix.py",
+        "experiments/kime/all_proper_parts_same_two_wholes.py",
+        "experiments/kime/analytic_hamiltonian_passive_nonidentifiability.py",
+        "experiments/kime/anonymous_sensor_repertoire.py"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "research/riss-r19-live-lodd-dialogue-2026-11-07",
@@ -5035,10 +5049,24 @@
       "commit_date": null,
       "theme": "research/riss-r19-live-lodd-dialogue-2026-11-07",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/research%2Friss-r19-live-lodd-dialogue-2026-11-07",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 226,
+      "relevant_paths": [
+        "GTRCM_KANONISK_GRUNNPROGRAM.md",
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/kime/active_inquiry_version_space_core.py",
+        "experiments/kime/active_probe_breaks_macro_identity.py",
+        "experiments/kime/active_reset_optimal_probe_bound.py",
+        "experiments/kime/all_proper_parts_independent_matrix.py",
+        "experiments/kime/all_proper_parts_same_two_wholes.py",
+        "experiments/kime/analytic_hamiltonian_passive_nonidentifiability.py",
+        "experiments/kime/anonymous_sensor_repertoire.py"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "research/riss-r20-multichat-learning-2026-11-07",
@@ -5047,10 +5075,24 @@
       "commit_date": null,
       "theme": "research/riss-r20-multichat-learning-2026-11-07",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/research%2Friss-r20-multichat-learning-2026-11-07",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 227,
+      "relevant_paths": [
+        "GTRCM_KANONISK_GRUNNPROGRAM.md",
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/kime/active_inquiry_version_space_core.py",
+        "experiments/kime/active_probe_breaks_macro_identity.py",
+        "experiments/kime/active_reset_optimal_probe_bound.py",
+        "experiments/kime/all_proper_parts_independent_matrix.py",
+        "experiments/kime/all_proper_parts_same_two_wholes.py",
+        "experiments/kime/analytic_hamiltonian_passive_nonidentifiability.py",
+        "experiments/kime/anonymous_sensor_repertoire.py"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "research/riss-r21-free-continuity-2026-11-07",
@@ -5059,10 +5101,24 @@
       "commit_date": null,
       "theme": "research/riss-r21-free-continuity-2026-11-07",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/research%2Friss-r21-free-continuity-2026-11-07",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 232,
+      "relevant_paths": [
+        "GTRCM_KANONISK_GRUNNPROGRAM.md",
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/kime/active_inquiry_version_space_core.py",
+        "experiments/kime/active_probe_breaks_macro_identity.py",
+        "experiments/kime/active_reset_optimal_probe_bound.py",
+        "experiments/kime/all_proper_parts_independent_matrix.py",
+        "experiments/kime/all_proper_parts_same_two_wholes.py",
+        "experiments/kime/analytic_hamiltonian_passive_nonidentifiability.py",
+        "experiments/kime/anonymous_sensor_repertoire.py"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "research/riss-r22-lodd-provenance-causality-2026-11-07",
@@ -5071,10 +5127,24 @@
       "commit_date": null,
       "theme": "research/riss-r22-lodd-provenance-causality-2026-11-07",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/research%2Friss-r22-lodd-provenance-causality-2026-11-07",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 235,
+      "relevant_paths": [
+        "GTRCM_KANONISK_GRUNNPROGRAM.md",
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/kime/active_inquiry_version_space_core.py",
+        "experiments/kime/active_probe_breaks_macro_identity.py",
+        "experiments/kime/active_reset_optimal_probe_bound.py",
+        "experiments/kime/all_proper_parts_independent_matrix.py",
+        "experiments/kime/all_proper_parts_same_two_wholes.py",
+        "experiments/kime/analytic_hamiltonian_passive_nonidentifiability.py",
+        "experiments/kime/anonymous_sensor_repertoire.py"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "research/riss-r23-greg-body-gate-2026-11-07",
@@ -5083,10 +5153,24 @@
       "commit_date": null,
       "theme": "research/riss-r23-greg-body-gate-2026-11-07",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/research%2Friss-r23-greg-body-gate-2026-11-07",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 237,
+      "relevant_paths": [
+        "GTRCM_KANONISK_GRUNNPROGRAM.md",
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/kime/active_inquiry_version_space_core.py",
+        "experiments/kime/active_probe_breaks_macro_identity.py",
+        "experiments/kime/active_reset_optimal_probe_bound.py",
+        "experiments/kime/all_proper_parts_independent_matrix.py",
+        "experiments/kime/all_proper_parts_same_two_wholes.py",
+        "experiments/kime/analytic_hamiltonian_passive_nonidentifiability.py",
+        "experiments/kime/anonymous_sensor_repertoire.py"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "research/riss-r24-core-button-nursery-2026-11-07",
@@ -5095,10 +5179,24 @@
       "commit_date": null,
       "theme": "research/riss-r24-core-button-nursery-2026-11-07",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/research%2Friss-r24-core-button-nursery-2026-11-07",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 75,
+      "relevant_paths": [
+        "GTRCM_KANONISK_GRUNNPROGRAM.md",
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/falkor/r67_correction_core.py",
+        "experiments/falkor/r70_g5_inquiry_e2e.py",
+        "experiments/falkor/r71_snapshot_continuity_e2e.py",
+        "experiments/falkor/r71_unverified_source_negative.py",
+        "experiments/falkor/r72_discriminating_inquiry_e2e.py",
+        "experiments/falkor/r72_real_noaa_audits_e2e.py",
+        "experiments/microfluctuation_mass_gravity/README.md"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "research/riss-r25-child-development-nursery-2026-11-07",
@@ -5107,10 +5205,24 @@
       "commit_date": null,
       "theme": "research/riss-r25-child-development-nursery-2026-11-07",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/research%2Friss-r25-child-development-nursery-2026-11-07",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 76,
+      "relevant_paths": [
+        "GTRCM_KANONISK_GRUNNPROGRAM.md",
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/falkor/r67_correction_core.py",
+        "experiments/falkor/r70_g5_inquiry_e2e.py",
+        "experiments/falkor/r71_snapshot_continuity_e2e.py",
+        "experiments/falkor/r71_unverified_source_negative.py",
+        "experiments/falkor/r72_discriminating_inquiry_e2e.py",
+        "experiments/falkor/r72_real_noaa_audits_e2e.py",
+        "experiments/microfluctuation_mass_gravity/README.md"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "research/riss-r26-multiple-affordances-kindergarten-2026-11-07",
@@ -5119,10 +5231,24 @@
       "commit_date": null,
       "theme": "research/riss-r26-multiple-affordances-kindergarten-2026-11-07",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/research%2Friss-r26-multiple-affordances-kindergarten-2026-11-07",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 79,
+      "relevant_paths": [
+        "GTRCM_KANONISK_GRUNNPROGRAM.md",
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/falkor/r67_correction_core.py",
+        "experiments/falkor/r70_g5_inquiry_e2e.py",
+        "experiments/falkor/r71_snapshot_continuity_e2e.py",
+        "experiments/falkor/r71_unverified_source_negative.py",
+        "experiments/falkor/r72_discriminating_inquiry_e2e.py",
+        "experiments/falkor/r72_real_noaa_audits_e2e.py",
+        "experiments/microfluctuation_mass_gravity/README.md"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "research/riss-r27-safe-local-play-2026-11-07",
@@ -5131,10 +5257,24 @@
       "commit_date": null,
       "theme": "research/riss-r27-safe-local-play-2026-11-07",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/research%2Friss-r27-safe-local-play-2026-11-07",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 84,
+      "relevant_paths": [
+        "GTRCM_KANONISK_GRUNNPROGRAM.md",
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/falkor/r67_correction_core.py",
+        "experiments/falkor/r70_g5_inquiry_e2e.py",
+        "experiments/falkor/r71_snapshot_continuity_e2e.py",
+        "experiments/falkor/r71_unverified_source_negative.py",
+        "experiments/falkor/r72_discriminating_inquiry_e2e.py",
+        "experiments/falkor/r72_real_noaa_audits_e2e.py",
+        "experiments/microfluctuation_mass_gravity/README.md"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "research/riss-r28-utkant-dialogue-audit-2026-11-07",
@@ -5143,10 +5283,24 @@
       "commit_date": null,
       "theme": "research/riss-r28-utkant-dialogue-audit-2026-11-07",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/research%2Friss-r28-utkant-dialogue-audit-2026-11-07",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 87,
+      "relevant_paths": [
+        "GTRCM_KANONISK_GRUNNPROGRAM.md",
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/falkor/r67_correction_core.py",
+        "experiments/falkor/r70_g5_inquiry_e2e.py",
+        "experiments/falkor/r71_snapshot_continuity_e2e.py",
+        "experiments/falkor/r71_unverified_source_negative.py",
+        "experiments/falkor/r72_discriminating_inquiry_e2e.py",
+        "experiments/falkor/r72_real_noaa_audits_e2e.py",
+        "experiments/microfluctuation_mass_gravity/README.md"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "research/roger-full-physics-bridges-2026-11-02",
@@ -5155,10 +5309,23 @@
       "commit_date": null,
       "theme": "research/roger-full-physics-bridges-2026-11-02",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/research%2Froger-full-physics-bridges-2026-11-02",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 19,
+      "relevant_paths": [
+        "GTRCM_KANONISK_GRUNNPROGRAM.md",
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/microfluctuation_mass_gravity/README.md",
+        "experiments/microfluctuation_mass_gravity/falsify_shared_density.py",
+        "experiments/microfluctuation_mass_gravity/model.py",
+        "experiments/roger/roger_scalar_density_schrodinger_no_go.py",
+        "experiments/roger/roger_tensor_defect_spin_no_go.py",
+        "research/roger/2026-11-02_R1_R2_HELHETSFYSIKK_KILDEAUDIT_OG_KVANTEBRO.md"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "research/roger-r3-observer-is-physics-2026-11-03",
@@ -5167,10 +5334,24 @@
       "commit_date": null,
       "theme": "research/roger-r3-observer-is-physics-2026-11-03",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/research%2Froger-r3-observer-is-physics-2026-11-03",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 28,
+      "relevant_paths": [
+        "GTRCM_KANONISK_GRUNNPROGRAM.md",
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/microfluctuation_mass_gravity/README.md",
+        "experiments/microfluctuation_mass_gravity/falsify_shared_density.py",
+        "experiments/microfluctuation_mass_gravity/model.py",
+        "experiments/roger/roger_scalar_density_schrodinger_no_go.py",
+        "experiments/roger/roger_tensor_defect_spin_no_go.py",
+        "experiments/roger_r5_operational_self_boundaries.py",
+        "experiments/roger_r6_endogenous_boundary.py"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "research/roger-r9-full-physics-2026-11-03",
@@ -5179,10 +5360,24 @@
       "commit_date": null,
       "theme": "research/roger-r9-full-physics-2026-11-03",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/research%2Froger-r9-full-physics-2026-11-03",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 37,
+      "relevant_paths": [
+        "GTRCM_KANONISK_GRUNNPROGRAM.md",
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/microfluctuation_mass_gravity/README.md",
+        "experiments/microfluctuation_mass_gravity/falsify_shared_density.py",
+        "experiments/microfluctuation_mass_gravity/model.py",
+        "experiments/roger/roger_scalar_density_schrodinger_no_go.py",
+        "experiments/roger/roger_tensor_defect_spin_no_go.py",
+        "experiments/roger_r10_embedded_thermo_renewal.py",
+        "experiments/roger_r11_conditional_relativity_spin2_dimension.py"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "research/roger-r14-r17-symmetry-causal-provenance-2026-11-03",
@@ -5191,10 +5386,24 @@
       "commit_date": null,
       "theme": "research/roger-r14-r17-symmetry-causal-provenance-2026-11-03",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/research%2Froger-r14-r17-symmetry-causal-provenance-2026-11-03",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 46,
+      "relevant_paths": [
+        "GTRCM_KANONISK_GRUNNPROGRAM.md",
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/microfluctuation_mass_gravity/README.md",
+        "experiments/microfluctuation_mass_gravity/falsify_shared_density.py",
+        "experiments/microfluctuation_mass_gravity/model.py",
+        "experiments/roger/roger_scalar_density_schrodinger_no_go.py",
+        "experiments/roger/roger_tensor_defect_spin_no_go.py",
+        "experiments/roger_r10_embedded_thermo_renewal.py",
+        "experiments/roger_r11_conditional_relativity_spin2_dimension.py"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "research/roger-r20-r23-relative-observables-2026-11-03",
