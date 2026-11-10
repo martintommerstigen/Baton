@@ -12,7 +12,7 @@ The injected callback is **not** authenticated by this module. For a real deploy
 
 ## Negative controls
 
-`test_wake_broker_ui.py` uses isolated SQLite broker state and fake UI (no Greg, no CDP, no actual ChatGPT messages). It checks exact envelope/order, preflight rejection without broker admission, pause before admission, wrong broker response, crash immediately after committed `begin_click` before click, crash after click before observation, pause after begin, composer mutation after begin, and invalid callback. The two crash cases restart the broker store and prove the old attempt cannot be re-admitted. The test harness's callback is deliberately local and **does not** attest server identity.
+`test_wake_broker_ui.py` uses isolated SQLite broker state and fake UI (no Greg, no CDP, no actual ChatGPT messages). It checks exact envelope/order, preflight rejection without broker admission, pause before admission, wrong broker response, crash immediately after committed `begin_click` before click, crash after click before observation, pause after begin, composer mutation after begin, and invalid callback. The two crash cases restart the broker store and prove the old attempt cannot be re-admitted. Two additional **passing negative demonstrations** show that a pause writer can race the final check and that a fabricated broker success response can permit a click without a durable DB record. Passing these tests does **not** mean those threats are fixed. The test harness's callback is deliberately local and **does not** attest server identity.
 
 ## Unclosed boundaries / next falsifiers
 
@@ -23,4 +23,4 @@ The injected callback is **not** authenticated by this module. For a real deploy
 5. DOM selectors and turn IDs remain unverified on Greg. Need three preexisting allowlisted conversation URLs, a unique independently observed A request, B reply with unique assistant turn ID and exact `BATON_NEXT`, then C reply. Preserve `PAUSE_UI_WRITES` and do not perform any send while it is active.
 6. GitHub CI is an offline simulated result, not `tested-live`. The Remote Desktop Commander monthly quota rejected read-only Greg access. No Greg installation or browser send was attempted.
 
-**Classification:** implemented / offline tests pending CI at documentation time. B1/B5 remains open; do not merge to production or call `done`.
+**Verification:** [GitHub Actions run 42854831280](https://github.com/martintommerstigen/Baton/actions/runs/42854831280), 2026-11-10: compile PASS, offline A→B→C simulation PASS, **164/164 Python tests PASS**. Earlier run 42854630265 failed one post-begin composer-mutation test; [31f454e](https://github.com/martintommerstigen/Baton/commit/31f454e0c84bfa7a5e1595f739059ed979732a4f) moved final readback after send-button check; later run passed. These are isolated hosted tests, not Greg-live.\n\n**Classification:** tested-simulated for this optional seam; B1/B5 remains open. Do not merge to production or call `done`.
