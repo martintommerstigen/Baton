@@ -58,12 +58,12 @@ class AdapterTests(unittest.TestCase):
         self.assertEqual(self.wake(first),'uncertain')
         second=Driver(Observation("B","other-turn"))
         with self.assertRaisesRegex(RuntimeError,'unresolved wake'):
-            wake_once(self.ledger,second,'other','C','B','other-digest','other body')
+            wake_once(self.ledger,second,'other','C','B',hashlib.sha256(b'other body').hexdigest(),'other body')
         self.assertEqual(second.calls,[])
         self.assertEqual(self.ledger.state('other')[1],'requested')
         first.reply=Observation("B","first-turn")
         self.assertEqual(reconcile(self.ledger,first,'msg'),'verified')
-        self.assertEqual(wake_once(self.ledger,second,'other','C','B','other-digest','other body'),
+        self.assertEqual(wake_once(self.ledger,second,'other','C','B',hashlib.sha256(b'other body').hexdigest(),'other body'),
                          'verified')
         self.assertEqual(len(second.calls),1)
 
