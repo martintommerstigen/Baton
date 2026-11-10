@@ -40,3 +40,32 @@ def discover_source_turn(driver, source_chat, target_chat, message_id):
     if len(matches)>1:
         raise RuntimeError("Ambiguous source wake requests")
     return matches[0] if matches else None
+
+def guarded_source_broker_request(driver, source_chat, source_turn_id,
+                                  target_chat, message_id, broker_request):
+    """Revalidate A's *current* assistant command around each B5 operation.
+
+    The initial check in execute_once is not sufficient: A can change while
+    the UI is preparing a B submission. This guard closes mutations during
+    admit/begin_click, but cannot eliminate a final post-check-to-click race.
+    A broker response remains admission, never proof of ChatGPT authorship.
+    """
+    if not callable(broker_request):
+        raise TypeError("Authenticated broker callback required")
+
+    def request(envelope):
+        if (type(envelope) is not dict
+                or envelope.get("op") not in ("admit", "begin_click")
+                or envelope.get("sender_id") != source_chat
+                or envelope.get("origin_turn_id") != source_turn_id
+                or envelope.get("conversation_id") != target_chat
+                or envelope.get("message_id") != message_id):
+            raise PermissionError("Broker envelope disagrees with A source-turn authority")
+        verify_source_turn(driver, source_chat, source_turn_id, target_chat, message_id)
+        result = broker_request(envelope)
+        # If this raises after a broker COMMIT, wake_once preserves uncertainty;
+        # never reissue the same message ID as an automatic retry.
+        verify_source_turn(driver, source_chat, source_turn_id, target_chat, message_id)
+        return result
+
+    return request
