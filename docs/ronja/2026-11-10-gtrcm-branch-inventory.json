@@ -17,7 +17,7 @@
     }
   ],
   "branch_count": 276,
-  "tree_indexed": 30,
+  "tree_indexed": 45,
   "content_read_in_this_inventory": 0,
   "notes": [
     "branch_date_hint is parsed from branch name, NOT verified commit date",
@@ -783,10 +783,22 @@
       "commit_date": null,
       "theme": "experiments/neo_access_witness_2026-11-02",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/experiments%2Fneo_access_witness_2026-11-02",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 18,
+      "relevant_paths": [
+        "GTRCM_KANONISK_GRUNNPROGRAM.md",
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/microfluctuation_mass_gravity/README.md",
+        "experiments/microfluctuation_mass_gravity/falsify_shared_density.py",
+        "experiments/microfluctuation_mass_gravity/model.py",
+        "experiments/neo_access_witness/noisy_witness.py",
+        "research/gaia/2026-11-02_NEO_NOISY_ACCESS_WITNESS.md"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "experiments/neo_lan_direct_2026_11_02",
@@ -795,10 +807,24 @@
       "commit_date": null,
       "theme": "experiments/neo_lan_direct_2026_11_02",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/experiments%2Fneo_lan_direct_2026_11_02",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 40,
+      "relevant_paths": [
+        "GTRCM_KANONISK_GRUNNPROGRAM.md",
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/microfluctuation_mass_gravity/README.md",
+        "experiments/microfluctuation_mass_gravity/falsify_shared_density.py",
+        "experiments/microfluctuation_mass_gravity/model.py",
+        "experiments/neo/data/2026-11-02_NOAA_Kp_frozen_60.json",
+        "experiments/neo/data/2026-11-02_R57_frozen_NOAA_aligned_383.csv",
+        "experiments/neo/neo_coldstart_check.py",
+        "experiments/neo/neo_live_noaa_to_rc1.py"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "experiments/neo_operational_boundary_os_2026-11-02",
@@ -807,10 +833,24 @@
       "commit_date": null,
       "theme": "experiments/neo_operational_boundary_os_2026-11-02",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/experiments%2Fneo_operational_boundary_os_2026-11-02",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 22,
+      "relevant_paths": [
+        "GTRCM_KANONISK_GRUNNPROGRAM.md",
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/microfluctuation_mass_gravity/README.md",
+        "experiments/microfluctuation_mass_gravity/falsify_shared_density.py",
+        "experiments/microfluctuation_mass_gravity/model.py",
+        "experiments/neo_operational_boundary_os/neo_boundary_probe.py",
+        "experiments/neo_operational_boundary_os/neo_feedback_reach.py",
+        "experiments/neo_operational_boundary_os/test_neo_forged_core_NEG.py",
+        "research/gaia/2026-11-02_NEO_CHATGPT_SKALABYTTE.md"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "experiments/2026-10-11-consciousness-evidence-audit",
@@ -819,10 +859,24 @@
       "commit_date": null,
       "theme": "experiments/2026-10-11-consciousness-evidence-audit",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/experiments%2F2026-10-11-consciousness-evidence-audit",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 30,
+      "relevant_paths": [
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/consciousness_evidence/README.md",
+        "experiments/consciousness_evidence/battery.jsonl",
+        "experiments/consciousness_evidence/symmetry_audit.py",
+        "experiments/consciousness_evidence/symmetry_audit_v2.py",
+        "experiments/difference_retention/same_first_probe.py",
+        "experiments/difference_retention/third_probe_audit.py",
+        "experiments/microfluctuation_mass_gravity/README.md",
+        "experiments/microfluctuation_mass_gravity/falsify_shared_density.py"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "hedda/full-fysisk-utledningsrevisjon-2026-10-25",
@@ -831,10 +885,24 @@
       "commit_date": null,
       "theme": "hedda/full-fysisk-utledningsrevisjon-2026-10-25",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/hedda%2Ffull-fysisk-utledningsrevisjon-2026-10-25",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 35,
+      "relevant_paths": [
+        "GTRCM_KANONISK_GRUNNPROGRAM.md",
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/hedda/2026-10-25_full_physics_independent_checks.py",
+        "experiments/hedda/2026-10-26_coadapted_vs_full_path_coupling.py",
+        "experiments/hedda/2026-10-26_cross_regime_doubleratio.py",
+        "experiments/hedda/2026-10-26_h6_h7_explicit_interaction_audit.py",
+        "experiments/hedda/2026-10-26_null_flux_mass_checks.py",
+        "experiments/hedda/2026-10-26_observer_included_energy_clock_memory.py",
+        "experiments/hedda/2026-10-26_observer_internal_dynamics_h8.py"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "iben/operative-regime-bridge-2026-10-26",
@@ -843,10 +911,24 @@
       "commit_date": null,
       "theme": "iben/operative-regime-bridge-2026-10-26",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/iben%2Foperative-regime-bridge-2026-10-26",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 28,
+      "relevant_paths": [
+        "GTRCM_KANONISK_GRUNNPROGRAM.md",
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/iben/bridge_coupling_audit.py",
+        "experiments/iben/coupling_backreaction_audit.py",
+        "experiments/iben/hst_jwst_others_crosschecks_20261026.py",
+        "experiments/iben/hst_jwst_overlap_crosschecks.py",
+        "experiments/iben/regime_boundary_check.py",
+        "experiments/microfluctuation_mass_gravity/README.md",
+        "experiments/microfluctuation_mass_gravity/falsify_shared_density.py"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "inger-lise/clock-comparison-feedback-2026-10-26",
@@ -855,10 +937,24 @@
       "commit_date": null,
       "theme": "inger-lise/clock-comparison-feedback-2026-10-26",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/inger-lise%2Fclock-comparison-feedback-2026-10-26",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 260,
+      "relevant_paths": [
+        "GTRCM_KANONISK_GRUNNPROGRAM.md",
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/inger_lise/2026_10_27_event_budget_hidden_participant_alias.py",
+        "experiments/inger_lise/2026_10_27_gauge_matter_cones_and_law_selection.py",
+        "experiments/inger_lise/2026_10_27_incidence_gauge_audit.py",
+        "experiments/inger_lise/2026_10_27_internal_meter_law_reconstruction.py",
+        "experiments/inger_lise/2026_10_27_ir_universality_flat_law_aliasing.py",
+        "experiments/inger_lise/2026_10_27_rank2_tensor_mobility_ward.py",
+        "experiments/inger_lise/2026_10_27_self_included_observer_full_physics/README.md"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "integration/andreas-g13-rustworld-analogy-2026-11-03",
@@ -867,10 +963,24 @@
       "commit_date": null,
       "theme": "integration/andreas-g13-rustworld-analogy-2026-11-03",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/integration%2Fandreas-g13-rustworld-analogy-2026-11-03",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 63,
+      "relevant_paths": [
+        "GTRCM_KANONISK_GRUNNPROGRAM.md",
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/falkor/r67_correction_core.py",
+        "experiments/falkor/r70_g5_inquiry_e2e.py",
+        "experiments/falkor/r71_snapshot_continuity_e2e.py",
+        "experiments/falkor/r71_unverified_source_negative.py",
+        "experiments/falkor/r72_discriminating_inquiry_e2e.py",
+        "experiments/falkor/r72_real_noaa_audits_e2e.py",
+        "experiments/microfluctuation_mass_gravity/README.md"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "integration/andreas-g16-rustworld-analogy-world-2026-11-03",
@@ -879,10 +989,24 @@
       "commit_date": null,
       "theme": "integration/andreas-g16-rustworld-analogy-world-2026-11-03",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/integration%2Fandreas-g16-rustworld-analogy-world-2026-11-03",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 64,
+      "relevant_paths": [
+        "GTRCM_KANONISK_GRUNNPROGRAM.md",
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/falkor/r67_correction_core.py",
+        "experiments/falkor/r70_g5_inquiry_e2e.py",
+        "experiments/falkor/r71_snapshot_continuity_e2e.py",
+        "experiments/falkor/r71_unverified_source_negative.py",
+        "experiments/falkor/r72_discriminating_inquiry_e2e.py",
+        "experiments/falkor/r72_real_noaa_audits_e2e.py",
+        "experiments/microfluctuation_mass_gravity/README.md"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "integration/andreas-g17-core-owned-analogy-inquiry-2026-11-03",
@@ -891,10 +1015,24 @@
       "commit_date": null,
       "theme": "integration/andreas-g17-core-owned-analogy-inquiry-2026-11-03",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/integration%2Fandreas-g17-core-owned-analogy-inquiry-2026-11-03",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 65,
+      "relevant_paths": [
+        "GTRCM_KANONISK_GRUNNPROGRAM.md",
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/falkor/r67_correction_core.py",
+        "experiments/falkor/r70_g5_inquiry_e2e.py",
+        "experiments/falkor/r71_snapshot_continuity_e2e.py",
+        "experiments/falkor/r71_unverified_source_negative.py",
+        "experiments/falkor/r72_discriminating_inquiry_e2e.py",
+        "experiments/falkor/r72_real_noaa_audits_e2e.py",
+        "experiments/microfluctuation_mass_gravity/README.md"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "integration/andreas-g18-conflict-localization-2026-11-03",
@@ -903,10 +1041,24 @@
       "commit_date": null,
       "theme": "integration/andreas-g18-conflict-localization-2026-11-03",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/integration%2Fandreas-g18-conflict-localization-2026-11-03",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 67,
+      "relevant_paths": [
+        "GTRCM_KANONISK_GRUNNPROGRAM.md",
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/falkor/r67_correction_core.py",
+        "experiments/falkor/r70_g5_inquiry_e2e.py",
+        "experiments/falkor/r71_snapshot_continuity_e2e.py",
+        "experiments/falkor/r71_unverified_source_negative.py",
+        "experiments/falkor/r72_discriminating_inquiry_e2e.py",
+        "experiments/falkor/r72_real_noaa_audits_e2e.py",
+        "experiments/microfluctuation_mass_gravity/README.md"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "integration/andreas-g19-budgeted-error-alternatives-2026-11-03",
@@ -915,10 +1067,24 @@
       "commit_date": null,
       "theme": "integration/andreas-g19-budgeted-error-alternatives-2026-11-03",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/integration%2Fandreas-g19-budgeted-error-alternatives-2026-11-03",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 67,
+      "relevant_paths": [
+        "GTRCM_KANONISK_GRUNNPROGRAM.md",
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/falkor/r67_correction_core.py",
+        "experiments/falkor/r70_g5_inquiry_e2e.py",
+        "experiments/falkor/r71_snapshot_continuity_e2e.py",
+        "experiments/falkor/r71_unverified_source_negative.py",
+        "experiments/falkor/r72_discriminating_inquiry_e2e.py",
+        "experiments/falkor/r72_real_noaa_audits_e2e.py",
+        "experiments/microfluctuation_mass_gravity/README.md"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "integration/andreas-g21-temporal-continuity-rustworld-2026-11-04",
@@ -927,10 +1093,24 @@
       "commit_date": null,
       "theme": "integration/andreas-g21-temporal-continuity-rustworld-2026-11-04",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/integration%2Fandreas-g21-temporal-continuity-rustworld-2026-11-04",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 80,
+      "relevant_paths": [
+        "GTRCM_KANONISK_GRUNNPROGRAM.md",
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/falkor/r67_correction_core.py",
+        "experiments/falkor/r70_g5_inquiry_e2e.py",
+        "experiments/falkor/r71_snapshot_continuity_e2e.py",
+        "experiments/falkor/r71_unverified_source_negative.py",
+        "experiments/falkor/r72_discriminating_inquiry_e2e.py",
+        "experiments/falkor/r72_real_noaa_audits_e2e.py",
+        "experiments/microfluctuation_mass_gravity/README.md"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "integration/andreas-g22-temporal-budget-rights-2026-11-04",
@@ -939,10 +1119,24 @@
       "commit_date": null,
       "theme": "integration/andreas-g22-temporal-budget-rights-2026-11-04",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/integration%2Fandreas-g22-temporal-budget-rights-2026-11-04",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 81,
+      "relevant_paths": [
+        "GTRCM_KANONISK_GRUNNPROGRAM.md",
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/falkor/r67_correction_core.py",
+        "experiments/falkor/r70_g5_inquiry_e2e.py",
+        "experiments/falkor/r71_snapshot_continuity_e2e.py",
+        "experiments/falkor/r71_unverified_source_negative.py",
+        "experiments/falkor/r72_discriminating_inquiry_e2e.py",
+        "experiments/falkor/r72_real_noaa_audits_e2e.py",
+        "experiments/microfluctuation_mass_gravity/README.md"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "integration/andreas-g23-temporal-explanation-sets-rustworld-2026-11-04",
@@ -951,10 +1145,24 @@
       "commit_date": null,
       "theme": "integration/andreas-g23-temporal-explanation-sets-rustworld-2026-11-04",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/integration%2Fandreas-g23-temporal-explanation-sets-rustworld-2026-11-04",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 82,
+      "relevant_paths": [
+        "GTRCM_KANONISK_GRUNNPROGRAM.md",
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/falkor/r67_correction_core.py",
+        "experiments/falkor/r70_g5_inquiry_e2e.py",
+        "experiments/falkor/r71_snapshot_continuity_e2e.py",
+        "experiments/falkor/r71_unverified_source_negative.py",
+        "experiments/falkor/r72_discriminating_inquiry_e2e.py",
+        "experiments/falkor/r72_real_noaa_audits_e2e.py",
+        "experiments/microfluctuation_mass_gravity/README.md"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "integration/andreas-g24-journaled-temporal-continuity-2026-11-04",
