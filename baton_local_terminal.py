@@ -27,8 +27,9 @@ def execute(operation, workspace):
     if not root.is_dir():
         raise ValueError("workspace must be a directory")
     if operation.startswith("git-"):
-        if (root / ".git").is_file():
-            raise ValueError("git worktree metadata file rejected")
+        metadata = root / ".git"
+        if metadata.is_symlink() or not metadata.is_dir():
+            raise ValueError("git checkout metadata must be a real directory")
         probe = subprocess.run(("/usr/bin/git", "rev-parse", "--is-inside-work-tree"), cwd=root, stdin=subprocess.DEVNULL, capture_output=True, timeout=5, env={"PATH": "/usr/bin:/bin", "LANG": "C", "HOME": str(Path.home())})
         if probe.returncode != 0 or probe.stdout.strip() != b"true":
             raise ValueError("not a git checkout")
