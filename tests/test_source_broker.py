@@ -86,6 +86,24 @@ class BrokerTests(unittest.TestCase):
             self.assertEqual(json.loads(self.exchange(raw))["state"], "rejected_or_uncertain_no_retry")
         self.assertEqual(self.calls, [])
 
+    def test_fragmented_second_frame_rejected_before_execution(self):
+        import time
+        with patch.object(self.broker, "_peer_uid", return_value=self.allowed):
+            thread = threading.Thread(target=self.broker.accept_once, daemon=True)
+            thread.start()
+            with socket.socket(socket.AF_UNIX, socket.SOCK_STREAM) as sock:
+                sock.settimeout(2)
+                sock.connect(str(self.path))
+                sock.sendall(frame())
+                time.sleep(0.02)  # second frame arrives after first read
+                sock.sendall(frame("audit"))
+                sock.shutdown(socket.SHUT_WR)
+                result = sock.recv(4096)
+            thread.join(2)
+            self.assertFalse(thread.is_alive())
+            self.assertEqual(json.loads(result)["state"], "rejected_or_uncertain_no_retry")
+            self.assertEqual(self.calls, [])
+
     def test_backend_failure_uncertain_never_retry(self):
         def uncertain(_s, _j):
             self.calls.append("reserved")
