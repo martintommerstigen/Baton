@@ -11,7 +11,13 @@ fi
 if [[ ! -d "$TARGET/.git" ]]; then
   git clone --depth 1 --branch "$BRANCH" "$REPO_URL" "$TARGET"
 else
-  echo "Existing checkout found; not pulling or overwriting automatically."
+  echo "Existing checkout found; verifying its origin and branch without pulling."
+  origin="$(git -C "$TARGET" remote get-url origin)"
+  current="$(git -C "$TARGET" branch --show-current)"
+  if [[ "$origin" != "$REPO_URL" || "$current" != "$BRANCH" ]]; then
+    echo "Refusing mismatched repository or branch." >&2
+    exit 1
+  fi
 fi
 cd "$TARGET"
 python3 -m unittest -v test_baton_local_terminal.py
