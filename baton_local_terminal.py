@@ -20,10 +20,15 @@ MAX_OUTPUT = 16384
 def execute(operation, workspace):
     if operation not in COMMANDS:
         raise ValueError("operation not allowlisted")
-    root = Path(workspace).resolve(strict=True)
+    requested = Path(workspace).expanduser()
+    if requested.is_symlink():
+        raise ValueError("workspace symlink rejected")
+    root = requested.resolve(strict=True)
     if not root.is_dir():
         raise ValueError("workspace must be a directory")
     if operation.startswith("git-"):
+        if (root / ".git").is_file():
+            raise ValueError("git worktree metadata file rejected")
         probe = subprocess.run(("/usr/bin/git", "rev-parse", "--is-inside-work-tree"), cwd=root, stdin=subprocess.DEVNULL, capture_output=True, timeout=5, env={"PATH": "/usr/bin:/bin", "LANG": "C", "HOME": str(Path.home())})
         if probe.returncode != 0 or probe.stdout.strip() != b"true":
             raise ValueError("not a git checkout")
