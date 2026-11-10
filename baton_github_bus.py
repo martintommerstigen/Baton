@@ -95,7 +95,8 @@ def poll_once(worktree, remote, workspace, now=None):
         raise RuntimeError("Unsafe mailbox directory")
     res_dir.mkdir(exist_ok=True)
     count = 0
-    # Bound the number of *new* requests, not the first 30 historical filenames.\n    # Otherwise old acknowledged requests can starve later requests forever.\n    for path in sorted(req_dir.glob("*.json")):
+    # Bound the number of *new* requests, not the first 30 historical filenames.\n    # Otherwise old acknowledged requests can starve later requests forever.
+    for path in sorted(req_dir.glob("*.json")):
         if not NONCE.fullmatch(path.stem) or (res_dir / path.name).exists():
             continue
         if count >= 30:
