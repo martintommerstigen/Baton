@@ -4,7 +4,7 @@ set -euo pipefail
 REPO_URL="https://github.com/martintommerstigen/Baton.git"
 BRANCH="feature/evening-local-terminal-2026-11-10"
 TARGET="${HOME}/.local/share/baton-evening"
-if [[ -e "$TARGET" && ! -d "$TARGET/.git" ]]; then
+if [[ -L "$TARGET" || ( -e "$TARGET" && ! -d "$TARGET/.git" ) ]]; then
   echo "Refusing to overwrite non-Git path: $TARGET" >&2
   exit 1
 fi
@@ -20,6 +20,7 @@ else
   fi
 fi
 cd "$TARGET"
+python3 desktop/preflight_greg.py
 python3 -m unittest -v test_baton_local_terminal.py
 python3 baton_local_terminal.py identity --workspace "$TARGET"
 python3 baton_local_terminal.py git-revision --workspace "$TARGET"
