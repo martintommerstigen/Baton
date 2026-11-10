@@ -8,6 +8,7 @@ import http.client
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 import shutil
+import socket
 import ssl
 import subprocess
 import tempfile
@@ -187,6 +188,74 @@ class TLSEndpointTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             send_once('http://127.0.0.1:8788', b'T' * 48, b'K' * 48,
                       envelope, payload, server_cert_file=str(self.cert))
+
+
+    def test_failed_tls_handshake_releases_the_only_worker_slot(self):
+        key = b'K' * 48
+        gate = Gate(str(self.root / 'receipts.sqlite'), {'sender000': key},
+                    {'sender000'}, {'target000'})
+
+        class OneSlotTLS(TLSIngressServer):
+            def __init__(self, *args):
+                self.entered = threading.Event()
+                self.exited = threading.Event()
+                super().__init__(*args)
+                self._request_slots = threading.BoundedSemaphore(1)
+
+            def process_request_thread(self, request, address):
+                self.entered.set()
+                try:
+                    super().process_request_thread(request, address)
+                finally:
+                    self.exited.set()
+
+        server = OneSlotTLS(0, b'T' * 48, gate,
+                            server_tls_context(self.cert, self.key))
+        runner = threading.Thread(target=server.serve_forever, daemon=True)
+        runner.start()
+        try:
+            raw = socket.create_connection(server.server_address, timeout=2)
+            try:
+                raw.sendall(b'NOT A TLS HANDSHAKE\\r\\n')
+                raw.shutdown(socket.SHUT_WR)
+                self.assertTrue(server.entered.wait(timeout=3))
+                self.assertTrue(server.exited.wait(timeout=3))
+            finally:
+                raw.close()
+            envelope, payload = self._envelope()
+            self.assertEqual(send_once('https://127.0.0.1:%d' % server.server_port,
+                                       b'T' * 48, key, envelope, payload,
+                                       server_cert_file=str(self.cert)),
+                             'accepted_not_delivered')
+        finally:
+            server.shutdown(); server.server_close(); runner.join(timeout=3)
+            gate.db.close()
+
+    def test_rotated_certificate_requires_explicit_pin_update(self):
+        key = b'K' * 48
+        gate = Gate(str(self.root / 'receipts.sqlite'), {'sender000': key},
+                    {'sender000'}, {'target000'})
+        # Simulate a restarted receiver with a different valid server identity.
+        server = TLSIngressServer(0, b'T' * 48, gate,
+                                  server_tls_context(self.other_cert, self.other_key))
+        runner = threading.Thread(target=server.serve_forever, daemon=True)
+        runner.start()
+        try:
+            envelope, payload = self._envelope()
+            url = 'https://127.0.0.1:%d' % server.server_port
+            with self.assertRaises(DeliveryUncertain):
+                send_once(url, b'T' * 48, key, envelope, payload,
+                          server_cert_file=str(self.cert))
+            self.assertEqual(gate.db.execute('SELECT COUNT(*) FROM receipts').fetchone()[0], 0)
+            # A deliberate trust update, not an automatic retry, is needed.
+            self.assertEqual(send_once(url, b'T' * 48, key, envelope, payload,
+                                       server_cert_file=str(self.other_cert)),
+                             'accepted_not_delivered')
+            self.assertEqual(gate.db.execute('SELECT COUNT(*) FROM receipts').fetchone()[0], 1)
+        finally:
+            server.shutdown(); server.server_close(); runner.join(timeout=3)
+            gate.db.close()
+
 
 
 if __name__ == '__main__':
