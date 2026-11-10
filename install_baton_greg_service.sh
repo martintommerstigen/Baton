@@ -15,29 +15,6 @@ override="$service_dir/baton-greg.service.d/ssh.conf"
 command -v systemctl >/dev/null
 mkdir -p "$service_dir" "$service_dir/baton-greg.service.d"
 chmod 700 "$service_dir/baton-greg.service.d"
-# SSH config avoids fragile systemd Environment= quoting and uses only this key.
-ssh_dir="$home/.ssh"
-mkdir -p "$ssh_dir"
-chmod 700 "$ssh_dir"
-config="$ssh_dir/config"
-if [[ -L "$config" ]]; then echo "Refusing symlinked SSH config" >&2; exit 1; fi
-# Use a dedicated alias so existing GitHub SSH configuration is left unchanged.
-alias_name="github-baton-greg"
-if [[ -f "$config" ]] && grep -Eq '^[[:space:]]*Host[[:space:]]+.*github-baton-greg([[:space:]]|$)' "$config"; then
-  echo "Existing SSH alias github-baton-greg: refusing to overwrite" >&2
-  exit 1
-fi
-cat >> "$config" <<EOF
-
-Host github-baton-greg
-    HostName github.com
-    User git
-    IdentityFile $key
-    IdentitiesOnly yes
-    BatchMode yes
-EOF
-chmod 600 "$config"
-# Explicit GIT_SSH_COMMAND points at SSH alias config without nested quoting.
 cat > "$service" <<EOF
 [Unit]
 Description=Baton private GitHub mailbox
@@ -47,7 +24,7 @@ Wants=network-online.target
 [Service]
 Type=simple
 WorkingDirectory=$checkout
-Environment="GIT_SSH_COMMAND=ssh -F $config -i $key -o IdentitiesOnly=yes -o BatchMode=yes"
+Environment="GIT_SSH_COMMAND=ssh -i $key -o IdentitiesOnly=yes -o BatchMode=yes"
 ExecStart=/usr/bin/python3 $checkout/baton_github_bus.py --transport ssh --loop --interval 20
 Restart=on-failure
 RestartSec=10
