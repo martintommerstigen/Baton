@@ -27,7 +27,17 @@ def main():
     parser = argparse.ArgumentParser(description="Baton embedded ChatGPT")
     parser.add_argument("--chat-id", help="Open a known existing ChatGPT conversation")
     parser.add_argument("--message", help="Prepare a message for manual send")
+    parser.add_argument("--wake-queue", help="Claim one queued wake intent")
     args = parser.parse_args()
+    if args.wake_queue:
+        if args.chat_id or args.message:
+            parser.error("--wake-queue cannot be combined with --chat-id or --message")
+        from baton_wake_claim import claim_next
+        intent = claim_next(args.wake_queue)
+        if intent is None:
+            print("No pending wake requests")
+            return 0
+        args.chat_id, args.message = intent.chat_id, intent.message
     if args.message and not args.chat_id:
         parser.error("--message requires --chat-id")
     target = conversation_url(args.chat_id) if args.chat_id else "https://chatgpt.com/"
