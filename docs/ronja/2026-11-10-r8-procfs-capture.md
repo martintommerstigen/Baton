@@ -63,3 +63,5 @@ assert load_verified_capture(audit, artifact)["raw_cpu_line"] == bundle["raw_cpu
 ```
 
 A crash between job completion and artifact fsync can leave an absent or incomplete raw file; **never rerun the same job ID**. The retained SQLite receipt then remains evidence of the local check but not a reconstruction of source bytes. A malicious same-UID process can still tamper with the private state; dedicated UID is a deployment requirement. CI regression covers atomic exclusive creation, symlink/path traversal, mode, tampering, restart and loss. Actual Greg deployment remains blocked.
+
+**Additional fail-closed controls:** injected file/directory `fsync` failure never reports saved success and cannot trigger overwrite/replay; audit rejects hardlinked or symlinked evidence. A security review found that opening a malicious FIFO without `O_NONBLOCK` could hang the auditor *before* the file-type check. The loader now uses `O_NONBLOCK|O_NOFOLLOW` and rejects nonregular artifacts; a dedicated FIFO negative test covers the corrected ordering. These are local storage protections, not claims of an unforgeable physical source.
