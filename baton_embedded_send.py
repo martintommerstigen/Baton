@@ -16,6 +16,7 @@ def prepare_send_script(message):
       const editor = document.querySelector('#prompt-textarea[contenteditable="true"]')
         || document.querySelector('[data-testid="composer-input"][contenteditable="true"]');
       if (!editor) return {ok:false,reason:'composer-not-found'};
+      if ((editor.innerText || '').trim()) return {ok:false,reason:'composer-not-empty'};
       editor.focus();
       const selection=window.getSelection();
       const range=document.createRange();
