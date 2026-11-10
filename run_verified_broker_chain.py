@@ -25,6 +25,10 @@ from wake_broker_ui import BrokerGatedUIDriver
 from wake_chain import next_target_from_reply
 from wake_contract import WakeLedger
 from wake_ui_lock import ui_controller_lock
+from wake_turn_snapshot import (
+    CapturingTarget, SourceEvidenceChanged, TurnSnapshotStore,
+    guarded_second_hop, verify_current_b_turn,
+)
 
 
 def _receipt(ledger, message_id):
@@ -73,8 +77,9 @@ def run_verified_chain(ledger, driver_a, driver_b, driver_c, *,
     if not isinstance(wait_seconds, (int, float)) or not 0 <= wait_seconds <= 600:
         raise ValueError("Invalid observation window")
 
+    snapshots = TurnSnapshotStore(ledger)
     first = execute_once(
-        ledger, driver_a, driver_b, a, b, source_turn_id,
+        ledger, driver_a, CapturingTarget(driver_b, snapshots, first_id), a, b, source_turn_id,
         first_id, first_body, broker_request, wait_seconds,
     )
     outcome = {
@@ -92,17 +97,25 @@ def run_verified_chain(ledger, driver_a, driver_b, driver_c, *,
     b_turn_id = ledger.state(first_id)[2]
     if not b_turn_id:
         raise RuntimeError("Verified B assistant turn ID missing")
-    if driver_b.is_generating(b):
+    # B's first observed text must survive unchanged at the same DOM turn ID.
+    # A later command inserted into the same ID is not source authorization.
+    try:
+        snap = verify_current_b_turn(ledger, snapshots, driver_b, first_id, b, c)
+    except (SourceEvidenceChanged, ValueError, RuntimeError):
         outcome["b_to_c"] = "not_authorized"
         return outcome
-    reply = driver_b.read_assistant_turn(b, b_turn_id)
-    if next_target_from_reply(reply, c) is None:
-        outcome["b_to_c"] = "not_authorized"
-        return outcome
+    outcome["b_source_snapshot"] = {
+        "chat": snap.chat, "turn_id": snap.turn_id,
+        "text_sha256": snap.text_sha256, "extractor": snap.extractor,
+        "source_url": snap.source_url, "observed_utc": snap.observed_utc,
+    }
 
-    # B has requested the target only; it does not choose arbitrary content.
-    # The C payload was preauthorized by the operator before any UI action.
-    gated_c = BrokerGatedUIDriver(driver_c, broker_request, b, b_turn_id)
+    # The C payload was preauthorized. Recheck B before and after both
+    # broker operations. After begin_click, failure stays uncertain.
+    guarded_request = guarded_second_hop(
+        broker_request, ledger, snapshots, driver_b, first_id, b, c,
+    )
+    gated_c = BrokerGatedUIDriver(driver_c, guarded_request, b, b_turn_id)
     digest_c = hashlib.sha256(second_body.encode("utf-8")).hexdigest()
     second = wake_once(
         ledger, WaitForReply(gated_c, wait_seconds),

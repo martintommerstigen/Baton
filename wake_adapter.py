@@ -27,6 +27,8 @@ class PreexistingWakeMarker(RuntimeError):
 class Observation:
     conversation_id: str
     assistant_turn_id: str
+    assistant_text_sha256: str | None = None
+    source_url: str | None = None
 
 class ExistingChatDriver(Protocol):
     def submit_once(self, conversation_id: str, message_id: str, body: str) -> None: ...

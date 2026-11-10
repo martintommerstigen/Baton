@@ -1,6 +1,8 @@
 """Offline B1/B5 two-hop negative controls. These are NOT live ChatGPT wakes."""
 import tempfile
 import unittest
+import hashlib
+from types import SimpleNamespace
 from pathlib import Path
 
 from run_verified_broker_chain import run_verified_chain
@@ -24,6 +26,7 @@ class FakeSource:
 class FakeTarget:
     def __init__(self, cid, *, reply_id=None, next_text="", generating=False):
         self.cid = cid
+        self.page = SimpleNamespace(url="https://chatgpt.com/c/" + cid)
         self.reply_id = reply_id
         self.next_text = next_text
         self.generating = generating
@@ -39,7 +42,9 @@ class FakeTarget:
 
     def observe_reply(self, conversation_id, message_id, digest):
         if self.clicks and self.reply_id:
-            return Observation(self.cid, self.reply_id)
+            return Observation(self.cid, self.reply_id,
+                               hashlib.sha256(self.next_text.encode("utf-8")).hexdigest(),
+                               self.page.url)
         return None
 
     def is_generating(self, chat):
@@ -127,7 +132,9 @@ class TwoHopTests(unittest.TestCase):
 
     def test_B_still_generating_never_sends_C(self):
         self.b.generating = True
-        self.assertEqual(self.attempt()["b_to_c"], "not_authorized")
+        result = self.attempt()
+        self.assertEqual((result["a_to_b"], result["b_to_c"]),
+                         ("uncertain", "not_attempted"))
         self.assertEqual(self.c.clicks, 0)
 
     def test_duplicate_message_ids_rejected_before_any_write(self):
