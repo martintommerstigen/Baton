@@ -136,8 +136,6 @@ class SourceBroker:
             if not part:
                 break
             raw.extend(part)
-            if b"\n" in part:
-                break
         try:
             request = parse_request(bytes(raw), self.source_ids)
             if request["action"] == "capture":
