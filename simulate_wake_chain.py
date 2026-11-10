@@ -14,7 +14,7 @@ class SimulatedExistingChat:
     def submit_once(self, chat, message_id, body):
         assert chat==self.chat
         self.sends.append((message_id,body))
-    def observe_reply(self, chat, message_id):
+    def observe_reply(self, chat, message_id, digest):
         if any(mid==message_id for mid,_ in self.sends):
             return Observation(chat, message_id+"-assistant")
         return None
