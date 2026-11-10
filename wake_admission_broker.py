@@ -70,7 +70,7 @@ class AdmissionStore:
         if not isinstance(req, dict) or type(req.get("op")) is not str:
             return {"state": "rejected", "reason": "invalid_request"}
         op = req["op"]
-        if op not in ("status", "admit", "pause"):
+        if op not in ("status", "admit", "pause", "begin_click"):
             return {"state": "rejected", "reason": "unsupported_operation"}
         with closing(self.connect()) as db:
             db.execute("BEGIN IMMEDIATE")
@@ -93,6 +93,23 @@ class AdmissionStore:
                         result = {"state": "rejected", "reason": "invalid_envelope"}
                     elif req["conversation_id"] not in self.allowed:
                         result = {"state": "rejected", "reason": "conversation_not_allowed"}
+                    elif op == "begin_click":
+                        # Durable, one-way pre-click transition. Commit must succeed
+                        # before the caller is permitted to touch the browser.
+                        # This is NOT a UI capability or a delivery receipt.
+                        existing = db.execute("""SELECT message_id,origin_turn_id,sender_id,
+                            payload_sha256,state FROM admissions WHERE conversation_id=?""",
+                            (req["conversation_id"],)).fetchone()
+                        expected = (req["message_id"], req["origin_turn_id"],
+                                    req["sender_id"], req["payload_sha256"], "admitted")
+                        if existing is None:
+                            result = {"state": "rejected", "reason": "no_admission"}
+                        elif existing != expected:
+                            result = {"state": "rejected", "reason": "envelope_mismatch_or_attempt_closed"}
+                        else:
+                            db.execute("UPDATE admissions SET state='uncertain' WHERE conversation_id=? AND state='admitted'",
+                                       (req["conversation_id"],))
+                            result = {"state": "click_started_uncertain"}
                     else:
                         try:
                             db.execute("""INSERT INTO admissions
