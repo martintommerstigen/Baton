@@ -70,6 +70,8 @@ def make_response(path, workspace, now):
             raise ValueError("invalid request id/operation")
         if data["operation"] not in OPERATIONS:
             raise ValueError("operation not allowed")
+        if not isinstance(data["created_at"], str):
+            raise ValueError("invalid timestamp")
         when = datetime.fromisoformat(data["created_at"].replace("Z","+00:00"))
         if when.tzinfo is None:
             raise ValueError("missing request timezone")
