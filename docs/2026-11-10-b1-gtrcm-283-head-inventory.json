@@ -1,6 +1,5 @@
 {
   "schema": "b1-gtrcm-branch-heads-v1",
-  "captured_utc": "2026-11-10T19:18:54Z",
   "source": "https://api.github.com/repos/martintommerstigen/GTRCM/branches?per_page=100&page=N",
   "page_counts": [
     100,
@@ -17,7 +16,8 @@
     "This is a metadata inventory, NOT content-read branch coverage or a full commit history.",
     "Dates and relevant_paths for unchanged SHA reuse Ronja's earlier audit; no independent re-index of those trees.",
     "Changed/new branch paths are null until indexed; branch-name theme is only a hint.",
-    "No Greg/Mac filesystem or historic private conversations read."
+    "No Greg/Mac filesystem or historic private conversations read.",
+    "Exact wall-clock instant of the four-page capture was not independently recorded; only the UTC calendar date is asserted."
   ],
   "branches": [
     {
@@ -6630,5 +6630,6 @@
       "url": "https://github.com/martintommerstigen/GTRCM/tree/yrsa%2Foperational-probes-2026-10-29",
       "content_read_in_this_inventory": false
     }
-  ]
+  ],
+  "capture_date_utc": "2026-11-10"
 }
