@@ -4,7 +4,7 @@ import tempfile
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 import unittest
-from baton_github_bus import make_response
+from baton_github_bus import make_response, process_pending_requests
 
 class PrivateBusTests(unittest.TestCase):
     def setUp(self):
@@ -48,5 +48,30 @@ class PrivateBusTests(unittest.TestCase):
         target.write_text("{}")
         self.request.symlink_to(target)
         self.assertEqual(make_response(self.request,self.workspace,self.now)["status"],"rejected")
+    def test_acknowledged_history_does_not_starve_new_requests(self):
+        req_dir=self.workspace/"requests"
+        res_dir=self.workspace/"responses"
+        req_dir.mkdir()
+        res_dir.mkdir()
+        for i in range(35):
+            request_id=f"{i:032x}"
+            (req_dir/(request_id+".json")).write_text(json.dumps({
+                "id":request_id,"operation":"identity","created_at":self.now.isoformat()}))
+            if i < 34:
+                (res_dir/(request_id+".json")).write_text("{}")
+        self.assertEqual(process_pending_requests(req_dir,res_dir,self.workspace,self.now),1)
+        self.assertTrue((res_dir/(f"{34:032x}.json")).is_file())
+    def test_request_batch_limit(self):
+        req_dir=self.workspace/"requests"
+        res_dir=self.workspace/"responses"
+        req_dir.mkdir()
+        res_dir.mkdir()
+        for i in range(4):
+            request_id=f"{i:032x}"
+            (req_dir/(request_id+".json")).write_text(json.dumps({
+                "id":request_id,"operation":"identity","created_at":self.now.isoformat()}))
+        self.assertEqual(process_pending_requests(req_dir,res_dir,self.workspace,self.now,limit=2),2)
+        self.assertEqual(process_pending_requests(req_dir,res_dir,self.workspace,self.now,limit=2),2)
+        self.assertEqual(process_pending_requests(req_dir,res_dir,self.workspace,self.now,limit=2),0)
 if __name__=="__main__":
     unittest.main()
