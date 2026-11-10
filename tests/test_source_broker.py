@@ -5,6 +5,7 @@ from pathlib import Path
 import socket
 import tempfile
 import threading
+import time
 import unittest
 from unittest.mock import patch
 
@@ -103,6 +104,30 @@ class BrokerTests(unittest.TestCase):
             self.assertFalse(thread.is_alive())
             self.assertEqual(json.loads(result)["state"], "rejected_or_uncertain_no_retry")
             self.assertEqual(self.calls, [])
+
+    def test_authorized_slow_trickle_cannot_hold_single_threaded_broker(self):
+        # The caller has a permitted UID but never completes a JSON frame.
+        # A per-recv timeout would be reset by each byte indefinitely.
+        with patch.object(self.broker, "_peer_uid", return_value=self.allowed), \
+                patch("remote_security.source_broker.READ_DEADLINE_SECONDS", 0.20):
+            worker = threading.Thread(target=self.broker.accept_once, daemon=True)
+            worker.start()
+            with socket.socket(socket.AF_UNIX, socket.SOCK_STREAM) as client:
+                client.settimeout(1)
+                client.connect(str(self.path))
+                start = time.monotonic()
+                for _ in range(16):
+                    if not worker.is_alive():
+                        break
+                    try:
+                        client.sendall(b"x")
+                    except (BrokenPipeError, ConnectionResetError):
+                        break
+                    time.sleep(0.04)
+                worker.join(0.25)
+                self.assertFalse(worker.is_alive(), "trickle must not keep broker occupied")
+                self.assertLess(time.monotonic() - start, 0.8)
+        self.assertEqual(self.calls, [])
 
     def test_backend_failure_uncertain_never_retry(self):
         def uncertain(_s, _j):
