@@ -1,0 +1,28 @@
+# B1/B5 source gate and verified-peer single-hop delta — 2026-11-10
+
+**Process:** Baton B1 session-bound implementation. **Status:** local negative tests with import stubs; GitHub CI pending at first commit; NOT deployed, NOT live A→B→C. No GTRCM GEN claim.
+
+## Coverage (measured, not extrapolated)
+
+- Fresh **fully paginated branch-name** search of GTRCM: pages 100 + 100 + 79 + 0 = **279 distinct branch names**. The search API returns names only; **0 head SHAs and 0 tip dates were independently verified in this run**. Previous Ronja/Eik metadata snapshots cover earlier tips; 279 must not be called a full SHA inventory.
+- GTRCM original content fetched directly in this run: `main/METHOD.md`, `main/NEGATIVE_RESULTS.md`, Kaja dynamic observability (19 Oct), Egil R76 (5 Nov), Andreas AB6 (4 Nov), Svanhild individuation audit (29 Oct), Hedda full derivation review (25 Oct), Svale memory-loss alias (28 Oct), `RustWorld/README.md` = **9 original files across 8 branch refs**. Additionally read the provisional C01–C06 audit ledger and Eik historical claim register = **11 GTRCM files across 10 refs**. None of the 279 branch trees is claimed exhaustively read.
+- Baton originals: issue #3, PR #4, PR #18, PR #19, forum #6, project map, `chatgpt_ui_driver.py`, `wake_broker_ui.py`, `wake_admission_broker.py`, `wake_adapter.py`, `wake_contract.py`, `wake_origin.py`, `wake_chain.py`, `run_chatgpt_wake.py`, `run_chatgpt_wake_chain.py`, `test_wake_broker_ui.py`, Ronja B5 `remote_security/broker_peer.py` and its tests.
+- Conversation corpus: only the present conversation's accessible prior work. Greg/Mac: **0 source files**. Remote Desktop Commander account reported **0%** and a read-only Greg command was refused; no bypass.
+- Remaining gaps: most GTRCM branches, old original commits beyond branch tips, local machine sources, prior private conversations, live browser selectors, dedicated-UID broker installation.
+
+## Scoped historical claim register / falsifier gate
+
+| ID | Earliest verified prior source in this sample | Established result / boundary | Current B1 delta |
+|---|---|---|---|
+| B1-H01 | [Kaja dynamic observability, 19 Oct](https://github.com/martintommerstigen/GTRCM/blob/kaja/gtrcm-proof-roadmap-2026-10-19/research/2026-10-19-kaja-dynamic-observability.md) | Available transcript and dynamically viable witness are not the same. REP/DER/NEG. | Do not treat a broker status as a verified ChatGPT turn. **Already done** in GTRCM. |
+| B1-H02 | [Svale loss, 28 Oct](https://github.com/martintommerstigen/GTRCM/blob/svale/embedded-loss-witness-selection-2026-10-28/research/svale/2026-10-28_finite_memory_source_alias.md); [Egil R76, 5 Nov](https://github.com/martintommerstigen/GTRCM/blob/research/egil-r77-gtrcm-coinductive-individuation-2026-11-05/research/egil/2026-11-05_EGIL_R76_KONTAKTFLATE_FYSISK_OVERSETTELSE.md) | Source access, post-event effects, retained witness and complete history differ. REP/DER/NEG. | Persist uncertainty and require source-side UI turn, not copied Baton text. **Already done / new application only**. |
+| B1-H03 | [Baton PR #4](https://github.com/martintommerstigen/Baton/pull/4), [PR #18](https://github.com/martintommerstigen/Baton/pull/18) | Existing-chat UI driver and optional broker pre-click callback exist; arbitrary injected callback can be forged. NEG test explicitly demonstrates false success. | **Candidate new integration:** separate opt-in runner with source-turn check and no fallback to unauthenticated B1 query. |
+| B1-H04 | [Ronja B5 peer gate](https://github.com/martintommerstigen/Baton/blob/research/ronja-remote-security-r5-tls-2026-11-10/remote_security/broker_peer.py) | SO_PEERCRED client checks kernel UID before request bytes; same UID is not a security boundary. Tested in B5's branch, NOT B1. | Reuse by import; do not copy/reimplement or misattribute. Missing B5 module fails closed. |
+
+## Delivered in this branch
+
+- `run_verified_broker_wake.py`: a separate, **opt-in** single-hop runner. It demands an already-open A and B tab, an exact assistant turn `BATON_WAKE <B> <message-id>` in A, a dedicated non-root broker UID distinct from the UI worker, and Ronja's B5 connected-peer client. No unauthenticated broker fallback. Uses B1's durable admission and pre-click uncertainty path; does not automatically resend.
+- `test_verified_broker_wake.py`: negative cases for missing B5 module, same/root UID, relative socket path, missing/duplicate tabs, wrong source request, source still generating, unsupported broker operation; positive mocked bridge contract.
+- Existing default runners are unchanged; this new CLI **does not** complete B→C or solve noncooperating pause-vs-click race. Without merging/installing B5 client and a real distinct-UID broker, the runner intentionally refuses execution.
+
+**Next falsifier:** Run on a genuine Linux two-UID setup; replace socket with an attacker-owned same-UID endpoint and prove zero request bytes leave; crash after durable `begin_click` and before Send, then after Send but before observation. Require source assistant turn IDs and exact approved payload for A→B→C. Do not mark tested-live from GitHub Actions.
