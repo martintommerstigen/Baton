@@ -72,6 +72,20 @@ class CaptureBundleStoreTests(unittest.TestCase):
         with self.assertRaises(UntrustedReceipt):
             load_verified_capture(self.jobs, self.artifact)
 
+    def test_hardlinked_artifact_rejected_on_load(self):
+        save_verified_capture(self.jobs, self.bundle, self.artifact)
+        alias = self.root / "hardlink.json"
+        os.link(self.artifact, alias)
+        with self.assertRaises(PermissionError):
+            load_verified_capture(self.jobs, self.artifact)
+
+    def test_symlink_artifact_rejected_on_load(self):
+        save_verified_capture(self.jobs, self.bundle, self.artifact)
+        alias = self.root / "alias.json"
+        alias.symlink_to(self.artifact)
+        with self.assertRaises((OSError, ValueError)):
+            load_verified_capture(self.jobs, alias)
+
     def test_permissive_artifact_rejected(self):
         save_verified_capture(self.jobs, self.bundle, self.artifact)
         self.artifact.chmod(0o644)
