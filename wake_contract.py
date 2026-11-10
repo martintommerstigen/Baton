@@ -51,10 +51,25 @@ class WakeLedger:
         with self.db() as db:
             return db.execute('SELECT source,target,source_turn,digest,state,observed_turn,updated FROM wakes WHERE id=?',(id,)).fetchone()
     def begin_submission(self,id):
-        # Persist intent BEFORE interacting with UI. Do not retry after uncertainty.
+        """Atomically reserve the target before any UI interaction.
+
+        Two in-flight messages to one existing chat could interleave with a
+        generation and make the observed assistant turn ambiguous. An uncertain
+        prior send therefore blocks new sends to that chat until reconciled.
+        """
         with self.db() as db:
-            return bool(db.execute("UPDATE wakes SET state='submitting',updated=? WHERE id=? AND state='requested'",
-                                   (int(time.time()),id)).rowcount)
+            db.execute('BEGIN IMMEDIATE')
+            row=db.execute("SELECT target,state FROM wakes WHERE id=?",(id,)).fetchone()
+            if row is None or row[1]!='requested':
+                return False
+            competing=db.execute(
+                "SELECT id FROM wakes WHERE target=? AND id<>? AND state IN ('submitting','uncertain') LIMIT 1",
+                (row[0],id)).fetchone()
+            if competing is not None:
+                raise RuntimeError("target has unresolved wake; no UI submission allowed")
+            return bool(db.execute(
+                "UPDATE wakes SET state='submitting',updated=? WHERE id=? AND state='requested'",
+                (int(time.time()),id)).rowcount)
     def mark_uncertain(self,id):
         with self.db() as db:
             return bool(db.execute("UPDATE wakes SET state='uncertain',updated=? WHERE id=? AND state='submitting'",
