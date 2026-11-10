@@ -16,6 +16,7 @@ from urllib.parse import urlparse
 from wake_contract import WakeLedger
 from wake_adapter import wake_once, reconcile
 from chatgpt_ui_driver import ChatGPTUIDriver, conversation_id
+from wake_ui_lock import ui_controller_lock
 
 def local_cdp(url):
     p=urlparse(url)
@@ -43,7 +44,7 @@ def main(argv=None):
         p.error('--source and --body required unless --reconcile')
     from playwright.sync_api import sync_playwright
     ledger=WakeLedger(args.db)
-    with sync_playwright() as pw:
+    with ui_controller_lock(), sync_playwright() as pw:
         browser=pw.chromium.connect_over_cdp(args.cdp)
         pages=[page for context in browser.contexts for page in context.pages]
         matching=[]
