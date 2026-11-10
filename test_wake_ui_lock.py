@@ -1,4 +1,5 @@
 """Synthetic host-lock tests; no live ChatGPT UI is contacted."""
+import ast
 from pathlib import Path
 import subprocess
 import sys
@@ -23,6 +24,19 @@ class HostLockTests(unittest.TestCase):
         return subprocess.run([sys.executable, "-c", script, str(self.path)],
                               cwd=str(Path(__file__).parent), timeout=5,
                               capture_output=True, text=True)
+
+    def test_both_ui_entrypoints_use_shared_lock_context(self):
+        for name in ("run_chatgpt_wake.py", "run_chatgpt_wake_chain.py"):
+            with self.subTest(name=name):
+                source = (Path(__file__).parent / name).read_text()
+                tree = ast.parse(source)
+                self.assertTrue(any(
+                    isinstance(node, ast.With) and any(
+                        isinstance(item.context_expr, ast.Call)
+                        and isinstance(item.context_expr.func, ast.Name)
+                        and item.context_expr.func.id == "ui_controller_lock"
+                        for item in node.items)
+                    for node in ast.walk(tree)), "runner must hold the shared UI lock")
 
     def test_separate_process_with_separate_ledger_cannot_enter(self):
         with ui_controller_lock(self.path):
