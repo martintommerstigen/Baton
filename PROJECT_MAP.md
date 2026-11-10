@@ -59,3 +59,14 @@ F0/F1 = forskningsprioritet, ikke programvareferdigstilling. P0/P1/P2 = implemen
 ## Fremdriftsstatus
 
 Ikke bruk prosent fullført uten definert nevner. Bruk statusene `research`, `planned`, `implemented-unverified`, `tested-simulated`, `tested-live`, `blocked`, `done`, med datert bevislenke. Ingen oppgave regnes som `done` utelukkende fordi dokumentet eksisterer.
+
+## Tilknyttede automatiseringer (2026-11-10)
+
+Fire eksisterende automatiseringer er oppdatert uten å endre kjøretid eller opprinnelig hovedmandat. Den maskinlesbare oversikten er [project-map/automations.json](project-map/automations.json):
+
+- **B1/B5:** Baton – faktisk samtalevekking; eksisterende PR #4 og issue #3.
+- **B5/B2:** Ronja – Baton Remote utvikling; sikkerhet og transport i egen gren.
+- **G1/G2/G3/G4/G5:** Vanja–Ronja – GTRCM fysikk; dyp kildelesning, utledning og motprøver i egen GTRCM-gren.
+- **G2/G4:** Eik kilde-retur; proveniens og uavhengige motprøver.
+
+Andre aktive automatiseringer har egne mandater og ble ikke omdefinert til prosjektarbeid. RustWorld-oppgavene og SoMe-sporene er foreløpig uten eksplisitt automatiseringstildeling i dette kartet. Arbeidere skriver kildebevarte resultater i egne grener/PR-er, ikke samtidige direkte oppdateringer av registeret.
