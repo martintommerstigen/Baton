@@ -28,7 +28,10 @@ def chat_id_from_url(url):
 
 def attach_baton_panel(window, view, page, *, initial_chat=None, initial_message=None):
     """Attach the native control dock, independently of the ChatGPT website."""
-    from PySide6.QtCore import QUrl, Qt
+    from PySide6.QtCore import QUrl, Qt, QTimer
+    from uuid import uuid4
+    from baton_chat_observe import inspect_delivery_script
+    from baton_ui_events import log_event
     from PySide6.QtWidgets import (
         QApplication, QDockWidget, QWidget, QVBoxLayout, QHBoxLayout,
         QLabel, QLineEdit, QPlainTextEdit, QPushButton
@@ -76,6 +79,11 @@ def attach_baton_panel(window, view, page, *, initial_chat=None, initial_message
     # Keep a confirmed click from being sent twice after network/UI uncertainty.
     attempted = set()
     in_flight = [False]
+    watcher = QTimer(dock)
+    watcher.setInterval(1800)
+    active_check = [None]
+    tries = [0]
+    user_seen = [False]
 
     def set_status(value):
         status.setText(value)
@@ -134,19 +142,27 @@ def attach_baton_panel(window, view, page, *, initial_chat=None, initial_message
         if (chat_id, text) in attempted or in_flight[0]:
             set_status("Denne meldingen er allerede forsøkt. Ingen automatisk gjensending.")
             return
+        request_id = uuid4().hex
+        wrapped = "[Baton request " + request_id + " · target " + chat_id + "]\\n" + text
+        if len(wrapped) > 4000:
+            set_status("Melding med Baton-ID overstiger 4000 tegn.")
+            return
+        script = prepare_send_script(wrapped)
         in_flight[0] = True
         refresh_send()
-        set_status("Forbereder melding i riktig samtale ...")
+        set_status("Forbereder melding " + request_id[:8] + " i riktig samtale ...")
 
         def prepared(result):
             if not isinstance(result, dict) or not result.get("ok"):
                 in_flight[0] = False
+                log_event(request_id, chat_id, "composer_failed")
                 set_status("Kunne ikke fylle meldingsfeltet. Ingen sending: " +
                            (str(result.get("reason")) if isinstance(result, dict) else "ukjent feil"))
                 refresh_send()
                 return
             if not is_chatgpt_conversation_url(view.url().toString(), chat_id):
                 in_flight[0] = False
+                log_event(request_id, chat_id, "target_changed")
                 set_status("STOPP: Samtalen endret seg før sending.")
                 refresh_send()
                 return
@@ -155,12 +171,56 @@ def attach_baton_panel(window, view, page, *, initial_chat=None, initial_message
                 in_flight[0] = False
                 if isinstance(result, dict) and result.get("ok"):
                     attempted.add((chat_id, text))
-                    set_status("Sendeknappen ble klikket én gang. Levering/svar IKKE verifisert.")
+                    log_event(request_id, chat_id, "click_attempted")
+                    active_check[0] = (request_id, chat_id, wrapped)
+                    tries[0] = 0
+                    user_seen[0] = False
+                    set_status("Sendeknappen klikket. Kontrollerer om meldingen og svar vises ...")
+                    watcher.start()
                 else:
+                    log_event(request_id, chat_id, "send_not_ready")
                     set_status("Sendeknappen var ikke klar. Levering IKKE verifisert.")
                 refresh_send()
             page.runJavaScript(send_click_script(), clicked)
         page.runJavaScript(script, prepared)
+
+    def inspect_live_chat():
+        current = active_check[0]
+        if current is None:
+            watcher.stop()
+            return
+        request_id, chat_id, wrapped = current
+        if not is_chatgpt_conversation_url(view.url().toString(), chat_id):
+            watcher.stop()
+            active_check[0] = None
+            log_event(request_id, chat_id, "target_changed")
+            set_status("Samtalen ble endret. Observasjon avbrutt; ingen levering bekreftet.")
+            return
+        tries[0] += 1
+        if tries[0] > 40:
+            watcher.stop()
+            active_check[0] = None
+            log_event(request_id, chat_id, "ui_observation_timeout")
+            set_status("Tidsgrense for observasjon. Ingen automatisk gjensending.")
+            return
+
+        def inspected(result):
+            if active_check[0] != current or not isinstance(result, dict):
+                return
+            if result.get("userVisible") and not user_seen[0]:
+                user_seen[0] = True
+                log_event(request_id, chat_id, "user_visible_ui")
+                set_status("Baton-meldingen er synlig i riktig ChatGPT-samtale. Venter på svar ...")
+            if result.get("replyVisible") and result.get("replyComplete"):
+                watcher.stop()
+                active_check[0] = None
+                log_event(request_id, chat_id, "assistant_reply_visible_ui",
+                          assistant_message_id=result.get("assistantMessageId"))
+                set_status("Et assistentsvar er observert i riktig ChatGPT-vindu! " +
+                           "Ingen kryptografisk kvittering eller modellverktøytilgang er påvist.")
+        page.runJavaScript(inspect_delivery_script(wrapped), inspected)
+
+    watcher.timeout.connect(inspect_live_chat)
 
     use_current.clicked.connect(use_current_chat)
     open_target.clicked.connect(open_recipient)
