@@ -8,7 +8,6 @@ import argparse
 import hashlib
 import json
 import time
-import fcntl
 from pathlib import Path
 from urllib.parse import urlparse
 from wake_contract import WakeLedger
@@ -16,6 +15,7 @@ from wake_chain import ChainPlan, run_chain
 from wake_origin import verify_source_turn, discover_source_turn
 from chatgpt_ui_driver import ChatGPTUIDriver, conversation_id
 from run_chatgpt_wake import local_cdp
+from wake_ui_lock import ui_controller_lock
 
 def select_pages(browser, ids):
     found={x:[] for x in ids}
@@ -44,10 +44,8 @@ def main(argv=None):
     if Path('/home/olliver/GTRCM-newborn-bootstrap/transport/PAUSE_UI_WRITES').exists():
         raise RuntimeError('UI writes paused')
     from playwright.sync_api import sync_playwright
-    lock_path=Path(args.db).with_suffix('.wake.lock')
-    lock_path.parent.mkdir(parents=True,exist_ok=True)
-    with lock_path.open('a+') as lock_file:
-      fcntl.flock(lock_file, fcntl.LOCK_EX | fcntl.LOCK_NB)
+    # One host lock covers both runners even when their SQLite DB paths differ.
+    with ui_controller_lock():
       with sync_playwright() as pw:
           browser=pw.chromium.connect_over_cdp(args.cdp)
           pages=select_pages(browser,(args.a,args.b,args.c))
