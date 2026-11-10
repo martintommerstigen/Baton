@@ -17,7 +17,7 @@
     }
   ],
   "branch_count": 276,
-  "tree_indexed": 90,
+  "tree_indexed": 105,
   "content_read_in_this_inventory": 0,
   "notes": [
     "branch_date_hint is parsed from branch name, NOT verified commit date",
@@ -2317,10 +2317,24 @@
       "commit_date": null,
       "theme": "research/andreas-g22-temporal-certification-budget-2026-11-04",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/research%2Fandreas-g22-temporal-certification-budget-2026-11-04",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 52,
+      "relevant_paths": [
+        "GTRCM_KANONISK_GRUNNPROGRAM.md",
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/gaia_self_influence/andreas_2026_11_03/exhaustive_version_space.py",
+        "experiments/gaia_self_influence/andreas_2026_11_03/g10_contradiction_individuation.py",
+        "experiments/gaia_self_influence/andreas_2026_11_03/g11_continuation_individuation.py",
+        "experiments/gaia_self_influence/andreas_2026_11_03/g12_distributed_counterfactuals.py",
+        "experiments/gaia_self_influence/andreas_2026_11_03/g13_probe_relative_analogy.py",
+        "experiments/gaia_self_influence/andreas_2026_11_03/g14_analogy_audit_topology.py",
+        "experiments/gaia_self_influence/andreas_2026_11_03/g18_error_budget_bound.py"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "research/andreas-g23-distinction-fates-2026-11-04",
@@ -2329,10 +2343,24 @@
       "commit_date": null,
       "theme": "research/andreas-g23-distinction-fates-2026-11-04",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/research%2Fandreas-g23-distinction-fates-2026-11-04",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 130,
+      "relevant_paths": [
+        "GTRCM_KANONISK_GRUNNPROGRAM.md",
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/andreas/2026_11_04/g20_antibuild_no_minimum.py",
+        "experiments/andreas/2026_11_04/g21_interchangeability_boundary.py",
+        "experiments/andreas/2026_11_04/g22_endogenous_distinction_carrier.py",
+        "experiments/andreas/2026_11_04/g23_distinction_fates.py",
+        "experiments/egil/egil_r0_response_residual_antibygge_2026_11_04.py",
+        "experiments/eik/adaptive_repertoire_gate.py",
+        "experiments/eik/anonymous_reversible_contact_birth.py"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "research/andreas-g23-temporal-explanation-sets-2026-11-04",
@@ -2341,10 +2369,24 @@
       "commit_date": null,
       "theme": "research/andreas-g23-temporal-explanation-sets-2026-11-04",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/research%2Fandreas-g23-temporal-explanation-sets-2026-11-04",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 54,
+      "relevant_paths": [
+        "GTRCM_KANONISK_GRUNNPROGRAM.md",
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/gaia_self_influence/andreas_2026_11_03/exhaustive_version_space.py",
+        "experiments/gaia_self_influence/andreas_2026_11_03/g10_contradiction_individuation.py",
+        "experiments/gaia_self_influence/andreas_2026_11_03/g11_continuation_individuation.py",
+        "experiments/gaia_self_influence/andreas_2026_11_03/g12_distributed_counterfactuals.py",
+        "experiments/gaia_self_influence/andreas_2026_11_03/g13_probe_relative_analogy.py",
+        "experiments/gaia_self_influence/andreas_2026_11_03/g14_analogy_audit_topology.py",
+        "experiments/gaia_self_influence/andreas_2026_11_03/g18_error_budget_bound.py"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "research/andreas-g25-active-temporal-inquiry-2026-11-04",
@@ -2353,10 +2395,24 @@
       "commit_date": null,
       "theme": "research/andreas-g25-active-temporal-inquiry-2026-11-04",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/research%2Fandreas-g25-active-temporal-inquiry-2026-11-04",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 56,
+      "relevant_paths": [
+        "GTRCM_KANONISK_GRUNNPROGRAM.md",
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/gaia_self_influence/andreas_2026_11_03/exhaustive_version_space.py",
+        "experiments/gaia_self_influence/andreas_2026_11_03/g10_contradiction_individuation.py",
+        "experiments/gaia_self_influence/andreas_2026_11_03/g11_continuation_individuation.py",
+        "experiments/gaia_self_influence/andreas_2026_11_03/g12_distributed_counterfactuals.py",
+        "experiments/gaia_self_influence/andreas_2026_11_03/g13_probe_relative_analogy.py",
+        "experiments/gaia_self_influence/andreas_2026_11_03/g14_analogy_audit_topology.py",
+        "experiments/gaia_self_influence/andreas_2026_11_03/g18_error_budget_bound.py"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "research/andreas-g26-disconfirmatory-temporal-inquiry-2026-11-04",
@@ -2365,10 +2421,24 @@
       "commit_date": null,
       "theme": "research/andreas-g26-disconfirmatory-temporal-inquiry-2026-11-04",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/research%2Fandreas-g26-disconfirmatory-temporal-inquiry-2026-11-04",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 58,
+      "relevant_paths": [
+        "GTRCM_KANONISK_GRUNNPROGRAM.md",
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/gaia_self_influence/andreas_2026_11_03/exhaustive_version_space.py",
+        "experiments/gaia_self_influence/andreas_2026_11_03/g10_contradiction_individuation.py",
+        "experiments/gaia_self_influence/andreas_2026_11_03/g11_continuation_individuation.py",
+        "experiments/gaia_self_influence/andreas_2026_11_03/g12_distributed_counterfactuals.py",
+        "experiments/gaia_self_influence/andreas_2026_11_03/g13_probe_relative_analogy.py",
+        "experiments/gaia_self_influence/andreas_2026_11_03/g14_analogy_audit_topology.py",
+        "experiments/gaia_self_influence/andreas_2026_11_03/g18_error_budget_bound.py"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "research/andreas-g28-multichannel-common-mode-2026-11-04",
@@ -2377,10 +2447,24 @@
       "commit_date": null,
       "theme": "research/andreas-g28-multichannel-common-mode-2026-11-04",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/research%2Fandreas-g28-multichannel-common-mode-2026-11-04",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 60,
+      "relevant_paths": [
+        "GTRCM_KANONISK_GRUNNPROGRAM.md",
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/gaia_self_influence/andreas_2026_11_03/exhaustive_version_space.py",
+        "experiments/gaia_self_influence/andreas_2026_11_03/g10_contradiction_individuation.py",
+        "experiments/gaia_self_influence/andreas_2026_11_03/g11_continuation_individuation.py",
+        "experiments/gaia_self_influence/andreas_2026_11_03/g12_distributed_counterfactuals.py",
+        "experiments/gaia_self_influence/andreas_2026_11_03/g13_probe_relative_analogy.py",
+        "experiments/gaia_self_influence/andreas_2026_11_03/g14_analogy_audit_topology.py",
+        "experiments/gaia_self_influence/andreas_2026_11_03/g18_error_budget_bound.py"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "research/andreas-g29-channel-dependency-gauge-2026-11-04",
@@ -2389,10 +2473,24 @@
       "commit_date": null,
       "theme": "research/andreas-g29-channel-dependency-gauge-2026-11-04",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/research%2Fandreas-g29-channel-dependency-gauge-2026-11-04",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 62,
+      "relevant_paths": [
+        "GTRCM_KANONISK_GRUNNPROGRAM.md",
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/gaia_self_influence/andreas_2026_11_03/exhaustive_version_space.py",
+        "experiments/gaia_self_influence/andreas_2026_11_03/g10_contradiction_individuation.py",
+        "experiments/gaia_self_influence/andreas_2026_11_03/g11_continuation_individuation.py",
+        "experiments/gaia_self_influence/andreas_2026_11_03/g12_distributed_counterfactuals.py",
+        "experiments/gaia_self_influence/andreas_2026_11_03/g13_probe_relative_analogy.py",
+        "experiments/gaia_self_influence/andreas_2026_11_03/g14_analogy_audit_topology.py",
+        "experiments/gaia_self_influence/andreas_2026_11_03/g18_error_budget_bound.py"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "research/andreas-g30-dependency-identifiability-interventions-2026-11-04",
@@ -2401,10 +2499,24 @@
       "commit_date": null,
       "theme": "research/andreas-g30-dependency-identifiability-interventions-2026-11-04",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/research%2Fandreas-g30-dependency-identifiability-interventions-2026-11-04",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 64,
+      "relevant_paths": [
+        "GTRCM_KANONISK_GRUNNPROGRAM.md",
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/gaia_self_influence/andreas_2026_11_03/exhaustive_version_space.py",
+        "experiments/gaia_self_influence/andreas_2026_11_03/g10_contradiction_individuation.py",
+        "experiments/gaia_self_influence/andreas_2026_11_03/g11_continuation_individuation.py",
+        "experiments/gaia_self_influence/andreas_2026_11_03/g12_distributed_counterfactuals.py",
+        "experiments/gaia_self_influence/andreas_2026_11_03/g13_probe_relative_analogy.py",
+        "experiments/gaia_self_influence/andreas_2026_11_03/g14_analogy_audit_topology.py",
+        "experiments/gaia_self_influence/andreas_2026_11_03/g18_error_budget_bound.py"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "research/andreas-pr12-version-space-2026-11-03",
@@ -2413,10 +2525,24 @@
       "commit_date": null,
       "theme": "research/andreas-pr12-version-space-2026-11-03",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/research%2Fandreas-pr12-version-space-2026-11-03",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 24,
+      "relevant_paths": [
+        "GTRCM_KANONISK_GRUNNPROGRAM.md",
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/gaia_self_influence/andreas_2026_11_03/exhaustive_version_space.py",
+        "experiments/gaia_self_influence/andreas_2026_11_03/provenance_version_core.py",
+        "experiments/gaia_self_influence/independent_review_2026_11_03/counterexample.py",
+        "experiments/gaia_self_influence/operativ_selvpaavirkning.py",
+        "experiments/microfluctuation_mass_gravity/README.md",
+        "experiments/microfluctuation_mass_gravity/falsify_shared_density.py",
+        "experiments/microfluctuation_mass_gravity/model.py"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "research/andreas-relational-law-holonomy-2026-11-03",
@@ -2425,10 +2551,24 @@
       "commit_date": null,
       "theme": "research/andreas-relational-law-holonomy-2026-11-03",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/research%2Fandreas-relational-law-holonomy-2026-11-03",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 30,
+      "relevant_paths": [
+        "GTRCM_KANONISK_GRUNNPROGRAM.md",
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/gaia_self_influence/andreas_2026_11_03/exhaustive_version_space.py",
+        "experiments/gaia_self_influence/andreas_2026_11_03/g8_inquiry_geometry.py",
+        "experiments/gaia_self_influence/andreas_2026_11_03/provenance_version_core.py",
+        "experiments/gaia_self_influence/andreas_2026_11_03/relational_model_holonomy.py",
+        "experiments/gaia_self_influence/andreas_2026_11_03/source_truth_gauge.py",
+        "experiments/gaia_self_influence/independent_review_2026_11_03/counterexample.py",
+        "experiments/gaia_self_influence/operativ_selvpaavirkning.py"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "research/andreas-source-truth-gauge-2026-11-03",
@@ -2437,10 +2577,24 @@
       "commit_date": null,
       "theme": "research/andreas-source-truth-gauge-2026-11-03",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/research%2Fandreas-source-truth-gauge-2026-11-03",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 26,
+      "relevant_paths": [
+        "GTRCM_KANONISK_GRUNNPROGRAM.md",
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/gaia_self_influence/andreas_2026_11_03/exhaustive_version_space.py",
+        "experiments/gaia_self_influence/andreas_2026_11_03/provenance_version_core.py",
+        "experiments/gaia_self_influence/andreas_2026_11_03/source_truth_gauge.py",
+        "experiments/gaia_self_influence/independent_review_2026_11_03/counterexample.py",
+        "experiments/gaia_self_influence/operativ_selvpaavirkning.py",
+        "experiments/microfluctuation_mass_gravity/README.md",
+        "experiments/microfluctuation_mass_gravity/falsify_shared_density.py"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "research/core-skin-operational-sensitivity-2026-10-12",
@@ -2449,10 +2603,19 @@
       "commit_date": null,
       "theme": "research/core-skin-operational-sensitivity-2026-10-12",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/research%2Fcore-skin-operational-sensitivity-2026-10-12",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 17,
+      "relevant_paths": [
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/microfluctuation_mass_gravity/README.md",
+        "experiments/microfluctuation_mass_gravity/falsify_shared_density.py",
+        "experiments/microfluctuation_mass_gravity/model.py"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "research/current-r1-interface-physics-2026-11-06",
@@ -2461,10 +2624,22 @@
       "commit_date": null,
       "theme": "research/current-r1-interface-physics-2026-11-06",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/research%2Fcurrent-r1-interface-physics-2026-11-06",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 18,
+      "relevant_paths": [
+        "GTRCM_KANONISK_GRUNNPROGRAM.md",
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/microfluctuation_mass_gravity/README.md",
+        "experiments/microfluctuation_mass_gravity/falsify_shared_density.py",
+        "experiments/microfluctuation_mass_gravity/model.py",
+        "research/current/2026-11-06_CURRENT_R1_INTERFACE_PHYSICS_SELF_LOCATION.md",
+        "research/current/2026-11-06_CURRENT_R2_PARTICLE_NONONTOLOGY.md"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "research/egil-r0-residual-individuation-2026-11-04",
@@ -2473,10 +2648,24 @@
       "commit_date": null,
       "theme": "research/egil-r0-residual-individuation-2026-11-04",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/research%2Fegil-r0-residual-individuation-2026-11-04",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 123,
+      "relevant_paths": [
+        "GTRCM_KANONISK_GRUNNPROGRAM.md",
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/egil/egil_r0_response_residual_antibygge_2026_11_04.py",
+        "experiments/eik/adaptive_repertoire_gate.py",
+        "experiments/eik/anonymous_reversible_contact_birth.py",
+        "experiments/eik/balanced_signature_from_role_reversal.py",
+        "experiments/eik/boundary_closure_refinement.py",
+        "experiments/eik/causal_trace_history_quotient.py",
+        "experiments/eik/cfs_quadratic_lagrangian_uniqueness.py"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "research/egil-r1-antibygge-consequence-2026-11-04",
@@ -2485,10 +2674,24 @@
       "commit_date": null,
       "theme": "research/egil-r1-antibygge-consequence-2026-11-04",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/research%2Fegil-r1-antibygge-consequence-2026-11-04",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 126,
+      "relevant_paths": [
+        "GTRCM_KANONISK_GRUNNPROGRAM.md",
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/egil/egil_r0_response_residual_antibygge_2026_11_04.py",
+        "experiments/egil/egil_r1_antibuild_causal_cut_2026_11_04.py",
+        "experiments/eik/adaptive_repertoire_gate.py",
+        "experiments/eik/anonymous_reversible_contact_birth.py",
+        "experiments/eik/balanced_signature_from_role_reversal.py",
+        "experiments/eik/boundary_closure_refinement.py",
+        "experiments/eik/causal_trace_history_quotient.py"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "research/egil-r2-unbounded-probe-depth-2026-11-04",
