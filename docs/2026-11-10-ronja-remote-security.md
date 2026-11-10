@@ -25,7 +25,7 @@ Linux unprivileged dedicated account; Python 3.10+. Never run as root. Keep priv
 
 Only after reviewing policy and authorizing a receive-only local listener:
 
-    python3 -m remote_security.http_ingress --database "$HOME/.local/state/baton-remote/receipts.sqlite" --token-file "$HOME/.config/baton-remote/token" --sender-key-file "sender000=$HOME/.config/baton-remote/sender.key" --target target000 --port 8788
+    python3 -m remote_security.http_ingress --database "$HOME/.local/state/baton-remote/receipts.sqlite" --token-file "$HOME/.config/baton-remote/token" --sender-key-file "sender000=$HOME/.config/baton-remote/sender.key" --target target000 --route sender000=target000 --port 8788
 
 To exercise the one-shot client on the same authorized host, prepare an owner-only payload file and a stable message ID. Do not regenerate an ID after a timeout:
 
@@ -48,3 +48,17 @@ Replace sender000/target000 with explicitly allowlisted identifiers. Do not expo
 Next test: review a small, independently authorized PR #4 adapter integration using lstat plus pre-click checks and test the pause marker inserted after health check. Test on Greg only after authenticated controller access and explicit authorization. Never promote a transport receipt to a wake receipt.
 
 Evidence: isolated Python unit/loopback tests and GitHub Actions results are distinct from Greg-live tests. No claims of live Greg or A→B→C.
+
+## R3 correction — explicit routes and real process-crash tests (2026-11-10)
+
+**B5/B2 source branch:** `research/ronja-remote-security-r3-2026-11-10`, based on R2, without changing PR #4 or PR #10. The earlier text above describes the original R2 implementation; the following supersedes its global sender/target policy and next-test statement.
+
+**Policy correction:** A global set of allowed senders plus a global set of targets implicitly grants the entire Cartesian product of routes. A valid key for sender A would then authorize any target listed for sender B. The production HTTP CLI now **requires** one or more explicit `--route SENDER=TARGET` arguments, in addition to the configured sender keys and targets. Every sender must have at least one exact route. Unknown, duplicate, malformed and missing routes fail before opening the HTTP listener. The Gate API accepts `allowed_routes` for the same enforcement; direct legacy Gate callers without it retain their previous test behavior, so do not instantiate Gate without routes in a production service. No wildcard routes are supported.
+
+**Crash experiment:** `tests/test_http_process_crash.py` launches a disposable receiver process and intercepts its actual per-request SQLite COMMIT boundary. It kills that process either (a) after INSERTs but before COMMIT, or (b) after a successful COMMIT but before HTTP 202. The one-shot client must report `DeliveryUncertain` in both cases. After (a), the new reader sees `absent_unknown` and `send_permitted=false`. After (b), it sees the exact authenticated payload and `send_permitted=false`; a fresh receiver on the same port must reject the identical ID as replay. No test touches Greg or a real ChatGPT conversation. Tests use Linux `fork` and skip on platforms without it.
+
+**GTRCM interpretation:** a receipt is an operationally accessible distinction relative to one instrument. Missing evidence is not a negative event witness, and a persisted local receipt is not a generated existing-chat turn. This is a security implementation/test claim, not an ontological or physics GEN claim.
+
+**Current external boundary:** Greg is paired and online but Desktop Commander returned its explicit monthly-usage limit, forbidding further remote calls. GitHub CI is an independent hosted simulation, not Greg-live. No browser access, key rotation, SSH tunnel deployment, UI writes or B1 A→B→C wake occurred. `PAUSE_UI_WRITES` remains untouched; the separate [PR #10](https://github.com/martintommerstigen/Baton/pull/10) reports a reviewed fail-closed UI pause check, but no cooperative atomic pause/click protocol has yet been verified live.
+
+**Next falsifiers:** crash during SQLite journal/fsync with fault-injected disk I/O, route-policy fuzzing, an independently authorized non-root systemd user service with `ProtectSystem`/filesystem sandbox, and source/target-specific key revocation. Do not automatically retry an uncertain request.
