@@ -19,12 +19,35 @@ class Rejected(ValueError):
     pass
 
 class Gate:
-    def __init__(self, database, keys, allowed_senders, allowed_targets, clock=time.time):
+    def __init__(self, database, keys, allowed_senders, allowed_targets,
+                 clock=time.time, allowed_routes=None):
         self.database = str(database)
         self.keys = dict(keys)
         self.senders = frozenset(allowed_senders)
         self.targets = frozenset(allowed_targets)
         self.clock = clock
+        # Direct Gate callers without routes retain their historical test
+        # behavior. The production HTTP CLI REQUIRES explicit routes.
+        # A route is a sender-specific authorization, not a global target set.
+        if allowed_routes is None:
+            if len(self.senders) > 1 and len(self.targets) > 1:
+                raise Rejected("explicit route policy required for multi-sender multi-target gate")
+            self.routes = {sender: self.targets for sender in self.senders}
+        else:
+            if not isinstance(allowed_routes, dict) or set(allowed_routes) != self.senders:
+                raise Rejected("route policy must cover exactly the configured senders")
+            routes = {}
+            for sender, targets in allowed_routes.items():
+                if isinstance(targets, str):
+                    raise Rejected("route targets must be a collection")
+                try:
+                    values = frozenset(targets)
+                except (TypeError, ValueError) as exc:
+                    raise Rejected("invalid route targets") from exc
+                if not values or not values.issubset(self.targets):
+                    raise Rejected("empty or unknown route targets")
+                routes[sender] = values
+            self.routes = routes
         # Retain the existing .db interface for older callers/tests. Actual
         # accept transactions use independent connections, safe across threads.
         self.db = connect_private(self.database)
@@ -64,6 +87,8 @@ class Gate:
         if (sender not in self.senders or target not in self.targets
                 or not isinstance(envelope["action"], str) or envelope["action"] not in _ALLOWED):
             raise Rejected("policy")
+        if target not in self.routes.get(sender, frozenset()):
+            raise Rejected("route")
         digest = envelope["payload_sha256"]
         if not isinstance(digest, str) or not re.fullmatch("[0-9a-f]{64}", digest):
             raise Rejected("payload digest")

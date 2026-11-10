@@ -135,6 +135,24 @@ class IngressHandler(BaseHTTPRequestHandler):
     do_DELETE = do_GET
 
 
+def parse_routes(items, senders, targets):
+    """Validate explicit SENDER=TARGET route policy before opening a socket.
+
+    Each configured sender needs at least one exact authorized target.
+    A global --target alone is never sufficient to authorize a sender.
+    """
+    routes = {sender: set() for sender in senders}
+    for item in items:
+        sender, sep, target = item.partition('=')
+        if (not sep or sender not in routes or target not in targets
+                or target in routes[sender]):
+            raise ValueError('invalid, duplicate, or unconfigured SENDER=TARGET route')
+        routes[sender].add(target)
+    if not routes or any(not targets_for_sender for targets_for_sender in routes.values()):
+        raise ValueError('each configured sender requires at least one route')
+    return routes
+
+
 def main(argv=None):
     parser = argparse.ArgumentParser(description='Loopback-only receive-only Baton ingress')
     parser.add_argument('--port', type=int, default=8788)
@@ -142,6 +160,9 @@ def main(argv=None):
     parser.add_argument('--token-file', required=True)
     parser.add_argument('--sender-key-file', action='append', required=True, metavar='SENDER=PATH')
     parser.add_argument('--target', action='append', required=True)
+    parser.add_argument('--route', action='append', required=True,
+                        metavar='SENDER=TARGET',
+                        help='explicit per-sender target authorization; repeat for multiple routes')
     args = parser.parse_args(argv)
     keys = {}
     for item in args.sender_key_file:
@@ -149,7 +170,13 @@ def main(argv=None):
         if not sep or sender in keys or not sender:
             parser.error('sender key syntax must be unique SENDER=PATH')
         keys[sender] = load_private_key(path)
-    gate = Gate(args.database, keys, keys, args.target)
+    try:
+        if len(set(args.target)) != len(args.target):
+            raise ValueError('duplicate target')
+        routes = parse_routes(args.route, keys, set(args.target))
+    except ValueError as exc:
+        parser.error(str(exc))
+    gate = Gate(args.database, keys, keys, args.target, allowed_routes=routes)
     try:
         with IngressServer(args.port, load_bearer_token(args.token_file), gate) as server:
             print('Baton receive-only ingress on 127.0.0.1:%d' % server.server_port, flush=True)
