@@ -33,6 +33,8 @@ python3 -m remote_security.source_broker \
 
 The caller must use the R5/R10 \`query_verified_broker\` client with expected broker UID. Example request: \`{"version":1,"action":"capture","source_id":"rustworld-world","job_id":"capture001"}\`. Then \`audit\` the same source/job ID after restart to verify the saved evidence. Never repeat a capture with the same ID after a timeout; investigate the receipt/evidence first.
 
+The paired `remote_security.source_broker_client.request_pinned_source` wrapper calls the existing `query_verified_broker` kernel peer gate and requires an **exact matching** source ID, job ID, success state and two lowercase SHA-256 digests. Stale, forged, extra-field and mismatched responses raise `BrokerUncertain` without fallback or retry. The response is a local byte-provenance record, never UI authorization.
+
 ## Evidence, boundaries, next falsifier
 
 - Local isolated Linux tests: **10/10 non-root tests pass**, plus **1/1 actual kernel cross-UID test** under root test harness (the other UID-specific cases are skipped in the opposite environment). CI verification is separate from these local tests.
