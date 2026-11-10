@@ -31,7 +31,7 @@ The writer does **not** guarantee immediate cancellation of an in-flight send. T
 
 ## Verification
 
-`python3 -m unittest -v test_wake_pause_writer.py` checks private marker creation, idempotence, leaf and ancestor symlink safety, missing ancestors, relative/traversal paths, sender-first and writer-first orderings, and cross-process lock contention. Offline synthetic pages are **not** real ChatGPT pages. `test_wake_lock_path.py` adds four lock-path regression tests. Local isolated execution of both new test modules: **12/12 PASS** using the extracted existing lock and pause logic with synthetic UI stand-ins. Record the GitHub Actions run separately when available; a local pass does not imply CI or Greg-live.
+`python3 -m unittest -v test_wake_pause_writer.py` checks private marker creation, idempotence, leaf and ancestor symlink safety, missing ancestors, relative/traversal paths, sender-first and writer-first orderings, and cross-process lock contention. Offline synthetic pages are **not** real ChatGPT pages. `test_wake_lock_path.py` adds five lock-path regression tests (including an inode swap during lock acquisition). Local isolated execution of both new test modules: **13/13 PASS** using the extracted existing lock and pause logic with synthetic UI stand-ins. Record the GitHub Actions run separately when available; a local pass does not imply CI or Greg-live.
 
 ## Next test
 
