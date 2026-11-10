@@ -9,7 +9,7 @@ class Driver:
         self.reply=reply
     def submit_once(self, conversation_id, message_id, body):
         self.calls.append((conversation_id,message_id,body))
-    def observe_reply(self, conversation_id, message_id):
+    def observe_reply(self, conversation_id, message_id, digest):
         return self.reply
 
 class AdapterTests(unittest.TestCase):
