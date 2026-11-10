@@ -4,15 +4,18 @@ from __future__ import annotations
 import argparse
 import base64
 import hashlib
+import hmac
 import http.client
 import json
 import os
+import secrets
 from pathlib import Path
 import time
 from urllib.parse import urlsplit
 
 from remote_security.envelope_gate import Gate, MAX_PAYLOAD_BYTES
 from remote_security.http_ingress import load_bearer_token, load_private_key
+from remote_security.admission_mac import admission_mac
 
 
 class DeliveryUncertain(RuntimeError):
@@ -34,12 +37,15 @@ def send_once(base_url, bearer, sender_key, envelope, payload, timeout=3):
     body = json.dumps({'envelope': envelope, 'signature': signature,
                        'payload_b64': base64.b64encode(payload).decode('ascii')},
                       separators=(',', ':'), sort_keys=True).encode('utf-8')
+    nonce = secrets.token_hex(16)
+    expected_mac = admission_mac(sender_key, nonce, envelope, 'accepted_not_delivered')
     connection = http.client.HTTPConnection('127.0.0.1', parsed.port, timeout=timeout)
     try:
         # No proxy or redirect handler; a 302 is an error, never followed.
         connection.request('POST', '/v1/envelopes', body=body, headers={
             'Host': '127.0.0.1:%d' % parsed.port,
             'Authorization': 'Bearer ' + bearer.decode('ascii'),
+            'X-Baton-Receipt-Nonce': nonce,
             'Content-Type': 'application/json',
             'Content-Length': str(len(body)),
         })
@@ -49,6 +55,9 @@ def send_once(base_url, bearer, sender_key, envelope, payload, timeout=3):
             raise DeliveryUncertain('oversized response; delivery unknown')
         if response.status != 202:
             raise DeliveryUncertain('server did not confirm admission; no automatic retry')
+        macs = response.headers.get_all('X-Baton-Receipt-MAC', [])
+        if len(macs) != 1 or not hmac.compare_digest(macs[0], expected_mac):
+            raise DeliveryUncertain('unauthenticated admission receipt; do not retry')
         data = json.loads(raw)
         if data != {'state': 'accepted_not_delivered'}:
             raise DeliveryUncertain('unexpected receipt; no automatic retry')
