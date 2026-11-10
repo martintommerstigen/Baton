@@ -45,6 +45,17 @@ class DriverObservationTests(unittest.TestCase):
                 Node("assistant","done","turn-1"),
                 Node("user","[BATON-WAKE:one]\nhello")])
         self.assertIsNone(ChatGPTUIDriver(p,frozenset({CID})).observe_reply(CID,"one"))
+    def test_duplicate_assistant_turn_id_cannot_verify(self):
+        p=Page([Node("assistant","earlier answer","turn-1"),
+                Node("user","[BATON-WAKE:one]\nhello"),
+                Node("assistant","new answer","turn-1")])
+        d=ChatGPTUIDriver(p,frozenset({CID}))
+        self.assertIsNone(d.observe_reply(CID,"one"))
+        with self.assertRaises(RuntimeError):
+            d.read_assistant_turn(CID,"turn-1")
+        p.nodes[0].mid="different-earlier-id"
+        self.assertEqual(d.observe_reply(CID,"one").assistant_turn_id,"turn-1")
+
     def test_exact_readback(self):
         p=Page([Node("assistant","BATON_NEXT C","turn-1")])
         self.assertEqual(ChatGPTUIDriver(p,frozenset({CID})).read_assistant_turn(CID,"turn-1"),"BATON_NEXT C")
