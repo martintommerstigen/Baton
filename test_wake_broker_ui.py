@@ -1,5 +1,6 @@
 """Offline B1 broker/UI boundary tests; no Greg, CDP, or ChatGPT writes."""
 import hashlib
+from contextlib import closing
 from pathlib import Path
 import tempfile
 import unittest
@@ -37,7 +38,7 @@ class BrokerUITests(unittest.TestCase):
                                    origin_turn_id="observed-turn-A")
 
     def state(self):
-        with self.store.connect() as db:
+        with closing(self.store.connect()) as db:
             row = db.execute("SELECT state FROM admissions WHERE conversation_id=?",
                              (CID,)).fetchone()
             return row[0] if row else None
@@ -137,16 +138,14 @@ class BrokerUITests(unittest.TestCase):
         self.assertEqual(self.state(), "uncertain")
         self.assertEqual(self.page.send.clicks, 0)
 
-    def test_forged_envelope_response_never_clicks(self):
-        def changed_digest(request):
-            request = dict(request)
-            request["payload_sha256"] = "0" * 64
-            return self.broker(request)
-        # A malicious client changing both envelopes could still admit its
-        # own digest: this test must not pretend the broker attests UI bytes.
-        with self.assertRaises(AssertionError):
-            self.assertEqual(self.gated(changed_digest).sender_id, "chat-B")
-        self.assertIsNone(self.state())
+    def test_unexpected_broker_response_never_clicks(self):
+        def wrong_state(request):
+            self.calls.append(request)
+            return {"state": "click_started_uncertain"}  # wrong for admit
+        with self.assertRaises(BrokerOutcomeUncertain):
+            self.gated(wrong_state).submit_once(CID, "msg-1", "hello")
+        self.assertEqual(self.page.send.clicks, 0)
+        self.assertEqual(len(self.calls), 1)
 
     def test_missing_broker_callback_is_rejected(self):
         with self.assertRaises(TypeError):
