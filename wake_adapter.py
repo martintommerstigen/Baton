@@ -4,6 +4,7 @@ The adapter NEVER creates a new conversation and NEVER retries a potentially
 submitted UI message. The caller supplies an authorized UI driver.
 """
 from dataclasses import dataclass
+import hashlib
 from typing import Protocol
 from wake_contract import WakeLedger
 
@@ -27,6 +28,13 @@ def wake_once(ledger: WakeLedger, driver: ExistingChatDriver,
               message_id: str, source: str, target: str, digest: str, body: str,
               source_turn_id: str | None = None) -> str:
     """One authorized attempt. A crash leaves 'submitting', never auto-retries."""
+    # The approved digest must bind the actual UI payload, not just the ledger.
+    # Validate BEFORE reserving a target or performing any UI action. Otherwise
+    # a caller can send different content while claiming a preapproved digest.
+    if (not isinstance(body, str) or not body.strip()
+            or not isinstance(digest, str)
+            or hashlib.sha256(body.encode("utf-8")).hexdigest() != digest):
+        raise ValueError("wake body does not match approved SHA-256 digest")
     ledger.request(message_id, source, target, digest, source_turn_id)
     if not ledger.begin_submission(message_id):
         return ledger.state(message_id)[1]
