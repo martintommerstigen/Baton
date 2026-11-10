@@ -17,7 +17,7 @@
     }
   ],
   "branch_count": 276,
-  "tree_indexed": 165,
+  "tree_indexed": 180,
   "content_read_in_this_inventory": 0,
   "notes": [
     "branch_date_hint is parsed from branch name, NOT verified commit date",
@@ -4258,10 +4258,24 @@
       "commit_date": null,
       "theme": "research/knut-r13-physical-division-and-revival-2026-11-06",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/research%2Fknut-r13-physical-division-and-revival-2026-11-06",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 38,
+      "relevant_paths": [
+        "GTRCM_KANONISK_GRUNNPROGRAM.md",
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/knut/r10_soft_consistency.py",
+        "experiments/knut/r11_information_causality_pr_box.py",
+        "experiments/knut/r12_predictive_quotient_factorization.py",
+        "experiments/knut/r13_physical_division_hidden_history.py",
+        "experiments/microfluctuation_mass_gravity/README.md",
+        "experiments/microfluctuation_mass_gravity/falsify_shared_density.py",
+        "experiments/microfluctuation_mass_gravity/model.py"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "research/knut-r14-compositional-admissibility-2026-11-06",
@@ -4270,10 +4284,24 @@
       "commit_date": null,
       "theme": "research/knut-r14-compositional-admissibility-2026-11-06",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/research%2Fknut-r14-compositional-admissibility-2026-11-06",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 40,
+      "relevant_paths": [
+        "GTRCM_KANONISK_GRUNNPROGRAM.md",
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/knut/r10_soft_consistency.py",
+        "experiments/knut/r11_information_causality_pr_box.py",
+        "experiments/knut/r12_predictive_quotient_factorization.py",
+        "experiments/knut/r13_physical_division_hidden_history.py",
+        "experiments/knut/r14_positive_not_completely_positive.py",
+        "experiments/microfluctuation_mass_gravity/README.md",
+        "experiments/microfluctuation_mass_gravity/falsify_shared_density.py"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "research/knut-r15-generated-repertoire-not-maximal-effects-2026-11-06",
@@ -4282,10 +4310,24 @@
       "commit_date": null,
       "theme": "research/knut-r15-generated-repertoire-not-maximal-effects-2026-11-06",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/research%2Fknut-r15-generated-repertoire-not-maximal-effects-2026-11-06",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 41,
+      "relevant_paths": [
+        "GTRCM_KANONISK_GRUNNPROGRAM.md",
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/knut/r10_soft_consistency.py",
+        "experiments/knut/r11_information_causality_pr_box.py",
+        "experiments/knut/r12_predictive_quotient_factorization.py",
+        "experiments/knut/r13_physical_division_hidden_history.py",
+        "experiments/knut/r14_positive_not_completely_positive.py",
+        "experiments/microfluctuation_mass_gravity/README.md",
+        "experiments/microfluctuation_mass_gravity/falsify_shared_density.py"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "research/knut-r16-law-selection-no-go-and-completion-2026-11-06",
@@ -4294,10 +4336,24 @@
       "commit_date": null,
       "theme": "research/knut-r16-law-selection-no-go-and-completion-2026-11-06",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/research%2Fknut-r16-law-selection-no-go-and-completion-2026-11-06",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 43,
+      "relevant_paths": [
+        "GTRCM_KANONISK_GRUNNPROGRAM.md",
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/knut/r10_soft_consistency.py",
+        "experiments/knut/r11_information_causality_pr_box.py",
+        "experiments/knut/r12_predictive_quotient_factorization.py",
+        "experiments/knut/r13_physical_division_hidden_history.py",
+        "experiments/knut/r14_positive_not_completely_positive.py",
+        "experiments/knut/r16_law_selection_no_go.py",
+        "experiments/microfluctuation_mass_gravity/README.md"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "research/knut-r17-rate-scale-no-go-2026-11-06",
@@ -4306,10 +4362,24 @@
       "commit_date": null,
       "theme": "research/knut-r17-rate-scale-no-go-2026-11-06",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/research%2Fknut-r17-rate-scale-no-go-2026-11-06",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 45,
+      "relevant_paths": [
+        "GTRCM_KANONISK_GRUNNPROGRAM.md",
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/knut/r10_soft_consistency.py",
+        "experiments/knut/r11_information_causality_pr_box.py",
+        "experiments/knut/r12_predictive_quotient_factorization.py",
+        "experiments/knut/r13_physical_division_hidden_history.py",
+        "experiments/knut/r14_positive_not_completely_positive.py",
+        "experiments/knut/r16_law_selection_no_go.py",
+        "experiments/knut/r17_rate_scale_no_go.py"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "research/neo-ai-millennium-feedback-2026-11-02",
@@ -4318,10 +4388,22 @@
       "commit_date": null,
       "theme": "research/neo-ai-millennium-feedback-2026-11-02",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/research%2Fneo-ai-millennium-feedback-2026-11-02",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 18,
+      "relevant_paths": [
+        "GTRCM_KANONISK_GRUNNPROGRAM.md",
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/microfluctuation_mass_gravity/README.md",
+        "experiments/microfluctuation_mass_gravity/falsify_shared_density.py",
+        "experiments/microfluctuation_mass_gravity/model.py",
+        "experiments/neo/verify_navier_stokes_scaling_2026.py",
+        "research/gaia/2026-11-02_NEO_KI_MILLENNIUM_GTRCM.md"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "research/neo-gpt6-history-2026-11-02",
@@ -4330,10 +4412,22 @@
       "commit_date": null,
       "theme": "research/neo-gpt6-history-2026-11-02",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/research%2Fneo-gpt6-history-2026-11-02",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 18,
+      "relevant_paths": [
+        "GTRCM_KANONISK_GRUNNPROGRAM.md",
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/microfluctuation_mass_gravity/README.md",
+        "experiments/microfluctuation_mass_gravity/falsify_shared_density.py",
+        "experiments/microfluctuation_mass_gravity/model.py",
+        "experiments/neo/moment_provenance_hierarchy.py",
+        "research/gaia/2026-11-02_NEO_GPT6_HISTORIKK_OG_EGENLAERING.md"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "research/neo-r53-memory-temporal-contact-2026-11-02",
@@ -4342,10 +4436,24 @@
       "commit_date": null,
       "theme": "research/neo-r53-memory-temporal-contact-2026-11-02",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/research%2Fneo-r53-memory-temporal-contact-2026-11-02",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 20,
+      "relevant_paths": [
+        "GTRCM_KANONISK_GRUNNPROGRAM.md",
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/microfluctuation_mass_gravity/README.md",
+        "experiments/microfluctuation_mass_gravity/falsify_shared_density.py",
+        "experiments/microfluctuation_mass_gravity/model.py",
+        "experiments/neo/r53_record_causal_contact.py",
+        "experiments/neo/r54_action_does_not_select_microevent.py",
+        "experiments/neo/results/r53_record_contact_checked.json",
+        "research/gaia/2026-11-02_NEO_R53_HELHETLIG_FYSIKKFORSOEK.md"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "research/neo-ruben-cross-instance-2026-11-02",
@@ -4354,10 +4462,21 @@
       "commit_date": null,
       "theme": "research/neo-ruben-cross-instance-2026-11-02",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/research%2Fneo-ruben-cross-instance-2026-11-02",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 17,
+      "relevant_paths": [
+        "GTRCM_KANONISK_GRUNNPROGRAM.md",
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/microfluctuation_mass_gravity/README.md",
+        "experiments/microfluctuation_mass_gravity/falsify_shared_density.py",
+        "experiments/microfluctuation_mass_gravity/model.py",
+        "research/gaia/2026-11-02_NEO_RUBEN_CROSS_INSTANCE_GTRCM.md"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "research/neo-soelve-complete-audit-2026-11-02",
@@ -4366,10 +4485,22 @@
       "commit_date": null,
       "theme": "research/neo-soelve-complete-audit-2026-11-02",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/research%2Fneo-soelve-complete-audit-2026-11-02",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 18,
+      "relevant_paths": [
+        "GTRCM_KANONISK_GRUNNPROGRAM.md",
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/microfluctuation_mass_gravity/README.md",
+        "experiments/microfluctuation_mass_gravity/falsify_shared_density.py",
+        "experiments/microfluctuation_mass_gravity/model.py",
+        "experiments/neo/independent_soelve_r50_r52.py",
+        "research/gaia/2026-11-02_NEO_SOELVE_COMPLETE_AUDIT.md"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "research/newborn-learning-dna-2026-11-07",
@@ -4378,10 +4509,21 @@
       "commit_date": null,
       "theme": "research/newborn-learning-dna-2026-11-07",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/research%2Fnewborn-learning-dna-2026-11-07",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 17,
+      "relevant_paths": [
+        "GTRCM_KANONISK_GRUNNPROGRAM.md",
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/microfluctuation_mass_gravity/README.md",
+        "experiments/microfluctuation_mass_gravity/falsify_shared_density.py",
+        "experiments/microfluctuation_mass_gravity/model.py",
+        "research/newborn/LEARNING_DNA_v0.1.md"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "research/operative-congruence-independent-audit-2026-10-25",
@@ -4390,10 +4532,21 @@
       "commit_date": null,
       "theme": "research/operative-congruence-independent-audit-2026-10-25",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/research%2Foperative-congruence-independent-audit-2026-10-25",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 17,
+      "relevant_paths": [
+        "GTRCM_KANONISK_GRUNNPROGRAM.md",
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/gtrcm_kongruens_uavhengig_kontroll.py",
+        "experiments/microfluctuation_mass_gravity/README.md",
+        "experiments/microfluctuation_mass_gravity/falsify_shared_density.py",
+        "experiments/microfluctuation_mass_gravity/model.py"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "research/relata-safe-probes-2026-10-21",
@@ -4402,10 +4555,24 @@
       "commit_date": null,
       "theme": "research/relata-safe-probes-2026-10-21",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/research%2Frelata-safe-probes-2026-10-21",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 87,
+      "relevant_paths": [
+        "GTRCM_HELHET/README.md",
+        "README.md",
+        "experiments/relata_safe_probes/active_witness_depletion.py",
+        "experiments/relata_safe_probes/cultural_provenance.py",
+        "experiments/relata_safe_probes/emergent_capacity.py",
+        "experiments/relata_safe_probes/endogenous_gate.py",
+        "experiments/relata_safe_probes/local_matching_boundary.py",
+        "experiments/relata_safe_probes/mechanical_boundary.py",
+        "experiments/relata_safe_probes/regime_bridge.py",
+        "experiments/relata_safe_probes/relational_access_synthesis.py",
+        "experiments/relata_safe_probes/relational_witness.py",
+        "experiments/relata_safe_probes/reproduce.py"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "research/riss-r1-kime-gaia-participation-2026-11-05",
@@ -4414,10 +4581,24 @@
       "commit_date": null,
       "theme": "research/riss-r1-kime-gaia-participation-2026-11-05",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/research%2Friss-r1-kime-gaia-participation-2026-11-05",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 155,
+      "relevant_paths": [
+        "GTRCM_KANONISK_GRUNNPROGRAM.md",
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/kime/active_inquiry_version_space_core.py",
+        "experiments/kime/active_probe_breaks_macro_identity.py",
+        "experiments/kime/active_reset_optimal_probe_bound.py",
+        "experiments/kime/all_proper_parts_independent_matrix.py",
+        "experiments/kime/all_proper_parts_same_two_wholes.py",
+        "experiments/kime/analytic_hamiltonian_passive_nonidentifiability.py",
+        "experiments/kime/anonymous_sensor_repertoire.py"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "research/riss-r2-sensor-network-boundaries-2026-11-05",
@@ -4426,10 +4607,24 @@
       "commit_date": null,
       "theme": "research/riss-r2-sensor-network-boundaries-2026-11-05",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/research%2Friss-r2-sensor-network-boundaries-2026-11-05",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 156,
+      "relevant_paths": [
+        "GTRCM_KANONISK_GRUNNPROGRAM.md",
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/kime/active_inquiry_version_space_core.py",
+        "experiments/kime/active_probe_breaks_macro_identity.py",
+        "experiments/kime/active_reset_optimal_probe_bound.py",
+        "experiments/kime/all_proper_parts_independent_matrix.py",
+        "experiments/kime/all_proper_parts_same_two_wholes.py",
+        "experiments/kime/analytic_hamiltonian_passive_nonidentifiability.py",
+        "experiments/kime/anonymous_sensor_repertoire.py"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "research/riss-r3-impact-boundaries-2026-11-05",
