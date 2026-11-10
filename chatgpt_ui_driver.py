@@ -80,13 +80,21 @@ class ChatGPTUIDriver:
             raise RuntimeError("Composer missing or ambiguous")
         if editor.inner_text().strip():
             raise RuntimeError("Composer contains a draft")
-        editor.fill(marker + "\n" + body)
+        # Bind the approved payload to what the composer actually contains.
+        # A UI transformation, extension, or concurrent edit after fill must
+        # not turn an approved digest into a different submitted message.
+        payload = marker + "\n" + body
+        editor.fill(payload)
         self._check(conversation_id)
         send = self.page.locator('[data-testid="send-button"]')
         if send.count() != 1 or not send.is_enabled():
             raise RuntimeError("Send button missing or disabled; draft left unsent")
         if PAUSE_FILE.exists():
             raise RuntimeError('Greg-local UI writes paused; draft left unsent')
+        # Read back *after* all pre-click checks, immediately before clicking.
+        # Fail closed if the live UI normalizes line breaks or changes the text.
+        if editor.inner_text() != payload:
+            raise RuntimeError("Composer content differs from approved wake payload; draft left unsent")
         send.click()
         self._check(conversation_id)
 
