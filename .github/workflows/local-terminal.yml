@@ -8,7 +8,9 @@ on:
       - test_baton_local_terminal.py
       - test_preflight_greg.py
       - baton_loopback_http.py
-      - test_baton_loopback_http.py
+      - baton_mcp.py
+      - test_baton_mcp.py
+      - test_baton_loopback_http.py test_baton_mcp.py
       - desktop/preflight_greg.py
       - install_evening.sh
       - .github/workflows/local-terminal.yml
