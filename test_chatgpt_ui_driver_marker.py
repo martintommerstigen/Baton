@@ -57,7 +57,8 @@ class MarkerObservationTests(unittest.TestCase):
 
     def test_exact_first_line_marker_is_required(self):
         self.assertTrue(is_marked_user_turn(self.marker + "\nhello", self.marker))
-        self.assertTrue(is_marked_user_turn(self.marker + "\r\nhello", self.marker))
+        # The sender uses an exact LF separator; CRLF is not the same wire text.
+        self.assertFalse(is_marked_user_turn(self.marker + "\r\nhello", self.marker))
         for text in (
             "Here is a marker " + self.marker + "\nhello",
             "quoted: " + self.marker,
