@@ -1,6 +1,6 @@
 # Ronja R13 — B5/B2 source-broker startup rollback and evidence boundary (2026-11-11)
 
-Status: **implemented; hosted CI pending at initial commit**, not Greg-live. This is a bounded lifecycle security change in `remote_security/source_broker.py` plus two negative tests; no changes to B1 UI, browser Send, launcher, Core/Skin, or GTRCM canon. `PAUSE_UI_WRITES` and no-blind-retry remain unchanged. No external shell, TCP listener, credential export, or general file read.
+Status: **tested-simulated** on hosted Linux, not Greg-live. [R13 code/test CI 42925416863](https://github.com/martintommerstigen/Baton/actions/runs/42925416863) **SUCCESS**, 208 tests total, **205 PASS / 3 expected SKIP** at code/test commit [0ac489f](https://github.com/martintommerstigen/Baton/commit/0ac489fb37ac100c5f6bc901bd067e1618caf82a). This is a bounded lifecycle security change in `remote_security/source_broker.py` plus two negative tests; no changes to B1 UI, browser Send, launcher, Core/Skin, or GTRCM canon. `PAUSE_UI_WRITES` and no-blind-retry remain unchanged. No external shell, TCP listener, credential export, or general file read.
 
 ## History gate / measured coverage
 
@@ -17,7 +17,7 @@ Status: **implemented; hosted CI pending at initial commit**, not Greg-live. Thi
 **Falsifiers / negative tests:**
 1. Inject a failure in `chmod` after bind. The newly created socket pathname must be gone; a fresh start must succeed without deleting any unrelated file.
 2. Replace the bound socket path with a regular file immediately before the injected failure. Cleanup must not delete the replacement; restart must refuse the existing path.
-3. Existing stale-endpoint, forged UID, duplicate frame, slow-drip, restart, path traversal and no-TCP tests must remain green.
+3. Inject a failure in `listen` after successful chmod. The newly bound socket must be removed and a subsequent start must succeed.\n4. Existing stale-endpoint, forged UID, duplicate frame, slow-drip, restart, path traversal and no-TCP tests must remain green.
 
 **Evidence limit:** these are isolated Linux runner tests. No Greg installation, local source capture, independent physical measurement, Mac/iPhone build or verified A→B→C is claimed. SHA/HMAC and a local operation counter cannot authenticate the actual ChatGPT DOM or prove that an assistant authored a turn.
 
@@ -27,4 +27,4 @@ A separate B5 broker **cannot independently attest that `begin_click` actually c
 
 ## Next work
 
-When hosted CI completes, record the exact run and outcome. Independently test a failed `listen` startup and an adversarial socket-path swap; then verify an actual pinned-source capture → persisted receipt → broker restart → audit under two real distinct UIDs on Greg **only when authorized access exists**. Inspect `ss -ltn` for unexpected network listeners. RustWorld Zero and 525 still need real launch/build tests, not synthetic claims.
+The post-chmod `listen` failure and replaced-path tests are now covered by hosted CI. Next, independently test an adversarial socket-parent swap; then verify an actual pinned-source capture → persisted receipt → broker restart → audit under two real distinct UIDs on Greg **only when authorized access exists**. Inspect `ss -ltn` for unexpected network listeners. RustWorld Zero and 525 still need real launch/build tests, not synthetic claims.
