@@ -12,7 +12,6 @@ import sys
 COMMANDS = {
     "identity": ("/usr/bin/id",),
     "system": ("/usr/bin/uname", "-a"),
-    "git-status": ("/usr/bin/git", "status", "--short", "--branch"),
     "git-revision": ("/usr/bin/git", "rev-parse", "HEAD"),
     "python-version": (sys.executable, "--version"),
 }
