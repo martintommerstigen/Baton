@@ -77,6 +77,8 @@ def _open_dir(parent_fd, name):
 
 def _read_pinned(root, entry):
     """Walk every directory via dirfd/O_NOFOLLOW; never trust resolved paths."""
+    if os.geteuid() == 0:
+        raise JobRejected("root source inspector forbidden")
     if (os.name != "posix" or any(not getattr(os, flag, 0) for flag in
             ("O_NOFOLLOW", "O_DIRECTORY", "O_NONBLOCK", "O_CLOEXEC"))
             or os.open not in getattr(os, "supports_dir_fd", ())):
