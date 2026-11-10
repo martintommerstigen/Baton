@@ -4,6 +4,7 @@ from pathlib import Path
 import socket
 import tempfile
 import threading
+import time
 import unittest
 from unittest.mock import patch
 
@@ -136,6 +137,39 @@ class BrokerPeerTests(unittest.TestCase):
         self.serve()
         with self.assertRaises(ValueError):
             query_verified_broker(self.path, 0, self.request)
+
+    def test_slow_trickle_reply_has_absolute_deadline(self):
+        server = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
+        server.bind(str(self.path))
+        os.chmod(self.path, 0o600)
+        server.listen(1)
+        def trickle():
+            try:
+                server.settimeout(2)
+                conn, _ = server.accept()
+                with conn:
+                    conn.settimeout(1)
+                    conn.recv(8193)
+                    for _ in range(18):
+                        try:
+                            conn.sendall(b" ")
+                        except OSError:
+                            break
+                        time.sleep(0.05)
+            except OSError:
+                pass
+            finally:
+                server.close()
+        worker = threading.Thread(target=trickle, daemon=True)
+        worker.start()
+        start = time.monotonic()
+        with self.assertRaises(BrokerUncertain):
+            query_verified_broker(self.path, self.uid, self.request,
+                                  timeout=0.20, require_distinct_uid=False)
+        self.assertLess(time.monotonic() - start, 0.60,
+                        "slow reply must not reset total timeout")
+        worker.join(2)
+        self.assertFalse(worker.is_alive())
 
     def test_unbounded_timeout_rejected(self):
         self.serve()

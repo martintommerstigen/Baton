@@ -15,8 +15,12 @@ import signal
 import socket
 import stat
 import struct
+import time
 
 MAX_REQUEST = 4096
+# A per-recv timeout alone permits an authorized slow sender to monopolize
+# this single-threaded broker indefinitely by sending one byte at a time.
+READ_DEADLINE_SECONDS = 3.0
 ID = re.compile(r"[A-Za-z0-9_-]{8,64}\Z")
 
 
@@ -131,7 +135,12 @@ class SourceBroker:
         if self._peer_uid(conn) not in self.allowed_uids:
             return  # reject BEFORE reading any request bytes
         raw = bytearray()
+        deadline = time.monotonic() + READ_DEADLINE_SECONDS
         while len(raw) <= MAX_REQUEST:
+            remaining = deadline - time.monotonic()
+            if remaining <= 0:
+                raise Rejected("absolute request deadline exceeded")
+            conn.settimeout(remaining)
             part = conn.recv(min(1024, MAX_REQUEST + 1 - len(raw)))
             if not part:
                 break

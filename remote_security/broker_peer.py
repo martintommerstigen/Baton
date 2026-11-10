@@ -13,6 +13,7 @@ from pathlib import Path
 import socket
 import stat
 import struct
+import time
 
 MAX_FRAME = 8192
 
@@ -104,7 +105,14 @@ def query_verified_broker(socket_path, expected_uid, request, *, timeout=3.0,
             conn.sendall(raw)
             conn.shutdown(socket.SHUT_WR)
             response = bytearray()
+            # A malicious or broken broker may trickle a byte before each
+            # socket timeout. Bound the *entire reply*, not each recv call.
+            reply_deadline = time.monotonic() + timeout
             while True:
+                remaining = reply_deadline - time.monotonic()
+                if remaining <= 0:
+                    raise BrokerUncertain('absolute broker reply deadline exceeded; never retry')
+                conn.settimeout(remaining)
                 part = conn.recv(min(4096, MAX_FRAME + 1 - len(response)))
                 if not part:
                     break
