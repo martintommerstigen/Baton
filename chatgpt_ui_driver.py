@@ -7,6 +7,7 @@ private APIs. DOM selectors must be verified against the live interface.
 from dataclasses import dataclass
 from pathlib import Path
 import re
+import hashlib
 from urllib.parse import urlparse
 from wake_adapter import Observation
 
@@ -33,7 +34,7 @@ def marker_for(message_id):
     return f"[BATON-WAKE:{message_id}]"
 
 
-def is_marked_user_turn(text, marker):
+def is_marked_user_turn(text, marker, expected_digest=None):
     """Recognize only the exact marker on the first line of a user turn.
 
     An unrelated message quoting a marker must not be mistaken for delivery.
@@ -42,7 +43,16 @@ def is_marked_user_turn(text, marker):
     if not isinstance(text, str):
         return False
     lines = text.splitlines()
-    return len(lines) >= 2 and lines[0] == marker and bool("\n".join(lines[1:]).strip())
+    if len(lines) < 2 or lines[0] != marker:
+        return False
+    body = "\n".join(lines[1:])
+    if not body.strip():
+        return False
+    # When verifying a durable receipt, require the body originally approved
+    # by the sender. A reused marker with unrelated content is not delivery.
+    if expected_digest is not None:
+        return hashlib.sha256(body.encode("utf-8")).hexdigest() == expected_digest
+    return True
 
 
 @dataclass
@@ -78,7 +88,7 @@ class ChatGPTUIDriver:
         send.click()
         self._check(conversation_id)
 
-    def observe_reply(self, conversation_id, message_id):
+    def observe_reply(self, conversation_id, message_id, expected_digest=None):
         self._check(conversation_id)
         marker = marker_for(message_id)
         turns = self.page.locator("[data-message-author-role]")
@@ -86,7 +96,7 @@ class ChatGPTUIDriver:
         for i in range(turns.count()):
             turn = turns.nth(i)
             if (turn.get_attribute("data-message-author-role") == "user"
-                    and is_marked_user_turn(turn.inner_text(), marker)):
+                    and is_marked_user_turn(turn.inner_text(), marker, expected_digest)):
                 markers.append(i)
         if len(markers) != 1:
             return None
