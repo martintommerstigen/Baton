@@ -33,8 +33,10 @@ class WakeTests(unittest.TestCase):
     def test_observed_turn_cannot_verify_two_distinct_wakes(self):
         for mid in ('one','two'):
             self.w.request(mid,'A','B','digest-'+mid)
-            self.w.begin_submission(mid)
+        self.assertTrue(self.w.begin_submission('one'))
         self.assertTrue(self.w.verify('one','B','same-assistant-turn'))
+        # The next legitimate submission still cannot reuse the old receipt.
+        self.assertTrue(self.w.begin_submission('two'))
         with self.assertRaisesRegex(ValueError,'assistant turn already verifies'):
             self.w.verify('two','B','same-assistant-turn')
         self.assertEqual(self.w.state('two')[1],'submitting')
@@ -46,7 +48,10 @@ class WakeTests(unittest.TestCase):
     def test_concurrent_turn_claims_are_serialized(self):
         for mid in ('one','two'):
             self.w.request(mid,'A','B','digest-'+mid)
-            self.w.begin_submission(mid)
+        # Simulate a ledger written before per-target exclusion was added.
+        # Verification must remain safe even for legacy concurrent attempts.
+        with self.w.db() as db:
+            db.execute("UPDATE wakes SET state='submitting' WHERE id IN ('one','two')")
         def claim(mid):
             try:
                 return self.w.verify(mid,'B','same-turn')
