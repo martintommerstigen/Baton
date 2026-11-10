@@ -7,7 +7,6 @@ start a network service, connect to ChatGPT, or claim delivery verification.
 import argparse
 import os
 from pathlib import Path
-import shlex
 import sys
 
 DESKTOP_TEMPLATE = """[Desktop Entry]
@@ -41,8 +40,12 @@ def install(client_path, destination=None):
     if destination.is_symlink():
         raise ValueError("Refusing symlink destination")
     destination.parent.mkdir(parents=True, exist_ok=True)
+    if destination.exists() and not destination.is_file():
+        raise ValueError("Destination is not a regular file")
     data = desktop_entry(sys.executable, client_path)
     temp = destination.with_name(destination.name + ".tmp-" + str(os.getpid()))
+    if temp.exists() or temp.is_symlink():
+        raise ValueError("Temporary destination already exists")
     try:
         with temp.open("x", encoding="utf-8") as f:
             f.write(data)
