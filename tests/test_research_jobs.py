@@ -5,6 +5,9 @@ import hmac
 import json
 from pathlib import Path
 import sqlite3
+import subprocess
+import sys
+import os
 import tempfile
 import threading
 import unittest
@@ -170,6 +173,26 @@ class ResearchJobsTests(unittest.TestCase):
         obj = ResearchJobs(self.root / "other.db", self.key, {"GTRCM": ["sha256-echo"]})
         req = self.request(project="GTRCM")
         self.assertEqual(obj.run_once(req, b"hello")["receipt"]["project"], "GTRCM")
+
+    def test_actual_process_exit_after_reservation_preserves_uncertainty(self):
+        script = """
+import hashlib, os, sys
+from remote_security import research_jobs as r
+jobs = r.ResearchJobs(sys.argv[1], b'R'*32, {'GTRCM_TEST':['sha256-echo']})
+r._run_builtin = lambda command, payload: os._exit(77)
+data = b'hello'
+jobs.run_once({'project':'GTRCM_TEST','job_id':'process01','command':'sha256-echo',
+               'input_sha256':hashlib.sha256(data).hexdigest()}, data)
+"""
+        env = dict(os.environ, PYTHONPATH=str(Path(__file__).resolve().parents[1]))
+        child = subprocess.run([sys.executable, '-c', script, str(self.db)],
+                               env=env, capture_output=True, timeout=5)
+        self.assertEqual(child.returncode, 77, child.stderr)
+        auditor = ResearchJobs(self.db, self.key, self.allowed, audit_only=True)
+        self.assertEqual(auditor.audit('GTRCM_TEST', 'process01'),
+                         {'state': 'started_uncertain_no_retry'})
+        with self.assertRaises(JobRejected):
+            self.jobs.run_once(self.request(job_id='process01'), b'hello')
 
     def test_audit_only_does_not_create_missing_database(self):
         missing = self.root / "absent.db"
