@@ -26,8 +26,10 @@ def execute(operation, workspace):
     root = Path(workspace).resolve(strict=True)
     if not root.is_dir():
         raise ValueError("workspace must be a directory")
-    if operation.startswith("git-") and not (root / ".git").exists():
-        raise ValueError("not a git checkout")
+    if operation.startswith("git-"):
+        probe = subprocess.run(("/usr/bin/git", "rev-parse", "--is-inside-work-tree"), cwd=root, stdin=subprocess.DEVNULL, capture_output=True, timeout=5, env={"PATH": "/usr/bin:/bin", "LANG": "C", "HOME": str(Path.home())})
+        if probe.returncode != 0 or probe.stdout.strip() != b"true":
+            raise ValueError("not a git checkout")
     command = COMMANDS[operation]
     executable = Path(command[0])
     if not executable.is_file():
