@@ -6,6 +6,8 @@ private APIs. DOM selectors must be verified against the live interface.
 """
 from dataclasses import dataclass
 from pathlib import Path
+import os
+import stat
 import re
 import hashlib
 from urllib.parse import urlparse
@@ -14,6 +16,31 @@ from wake_adapter import Observation, PreexistingWakeMarker, PreSubmissionReject
 CHAT_ID = re.compile(r"^[0-9a-f]{8}(?:-[0-9a-f]{4}){3}-[0-9a-f]{12}$", re.I)
 MARKER_ID = re.compile(r"^[A-Za-z0-9_-]{1,100}$")
 PAUSE_FILE = Path('/home/olliver/GTRCM-newborn-bootstrap/transport/PAUSE_UI_WRITES')
+
+
+def pause_active(path):
+    """Fail closed on missing/symlinked ancestors or any pause marker.
+
+    This is a last-moment advisory guard, not an atomic authorization lease.
+    The pause writer must cooperate in a shared lock protocol to close TOCTOU.
+    """
+    path = Path(path)
+    if not path.is_absolute() or '..' in path.parts:
+        return True
+    for parent in reversed(path.parents):
+        try:
+            mode = os.lstat(parent).st_mode
+        except OSError:
+            return True
+        if not stat.S_ISDIR(mode):
+            return True
+    try:
+        os.lstat(path)
+    except FileNotFoundError:
+        return False
+    except OSError:
+        return True
+    return True
 
 
 def conversation_id(url):
@@ -89,7 +116,7 @@ class ChatGPTUIDriver:
         send = self.page.locator('[data-testid="send-button"]')
         if send.count() != 1 or not send.is_enabled():
             raise PreSubmissionRejected("Send button missing or disabled; draft left unsent")
-        if PAUSE_FILE.exists():
+        if pause_active(PAUSE_FILE):
             raise PreSubmissionRejected('Greg-local UI writes paused; draft left unsent')
         # Read back *after* all pre-click checks, immediately before clicking.
         # Fail closed if the live UI normalizes line breaks or changes the text.
