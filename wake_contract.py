@@ -31,6 +31,14 @@ class WakeLedger:
             db.execute('BEGIN IMMEDIATE')
             db.execute("INSERT OR IGNORE INTO wakes (id,source,target,digest,state,observed_turn,updated,source_turn) VALUES (?,?,?,?,?,?,?,?)",
                        (id,source,target,digest,"requested",None,int(time.time()),source_turn))
+            # An exact assistant turn can authorize only one wake. This is a
+            # provenance constraint, not proof of cryptographic authorship.
+            if source_turn is not None:
+                reused=db.execute(
+                    "SELECT id FROM wakes WHERE source=? AND source_turn=? AND id<>?",
+                    (source,source_turn,id)).fetchone()
+                if reused:
+                    raise ValueError("source assistant turn already used for another wake")
             row=db.execute("SELECT source,target,digest,state,source_turn FROM wakes WHERE id=?",(id,)).fetchone()
             if row[:3] != (source,target,digest) or row[4]!=source_turn:
                 raise ValueError("conflicting request ID or origin turn")
@@ -65,6 +73,13 @@ class WakeLedger:
                 return False
             if row[1] not in ("submitting","uncertain"):
                 raise ValueError("no submission initiated")
+            # A single observed assistant turn cannot acknowledge two distinct
+            # wake messages to the same existing conversation.
+            reused=db.execute(
+                "SELECT id FROM wakes WHERE target=? AND observed_turn=? AND state='verified' AND id<>?",
+                (observed_chat,observed_turn,id)).fetchone()
+            if reused:
+                raise ValueError("assistant turn already verifies another wake")
             db.execute("UPDATE wakes SET state='verified',observed_turn=?,updated=? WHERE id=?",
                        (observed_turn,int(time.time()),id))
             return True
