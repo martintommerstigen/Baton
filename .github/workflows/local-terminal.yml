@@ -7,6 +7,8 @@ on:
       - baton_local_terminal.py
       - test_baton_local_terminal.py
       - test_preflight_greg.py
+      - baton_loopback_http.py
+      - test_baton_loopback_http.py
       - desktop/preflight_greg.py
       - install_evening.sh
       - .github/workflows/local-terminal.yml
@@ -26,7 +28,7 @@ jobs:
       - uses: actions/checkout@v4
         with:
           persist-credentials: false
-      - run: python3 -m unittest -v test_baton_local_terminal.py test_preflight_greg.py
+      - run: python3 -m unittest -v test_baton_local_terminal.py test_preflight_greg.py test_baton_loopback_http.py
       - run: bash -n install_evening.sh
       - run: python3 baton_local_terminal.py identity --workspace .
       - run: python3 baton_local_terminal.py git-revision --workspace .
