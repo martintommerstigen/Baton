@@ -105,7 +105,13 @@ def attach_model_bridge(layout, view, page, parent):
                 if not success:
                     report("ChatGPT-sendeknappen var ikke klar.")
                 on_complete(success)
-            page.runJavaScript(send_click_script(),clicked)
+            def click_once():
+                if active() is None:
+                    on_complete(False)
+                    return
+                page.runJavaScript(send_click_script(),clicked)
+            # The hosted composer enables Send asynchronously after input.
+            QTimer.singleShot(350,click_once)
         page.runJavaScript(script,prepared)
 
     def begin():
