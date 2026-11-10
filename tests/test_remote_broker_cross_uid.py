@@ -54,6 +54,9 @@ class RealUIDBrokerTest(unittest.TestCase):
                                             env=env,capture_output=True,text=True,timeout=5)
                     self.assertNotEqual(result.returncode,0)
                     self.assertIn('UntrustedBroker',result.stderr)
+                    fake.settimeout(0.2)
+                    with self.assertRaises(socket.timeout):
+                        fake.accept()  # rejected before even connecting to the impostor
                 finally:
                     fake.close()
             finally:
