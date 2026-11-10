@@ -99,6 +99,18 @@ class CaptureBundleStoreTests(unittest.TestCase):
             save_verified_capture(self.jobs, self.bundle, self.artifact)
         self.assertFalse(self.artifact.exists())
 
+    def test_fsync_failure_is_uncertain_and_never_overwritten(self):
+        with patch("remote_security.capture_bundle_store.os.fsync",
+                   side_effect=OSError("injected fsync failure")):
+            with self.assertRaises(OSError):
+                save_verified_capture(self.jobs, self.bundle, self.artifact)
+        # File may exist, but failed fsync is not durable-success evidence.
+        self.assertTrue(self.artifact.exists())
+        with self.assertRaises(FileExistsError):
+            save_verified_capture(self.jobs, self.bundle, self.artifact)
+        self.assertEqual(self.jobs.audit("GTRCM", "bundle001")["state"],
+                         "completed_local_only")
+
     def test_missing_artifact_is_not_proof_of_no_measurement(self):
         with self.assertRaises(FileNotFoundError):
             load_verified_capture(self.jobs, self.artifact)
