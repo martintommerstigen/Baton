@@ -27,6 +27,14 @@ Only after reviewing policy and authorizing a receive-only local listener:
 
     python3 -m remote_security.http_ingress --database "$HOME/.local/state/baton-remote/receipts.sqlite" --token-file "$HOME/.config/baton-remote/token" --sender-key-file "sender000=$HOME/.config/baton-remote/sender.key" --target target000 --port 8788
 
+To exercise the one-shot client on the same authorized host, prepare an owner-only payload file and a stable message ID. Do not regenerate an ID after a timeout:
+
+    printf 'harmless test marker' > "$HOME/.config/baton-remote/payload.txt"
+    chmod 600 "$HOME/.config/baton-remote/payload.txt"
+    python3 -m remote_security.http_client --sender sender000 --target target000 --message-id testmessage0001 --token-file "$HOME/.config/baton-remote/token" --sender-key-file "$HOME/.config/baton-remote/sender.key" --payload-file "$HOME/.config/baton-remote/payload.txt"
+
+The client prints the message ID before attempting the request. If the response is uncertain, inspect the local SQLite receipt and payload before any manual retry; no automatic retry occurs. This tests receive-only transport, not ChatGPT UI wake.
+
 Replace sender000/target000 with explicitly allowlisted identifiers. Do not expose port 8788 to a LAN/WAN; only loopback. For remote use, independently authenticated SSH loopback forwarding may be used after review, with separately provisioned token/key material on the authorized sender. Never place credentials in GitHub, CLI arguments, issues or chat. This is NOT an unattended service installation, and no live Greg reachability has been tested. Key rotation, revocation, process supervision, SSH policy and MCP integration remain unimplemented.
 
 ## Security limits and falsifiers
