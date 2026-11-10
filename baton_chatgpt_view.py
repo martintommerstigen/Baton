@@ -69,6 +69,26 @@ def main():
         copy_button = QPushButton("Copy wake message (send manually in embedded ChatGPT)")
         copy_button.setEnabled(False)
         layout.addWidget(copy_button)
+        send_button = QPushButton("Send wake to this conversation")
+        send_button.setEnabled(False)
+        layout.addWidget(send_button)
+        from baton_embedded_send import prepare_send_script, send_click_script, may_send
+        view.urlChanged.connect(lambda url: send_button.setEnabled(may_send(url.toString(), args.chat_id)))
+        def send_message():
+            if not may_send(view.url().toString(), args.chat_id):
+                return
+            send_button.setEnabled(False)
+            def prepared(result):
+                if not isinstance(result, dict) or not result.get("ok"):
+                    send_button.setText("Composer unavailable — copy manually")
+                    return
+                if not may_send(view.url().toString(), args.chat_id):
+                    return
+                def clicked(result):
+                    send_button.setText("Send clicked — verify in chat" if isinstance(result,dict) and result.get("ok") else "Send unavailable")
+                page.runJavaScript(send_click_script(), clicked)
+            page.runJavaScript(prepare_send_script(args.message), prepared)
+        send_button.clicked.connect(send_message)
         view.urlChanged.connect(lambda url: copy_button.setEnabled(
             is_chatgpt_conversation_url(url.toString(), args.chat_id)))
         def copy_message():
