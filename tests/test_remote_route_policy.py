@@ -86,6 +86,11 @@ class RoutePolicyTests(unittest.TestCase):
                 Gate(self.db, self.keys, self.keys, self.targets, allowed_routes=routes)
             self.assertFalse(Path(self.db).exists())
 
+    def test_multi_sender_multi_target_without_routes_fails_closed(self):
+        with self.assertRaisesRegex(Rejected, 'explicit route policy required'):
+            Gate(self.db, self.keys, self.keys, self.targets)
+        self.assertFalse(Path(self.db).exists())
+
     def test_http_cli_refuses_missing_route_before_opening_keys(self):
         with self.assertRaises(SystemExit) as ctx:
             main(['--database', self.db, '--token-file', '/does/not/exist',
