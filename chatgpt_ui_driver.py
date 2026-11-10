@@ -175,7 +175,10 @@ class ChatGPTUIDriver:
                and turns.nth(j).get_attribute("data-message-id") == turn_id
                for j in range(turns.count())) != 1:
             return None
-        return Observation(conversation_id, turn_id)
+        # A DOM turn ID alone is not an immutable content receipt.
+        return Observation(conversation_id, turn_id,
+                           hashlib.sha256(reply.inner_text().encode("utf-8")).hexdigest(),
+                           self.page.url)
 
     def is_generating(self, conversation_id):
         self._check(conversation_id)
