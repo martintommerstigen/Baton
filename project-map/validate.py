@@ -25,6 +25,16 @@ def validate(data):
         for dep in byid[id]["dependencies"]: visit(dep)
         visiting.remove(id);visited.add(id)
     for id in ids: visit(id)
+    automation_path=ROOT/'project-map'/'automations.json'
+    if automation_path.exists():
+        mapping=json.loads(automation_path.read_text())
+        assert mapping['schema']=='gtrcm-automation-map/v1'
+        aids=[a['id'] for a in mapping['automations']]
+        assert len(aids)==len(set(aids))
+        assert all(tid in ids for a in mapping['automations'] for tid in a['tasks'])
+        assert all(tid in ids for tid in mapping['unassigned'])
+        assigned={tid for a in mapping['automations'] for tid in a['tasks']}
+        assert not (set(mapping['unassigned']) & assigned)
     return len(tasks)
 
 if __name__=="__main__":
