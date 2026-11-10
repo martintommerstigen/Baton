@@ -9,6 +9,7 @@ from __future__ import annotations
 import argparse
 from datetime import datetime, timezone
 from pathlib import Path
+from urllib.parse import quote
 import hashlib
 import hmac
 import json
@@ -98,7 +99,7 @@ def _run_builtin(command, payload):
 
 
 class ResearchJobs:
-    def __init__(self, database, receipt_key, allowlist, clock=None):
+    def __init__(self, database, receipt_key, allowlist, clock=None, audit_only=False):
         if type(receipt_key) is not bytes or len(receipt_key) < 32:
             raise JobRejected("private receipt key must contain at least 32 bytes")
         if type(allowlist) is not dict or not allowlist:
@@ -117,15 +118,17 @@ class ResearchJobs:
         self.database = str(database)
         self.key = receipt_key
         self.clock = clock or (lambda: datetime.now(timezone.utc))
-        db = connect_private(self.database)
-        try:
-            db.execute("""CREATE TABLE IF NOT EXISTS research_jobs (
-                project TEXT NOT NULL, job_id TEXT NOT NULL, command TEXT NOT NULL,
-                input_sha TEXT NOT NULL, state TEXT NOT NULL,
-                receipt BLOB, output BLOB, mac TEXT,
-                PRIMARY KEY(project, job_id))""")
-        finally:
-            db.close()
+        self.audit_only = audit_only
+        if not audit_only:
+            db = connect_private(self.database)
+            try:
+                db.execute("""CREATE TABLE IF NOT EXISTS research_jobs (
+                    project TEXT NOT NULL, job_id TEXT NOT NULL, command TEXT NOT NULL,
+                    input_sha TEXT NOT NULL, state TEXT NOT NULL,
+                    receipt BLOB, output BLOB, mac TEXT,
+                    PRIMARY KEY(project, job_id))""")
+            finally:
+                db.close()
 
     def _stamp(self):
         value = self.clock()
@@ -134,6 +137,8 @@ class ResearchJobs:
         return value.astimezone(timezone.utc).isoformat(timespec="microseconds")
 
     def run_once(self, request, payload):
+        if self.audit_only:
+            raise JobRejected("audit-only instance cannot execute")
         if type(request) is not dict or set(request) != {"project", "job_id", "command", "input_sha256"}:
             raise JobRejected("exact request schema required")
         project, job_id, command, digest = (request[k] for k in
@@ -204,7 +209,7 @@ class ResearchJobs:
     def audit(self, project, job_id):
         if not _valid_project(project) or not _valid_id(job_id):
             raise JobRejected("invalid audit identifiers")
-        db = connect_private(self.database)
+        db = _connect_readonly(self.database)
         try:
             row = db.execute("SELECT state,receipt,output,mac,command,input_sha FROM research_jobs WHERE project=? AND job_id=?",
                              (project, job_id)).fetchone()
@@ -234,6 +239,24 @@ class ResearchJobs:
                 or canonical(receipt) != receipt_bytes or canonical(output) != output_bytes):
             raise UntrustedReceipt("stored output or policy mismatch")
         return {"state": "completed_local_only", "receipt": receipt, "mac": mac, "output": output}
+
+
+def _connect_readonly(path):
+    """Never create a database or SQLite journal during receipt reconciliation."""
+    p = _validate_path(path)
+    fd = os.open(p, os.O_RDONLY | getattr(os, "O_NOFOLLOW", 0) |
+                 getattr(os, "O_CLOEXEC", 0) | getattr(os, "O_NONBLOCK", 0))
+    try:
+        s = os.fstat(fd)
+        if (not stat.S_ISREG(s.st_mode) or s.st_uid != os.getuid()
+                or s.st_mode & 0o077 or s.st_nlink != 1):
+            raise PermissionError("receipt database must be private regular file")
+    finally:
+        os.close(fd)
+    db = sqlite3.connect("file:" + quote(str(p), safe="/") + "?mode=ro",
+                         uri=True, timeout=3, isolation_level=None)
+    db.execute("PRAGMA query_only=ON")
+    return db
 
 
 def _load_receipt_key(path):
@@ -271,7 +294,8 @@ def main(argv=None):
             if not sep:
                 raise JobRejected("invalid allow entry")
             allowed.setdefault(project, []).append(command)
-        adapter = ResearchJobs(args.database, _load_receipt_key(args.receipt_key_file), allowed)
+        adapter = ResearchJobs(args.database, _load_receipt_key(args.receipt_key_file),
+                               allowed, audit_only=args.audit)
         if args.audit:
             result = adapter.audit(args.project, args.job_id)
         else:
