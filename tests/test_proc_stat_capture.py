@@ -129,6 +129,16 @@ class ProcStatCaptureTests(unittest.TestCase):
         with self.assertRaises(UntrustedReceipt):
             verify_capture(self.jobs, changed)
 
+    def test_signed_but_impossible_capture_time_rejected(self):
+        # Even a locally re-MACed capture must obey observation -> job order.
+        from remote_security.proc_stat_capture import _sign
+        bundle = self.capture()
+        changed = deepcopy(bundle)
+        changed["capture"]["observed_utc"] = "2030-01-01T00:00:00+00:00"
+        changed["capture_mac"] = _sign(self.key, changed["capture"])
+        with self.assertRaises(UntrustedReceipt):
+            verify_capture(self.jobs, changed)
+
     def test_corrupt_durable_output_rejected(self):
         bundle = self.capture()
         conn = sqlite3.connect(self.db)
