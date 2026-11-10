@@ -86,6 +86,12 @@ class CaptureBundleStoreTests(unittest.TestCase):
         with self.assertRaises((OSError, ValueError)):
             load_verified_capture(self.jobs, alias)
 
+    @unittest.skipUnless(hasattr(os, "mkfifo"), "requires POSIX FIFO")
+    def test_fifo_artifact_rejected_without_blocking(self):
+        os.mkfifo(self.artifact, 0o600)
+        with self.assertRaises(PermissionError):
+            load_verified_capture(self.jobs, self.artifact)
+
     def test_permissive_artifact_rejected(self):
         save_verified_capture(self.jobs, self.bundle, self.artifact)
         self.artifact.chmod(0o644)
