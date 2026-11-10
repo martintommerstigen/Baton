@@ -4,6 +4,7 @@ This exercises the production DOM adapter without a browser/network. It cannot
 verify selectors on ChatGPT's live interface.
 """
 import tempfile
+import hashlib
 import unittest
 from chatgpt_ui_driver import ChatGPTUIDriver
 from wake_contract import WakeLedger
@@ -84,7 +85,9 @@ class BrowserIntegrationTests(unittest.TestCase):
             pb,pc=Page(B),Page(C)
             db=ChatGPTUIDriver(pb,frozenset({B}))
             dc=ChatGPTUIDriver(pc,frozenset({C}))
-            plan=ChainPlan(A,B,C,"msg1","msg2","ask B","ask C","d1","d2")
+            plan=ChainPlan(A,B,C,"msg1","msg2","ask B","ask C",
+                           hashlib.sha256(b"ask B").hexdigest(),
+                           hashlib.sha256(b"ask C").hexdigest())
             result=run_chain(ledger,db,dc,plan,db.read_assistant_turn)
             self.assertEqual(result,{"a_to_b":"verified","b_to_c":"verified"})
             self.assertEqual((pb.send_count,pc.send_count),(1,1))
