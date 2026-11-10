@@ -34,6 +34,20 @@ class AdapterTests(unittest.TestCase):
         d.reply=Observation("B","turn")
         self.assertEqual(reconcile(self.ledger,d,"msg"),"verified")
         self.assertEqual(len(d.calls),1)
+    def test_unresolved_same_target_never_calls_ui_driver(self):
+        first=Driver()
+        self.assertEqual(self.wake(first),'uncertain')
+        second=Driver(Observation("B","other-turn"))
+        with self.assertRaisesRegex(RuntimeError,'unresolved wake'):
+            wake_once(self.ledger,second,'other','C','B','other-digest','other body')
+        self.assertEqual(second.calls,[])
+        self.assertEqual(self.ledger.state('other')[1],'requested')
+        first.reply=Observation("B","first-turn")
+        self.assertEqual(reconcile(self.ledger,first,'msg'),'verified')
+        self.assertEqual(wake_once(self.ledger,second,'other','C','B','other-digest','other body'),
+                         'verified')
+        self.assertEqual(len(second.calls),1)
+
     def test_wrong_chat_not_verified(self):
         d=Driver(Observation("C","turn"))
         with self.assertRaises(ValueError): self.wake(d)
