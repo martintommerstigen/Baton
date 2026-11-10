@@ -17,7 +17,7 @@
     }
   ],
   "branch_count": 276,
-  "tree_indexed": 105,
+  "tree_indexed": 120,
   "content_read_in_this_inventory": 0,
   "notes": [
     "branch_date_hint is parsed from branch name, NOT verified commit date",
@@ -2700,10 +2700,24 @@
       "commit_date": null,
       "theme": "research/egil-r2-unbounded-probe-depth-2026-11-04",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/research%2Fegil-r2-unbounded-probe-depth-2026-11-04",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 131,
+      "relevant_paths": [
+        "GTRCM_KANONISK_GRUNNPROGRAM.md",
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/egil/egil_r0_response_residual_antibygge_2026_11_04.py",
+        "experiments/egil/egil_r1_antibuild_causal_cut_2026_11_04.py",
+        "experiments/egil/egil_r2_unbounded_contact_depth.py",
+        "experiments/egil/egil_r3_blackbox_probe_discovery.py",
+        "experiments/egil/egil_r4_law_selector_counterexamples.py",
+        "experiments/eik/adaptive_repertoire_gate.py",
+        "experiments/eik/anonymous_reversible_contact_birth.py"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "research/egil-r5-observability-geometry-2026-11-04",
@@ -2712,10 +2726,24 @@
       "commit_date": null,
       "theme": "research/egil-r5-observability-geometry-2026-11-04",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/research%2Fegil-r5-observability-geometry-2026-11-04",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 136,
+      "relevant_paths": [
+        "GTRCM_KANONISK_GRUNNPROGRAM.md",
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/egil/egil_r0_response_residual_antibygge_2026_11_04.py",
+        "experiments/egil/egil_r1_antibuild_causal_cut_2026_11_04.py",
+        "experiments/egil/egil_r2_unbounded_contact_depth.py",
+        "experiments/egil/egil_r3_blackbox_probe_discovery.py",
+        "experiments/egil/egil_r4_law_selector_counterexamples.py",
+        "experiments/egil/egil_r5_operational_conformal_phase.py",
+        "experiments/egil/egil_r6_flux.py"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "research/egil-r7-actualization-and-born-2026-11-04",
@@ -2724,10 +2752,24 @@
       "commit_date": null,
       "theme": "research/egil-r7-actualization-and-born-2026-11-04",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/research%2Fegil-r7-actualization-and-born-2026-11-04",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 145,
+      "relevant_paths": [
+        "GTRCM_KANONISK_GRUNNPROGRAM.md",
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/egil/egil_r0_response_residual_antibygge_2026_11_04.py",
+        "experiments/egil/egil_r10_relativity_parameter.py",
+        "experiments/egil/egil_r11_reversible_coarse_entropy.py",
+        "experiments/egil/egil_r12_steering_no_signalling.py",
+        "experiments/egil/egil_r1_antibuild_causal_cut_2026_11_04.py",
+        "experiments/egil/egil_r2_unbounded_contact_depth.py",
+        "experiments/egil/egil_r3_blackbox_probe_discovery.py"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "research/egil-r14-empirisk-selvgrense-2026-11-04",
@@ -2736,10 +2778,24 @@
       "commit_date": null,
       "theme": "research/egil-r14-empirisk-selvgrense-2026-11-04",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/research%2Fegil-r14-empirisk-selvgrense-2026-11-04",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 147,
+      "relevant_paths": [
+        "GTRCM_KANONISK_GRUNNPROGRAM.md",
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/egil/egil_r0_response_residual_antibygge_2026_11_04.py",
+        "experiments/egil/egil_r10_relativity_parameter.py",
+        "experiments/egil/egil_r11_reversible_coarse_entropy.py",
+        "experiments/egil/egil_r12_steering_no_signalling.py",
+        "experiments/egil/egil_r1_antibuild_causal_cut_2026_11_04.py",
+        "experiments/egil/egil_r2_unbounded_contact_depth.py",
+        "experiments/egil/egil_r3_blackbox_probe_discovery.py"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "research/egil-r15-relative-phase-statistics-2026-11-04",
@@ -2748,10 +2804,24 @@
       "commit_date": null,
       "theme": "research/egil-r15-relative-phase-statistics-2026-11-04",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/research%2Fegil-r15-relative-phase-statistics-2026-11-04",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 152,
+      "relevant_paths": [
+        "GTRCM_KANONISK_GRUNNPROGRAM.md",
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/egil/egil_r0_response_residual_antibygge_2026_11_04.py",
+        "experiments/egil/egil_r10_relativity_parameter.py",
+        "experiments/egil/egil_r11_reversible_coarse_entropy.py",
+        "experiments/egil/egil_r12_steering_no_signalling.py",
+        "experiments/egil/egil_r15_relative_phase_observer.py",
+        "experiments/egil/egil_r15b_unseen_phase_witness.py",
+        "experiments/egil/egil_r1_antibuild_causal_cut_2026_11_04.py"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "research/egil-r16-complete-phase-density-framework-2026-11-04",
@@ -2760,10 +2830,24 @@
       "commit_date": null,
       "theme": "research/egil-r16-complete-phase-density-framework-2026-11-04",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/research%2Fegil-r16-complete-phase-density-framework-2026-11-04",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 159,
+      "relevant_paths": [
+        "GTRCM_KANONISK_GRUNNPROGRAM.md",
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/egil/egil_r0_response_residual_antibygge_2026_11_04.py",
+        "experiments/egil/egil_r10_relativity_parameter.py",
+        "experiments/egil/egil_r11_reversible_coarse_entropy.py",
+        "experiments/egil/egil_r12_steering_no_signalling.py",
+        "experiments/egil/egil_r15_relative_phase_observer.py",
+        "experiments/egil/egil_r15b_unseen_phase_witness.py",
+        "experiments/egil/egil_r16_phase_density_action.py"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "research/egil-r21-phase-law-selector-2026-11-04",
@@ -2772,10 +2856,24 @@
       "commit_date": null,
       "theme": "research/egil-r21-phase-law-selector-2026-11-04",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/research%2Fegil-r21-phase-law-selector-2026-11-04",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 167,
+      "relevant_paths": [
+        "GTRCM_KANONISK_GRUNNPROGRAM.md",
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/egil/egil_r0_response_residual_antibygge_2026_11_04.py",
+        "experiments/egil/egil_r10_relativity_parameter.py",
+        "experiments/egil/egil_r11_reversible_coarse_entropy.py",
+        "experiments/egil/egil_r12_steering_no_signalling.py",
+        "experiments/egil/egil_r15_relative_phase_observer.py",
+        "experiments/egil/egil_r15b_unseen_phase_witness.py",
+        "experiments/egil/egil_r16_phase_density_action.py"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "research/egil-r27-relational-empirical-clock-2026-11-04",
@@ -2784,10 +2882,24 @@
       "commit_date": null,
       "theme": "research/egil-r27-relational-empirical-clock-2026-11-04",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/research%2Fegil-r27-relational-empirical-clock-2026-11-04",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 175,
+      "relevant_paths": [
+        "GTRCM_KANONISK_GRUNNPROGRAM.md",
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/egil/egil_r0_response_residual_antibygge_2026_11_04.py",
+        "experiments/egil/egil_r10_relativity_parameter.py",
+        "experiments/egil/egil_r11_reversible_coarse_entropy.py",
+        "experiments/egil/egil_r12_steering_no_signalling.py",
+        "experiments/egil/egil_r15_relative_phase_observer.py",
+        "experiments/egil/egil_r15b_unseen_phase_witness.py",
+        "experiments/egil/egil_r16_phase_density_action.py"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "research/egil-r32-holonomy-clock-connection-2026-11-04",
@@ -2796,10 +2908,24 @@
       "commit_date": null,
       "theme": "research/egil-r32-holonomy-clock-connection-2026-11-04",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/research%2Fegil-r32-holonomy-clock-connection-2026-11-04",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 180,
+      "relevant_paths": [
+        "GTRCM_KANONISK_GRUNNPROGRAM.md",
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/egil/egil_r0_response_residual_antibygge_2026_11_04.py",
+        "experiments/egil/egil_r10_relativity_parameter.py",
+        "experiments/egil/egil_r11_reversible_coarse_entropy.py",
+        "experiments/egil/egil_r12_steering_no_signalling.py",
+        "experiments/egil/egil_r15_relative_phase_observer.py",
+        "experiments/egil/egil_r15b_unseen_phase_witness.py",
+        "experiments/egil/egil_r16_phase_density_action.py"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "research/egil-r36-quantum-geometry-phase-information-2026-11-04",
@@ -2808,10 +2934,24 @@
       "commit_date": null,
       "theme": "research/egil-r36-quantum-geometry-phase-information-2026-11-04",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/research%2Fegil-r36-quantum-geometry-phase-information-2026-11-04",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 188,
+      "relevant_paths": [
+        "GTRCM_KANONISK_GRUNNPROGRAM.md",
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/egil/egil_r0_response_residual_antibygge_2026_11_04.py",
+        "experiments/egil/egil_r10_relativity_parameter.py",
+        "experiments/egil/egil_r11_reversible_coarse_entropy.py",
+        "experiments/egil/egil_r12_steering_no_signalling.py",
+        "experiments/egil/egil_r15_relative_phase_observer.py",
+        "experiments/egil/egil_r15b_unseen_phase_witness.py",
+        "experiments/egil/egil_r16_phase_density_action.py"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "research/egil-r42-relational-generators-2026-11-04",
@@ -2820,10 +2960,24 @@
       "commit_date": null,
       "theme": "research/egil-r42-relational-generators-2026-11-04",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/research%2Fegil-r42-relational-generators-2026-11-04",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 190,
+      "relevant_paths": [
+        "GTRCM_KANONISK_GRUNNPROGRAM.md",
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/egil/egil_r0_response_residual_antibygge_2026_11_04.py",
+        "experiments/egil/egil_r10_relativity_parameter.py",
+        "experiments/egil/egil_r11_reversible_coarse_entropy.py",
+        "experiments/egil/egil_r12_steering_no_signalling.py",
+        "experiments/egil/egil_r15_relative_phase_observer.py",
+        "experiments/egil/egil_r15b_unseen_phase_witness.py",
+        "experiments/egil/egil_r16_phase_density_action.py"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "research/egil-r44-law-consequence-2026-11-04",
@@ -2832,10 +2986,24 @@
       "commit_date": null,
       "theme": "research/egil-r44-law-consequence-2026-11-04",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/research%2Fegil-r44-law-consequence-2026-11-04",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 192,
+      "relevant_paths": [
+        "GTRCM_KANONISK_GRUNNPROGRAM.md",
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/egil/egil_r0_response_residual_antibygge_2026_11_04.py",
+        "experiments/egil/egil_r10_relativity_parameter.py",
+        "experiments/egil/egil_r11_reversible_coarse_entropy.py",
+        "experiments/egil/egil_r12_steering_no_signalling.py",
+        "experiments/egil/egil_r15_relative_phase_observer.py",
+        "experiments/egil/egil_r15b_unseen_phase_witness.py",
+        "experiments/egil/egil_r16_phase_density_action.py"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "research/egil-r45-phase-selection-recursive-2026-11-04",
@@ -2844,10 +3012,24 @@
       "commit_date": null,
       "theme": "research/egil-r45-phase-selection-recursive-2026-11-04",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/research%2Fegil-r45-phase-selection-recursive-2026-11-04",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 199,
+      "relevant_paths": [
+        "GTRCM_KANONISK_GRUNNPROGRAM.md",
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/egil/egil_r0_response_residual_antibygge_2026_11_04.py",
+        "experiments/egil/egil_r10_relativity_parameter.py",
+        "experiments/egil/egil_r11_reversible_coarse_entropy.py",
+        "experiments/egil/egil_r12_steering_no_signalling.py",
+        "experiments/egil/egil_r15_relative_phase_observer.py",
+        "experiments/egil/egil_r15b_unseen_phase_witness.py",
+        "experiments/egil/egil_r16_phase_density_action.py"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "research/egil-r51-endogenous-law-confluence-2026-11-04",
@@ -2856,10 +3038,24 @@
       "commit_date": null,
       "theme": "research/egil-r51-endogenous-law-confluence-2026-11-04",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/research%2Fegil-r51-endogenous-law-confluence-2026-11-04",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 206,
+      "relevant_paths": [
+        "GTRCM_KANONISK_GRUNNPROGRAM.md",
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/egil/egil_r0_response_residual_antibygge_2026_11_04.py",
+        "experiments/egil/egil_r10_relativity_parameter.py",
+        "experiments/egil/egil_r11_reversible_coarse_entropy.py",
+        "experiments/egil/egil_r12_steering_no_signalling.py",
+        "experiments/egil/egil_r15_relative_phase_observer.py",
+        "experiments/egil/egil_r15b_unseen_phase_witness.py",
+        "experiments/egil/egil_r16_phase_density_action.py"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "research/egil-r57-gaia-samindividuasjon-2026-11-04",
@@ -2868,10 +3064,24 @@
       "commit_date": null,
       "theme": "research/egil-r57-gaia-samindividuasjon-2026-11-04",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/research%2Fegil-r57-gaia-samindividuasjon-2026-11-04",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 207,
+      "relevant_paths": [
+        "GTRCM_KANONISK_GRUNNPROGRAM.md",
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/egil/egil_r0_response_residual_antibygge_2026_11_04.py",
+        "experiments/egil/egil_r10_relativity_parameter.py",
+        "experiments/egil/egil_r11_reversible_coarse_entropy.py",
+        "experiments/egil/egil_r12_steering_no_signalling.py",
+        "experiments/egil/egil_r15_relative_phase_observer.py",
+        "experiments/egil/egil_r15b_unseen_phase_witness.py",
+        "experiments/egil/egil_r16_phase_density_action.py"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "research/egil-r58-refleksiv-individuasjon-helhetsfysikk-2026-11-04",
