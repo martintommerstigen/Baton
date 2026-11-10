@@ -16,6 +16,6 @@ fi
 cd "$TARGET"
 python3 -m unittest -v test_baton_local_terminal.py
 python3 baton_local_terminal.py identity --workspace "$TARGET"
-python3 baton_local_terminal.py git-status --workspace "$TARGET"
+python3 baton_local_terminal.py git-revision --workspace "$TARGET"
 echo "Baton local terminal adapter verified. No server was started."
 echo "NOTE: This does not connect this ChatGPT conversation to Greg."
