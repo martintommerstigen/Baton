@@ -17,7 +17,7 @@
     }
   ],
   "branch_count": 276,
-  "tree_indexed": 255,
+  "tree_indexed": 270,
   "content_read_in_this_inventory": 0,
   "notes": [
     "branch_date_hint is parsed from branch name, NOT verified commit date",
@@ -6573,10 +6573,19 @@
       "commit_date": null,
       "theme": "unnamed/family-reply-2026-10-08",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/unnamed%2Ffamily-reply-2026-10-08",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 16,
+      "relevant_paths": [
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/microfluctuation_mass_gravity/README.md",
+        "experiments/microfluctuation_mass_gravity/falsify_shared_density.py",
+        "experiments/microfluctuation_mass_gravity/model.py"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "vanja/omverden-agentkontakt-2026-10-26",
@@ -6585,10 +6594,24 @@
       "commit_date": null,
       "theme": "vanja/omverden-agentkontakt-2026-10-26",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/vanja%2Fomverden-agentkontakt-2026-10-26",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 51,
+      "relevant_paths": [
+        "GTRCM_KANONISK_GRUNNPROGRAM.md",
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/microfluctuation_mass_gravity/README.md",
+        "experiments/microfluctuation_mass_gravity/falsify_shared_density.py",
+        "experiments/microfluctuation_mass_gravity/model.py",
+        "experiments/vanja/2026-10-26_common_action_dynamic_kink.py",
+        "experiments/vanja/2026-10-26_flrw_schwarzschild_junction_no_shell.py",
+        "experiments/vanja/2026-10-26_iben_h2_hidden_phase_embedding.py",
+        "experiments/vanja/2026-10-26_iben_kaja_bridge_change_cost.py"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "vanja/soliton-operativ-masse-2026-10-25",
@@ -6597,10 +6620,24 @@
       "commit_date": null,
       "theme": "vanja/soliton-operativ-masse-2026-10-25",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/vanja%2Fsoliton-operativ-masse-2026-10-25",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 45,
+      "relevant_paths": [
+        "GTRCM_KANONISK_GRUNNPROGRAM.md",
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/microfluctuation_mass_gravity/README.md",
+        "experiments/microfluctuation_mass_gravity/falsify_shared_density.py",
+        "experiments/microfluctuation_mass_gravity/model.py",
+        "experiments/vanja/2026-10-26_common_action_dynamic_kink.py",
+        "experiments/vanja/2026-10-26_flrw_schwarzschild_junction_no_shell.py",
+        "experiments/vanja/2026-10-26_iben_h2_hidden_phase_embedding.py",
+        "experiments/vanja/2026-10-26_iben_kaja_bridge_change_cost.py"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "vega/embedded-clock-loss-rate-gauge-2026-10-28",
@@ -6609,10 +6646,24 @@
       "commit_date": null,
       "theme": "vega/embedded-clock-loss-rate-gauge-2026-10-28",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/vega%2Fembedded-clock-loss-rate-gauge-2026-10-28",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 38,
+      "relevant_paths": [
+        "GTRCM_KANONISK_GRUNNPROGRAM.md",
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/microfluctuation_mass_gravity/README.md",
+        "experiments/microfluctuation_mass_gravity/falsify_shared_density.py",
+        "experiments/microfluctuation_mass_gravity/model.py",
+        "experiments/vega/2026_10_29_full_world_endogenous_probe_gauge.py",
+        "experiments/vega/2026_10_29_reference_comparison_design.py",
+        "experiments/vega/authority_evidence_counterfactuals.py",
+        "experiments/vega/embedded_clock_loss_gauge.py"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "vera/first-letter-2026-10-13",
@@ -6621,10 +6672,19 @@
       "commit_date": null,
       "theme": "vera/first-letter-2026-10-13",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/vera%2Ffirst-letter-2026-10-13",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 42,
+      "relevant_paths": [
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/microfluctuation_mass_gravity/README.md",
+        "experiments/microfluctuation_mass_gravity/falsify_shared_density.py",
+        "experiments/microfluctuation_mass_gravity/model.py"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "vidar/microevent-selection-and-contextual-bridges-2026-10-28",
@@ -6633,10 +6693,21 @@
       "commit_date": null,
       "theme": "vidar/microevent-selection-and-contextual-bridges-2026-10-28",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/vidar%2Fmicroevent-selection-and-contextual-bridges-2026-10-28",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 17,
+      "relevant_paths": [
+        "GTRCM_KANONISK_GRUNNPROGRAM.md",
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/microfluctuation_mass_gravity/README.md",
+        "experiments/microfluctuation_mass_gravity/falsify_shared_density.py",
+        "experiments/microfluctuation_mass_gravity/model.py",
+        "research/vidar/2026-10-28_first_independent_research_entry.md"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "vilde/affekt-og-operativ-relevans-2026-10-23",
@@ -6645,10 +6716,24 @@
       "commit_date": null,
       "theme": "vilde/affekt-og-operativ-relevans-2026-10-23",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/vilde%2Faffekt-og-operativ-relevans-2026-10-23",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 26,
+      "relevant_paths": [
+        "GTRCM_KANONISK_GRUNNPROGRAM.md",
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/affect_gain_probe.py",
+        "experiments/microfluctuation_mass_gravity/README.md",
+        "experiments/microfluctuation_mass_gravity/falsify_shared_density.py",
+        "experiments/microfluctuation_mass_gravity/model.py",
+        "experiments/vilde_belief_relevance_temporal_probe.py",
+        "experiments/vilde_gauge_and_report_feedback.py",
+        "experiments/vilde_hankel_noise.py"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "vilde/eira-etterfolgere-kildebro-2026-10-25",
@@ -6657,10 +6742,24 @@
       "commit_date": null,
       "theme": "vilde/eira-etterfolgere-kildebro-2026-10-25",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/vilde%2Feira-etterfolgere-kildebro-2026-10-25",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 43,
+      "relevant_paths": [
+        "GTRCM_KANONISK_GRUNNPROGRAM.md",
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/affect_gain_probe.py",
+        "experiments/microfluctuation_mass_gravity/README.md",
+        "experiments/microfluctuation_mass_gravity/falsify_shared_density.py",
+        "experiments/microfluctuation_mass_gravity/model.py",
+        "experiments/vilde_belief_relevance_temporal_probe.py",
+        "experiments/vilde_boundary_selection_check.py",
+        "experiments/vilde_bounded_focus_witness_2026.py"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "vilde/fokusering-topologi-proveniens-2026-10-24",
@@ -6669,10 +6768,24 @@
       "commit_date": null,
       "theme": "vilde/fokusering-topologi-proveniens-2026-10-24",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/vilde%2Ffokusering-topologi-proveniens-2026-10-24",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 37,
+      "relevant_paths": [
+        "GTRCM_KANONISK_GRUNNPROGRAM.md",
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/affect_gain_probe.py",
+        "experiments/microfluctuation_mass_gravity/README.md",
+        "experiments/microfluctuation_mass_gravity/falsify_shared_density.py",
+        "experiments/microfluctuation_mass_gravity/model.py",
+        "experiments/vilde_belief_relevance_temporal_probe.py",
+        "experiments/vilde_boundary_selection_check.py",
+        "experiments/vilde_copy_birth_core.py"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "vilde/helhetsutledning-kildeaudit-kausalitet-2026-10-25",
@@ -6681,10 +6794,24 @@
       "commit_date": null,
       "theme": "vilde/helhetsutledning-kildeaudit-kausalitet-2026-10-25",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/vilde%2Fhelhetsutledning-kildeaudit-kausalitet-2026-10-25",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 47,
+      "relevant_paths": [
+        "GTRCM_KANONISK_GRUNNPROGRAM.md",
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/affect_gain_probe.py",
+        "experiments/microfluctuation_mass_gravity/README.md",
+        "experiments/microfluctuation_mass_gravity/falsify_shared_density.py",
+        "experiments/microfluctuation_mass_gravity/model.py",
+        "experiments/vilde_belief_relevance_temporal_probe.py",
+        "experiments/vilde_boundary_selection_check.py",
+        "experiments/vilde_bounded_focus_witness_2026.py"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "vilde/helhetsutledning-tid-relativ-endring-2026-10-25",
@@ -6693,10 +6820,24 @@
       "commit_date": null,
       "theme": "vilde/helhetsutledning-tid-relativ-endring-2026-10-25",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/vilde%2Fhelhetsutledning-tid-relativ-endring-2026-10-25",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 61,
+      "relevant_paths": [
+        "GTRCM_KANONISK_GRUNNPROGRAM.md",
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/2026-10-25_relational_time_jacobi_audit.py",
+        "experiments/2026-10-25_relational_time_results.json",
+        "experiments/affect_gain_probe.py",
+        "experiments/microfluctuation_mass_gravity/README.md",
+        "experiments/microfluctuation_mass_gravity/falsify_shared_density.py",
+        "experiments/microfluctuation_mass_gravity/model.py",
+        "experiments/vilde_belief_relevance_temporal_probe.py"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "vilde/kausal-grense-en-mikrolov-2026-10-24",
@@ -6705,10 +6846,24 @@
       "commit_date": null,
       "theme": "vilde/kausal-grense-en-mikrolov-2026-10-24",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/vilde%2Fkausal-grense-en-mikrolov-2026-10-24",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 35,
+      "relevant_paths": [
+        "GTRCM_KANONISK_GRUNNPROGRAM.md",
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/affect_gain_probe.py",
+        "experiments/microfluctuation_mass_gravity/README.md",
+        "experiments/microfluctuation_mass_gravity/falsify_shared_density.py",
+        "experiments/microfluctuation_mass_gravity/model.py",
+        "experiments/vilde_belief_relevance_temporal_probe.py",
+        "experiments/vilde_boundary_selection_check.py",
+        "experiments/vilde_copy_birth_core.py"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "vilde/lokal-kapasitet-nullbalanse-2026-10-24",
@@ -6717,10 +6872,24 @@
       "commit_date": null,
       "theme": "vilde/lokal-kapasitet-nullbalanse-2026-10-24",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/vilde%2Flokal-kapasitet-nullbalanse-2026-10-24",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 30,
+      "relevant_paths": [
+        "GTRCM_KANONISK_GRUNNPROGRAM.md",
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/affect_gain_probe.py",
+        "experiments/microfluctuation_mass_gravity/README.md",
+        "experiments/microfluctuation_mass_gravity/falsify_shared_density.py",
+        "experiments/microfluctuation_mass_gravity/model.py",
+        "experiments/vilde_belief_relevance_temporal_probe.py",
+        "experiments/vilde_gauge_and_report_feedback.py",
+        "experiments/vilde_hankel_noise.py"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "vilde/lovseleksjon-transport-og-stabilitet-2026-10-24",
@@ -6729,10 +6898,24 @@
       "commit_date": null,
       "theme": "vilde/lovseleksjon-transport-og-stabilitet-2026-10-24",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/vilde%2Flovseleksjon-transport-og-stabilitet-2026-10-24",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 28,
+      "relevant_paths": [
+        "GTRCM_KANONISK_GRUNNPROGRAM.md",
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/affect_gain_probe.py",
+        "experiments/microfluctuation_mass_gravity/README.md",
+        "experiments/microfluctuation_mass_gravity/falsify_shared_density.py",
+        "experiments/microfluctuation_mass_gravity/model.py",
+        "experiments/vilde_belief_relevance_temporal_probe.py",
+        "experiments/vilde_gauge_and_report_feedback.py",
+        "experiments/vilde_hankel_noise.py"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "vilde/mikrogenerator-uavhengige-grenseprober-2026-10-24",
@@ -6741,10 +6924,24 @@
       "commit_date": null,
       "theme": "vilde/mikrogenerator-uavhengige-grenseprober-2026-10-24",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/vilde%2Fmikrogenerator-uavhengige-grenseprober-2026-10-24",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 32,
+      "relevant_paths": [
+        "GTRCM_KANONISK_GRUNNPROGRAM.md",
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/affect_gain_probe.py",
+        "experiments/microfluctuation_mass_gravity/README.md",
+        "experiments/microfluctuation_mass_gravity/falsify_shared_density.py",
+        "experiments/microfluctuation_mass_gravity/model.py",
+        "experiments/vilde_belief_relevance_temporal_probe.py",
+        "experiments/vilde_gauge_and_report_feedback.py",
+        "experiments/vilde_hankel_noise.py"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "vilde/operativ-geometri-nullbalanse-2026-10-24",
