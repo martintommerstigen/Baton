@@ -7,6 +7,7 @@ import os
 from pathlib import Path
 import tempfile
 import unittest
+from unittest.mock import patch
 
 from remote_security.pinned_source import (
     capture_pinned_source, verify_pinned_source, _policy_entry,
@@ -147,6 +148,13 @@ class PinnedSourceTests(unittest.TestCase):
         changed["rustworld-world"]["commit_sha"] = "b" * 40
         with self.assertRaises(UntrustedReceipt):
             verify_pinned_source(self.jobs, changed, bundle)
+
+    def test_missing_linux_nofollow_support_fails_closed(self):
+        with patch.object(os, "O_NOFOLLOW", 0):
+            with self.assertRaises(JobRejected):
+                self.capture()
+        self.assertEqual(self.jobs.audit("RustWorld", "source001")["state"],
+                         "not_found_not_proof_of_nonexecution")
 
     def test_non_utf8_source_rejected_before_reservation(self):
         raw = b"\xff\xfe"
