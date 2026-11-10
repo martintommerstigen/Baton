@@ -56,10 +56,10 @@ def main(argv=None):
         driver=ChatGPTUIDriver(matching[0],frozenset({args.target}))
         class WaitForReply:
             def submit_once(self, *a): return driver.submit_once(*a)
-            def observe_reply(self, target, message_id):
+            def observe_reply(self, target, message_id, digest):
                 deadline=time.monotonic()+args.wait_seconds
                 while True:
-                    result=driver.observe_reply(target,message_id)
+                    result=driver.observe_reply(target,message_id,digest)
                     if result is not None: return result
                     if time.monotonic()>=deadline: return None
                     time.sleep(1)
