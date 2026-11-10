@@ -57,6 +57,23 @@ class AdmissionTests(unittest.TestCase):
         self.assertEqual(self.ask(self.envelope())["state"], "admitted_not_delivered")
         self.assertEqual(self.ask(self.envelope("chat-C", "m2"))["state"], "admitted_not_delivered")
 
+    def test_negative_claimed_b_to_c_without_observed_b_turn(self):
+        """NEG: kernel UID admission does not prove asserted ChatGPT source."""
+        req = self.envelope("chat-C", "claimed-B-to-C")
+        req["sender_id"] = "chat-B"
+        req["origin_turn_id"] = "unverified-B-turn"
+        self.assertEqual(self.ask(req)["state"], "admitted_not_delivered")
+        # A forged source claim must not be promoted to a verified wake.
+        self.assertEqual(self.ask({"op": "status"})["outstanding"], 1)
+
+    def test_symlinked_pause_parent_fails_closed(self):
+        target = self.root / "real"
+        target.mkdir()
+        link = self.root / "link"
+        link.symlink_to(target, target_is_directory=True)
+        self.store.pause_path = str(link / "PAUSE_UI_WRITES")
+        self.assertEqual(self.ask(self.envelope())["reason"], "paused_or_untrusted")
+
     def test_unknown_conversation_and_bad_digest(self):
         self.assertEqual(self.ask(self.envelope("chat-Z"))["reason"], "conversation_not_allowed")
         bad = self.envelope()
