@@ -1,4 +1,5 @@
 import base64
+import concurrent.futures
 import hashlib
 import http.client
 import json
@@ -57,6 +58,13 @@ class IngressTests(unittest.TestCase):
     def test_valid_signed_payload_accepted_not_delivered(self):
         self.assertEqual(self.request(), (202, 'accepted_not_delivered'))
         self.assertEqual(self.gate.db.execute('SELECT state FROM receipts').fetchone()[0], 'accepted_not_delivered')
+
+    def test_concurrent_http_replay_only_one_acceptance(self):
+        with concurrent.futures.ThreadPoolExecutor(max_workers=8) as pool:
+            statuses = list(pool.map(lambda _: self.request()[0], range(12)))
+        self.assertEqual(statuses.count(202), 1)
+        self.assertEqual(statuses.count(400), 11)
+        self.assertEqual(self.gate.db.execute('SELECT COUNT(*) FROM payloads').fetchone()[0], 1)
 
     def test_replay_rejected(self):
         self.assertEqual(self.request()[0], 202)
