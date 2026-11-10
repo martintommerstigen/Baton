@@ -66,7 +66,8 @@ class BrokerPeerTests(unittest.TestCase):
         seen = self.serve()
         with self.assertRaises(UntrustedBroker):
             query_verified_broker(self.path, self.uid + 1, self.request)
-        self.assertEqual(seen, [])
+        # EOF (b'') is permitted; nonempty request bytes are not.
+        self.assertFalse(any(seen), 'peer saw nonempty request bytes')
 
     def test_connected_peer_credentials_checked_before_disclosure(self):
         seen = self.serve()
@@ -76,7 +77,8 @@ class BrokerPeerTests(unittest.TestCase):
         with patch.object(broker_peer, '_checked_socket_path', return_value=self.path):
             with self.assertRaises(UntrustedBroker):
                 query_verified_broker(self.path, self.uid + 1, self.request)
-        self.assertEqual(seen, [])
+        # EOF (b'') is permitted; nonempty request bytes are not.
+        self.assertFalse(any(seen), 'peer saw nonempty request bytes')
 
     def test_path_symlink_rejected(self):
         self.serve()
