@@ -9,6 +9,7 @@ import http.client
 import json
 import os
 import secrets
+import ssl
 from pathlib import Path
 import time
 from urllib.parse import urlsplit
@@ -16,11 +17,35 @@ from urllib.parse import urlsplit
 from remote_security.envelope_gate import Gate, MAX_PAYLOAD_BYTES
 from remote_security.http_ingress import load_bearer_token, load_private_key
 from remote_security.admission_mac import admission_mac
-from remote_security.tls_endpoint import pinned_client_context
+from remote_security.tls_endpoint import pinned_client_context_and_leaf_digest
 
 
 class DeliveryUncertain(RuntimeError):
     """The server may have committed; never automatically resend."""
+
+
+class ExactLeafHTTPSConnection(http.client.HTTPSConnection):
+    """Verify the *actual* TLS peer leaf before emitting any HTTP bytes.
+
+    CA verification plus an IP SAN alone does not bind a single pinned
+    certificate: a trusted CA could issue a second valid leaf.
+    """
+
+    def __init__(self, host, port, *, expected_leaf_sha256, **kwargs):
+        self._expected_leaf_sha256 = expected_leaf_sha256
+        super().__init__(host, port, **kwargs)
+
+    def connect(self):
+        super().connect()
+        try:
+            peer_der = self.sock.getpeercert(binary_form=True)
+            if (not peer_der or not hmac.compare_digest(
+                    hashlib.sha256(peer_der).digest(), self._expected_leaf_sha256)):
+                raise ssl.SSLCertVerificationError(
+                    'TLS peer leaf differs from explicit Baton pin')
+        except BaseException:
+            self.close()
+            raise
 
 
 def send_once(base_url, bearer, sender_key, envelope, payload, timeout=3, server_cert_file=None):
@@ -46,9 +71,10 @@ def send_once(base_url, bearer, sender_key, envelope, payload, timeout=3, server
     expected_mac = admission_mac(sender_key, nonce, envelope, 'accepted_not_delivered')
     if parsed.scheme == 'https':
         # TLS validates the server's IP SAN before any bearer or payload is sent.
-        connection = http.client.HTTPSConnection(
+        context, leaf_digest = pinned_client_context_and_leaf_digest(server_cert_file)
+        connection = ExactLeafHTTPSConnection(
             '127.0.0.1', parsed.port, timeout=timeout,
-            context=pinned_client_context(server_cert_file))
+            context=context, expected_leaf_sha256=leaf_digest)
     else:
         # Legacy loopback/SSH forwarding mode: NOT authenticated before disclosure.
         connection = http.client.HTTPConnection('127.0.0.1', parsed.port, timeout=timeout)
