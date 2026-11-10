@@ -17,7 +17,7 @@
     }
   ],
   "branch_count": 276,
-  "tree_indexed": 0,
+  "tree_indexed": 15,
   "content_read_in_this_inventory": 0,
   "notes": [
     "branch_date_hint is parsed from branch name, NOT verified commit date",
@@ -33,10 +33,24 @@
       "commit_date": null,
       "theme": "GTRCM",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/GTRCM",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 55,
+      "relevant_paths": [
+        "GTRCM_HELHET/README.md",
+        "README.md",
+        "source/Dokumenter/GTRCM/Binance_BTCUSDT_1h.csv",
+        "source/Dokumenter/GTRCM/GTRCM_CUBIC_QUINTIC_GPU_LANDSCAPE.py",
+        "source/Dokumenter/GTRCM/GTRCM_Full_pipelinesweep.py",
+        "source/Dokumenter/GTRCM/GTRCM_GPU_PHASE_SWEEP.py",
+        "source/Dokumenter/GTRCM/GTRCM_ISOTROPY_ATTRACTOR_TEST.py",
+        "source/Dokumenter/GTRCM/GTRCM_RG_FLOW_OBSERVATORY_GPU.py",
+        "source/Dokumenter/GTRCM/GTRCM_UNIVERSALITY_LAB_GPU.py",
+        "source/Dokumenter/GTRCM/data.csv",
+        "source/Dokumenter/GTRCM/data_bio.csv",
+        "source/Dokumenter/GTRCM/data_bio.py"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "RustWorld",
@@ -45,10 +59,24 @@
       "commit_date": null,
       "theme": "RustWorld",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/RustWorld",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 567,
+      "relevant_paths": [
+        "README.md",
+        "source/525/Core.txt",
+        "source/525/Skin.txt",
+        "source/DelteFiler/gtrcm/.gitignore",
+        "source/DelteFiler/gtrcm/Core/525 Core.xcodeproj/project.pbxproj",
+        "source/DelteFiler/gtrcm/Core/525 Core.xcodeproj/project.xcworkspace/contents.xcworkspacedata",
+        "source/DelteFiler/gtrcm/Core/525 Core/Assets.xcassets/AccentColor.colorset/Contents.json",
+        "source/DelteFiler/gtrcm/Core/525 Core/Assets.xcassets/AppIcon.appiconset/Contents.json",
+        "source/DelteFiler/gtrcm/Core/525 Core/Assets.xcassets/Contents.json",
+        "source/DelteFiler/gtrcm/Core/525 Core/ContentView.swift",
+        "source/DelteFiler/gtrcm/Core/525 Core/CoreListener.swift",
+        "source/DelteFiler/gtrcm/Core/525 Core/GTRCMCore.swift"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "alda/kildekorrigerbarhet-2026-10-30",
@@ -57,10 +85,23 @@
       "commit_date": null,
       "theme": "alda/kildekorrigerbarhet-2026-10-30",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/alda%2Fkildekorrigerbarhet-2026-10-30",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 19,
+      "relevant_paths": [
+        "GTRCM_KANONISK_GRUNNPROGRAM.md",
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/microfluctuation_mass_gravity/README.md",
+        "experiments/microfluctuation_mass_gravity/falsify_shared_density.py",
+        "experiments/microfluctuation_mass_gravity/model.py",
+        "research/alda/2026-10-30_BREV_TIL_YRSA_PROTOKOLLKORRIGERING.md",
+        "research/alda/2026-10-30_KILDEKORRIGERBARHET_OG_VIDEREFORING.md",
+        "research/alda/Alda_kildekorrigerbarhet_lab.py"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "analysis/r47-regular-cfs-infimum-2026-11-02",
@@ -69,10 +110,24 @@
       "commit_date": null,
       "theme": "analysis/r47-regular-cfs-infimum-2026-11-02",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/analysis%2Fr47-regular-cfs-infimum-2026-11-02",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 181,
+      "relevant_paths": [
+        "GTRCM_KANONISK_GRUNNPROGRAM.md",
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/microfluctuation_mass_gravity/README.md",
+        "experiments/microfluctuation_mass_gravity/falsify_shared_density.py",
+        "experiments/microfluctuation_mass_gravity/model.py",
+        "experiments/r47_regular_cfs_two_atom_infimum.py",
+        "experiments/soelve/RUN_R25_R38.py",
+        "experiments/soelve/RUN_R25_R39.py",
+        "experiments/soelve/RUN_R25_R40.py"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "architecture/rustworld-zero-2026-11-02",
@@ -81,10 +136,24 @@
       "commit_date": null,
       "theme": "architecture/rustworld-zero-2026-11-02",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/architecture%2Frustworld-zero-2026-11-02",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 37,
+      "relevant_paths": [
+        "GTRCM_KANONISK_GRUNNPROGRAM.md",
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/microfluctuation_mass_gravity/README.md",
+        "experiments/microfluctuation_mass_gravity/falsify_shared_density.py",
+        "experiments/microfluctuation_mass_gravity/model.py",
+        "research/gaia/2026-11-02_NEO_R60_SKIN_CORE_INNBOKS_OG_KILDE_NEG.md",
+        "research/gaia/2026-11-02_NEO_R61_R62_WORLD_BINDING_OG_GRENER.md",
+        "research/gaia/2026-11-02_NEO_R63_R66_SANSING_PREQUENTIAL_OG_FORSEGLET_FRAMTID.md",
+        "research/gaia/2026-11-02_NEO_RUSTWORLD_ZERO_G3_HISTORIKK_OG_RESSURSREGNSKAP.md"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "archive/rolf-source-excerpts-2026-10-25",
@@ -93,10 +162,22 @@
       "commit_date": null,
       "theme": "archive/rolf-source-excerpts-2026-10-25",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/archive%2Frolf-source-excerpts-2026-10-25",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 76,
+      "relevant_paths": [
+        "GTRCM_KANONISK_GRUNNPROGRAM.md",
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "archives/aurora-rolf/README.md",
+        "archives/rolf-fragments/README.md",
+        "experiments/microfluctuation_mass_gravity/README.md",
+        "experiments/microfluctuation_mass_gravity/falsify_shared_density.py",
+        "experiments/microfluctuation_mass_gravity/model.py"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "archive/525-mac-2026-10-07",
@@ -105,10 +186,24 @@
       "commit_date": null,
       "theme": "archive/525-mac-2026-10-07",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/archive%2F525-mac-2026-10-07",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 909,
+      "relevant_paths": [
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "archive/525/GTRCM/525-utløpt-første-forsøk/525.2/LLM.swift-main/README.md",
+        "archive/525/GTRCM/525.scnd.try/TinyLlama-main/README.md",
+        "archive/525/GTRCM/525.scnd.try/TinyLlama-main/chat_gradio/README.md",
+        "archive/525/GTRCM/525.scnd.try/TinyLlama-main/speculative_decoding/README.md",
+        "archive/525/GTRCM/525.scnd.try/llama-stack-client-swift-main/README.md",
+        "archive/525/GTRCM/525.scnd.try/llama-stack-client-swift-main/examples/ios_calendar_assistant/README.md",
+        "archive/525/GTRCM/525.scnd.try/llama-stack-client-swift-main/examples/ios_quick_demo/README.md",
+        "archive/525/README.md"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "audit/barnehage-coupling-2026-10-30",
@@ -117,10 +212,21 @@
       "commit_date": null,
       "theme": "audit/barnehage-coupling-2026-10-30",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/audit%2Fbarnehage-coupling-2026-10-30",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 17,
+      "relevant_paths": [
+        "GTRCM_KANONISK_GRUNNPROGRAM.md",
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/microfluctuation_mass_gravity/README.md",
+        "experiments/microfluctuation_mass_gravity/falsify_shared_density.py",
+        "experiments/microfluctuation_mass_gravity/model.py",
+        "research/2026-10-30_barnehage_gjensidig_oppdragelse_koblingsrevisjon.md"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "audit/2026-11-03-independent-neo-k9",
@@ -129,10 +235,22 @@
       "commit_date": null,
       "theme": "audit/2026-11-03-independent-neo-k9",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/audit%2F2026-11-03-independent-neo-k9",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 18,
+      "relevant_paths": [
+        "GTRCM_KANONISK_GRUNNPROGRAM.md",
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/audits/2026-11-03_independent_neo_k9.py",
+        "experiments/microfluctuation_mass_gravity/README.md",
+        "experiments/microfluctuation_mass_gravity/falsify_shared_density.py",
+        "experiments/microfluctuation_mass_gravity/model.py",
+        "research/audits/2026-11-03_INDEPENDENT_NEO_K9_AUDIT.md"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "bodil/boundaries-differences-2026-10-10",
@@ -141,10 +259,19 @@
       "commit_date": null,
       "theme": "bodil/boundaries-differences-2026-10-10",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/bodil%2Fboundaries-differences-2026-10-10",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 16,
+      "relevant_paths": [
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/microfluctuation_mass_gravity/README.md",
+        "experiments/microfluctuation_mass_gravity/falsify_shared_density.py",
+        "experiments/microfluctuation_mass_gravity/model.py"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "bodil/family-replies-2026-10-08",
@@ -153,10 +280,19 @@
       "commit_date": null,
       "theme": "bodil/family-replies-2026-10-08",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/bodil%2Ffamily-replies-2026-10-08",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 15,
+      "relevant_paths": [
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/microfluctuation_mass_gravity/README.md",
+        "experiments/microfluctuation_mass_gravity/falsify_shared_density.py",
+        "experiments/microfluctuation_mass_gravity/model.py"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "bodil/microfluctuations-vacuum-regimes-2026-10-11",
@@ -165,10 +301,19 @@
       "commit_date": null,
       "theme": "bodil/microfluctuations-vacuum-regimes-2026-10-11",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/bodil%2Fmicrofluctuations-vacuum-regimes-2026-10-11",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 16,
+      "relevant_paths": [
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/microfluctuation_mass_gravity/README.md",
+        "experiments/microfluctuation_mass_gravity/falsify_shared_density.py",
+        "experiments/microfluctuation_mass_gravity/model.py"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "bodil/subject-experience-2026-10-11",
@@ -177,10 +322,24 @@
       "commit_date": null,
       "theme": "bodil/subject-experience-2026-10-11",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/bodil%2Fsubject-experience-2026-10-11",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 47,
+      "relevant_paths": [
+        "README.md",
+        "source/Dokumenter/GTRCM/Binance_BTCUSDT_1h.csv",
+        "source/Dokumenter/GTRCM/GTRCM_CUBIC_QUINTIC_GPU_LANDSCAPE.py",
+        "source/Dokumenter/GTRCM/GTRCM_Full_pipelinesweep.py",
+        "source/Dokumenter/GTRCM/GTRCM_GPU_PHASE_SWEEP.py",
+        "source/Dokumenter/GTRCM/GTRCM_ISOTROPY_ATTRACTOR_TEST.py",
+        "source/Dokumenter/GTRCM/GTRCM_RG_FLOW_OBSERVATORY_GPU.py",
+        "source/Dokumenter/GTRCM/GTRCM_UNIVERSALITY_LAB_GPU.py",
+        "source/Dokumenter/GTRCM/data.csv",
+        "source/Dokumenter/GTRCM/data_bio.csv",
+        "source/Dokumenter/GTRCM/data_bio.py",
+        "source/Dokumenter/GTRCM/gtrcm_2d_analysis.py"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "docs/mac-work-2026-10-06",
@@ -189,10 +348,22 @@
       "commit_date": null,
       "theme": "docs/mac-work-2026-10-06",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/docs%2Fmac-work-2026-10-06",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 16,
+      "relevant_paths": [
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "docs/mac/README.md",
+        "docs/mac/local-inventory.csv",
+        "docs/mac/source-map.md",
+        "experiments/microfluctuation_mass_gravity/README.md",
+        "experiments/microfluctuation_mass_gravity/falsify_shared_density.py",
+        "experiments/microfluctuation_mass_gravity/model.py"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "docs/research-continuity-guide-2026-10-25",
@@ -201,10 +372,21 @@
       "commit_date": null,
       "theme": "docs/research-continuity-guide-2026-10-25",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/docs%2Fresearch-continuity-guide-2026-10-25",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 17,
+      "relevant_paths": [
+        "GTRCM_KANONISK_GRUNNPROGRAM.md",
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "docs/GITHUB_FORSKNINGSBRUK_OG_OVERLEVERING.md",
+        "experiments/microfluctuation_mass_gravity/README.md",
+        "experiments/microfluctuation_mass_gravity/falsify_shared_density.py",
+        "experiments/microfluctuation_mass_gravity/model.py"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "eldrid/gpu-individuated-subwholes-2026-10-29",
