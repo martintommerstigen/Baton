@@ -34,7 +34,7 @@ def attach_baton_panel(window, view, page, *, initial_chat=None, initial_message
     from baton_ui_events import log_event
     from PySide6.QtWidgets import (
         QApplication, QDockWidget, QWidget, QVBoxLayout, QHBoxLayout,
-        QLabel, QLineEdit, QPlainTextEdit, QPushButton
+        QLabel, QLineEdit, QPlainTextEdit, QPushButton, QScrollArea
     )
 
     dock = QDockWidget("Baton · Samtalestafett", window)
@@ -54,6 +54,8 @@ def attach_baton_panel(window, view, page, *, initial_chat=None, initial_message
     recipient_actions.addWidget(use_current)
     recipient_actions.addWidget(open_target)
     layout.addLayout(recipient_actions)
+    from baton_model_bridge import attach_model_bridge
+    attach_model_bridge(layout, view, page, dock)
 
     layout.addWidget(QLabel("Melding fra Baton"))
     message = QPlainTextEdit()
@@ -71,10 +73,11 @@ def attach_baton_panel(window, view, page, *, initial_chat=None, initial_message
     layout.addWidget(send)
     layout.addWidget(copy)
     layout.addWidget(status)
-    from baton_model_bridge import attach_model_bridge
-    attach_model_bridge(layout, view, page, dock)
     layout.addStretch(1)
-    dock.setWidget(body)
+    scroller = QScrollArea(dock)
+    scroller.setWidgetResizable(True)
+    scroller.setWidget(body)
+    dock.setWidget(scroller)
     window.addDockWidget(Qt.DockWidgetArea.RightDockWidgetArea, dock)
     dock.setMinimumWidth(300)
 
