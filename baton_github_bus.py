@@ -25,7 +25,7 @@ ROOT = ".baton-greg-bus"
 OPERATIONS = frozenset(("identity", "system", "git-revision", "python-version"))
 NONCE = re.compile(r"[0-9a-f]{32}\Z")
 MAX_AGE = 6 * 3600
-MAX_REQUEST_BYTES = 1024
+MAX_REQUEST_BYTES = 16384
 
 def git(*args, cwd=None, timeout=35):
     cmd = ["git", "-c", "core.hooksPath=/dev/null",
@@ -56,7 +56,7 @@ def ensure_checkout(worktree, remote):
     if marker.is_symlink() or not marker.is_file() or marker.read_text().strip() != "BATON-GREG-BUS-V1":
         raise RuntimeError("Missing expected private transport marker")
 
-def make_response(path, workspace, now):
+def make_response(path, workspace, now, enable_exec=False):
     req_id = path.stem
     if not NONCE.fullmatch(req_id):
         return None
@@ -64,11 +64,11 @@ def make_response(path, workspace, now):
         if path.stat().st_size > MAX_REQUEST_BYTES or path.is_symlink():
             raise ValueError("invalid request file")
         data = json.loads(path.read_text(encoding="utf-8"))
-        if not isinstance(data, dict) or set(data) != {"id","operation","created_at"}:
+        if not isinstance(data, dict) or set(data) != ({"id","operation","created_at","argv","cwd","timeout"} if data.get("operation") == "exec" else {"id","operation","created_at"}):
             raise ValueError("invalid request shape")
         if data["id"] != req_id or not isinstance(data["operation"], str):
             raise ValueError("invalid request id/operation")
-        if data["operation"] not in OPERATIONS:
+        if data["operation"] not in OPERATIONS and not (enable_exec and data["operation"] == "exec"):
             raise ValueError("operation not allowed")
         if not isinstance(data["created_at"], str):
             raise ValueError("invalid timestamp")
@@ -78,12 +78,16 @@ def make_response(path, workspace, now):
         age = (now-when.astimezone(timezone.utc)).total_seconds()
         if not (-60 <= age <= MAX_AGE):
             raise ValueError("expired or future-dated request")
-        outcome = execute(data["operation"], workspace)
+        if data["operation"] == "exec":
+            from baton_exec_agent import execute_command
+            outcome = execute_command(data["argv"], data["cwd"], data["timeout"])
+        else:
+            outcome = execute(data["operation"], workspace)
         return {"id":req_id, "operation":data["operation"], "status":"executed", "result":outcome}
     except (OSError, ValueError, TypeError, KeyError, json.JSONDecodeError) as exc:
         return {"id":req_id, "status":"rejected", "reason":type(exc).__name__}
 
-def process_pending_requests(req_dir, res_dir, workspace, now, limit=30):
+def process_pending_requests(req_dir, res_dir, workspace, now, limit=30, enable_exec=False):
     """Create bounded local receipts, skipping previously acknowledged requests."""
     if not isinstance(limit, int) or isinstance(limit, bool) or not 1 <= limit <= 100:
         raise ValueError("invalid request limit")
@@ -93,14 +97,14 @@ def process_pending_requests(req_dir, res_dir, workspace, now, limit=30):
             continue
         if count >= limit:
             break
-        response = make_response(path, workspace, now)
+        response = make_response(path, workspace, now, enable_exec=enable_exec)
         if response is None:
             continue
         (res_dir / path.name).write_text(json.dumps(response, sort_keys=True)+"\n", encoding="utf-8")
         count += 1
     return count
 
-def poll_once(worktree, remote, workspace, now=None):
+def poll_once(worktree, remote, workspace, now=None, enable_exec=False):
     now = now or datetime.now(timezone.utc)
     if not workspace.is_dir() or workspace.is_symlink():
         raise RuntimeError("Expected Baton workspace unavailable")
@@ -111,7 +115,7 @@ def poll_once(worktree, remote, workspace, now=None):
     if not req_dir.is_dir() or req_dir.is_symlink() or res_dir.is_symlink():
         raise RuntimeError("Unsafe mailbox directory")
     res_dir.mkdir(exist_ok=True)
-    count = process_pending_requests(req_dir, res_dir, workspace, now)
+    count = process_pending_requests(req_dir, res_dir, workspace, now, enable_exec=enable_exec)
     if count:
         git("add", "--", ROOT + "/responses", cwd=worktree)
         git("-c", "user.name=Baton Greg", "-c", "user.email=baton-greg@users.noreply.github.com",
@@ -126,6 +130,7 @@ def main():
     p.add_argument("--workspace", default=str(Path.home()/".local/share/baton-evening"))
     p.add_argument("--loop", action="store_true")
     p.add_argument("--interval", type=int, default=20)
+    p.add_argument("--enable-exec", action="store_true")
     args=p.parse_args()
     if not 10 <= args.interval <= 3600:
         p.error("--interval must be between 10 and 3600")
@@ -133,7 +138,7 @@ def main():
     while True:
         try:
             count=poll_once(Path(args.worktree).expanduser(),
-                            remote, Path(args.workspace).expanduser())
+                            remote, Path(args.workspace).expanduser(), enable_exec=args.enable_exec)
             print(f"Baton mailbox: {count} request(s) processed", flush=True)
         except (RuntimeError, OSError, subprocess.TimeoutExpired) as exc:
             print(f"Baton mailbox: {type(exc).__name__}: {exc}", file=sys.stderr, flush=True)
