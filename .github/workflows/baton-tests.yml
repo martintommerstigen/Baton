@@ -47,4 +47,4 @@ jobs:
       - name: Offline A-B-C simulation
         run: python3 simulate_wake_chain.py
       - name: Baton regression tests
-        run: python3 -m unittest -v test_baton.py test_security.py test_client.py test_wake_contract.py test_wake_adapter.py test_chatgpt_ui_driver.py test_chatgpt_ui_driver_marker.py test_chatgpt_ui_observation.py test_chatgpt_ui_submission.py test_run_chatgpt_wake.py test_wake_chain.py test_wake_origin.py test_run_chatgpt_wake_chain.py test_receipt_commit_order.py test_inspect_chatgpt_wake_ui.py test_wake_browser_integration.py test_wake_digest.py
+        run: python3 -m unittest -v test_baton.py test_security.py test_client.py test_wake_contract.py test_wake_adapter.py test_chatgpt_ui_driver.py test_chatgpt_ui_driver_marker.py test_chatgpt_ui_observation.py test_chatgpt_ui_submission.py test_run_chatgpt_wake.py test_wake_chain.py test_wake_origin.py test_run_chatgpt_wake_chain.py test_receipt_commit_order.py test_inspect_chatgpt_wake_ui.py test_wake_browser_integration.py test_wake_digest.py test_wake_collision.py
