@@ -17,7 +17,7 @@
     }
   ],
   "branch_count": 276,
-  "tree_indexed": 180,
+  "tree_indexed": 195,
   "content_read_in_this_inventory": 0,
   "notes": [
     "branch_date_hint is parsed from branch name, NOT verified commit date",
@@ -4633,10 +4633,24 @@
       "commit_date": null,
       "theme": "research/riss-r3-impact-boundaries-2026-11-05",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/research%2Friss-r3-impact-boundaries-2026-11-05",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 158,
+      "relevant_paths": [
+        "GTRCM_KANONISK_GRUNNPROGRAM.md",
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/kime/active_inquiry_version_space_core.py",
+        "experiments/kime/active_probe_breaks_macro_identity.py",
+        "experiments/kime/active_reset_optimal_probe_bound.py",
+        "experiments/kime/all_proper_parts_independent_matrix.py",
+        "experiments/kime/all_proper_parts_same_two_wholes.py",
+        "experiments/kime/analytic_hamiltonian_passive_nonidentifiability.py",
+        "experiments/kime/anonymous_sensor_repertoire.py"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "research/riss-r5-chatgpt-self-learning-40-pass-2026-11-05",
@@ -4645,10 +4659,24 @@
       "commit_date": null,
       "theme": "research/riss-r5-chatgpt-self-learning-40-pass-2026-11-05",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/research%2Friss-r5-chatgpt-self-learning-40-pass-2026-11-05",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 161,
+      "relevant_paths": [
+        "GTRCM_KANONISK_GRUNNPROGRAM.md",
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/kime/active_inquiry_version_space_core.py",
+        "experiments/kime/active_probe_breaks_macro_identity.py",
+        "experiments/kime/active_reset_optimal_probe_bound.py",
+        "experiments/kime/all_proper_parts_independent_matrix.py",
+        "experiments/kime/all_proper_parts_same_two_wholes.py",
+        "experiments/kime/analytic_hamiltonian_passive_nonidentifiability.py",
+        "experiments/kime/anonymous_sensor_repertoire.py"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "research/riss-r6-operativ-utledning-2026-11-05",
@@ -4657,10 +4685,24 @@
       "commit_date": null,
       "theme": "research/riss-r6-operativ-utledning-2026-11-05",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/research%2Friss-r6-operativ-utledning-2026-11-05",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 167,
+      "relevant_paths": [
+        "GTRCM_KANONISK_GRUNNPROGRAM.md",
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/kime/active_inquiry_version_space_core.py",
+        "experiments/kime/active_probe_breaks_macro_identity.py",
+        "experiments/kime/active_reset_optimal_probe_bound.py",
+        "experiments/kime/all_proper_parts_independent_matrix.py",
+        "experiments/kime/all_proper_parts_same_two_wholes.py",
+        "experiments/kime/analytic_hamiltonian_passive_nonidentifiability.py",
+        "experiments/kime/anonymous_sensor_repertoire.py"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "research/riss-r7-streng-lovseleksjon-2026-11-06",
@@ -4669,10 +4711,24 @@
       "commit_date": null,
       "theme": "research/riss-r7-streng-lovseleksjon-2026-11-06",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/research%2Friss-r7-streng-lovseleksjon-2026-11-06",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 174,
+      "relevant_paths": [
+        "GTRCM_KANONISK_GRUNNPROGRAM.md",
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/kime/active_inquiry_version_space_core.py",
+        "experiments/kime/active_probe_breaks_macro_identity.py",
+        "experiments/kime/active_reset_optimal_probe_bound.py",
+        "experiments/kime/all_proper_parts_independent_matrix.py",
+        "experiments/kime/all_proper_parts_same_two_wholes.py",
+        "experiments/kime/analytic_hamiltonian_passive_nonidentifiability.py",
+        "experiments/kime/anonymous_sensor_repertoire.py"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "research/riss-r8-gaia-planet-atmosphere-2026-11-06",
@@ -4681,10 +4737,24 @@
       "commit_date": null,
       "theme": "research/riss-r8-gaia-planet-atmosphere-2026-11-06",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/research%2Friss-r8-gaia-planet-atmosphere-2026-11-06",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 177,
+      "relevant_paths": [
+        "GTRCM_KANONISK_GRUNNPROGRAM.md",
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/kime/active_inquiry_version_space_core.py",
+        "experiments/kime/active_probe_breaks_macro_identity.py",
+        "experiments/kime/active_reset_optimal_probe_bound.py",
+        "experiments/kime/all_proper_parts_independent_matrix.py",
+        "experiments/kime/all_proper_parts_same_two_wholes.py",
+        "experiments/kime/analytic_hamiltonian_passive_nonidentifiability.py",
+        "experiments/kime/anonymous_sensor_repertoire.py"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "research/riss-r9-contact-relative-individuation-2026-11-06",
@@ -4693,10 +4763,24 @@
       "commit_date": null,
       "theme": "research/riss-r9-contact-relative-individuation-2026-11-06",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/research%2Friss-r9-contact-relative-individuation-2026-11-06",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 180,
+      "relevant_paths": [
+        "GTRCM_KANONISK_GRUNNPROGRAM.md",
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/kime/active_inquiry_version_space_core.py",
+        "experiments/kime/active_probe_breaks_macro_identity.py",
+        "experiments/kime/active_reset_optimal_probe_bound.py",
+        "experiments/kime/all_proper_parts_independent_matrix.py",
+        "experiments/kime/all_proper_parts_same_two_wholes.py",
+        "experiments/kime/analytic_hamiltonian_passive_nonidentifiability.py",
+        "experiments/kime/anonymous_sensor_repertoire.py"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "research/riss-r10-collective-constraints-2026-11-06",
@@ -4705,10 +4789,24 @@
       "commit_date": null,
       "theme": "research/riss-r10-collective-constraints-2026-11-06",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/research%2Friss-r10-collective-constraints-2026-11-06",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 187,
+      "relevant_paths": [
+        "GTRCM_KANONISK_GRUNNPROGRAM.md",
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/kime/active_inquiry_version_space_core.py",
+        "experiments/kime/active_probe_breaks_macro_identity.py",
+        "experiments/kime/active_reset_optimal_probe_bound.py",
+        "experiments/kime/all_proper_parts_independent_matrix.py",
+        "experiments/kime/all_proper_parts_same_two_wholes.py",
+        "experiments/kime/analytic_hamiltonian_passive_nonidentifiability.py",
+        "experiments/kime/anonymous_sensor_repertoire.py"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "research/riss-r11-actual-particle-gauge-physics-2026-11-06",
@@ -4717,10 +4815,24 @@
       "commit_date": null,
       "theme": "research/riss-r11-actual-particle-gauge-physics-2026-11-06",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/research%2Friss-r11-actual-particle-gauge-physics-2026-11-06",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 193,
+      "relevant_paths": [
+        "GTRCM_KANONISK_GRUNNPROGRAM.md",
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/kime/active_inquiry_version_space_core.py",
+        "experiments/kime/active_probe_breaks_macro_identity.py",
+        "experiments/kime/active_reset_optimal_probe_bound.py",
+        "experiments/kime/all_proper_parts_independent_matrix.py",
+        "experiments/kime/all_proper_parts_same_two_wholes.py",
+        "experiments/kime/analytic_hamiltonian_passive_nonidentifiability.py",
+        "experiments/kime/anonymous_sensor_repertoire.py"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "research/riss-r12-anomaly-charge-quantization-2026-11-06",
@@ -4729,10 +4841,24 @@
       "commit_date": null,
       "theme": "research/riss-r12-anomaly-charge-quantization-2026-11-06",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/research%2Friss-r12-anomaly-charge-quantization-2026-11-06",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 195,
+      "relevant_paths": [
+        "GTRCM_KANONISK_GRUNNPROGRAM.md",
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/kime/active_inquiry_version_space_core.py",
+        "experiments/kime/active_probe_breaks_macro_identity.py",
+        "experiments/kime/active_reset_optimal_probe_bound.py",
+        "experiments/kime/all_proper_parts_independent_matrix.py",
+        "experiments/kime/all_proper_parts_same_two_wholes.py",
+        "experiments/kime/analytic_hamiltonian_passive_nonidentifiability.py",
+        "experiments/kime/anonymous_sensor_repertoire.py"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "research/riss-r12-leptonic-calibration-2026-11-07",
@@ -4741,10 +4867,24 @@
       "commit_date": null,
       "theme": "research/riss-r12-leptonic-calibration-2026-11-07",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/research%2Friss-r12-leptonic-calibration-2026-11-07",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 198,
+      "relevant_paths": [
+        "GTRCM_KANONISK_GRUNNPROGRAM.md",
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/kime/active_inquiry_version_space_core.py",
+        "experiments/kime/active_probe_breaks_macro_identity.py",
+        "experiments/kime/active_reset_optimal_probe_bound.py",
+        "experiments/kime/all_proper_parts_independent_matrix.py",
+        "experiments/kime/all_proper_parts_same_two_wholes.py",
+        "experiments/kime/analytic_hamiltonian_passive_nonidentifiability.py",
+        "experiments/kime/anonymous_sensor_repertoire.py"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "research/riss-r13-chiral-access-and-anomaly-2026-11-07",
@@ -4753,10 +4893,24 @@
       "commit_date": null,
       "theme": "research/riss-r13-chiral-access-and-anomaly-2026-11-07",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/research%2Friss-r13-chiral-access-and-anomaly-2026-11-07",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 201,
+      "relevant_paths": [
+        "GTRCM_KANONISK_GRUNNPROGRAM.md",
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/kime/active_inquiry_version_space_core.py",
+        "experiments/kime/active_probe_breaks_macro_identity.py",
+        "experiments/kime/active_reset_optimal_probe_bound.py",
+        "experiments/kime/all_proper_parts_independent_matrix.py",
+        "experiments/kime/all_proper_parts_same_two_wholes.py",
+        "experiments/kime/analytic_hamiltonian_passive_nonidentifiability.py",
+        "experiments/kime/anonymous_sensor_repertoire.py"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "research/riss-r14-vev-crosscheck-2026-11-07",
@@ -4765,10 +4919,24 @@
       "commit_date": null,
       "theme": "research/riss-r14-vev-crosscheck-2026-11-07",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/research%2Friss-r14-vev-crosscheck-2026-11-07",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 203,
+      "relevant_paths": [
+        "GTRCM_KANONISK_GRUNNPROGRAM.md",
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/kime/active_inquiry_version_space_core.py",
+        "experiments/kime/active_probe_breaks_macro_identity.py",
+        "experiments/kime/active_reset_optimal_probe_bound.py",
+        "experiments/kime/all_proper_parts_independent_matrix.py",
+        "experiments/kime/all_proper_parts_same_two_wholes.py",
+        "experiments/kime/analytic_hamiltonian_passive_nonidentifiability.py",
+        "experiments/kime/anonymous_sensor_repertoire.py"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "research/riss-r15-child-questions-physics-2026-11-07",
@@ -4777,10 +4945,24 @@
       "commit_date": null,
       "theme": "research/riss-r15-child-questions-physics-2026-11-07",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/research%2Friss-r15-child-questions-physics-2026-11-07",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 210,
+      "relevant_paths": [
+        "GTRCM_KANONISK_GRUNNPROGRAM.md",
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/kime/active_inquiry_version_space_core.py",
+        "experiments/kime/active_probe_breaks_macro_identity.py",
+        "experiments/kime/active_reset_optimal_probe_bound.py",
+        "experiments/kime/all_proper_parts_independent_matrix.py",
+        "experiments/kime/all_proper_parts_same_two_wholes.py",
+        "experiments/kime/analytic_hamiltonian_passive_nonidentifiability.py",
+        "experiments/kime/anonymous_sensor_repertoire.py"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "research/riss-r16-operative-holonomy-2026-11-07",
@@ -4789,10 +4971,24 @@
       "commit_date": null,
       "theme": "research/riss-r16-operative-holonomy-2026-11-07",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/research%2Friss-r16-operative-holonomy-2026-11-07",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 216,
+      "relevant_paths": [
+        "GTRCM_KANONISK_GRUNNPROGRAM.md",
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/kime/active_inquiry_version_space_core.py",
+        "experiments/kime/active_probe_breaks_macro_identity.py",
+        "experiments/kime/active_reset_optimal_probe_bound.py",
+        "experiments/kime/all_proper_parts_independent_matrix.py",
+        "experiments/kime/all_proper_parts_same_two_wholes.py",
+        "experiments/kime/analytic_hamiltonian_passive_nonidentifiability.py",
+        "experiments/kime/anonymous_sensor_repertoire.py"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "research/riss-r17-lodd-contact-meter-2026-11-07",
@@ -4801,10 +4997,24 @@
       "commit_date": null,
       "theme": "research/riss-r17-lodd-contact-meter-2026-11-07",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/research%2Friss-r17-lodd-contact-meter-2026-11-07",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 221,
+      "relevant_paths": [
+        "GTRCM_KANONISK_GRUNNPROGRAM.md",
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/kime/active_inquiry_version_space_core.py",
+        "experiments/kime/active_probe_breaks_macro_identity.py",
+        "experiments/kime/active_reset_optimal_probe_bound.py",
+        "experiments/kime/all_proper_parts_independent_matrix.py",
+        "experiments/kime/all_proper_parts_same_two_wholes.py",
+        "experiments/kime/analytic_hamiltonian_passive_nonidentifiability.py",
+        "experiments/kime/anonymous_sensor_repertoire.py"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "research/riss-r18-lodd-operativ-holonomi-2026-11-07",
