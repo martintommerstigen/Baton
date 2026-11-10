@@ -3,6 +3,7 @@ on:
   push:
     paths:
       - 'remote_security/**'
+      - 'deploy/systemd/**'
       - 'tests/test_remote_*.py'
       - 'tests/test_pause_guard.py'
       - 'tests/test_http_*.py'
@@ -11,6 +12,7 @@ on:
   pull_request:
     paths:
       - 'remote_security/**'
+      - 'deploy/systemd/**'
       - 'tests/test_remote_*.py'
       - 'tests/test_pause_guard.py'
       - 'tests/test_http_*.py'
