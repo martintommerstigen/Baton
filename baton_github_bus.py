@@ -83,6 +83,23 @@ def make_response(path, workspace, now):
     except (OSError, ValueError, TypeError, KeyError, json.JSONDecodeError) as exc:
         return {"id":req_id, "status":"rejected", "reason":type(exc).__name__}
 
+def process_pending_requests(req_dir, res_dir, workspace, now, limit=30):
+    """Create bounded local receipts, skipping previously acknowledged requests."""
+    if not isinstance(limit, int) or isinstance(limit, bool) or not 1 <= limit <= 100:
+        raise ValueError("invalid request limit")
+    count = 0
+    for path in sorted(req_dir.glob("*.json")):
+        if not NONCE.fullmatch(path.stem) or (res_dir / path.name).exists():
+            continue
+        if count >= limit:
+            break
+        response = make_response(path, workspace, now)
+        if response is None:
+            continue
+        (res_dir / path.name).write_text(json.dumps(response, sort_keys=True)+"\n", encoding="utf-8")
+        count += 1
+    return count
+
 def poll_once(worktree, remote, workspace, now=None):
     now = now or datetime.now(timezone.utc)
     if not workspace.is_dir() or workspace.is_symlink():
@@ -94,18 +111,7 @@ def poll_once(worktree, remote, workspace, now=None):
     if not req_dir.is_dir() or req_dir.is_symlink() or res_dir.is_symlink():
         raise RuntimeError("Unsafe mailbox directory")
     res_dir.mkdir(exist_ok=True)
-    count = 0
-    # Bound the number of *new* requests, not the first 30 historical filenames.\n    # Otherwise old acknowledged requests can starve later requests forever.
-    for path in sorted(req_dir.glob("*.json")):
-        if not NONCE.fullmatch(path.stem) or (res_dir / path.name).exists():
-            continue
-        if count >= 30:
-            break
-        response = make_response(path, workspace, now)
-        if response is None:
-            continue
-        (res_dir / path.name).write_text(json.dumps(response, sort_keys=True)+"\n", encoding="utf-8")
-        count += 1
+    count = process_pending_requests(req_dir, res_dir, workspace, now)
     if count:
         git("add", "--", ROOT + "/responses", cwd=worktree)
         git("-c", "user.name=Baton Greg", "-c", "user.email=baton-greg@users.noreply.github.com",
