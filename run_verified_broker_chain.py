@@ -78,6 +78,7 @@ def run_verified_chain(ledger, driver_a, driver_b, driver_c, *,
         raise ValueError("Invalid observation window")
 
     snapshots = TurnSnapshotStore(ledger)
+    snapshots.assert_chain_not_invalidated(second_id)
     first = execute_once(
         ledger, driver_a, CapturingTarget(driver_b, snapshots, first_id), a, b, source_turn_id,
         first_id, first_body, broker_request, wait_seconds,
@@ -126,9 +127,18 @@ def run_verified_chain(ledger, driver_a, driver_b, driver_c, *,
     outcome["b_to_c"] = second
     outcome["b_to_c_receipt"] = _receipt(ledger, second_id)
     if second == "verified":
-        # The second hop also needs a byte-bound first observation, not just
-        # a DOM turn ID. A post-observation mutation cannot be live proof.
-        snap_c = verify_current_reply(ledger, snapshots, driver_c, second_id, c)
+        # A valid B turn before broker admission does not prove it remained
+        # unchanged while C was clicked and answered. Recheck BOTH sources
+        # after the C observation, without claiming an atomic DOM transaction.
+        # A contradiction is persisted separately: the delivery receipt may
+        # remain verified, but must never be promoted into chain proof.
+        try:
+            verify_current_b_turn(ledger, snapshots, driver_b, first_id, b, c)
+            snap_c = verify_current_reply(ledger, snapshots, driver_c, second_id, c)
+            verify_current_b_turn(ledger, snapshots, driver_b, first_id, b, c)
+        except Exception:
+            snapshots.invalidate_chain(second_id)
+            raise
         outcome["c_reply_snapshot"] = {
             "chat": snap_c.chat, "turn_id": snap_c.turn_id,
             "text_sha256": snap_c.text_sha256, "extractor": snap_c.extractor,
