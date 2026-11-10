@@ -147,6 +147,28 @@ class BrokerUITests(unittest.TestCase):
         self.assertEqual(self.page.send.clicks, 0)
         self.assertEqual(len(self.calls), 1)
 
+    def test_negative_pause_at_click_boundary_is_not_atomic(self):
+        # NEG already anticipated by PR #17: a noncooperating pause writer can
+        # race after the final check. This passing test proves a limitation.
+        def pause_during_click():
+            self.pause.write_text("paused after last check")
+            self.page.send.clicks += 1
+        self.page.send.click = pause_during_click
+        self.gated().submit_once(CID, "msg-1", "hello")
+        self.assertEqual(self.state(), "uncertain")
+        self.assertTrue(self.pause.exists())
+        self.assertEqual(self.page.send.clicks, 1)  # NOT an atomic pause gate
+
+    def test_negative_forged_broker_success_is_not_durable_evidence(self):
+        # NEG already reported by Ronja B5: without peer authentication a
+        # fabricated successful response can permit a click with no DB entry.
+        def impostor(request):
+            return {"state": "admitted_not_delivered"} if request["op"] == "admit" else {
+                "state": "click_started_uncertain"}
+        self.gated(impostor).submit_once(CID, "msg-1", "hello")
+        self.assertIsNone(self.state())  # no durable broker admission exists
+        self.assertEqual(self.page.send.clicks, 1)  # insecure if unverified
+
     def test_missing_broker_callback_is_rejected(self):
         with self.assertRaises(TypeError):
             BrokerGatedUIDriver(self.ui, None, "chat-A", "observed-turn-A")
