@@ -1,6 +1,8 @@
 """B1/B5 negative tests for unsafe shared host-lock path aliases."""
 from pathlib import Path
 import tempfile
+import fcntl
+from unittest.mock import patch
 import unittest
 from wake_ui_lock import ui_controller_lock
 
@@ -35,6 +37,21 @@ class LockPathTests(unittest.TestCase):
                 with self.subTest(path=str(lock)), self.assertRaises(PermissionError):
                     with ui_controller_lock(lock):
                         self.fail('must reject unsafe lock path')
+
+    def test_inode_replaced_during_lock_acquisition_is_rejected(self):
+        with tempfile.TemporaryDirectory() as d:
+            lock = Path(d) / 'private' / 'lock'
+            lock.parent.mkdir(mode=0o700)
+            real_flock = fcntl.flock
+            def replace_after_lock(fd, operation):
+                real_flock(fd, operation)
+                if operation == fcntl.LOCK_EX | fcntl.LOCK_NB:
+                    lock.unlink()
+                    lock.touch(mode=0o600)
+            with patch('wake_ui_lock.fcntl.flock', side_effect=replace_after_lock):
+                with self.assertRaises(PermissionError):
+                    with ui_controller_lock(lock):
+                        self.fail('replaced inode must not authorize UI')
 
     def test_valid_lock_still_acquires(self):
         with tempfile.TemporaryDirectory() as d:
