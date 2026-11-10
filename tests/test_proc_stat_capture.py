@@ -153,6 +153,27 @@ class ProcStatCaptureTests(unittest.TestCase):
             with self.assertRaises(JobRejected):
                 capture_once(restarted, "GTRCM", "crash001")
 
+    def test_pr20_b5_peer_interface_and_research_job_op_separation(self):
+        # Compared to B1 PR #20 run_verified_broker_wake.py at fb49b636.
+        # B1 passes its envelope positionally and requires distinct UID.
+        import inspect
+        from remote_security.broker_peer import query_verified_broker
+        sig = inspect.signature(query_verified_broker)
+        self.assertEqual(list(sig.parameters)[:3],
+                         ["socket_path", "expected_uid", "request"])
+        self.assertEqual(sig.parameters["require_distinct_uid"].default, True)
+        self.assertEqual(sig.parameters["timeout"].default, 3.0)
+        digest = hashlib.sha256(RAW).hexdigest()
+        for forbidden in ("admit", "begin_click", "shell", "browser"):
+            request = {"project": "GTRCM", "job_id": "forbid001",
+                       "command": forbidden, "input_sha256": digest}
+            with self.subTest(command=forbidden), self.assertRaises(JobRejected):
+                self.jobs.run_once(request, RAW)
+        with self.assertRaises(JobRejected):
+            self.jobs.run_once({"op": "begin_click", "project": "GTRCM"}, RAW)
+        self.assertEqual(self.jobs.audit("GTRCM", "forbid001")["state"],
+                         "not_found_not_proof_of_nonexecution")
+
     def test_pr20_contract_no_ui_or_broker_side_effect(self):
         # PR #20 B1 only authorizes UI via verified admit/begin_click.
         # This B5 read-only job never invokes either operation.
