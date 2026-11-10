@@ -72,7 +72,7 @@ class ChatGPTUIDriver:
         self._check(conversation_id)
         marker = marker_for(message_id)
         if not isinstance(body, str) or not body.strip():
-            raise PreSubmissionRejected("Nonempty body required before UI submission")
+            raise ValueError("Nonempty body required")
         if self.page.locator('[data-message-author-role="user"]').filter(has_text=marker).count():
             raise PreexistingWakeMarker("Marker already present before UI submission; collision")
         editor = self.page.locator("#prompt-textarea")
