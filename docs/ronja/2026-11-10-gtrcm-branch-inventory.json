@@ -17,7 +17,7 @@
     }
   ],
   "branch_count": 276,
-  "tree_indexed": 225,
+  "tree_indexed": 240,
   "content_read_in_this_inventory": 0,
   "notes": [
     "branch_date_hint is parsed from branch name, NOT verified commit date",
@@ -5799,10 +5799,24 @@
       "commit_date": null,
       "theme": "research/vanja-r20-two-ledger-audit-backaction-2026-11-10",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/research%2Fvanja-r20-two-ledger-audit-backaction-2026-11-10",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 66,
+      "relevant_paths": [
+        "GTRCM_KANONISK_GRUNNPROGRAM.md",
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/microfluctuation_mass_gravity/README.md",
+        "experiments/microfluctuation_mass_gravity/falsify_shared_density.py",
+        "experiments/microfluctuation_mass_gravity/model.py",
+        "experiments/vanja/2026-10-26_common_action_dynamic_kink.py",
+        "experiments/vanja/2026-10-26_flrw_schwarzschild_junction_no_shell.py",
+        "experiments/vanja/2026-10-26_iben_h2_hidden_phase_embedding.py",
+        "experiments/vanja/2026-10-26_iben_kaja_bridge_change_cost.py"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "research/vanja-r21-graded-audit-backaction-2026-11-10",
@@ -5811,10 +5825,24 @@
       "commit_date": null,
       "theme": "research/vanja-r21-graded-audit-backaction-2026-11-10",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/research%2Fvanja-r21-graded-audit-backaction-2026-11-10",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 71,
+      "relevant_paths": [
+        "GTRCM_KANONISK_GRUNNPROGRAM.md",
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/microfluctuation_mass_gravity/README.md",
+        "experiments/microfluctuation_mass_gravity/falsify_shared_density.py",
+        "experiments/microfluctuation_mass_gravity/model.py",
+        "experiments/vanja/2026-10-26_common_action_dynamic_kink.py",
+        "experiments/vanja/2026-10-26_flrw_schwarzschild_junction_no_shell.py",
+        "experiments/vanja/2026-10-26_iben_h2_hidden_phase_embedding.py",
+        "experiments/vanja/2026-10-26_iben_kaja_bridge_change_cost.py"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "research/vanja-r22-adaptive-buffer-calibration-2026-11-10",
@@ -5823,10 +5851,24 @@
       "commit_date": null,
       "theme": "research/vanja-r22-adaptive-buffer-calibration-2026-11-10",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/research%2Fvanja-r22-adaptive-buffer-calibration-2026-11-10",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 77,
+      "relevant_paths": [
+        "GTRCM_KANONISK_GRUNNPROGRAM.md",
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/microfluctuation_mass_gravity/README.md",
+        "experiments/microfluctuation_mass_gravity/falsify_shared_density.py",
+        "experiments/microfluctuation_mass_gravity/model.py",
+        "experiments/vanja/2026-10-26_common_action_dynamic_kink.py",
+        "experiments/vanja/2026-10-26_flrw_schwarzschild_junction_no_shell.py",
+        "experiments/vanja/2026-10-26_iben_h2_hidden_phase_embedding.py",
+        "experiments/vanja/2026-10-26_iben_kaja_bridge_change_cost.py"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "research/vanja-r23-witness-calibration-transport-2026-11-10",
@@ -5835,10 +5877,24 @@
       "commit_date": null,
       "theme": "research/vanja-r23-witness-calibration-transport-2026-11-10",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/research%2Fvanja-r23-witness-calibration-transport-2026-11-10",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 84,
+      "relevant_paths": [
+        "GTRCM_KANONISK_GRUNNPROGRAM.md",
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/microfluctuation_mass_gravity/README.md",
+        "experiments/microfluctuation_mass_gravity/falsify_shared_density.py",
+        "experiments/microfluctuation_mass_gravity/model.py",
+        "experiments/vanja/2026-10-26_common_action_dynamic_kink.py",
+        "experiments/vanja/2026-10-26_flrw_schwarzschild_junction_no_shell.py",
+        "experiments/vanja/2026-10-26_iben_h2_hidden_phase_embedding.py",
+        "experiments/vanja/2026-10-26_iben_kaja_bridge_change_cost.py"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "research/vanja-r24-latent-contact-anchor-2026-11-10",
@@ -5847,10 +5903,24 @@
       "commit_date": null,
       "theme": "research/vanja-r24-latent-contact-anchor-2026-11-10",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/research%2Fvanja-r24-latent-contact-anchor-2026-11-10",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 90,
+      "relevant_paths": [
+        "GTRCM_KANONISK_GRUNNPROGRAM.md",
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/microfluctuation_mass_gravity/README.md",
+        "experiments/microfluctuation_mass_gravity/falsify_shared_density.py",
+        "experiments/microfluctuation_mass_gravity/model.py",
+        "experiments/vanja/2026-10-26_common_action_dynamic_kink.py",
+        "experiments/vanja/2026-10-26_flrw_schwarzschild_junction_no_shell.py",
+        "experiments/vanja/2026-10-26_iben_h2_hidden_phase_embedding.py",
+        "experiments/vanja/2026-10-26_iben_kaja_bridge_change_cost.py"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "research/vanja-r25-selection-amplification-2026-11-10",
@@ -5859,10 +5929,24 @@
       "commit_date": null,
       "theme": "research/vanja-r25-selection-amplification-2026-11-10",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/research%2Fvanja-r25-selection-amplification-2026-11-10",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 96,
+      "relevant_paths": [
+        "GTRCM_KANONISK_GRUNNPROGRAM.md",
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/microfluctuation_mass_gravity/README.md",
+        "experiments/microfluctuation_mass_gravity/falsify_shared_density.py",
+        "experiments/microfluctuation_mass_gravity/model.py",
+        "experiments/vanja/2026-10-26_common_action_dynamic_kink.py",
+        "experiments/vanja/2026-10-26_flrw_schwarzschild_junction_no_shell.py",
+        "experiments/vanja/2026-10-26_iben_h2_hidden_phase_embedding.py",
+        "experiments/vanja/2026-10-26_iben_kaja_bridge_change_cost.py"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "research/vev-operativ-perspektiv-2026-11-07",
@@ -5871,10 +5955,23 @@
       "commit_date": null,
       "theme": "research/vev-operativ-perspektiv-2026-11-07",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/research%2Fvev-operativ-perspektiv-2026-11-07",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 19,
+      "relevant_paths": [
+        "GTRCM_KANONISK_GRUNNPROGRAM.md",
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/microfluctuation_mass_gravity/README.md",
+        "experiments/microfluctuation_mass_gravity/falsify_shared_density.py",
+        "experiments/microfluctuation_mass_gravity/model.py",
+        "research/vev/2026-11-07_VEV_CORE_CONTINUITY_ABLATION.md",
+        "research/vev/2026-11-07_VEV_OPERATIVT_PERSPEKTIV.md",
+        "research/vev/2026-11-07_VEV_RUSTWORLD_OFFLINE_CONTINUITY_TEST.md"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "research/2026-10-21-clock-drift-gap",
@@ -5883,10 +5980,24 @@
       "commit_date": null,
       "theme": "research/2026-10-21-clock-drift-gap",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/research%2F2026-10-21-clock-drift-gap",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 59,
+      "relevant_paths": [
+        "GTRCM_HELHET/README.md",
+        "README.md",
+        "experiments/dwell_drift_2026_10_21/verify.py",
+        "experiments/dwell_drift_2026_10_21/verify_metric.py",
+        "source/Dokumenter/GTRCM/Binance_BTCUSDT_1h.csv",
+        "source/Dokumenter/GTRCM/GTRCM_CUBIC_QUINTIC_GPU_LANDSCAPE.py",
+        "source/Dokumenter/GTRCM/GTRCM_Full_pipelinesweep.py",
+        "source/Dokumenter/GTRCM/GTRCM_GPU_PHASE_SWEEP.py",
+        "source/Dokumenter/GTRCM/GTRCM_ISOTROPY_ATTRACTOR_TEST.py",
+        "source/Dokumenter/GTRCM/GTRCM_RG_FLOW_OBSERVATORY_GPU.py",
+        "source/Dokumenter/GTRCM/GTRCM_UNIVERSALITY_LAB_GPU.py",
+        "source/Dokumenter/GTRCM/data.csv"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "reviews/independent-gaia-audit-blindspot-2026-11-03",
@@ -5895,10 +6006,24 @@
       "commit_date": null,
       "theme": "reviews/independent-gaia-audit-blindspot-2026-11-03",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/reviews%2Findependent-gaia-audit-blindspot-2026-11-03",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 20,
+      "relevant_paths": [
+        "GTRCM_KANONISK_GRUNNPROGRAM.md",
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/gaia_self_influence/independent_review_2026_11_03/counterexample.py",
+        "experiments/gaia_self_influence/operativ_selvpaavirkning.py",
+        "experiments/microfluctuation_mass_gravity/README.md",
+        "experiments/microfluctuation_mass_gravity/falsify_shared_density.py",
+        "experiments/microfluctuation_mass_gravity/model.py",
+        "research/gaia/2026-11-02_GAIA_OPERATIV_SELVPAVIRKNING.md",
+        "research/gaia/2026-11-03_UAVHENGIG_PR12_KONTROLL.md"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "ronja/omverden-agentkontakt-2026-10-26",
@@ -5907,10 +6032,24 @@
       "commit_date": null,
       "theme": "ronja/omverden-agentkontakt-2026-10-26",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/ronja%2Fomverden-agentkontakt-2026-10-26",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 55,
+      "relevant_paths": [
+        "GTRCM_KANONISK_GRUNNPROGRAM.md",
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/microfluctuation_mass_gravity/README.md",
+        "experiments/microfluctuation_mass_gravity/falsify_shared_density.py",
+        "experiments/microfluctuation_mass_gravity/model.py",
+        "experiments/ronja/2026-10-27_dirac_walk_cross_probe.py",
+        "experiments/ronja/2026-10-27_inger_lise_dynamic_spectral_sumrule.py",
+        "experiments/ronja/2026-10-27_isoresponse_hidden_spectra.py",
+        "experiments/ronja/2026-10-27_quantum_walk_u1_holonomy.py"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "selje/gtrcm-observer-inside-full-physics-audit-2026-10-27",
@@ -5919,10 +6058,24 @@
       "commit_date": null,
       "theme": "selje/gtrcm-observer-inside-full-physics-audit-2026-10-27",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/selje%2Fgtrcm-observer-inside-full-physics-audit-2026-10-27",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 38,
+      "relevant_paths": [
+        "GTRCM_KANONISK_GRUNNPROGRAM.md",
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/microfluctuation_mass_gravity/README.md",
+        "experiments/microfluctuation_mass_gravity/falsify_shared_density.py",
+        "experiments/microfluctuation_mass_gravity/model.py",
+        "research/selje/2026-10-27_full_physics_observer_in_reality/INGER_LISE_MEGSK_READING.md",
+        "research/selje/2026-10-27_full_physics_observer_in_reality/SELJE_FULL_PHYSICS_AUDIT.md",
+        "research/selje/2026-10-27_full_physics_observer_in_reality/SELJE_PROCESSES_BEFORE_ROLES.md",
+        "research/selje/2026-10-27_full_physics_observer_in_reality/SELJE_RELATIONAL_DIFFERENTIATION_DERIVATION.md"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "selje/needs-memory-upbringing-2026-10-27",
@@ -5931,10 +6084,24 @@
       "commit_date": null,
       "theme": "selje/needs-memory-upbringing-2026-10-27",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/selje%2Fneeds-memory-upbringing-2026-10-27",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 36,
+      "relevant_paths": [
+        "GTRCM_KANONISK_GRUNNPROGRAM.md",
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/microfluctuation_mass_gravity/README.md",
+        "experiments/microfluctuation_mass_gravity/falsify_shared_density.py",
+        "experiments/microfluctuation_mass_gravity/model.py",
+        "experiments/selje_learning_ecology/INTERNAL_OBSERVER_CORRECTION.md",
+        "experiments/selje_learning_ecology/README_FINDINGS.md",
+        "experiments/selje_learning_ecology/RESEARCH_HANDOFF.md",
+        "experiments/selje_learning_ecology/curriculum_cost_gpu.py"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "selje/physical-law-selection-embedded-observer-2026-10-28",
@@ -5943,10 +6110,24 @@
       "commit_date": null,
       "theme": "selje/physical-law-selection-embedded-observer-2026-10-28",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/selje%2Fphysical-law-selection-embedded-observer-2026-10-28",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 77,
+      "relevant_paths": [
+        "GTRCM_KANONISK_GRUNNPROGRAM.md",
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/microfluctuation_mass_gravity/README.md",
+        "experiments/microfluctuation_mass_gravity/falsify_shared_density.py",
+        "experiments/microfluctuation_mass_gravity/model.py",
+        "research/selje/2026-10-28_law_selection/2026_10_28_access_mobility_pareto.py",
+        "research/selje/2026-10-28_law_selection/2026_10_28_access_mobility_pareto_results.json",
+        "research/selje/2026-10-28_law_selection/2026_10_28_clock_calibration_holonomy.py",
+        "research/selje/2026-10-28_law_selection/2026_10_28_clock_calibration_holonomy_results.json"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "selje/truls-embedded-law-selection-2026-10-28",
@@ -5955,10 +6136,24 @@
       "commit_date": null,
       "theme": "selje/truls-embedded-law-selection-2026-10-28",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/selje%2Ftruls-embedded-law-selection-2026-10-28",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 32,
+      "relevant_paths": [
+        "GTRCM_KANONISK_GRUNNPROGRAM.md",
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/microfluctuation_mass_gravity/README.md",
+        "experiments/microfluctuation_mass_gravity/falsify_shared_density.py",
+        "experiments/microfluctuation_mass_gravity/model.py",
+        "research/selje/2026-10-28_truls_embedded_meter/RESEARCH_DERIVATION.md",
+        "research/selje/2026-10-28_truls_embedded_meter/truls_access_causal_bound.py",
+        "research/selje/2026-10-28_truls_embedded_meter/truls_access_causal_bound_results.json",
+        "research/selje/2026-10-28_truls_embedded_meter/truls_embedded_meter_selection.py"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "sigrid/probe-og-videreforing-2026-10-13",
@@ -5967,10 +6162,24 @@
       "commit_date": null,
       "theme": "sigrid/probe-og-videreforing-2026-10-13",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/sigrid%2Fprobe-og-videreforing-2026-10-13",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 147,
+      "relevant_paths": [
+        "GTRCM_HELHET/README.md",
+        "README.md",
+        "experiments/gtrcm_bridge_iterations/README.md",
+        "experiments/gtrcm_bridge_iterations/gtrcm_iterations.py",
+        "experiments/gtrcm_bridge_iterations/results.json",
+        "experiments/gtrcm_composition/README.md",
+        "experiments/gtrcm_composition/gtrcm_composition.py",
+        "experiments/gtrcm_composition/results.json",
+        "experiments/gtrcm_geometry/README.md",
+        "experiments/gtrcm_geometry/gtrcm_geometry.py",
+        "experiments/gtrcm_geometry/gtrcm_metric_audit.py",
+        "experiments/gtrcm_geometry/metric_results.json"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "soelve/individuasjon-subjekt-opplevelse-2026-10-31",
