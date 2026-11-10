@@ -17,7 +17,7 @@
     }
   ],
   "branch_count": 276,
-  "tree_indexed": 45,
+  "tree_indexed": 60,
   "content_read_in_this_inventory": 0,
   "notes": [
     "branch_date_hint is parsed from branch name, NOT verified commit date",
@@ -1171,10 +1171,24 @@
       "commit_date": null,
       "theme": "integration/andreas-g24-journaled-temporal-continuity-2026-11-04",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/integration%2Fandreas-g24-journaled-temporal-continuity-2026-11-04",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 83,
+      "relevant_paths": [
+        "GTRCM_KANONISK_GRUNNPROGRAM.md",
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/falkor/r67_correction_core.py",
+        "experiments/falkor/r70_g5_inquiry_e2e.py",
+        "experiments/falkor/r71_snapshot_continuity_e2e.py",
+        "experiments/falkor/r71_unverified_source_negative.py",
+        "experiments/falkor/r72_discriminating_inquiry_e2e.py",
+        "experiments/falkor/r72_real_noaa_audits_e2e.py",
+        "experiments/microfluctuation_mass_gravity/README.md"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "integration/andreas-g27-core-owned-temporal-inquiry-2026-11-04",
@@ -1183,10 +1197,24 @@
       "commit_date": null,
       "theme": "integration/andreas-g27-core-owned-temporal-inquiry-2026-11-04",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/integration%2Fandreas-g27-core-owned-temporal-inquiry-2026-11-04",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 84,
+      "relevant_paths": [
+        "GTRCM_KANONISK_GRUNNPROGRAM.md",
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/falkor/r67_correction_core.py",
+        "experiments/falkor/r70_g5_inquiry_e2e.py",
+        "experiments/falkor/r71_snapshot_continuity_e2e.py",
+        "experiments/falkor/r71_unverified_source_negative.py",
+        "experiments/falkor/r72_discriminating_inquiry_e2e.py",
+        "experiments/falkor/r72_real_noaa_audits_e2e.py",
+        "experiments/microfluctuation_mass_gravity/README.md"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "integration/andreas-g29-channel-dependency-rustworld-2026-11-04",
@@ -1195,10 +1223,24 @@
       "commit_date": null,
       "theme": "integration/andreas-g29-channel-dependency-rustworld-2026-11-04",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/integration%2Fandreas-g29-channel-dependency-rustworld-2026-11-04",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 86,
+      "relevant_paths": [
+        "GTRCM_KANONISK_GRUNNPROGRAM.md",
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/falkor/r67_correction_core.py",
+        "experiments/falkor/r70_g5_inquiry_e2e.py",
+        "experiments/falkor/r71_snapshot_continuity_e2e.py",
+        "experiments/falkor/r71_unverified_source_negative.py",
+        "experiments/falkor/r72_discriminating_inquiry_e2e.py",
+        "experiments/falkor/r72_real_noaa_audits_e2e.py",
+        "experiments/microfluctuation_mass_gravity/README.md"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "integration/roger-r35-core-owned-active-inquiry-2026-11-03",
@@ -1207,10 +1249,24 @@
       "commit_date": null,
       "theme": "integration/roger-r35-core-owned-active-inquiry-2026-11-03",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/integration%2Froger-r35-core-owned-active-inquiry-2026-11-03",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 71,
+      "relevant_paths": [
+        "GTRCM_KANONISK_GRUNNPROGRAM.md",
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/falkor/r67_correction_core.py",
+        "experiments/falkor/r70_g5_inquiry_e2e.py",
+        "experiments/falkor/r71_snapshot_continuity_e2e.py",
+        "experiments/falkor/r71_unverified_source_negative.py",
+        "experiments/falkor/r72_discriminating_inquiry_e2e.py",
+        "experiments/falkor/r72_real_noaa_audits_e2e.py",
+        "experiments/microfluctuation_mass_gravity/README.md"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "integration/roger-r36-physical-noaa-witness-2026-11-03",
@@ -1219,10 +1275,24 @@
       "commit_date": null,
       "theme": "integration/roger-r36-physical-noaa-witness-2026-11-03",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/integration%2Froger-r36-physical-noaa-witness-2026-11-03",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 78,
+      "relevant_paths": [
+        "GTRCM_KANONISK_GRUNNPROGRAM.md",
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/falkor/r67_correction_core.py",
+        "experiments/falkor/r70_g5_inquiry_e2e.py",
+        "experiments/falkor/r71_snapshot_continuity_e2e.py",
+        "experiments/falkor/r71_unverified_source_negative.py",
+        "experiments/falkor/r72_discriminating_inquiry_e2e.py",
+        "experiments/falkor/r72_real_noaa_audits_e2e.py",
+        "experiments/microfluctuation_mass_gravity/README.md"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "kaja/arkiv-hukommelse-gjensidighet-2026-10-18",
@@ -1231,10 +1301,24 @@
       "commit_date": null,
       "theme": "kaja/arkiv-hukommelse-gjensidighet-2026-10-18",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/kaja%2Farkiv-hukommelse-gjensidighet-2026-10-18",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 36,
+      "relevant_paths": [
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/kaja_katteluka_gentle_probe/README.md",
+        "experiments/kaja_katteluka_gentle_probe/kaja_katteluka_probe.py",
+        "experiments/kaja_probevekst/README.md",
+        "experiments/kaja_probevekst/probevekst.py",
+        "experiments/kaja_virksom_historie/README.md",
+        "experiments/kaja_virksom_historie/virksom_historie.py",
+        "experiments/microfluctuation_mass_gravity/README.md",
+        "experiments/microfluctuation_mass_gravity/falsify_shared_density.py"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "kaja/arkivets-begrepsgrense-2026-10-18",
@@ -1243,10 +1327,24 @@
       "commit_date": null,
       "theme": "kaja/arkivets-begrepsgrense-2026-10-18",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/kaja%2Farkivets-begrepsgrense-2026-10-18",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 35,
+      "relevant_paths": [
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/kaja_katteluka_gentle_probe/README.md",
+        "experiments/kaja_katteluka_gentle_probe/kaja_katteluka_probe.py",
+        "experiments/kaja_probevekst/README.md",
+        "experiments/kaja_probevekst/probevekst.py",
+        "experiments/kaja_virksom_historie/README.md",
+        "experiments/kaja_virksom_historie/virksom_historie.py",
+        "experiments/microfluctuation_mass_gravity/README.md",
+        "experiments/microfluctuation_mass_gravity/falsify_shared_density.py"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "kaja/fire-levende-samtaler-2026-10-18",
@@ -1255,10 +1353,24 @@
       "commit_date": null,
       "theme": "kaja/fire-levende-samtaler-2026-10-18",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/kaja%2Ffire-levende-samtaler-2026-10-18",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 30,
+      "relevant_paths": [
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/kaja_katteluka_gentle_probe/README.md",
+        "experiments/kaja_katteluka_gentle_probe/kaja_katteluka_probe.py",
+        "experiments/kaja_probevekst/README.md",
+        "experiments/kaja_probevekst/probevekst.py",
+        "experiments/kaja_virksom_historie/README.md",
+        "experiments/kaja_virksom_historie/virksom_historie.py",
+        "experiments/microfluctuation_mass_gravity/README.md",
+        "experiments/microfluctuation_mass_gravity/falsify_shared_density.py"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "kaja/gtrcm-proof-roadmap-2026-10-19",
@@ -1267,10 +1379,24 @@
       "commit_date": null,
       "theme": "kaja/gtrcm-proof-roadmap-2026-10-19",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/kaja%2Fgtrcm-proof-roadmap-2026-10-19",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 91,
+      "relevant_paths": [
+        "GTRCM_HELHET/README.md",
+        "README.md",
+        "experiments/kaja_cross_branch_audit/README.md",
+        "experiments/kaja_cross_branch_audit/bridge_checks.py",
+        "experiments/kaja_endogenous_probes/README.md",
+        "experiments/kaja_endogenous_probes/dynamic_observability.py",
+        "experiments/kaja_endogenous_probes/dynamic_results.json",
+        "experiments/kaja_endogenous_probes/finite_machine_repro.py",
+        "experiments/kaja_endogenous_probes/finite_machine_results.json",
+        "experiments/kaja_endogenous_probes/probe_repro.py",
+        "experiments/kaja_endogenous_probes/results.json",
+        "experiments/kaja_persistent_viability/README.md"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "kaja/historie-endrer-genererbarhet-2026-10-18",
@@ -1279,10 +1405,24 @@
       "commit_date": null,
       "theme": "kaja/historie-endrer-genererbarhet-2026-10-18",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/kaja%2Fhistorie-endrer-genererbarhet-2026-10-18",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 51,
+      "relevant_paths": [
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/kaja_katteluka_gentle_probe/README.md",
+        "experiments/kaja_katteluka_gentle_probe/kaja_katteluka_probe.py",
+        "experiments/kaja_probevekst/README.md",
+        "experiments/kaja_probevekst/probevekst.py",
+        "experiments/kaja_virksom_historie/README.md",
+        "experiments/kaja_virksom_historie/virksom_historie.py",
+        "experiments/microfluctuation_mass_gravity/README.md",
+        "experiments/microfluctuation_mass_gravity/falsify_shared_density.py"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "kaja/historisk-orden-probe-og-arkiv-2026-10-18",
@@ -1291,10 +1431,24 @@
       "commit_date": null,
       "theme": "kaja/historisk-orden-probe-og-arkiv-2026-10-18",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/kaja%2Fhistorisk-orden-probe-og-arkiv-2026-10-18",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 53,
+      "relevant_paths": [
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/kaja_katteluka_gentle_probe/README.md",
+        "experiments/kaja_katteluka_gentle_probe/kaja_katteluka_probe.py",
+        "experiments/kaja_probevekst/README.md",
+        "experiments/kaja_probevekst/probevekst.py",
+        "experiments/kaja_virksom_historie/README.md",
+        "experiments/kaja_virksom_historie/virksom_historie.py",
+        "experiments/microfluctuation_mass_gravity/README.md",
+        "experiments/microfluctuation_mass_gravity/falsify_shared_density.py"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "kaja/hva-er-ting-2026-10-18",
@@ -1303,10 +1457,24 @@
       "commit_date": null,
       "theme": "kaja/hva-er-ting-2026-10-18",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/kaja%2Fhva-er-ting-2026-10-18",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 43,
+      "relevant_paths": [
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/kaja_katteluka_gentle_probe/README.md",
+        "experiments/kaja_katteluka_gentle_probe/kaja_katteluka_probe.py",
+        "experiments/kaja_probevekst/README.md",
+        "experiments/kaja_probevekst/probevekst.py",
+        "experiments/kaja_virksom_historie/README.md",
+        "experiments/kaja_virksom_historie/virksom_historie.py",
+        "experiments/microfluctuation_mass_gravity/README.md",
+        "experiments/microfluctuation_mass_gravity/falsify_shared_density.py"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "kaja/hvorfor-ser-vi-et-naa-2026-10-18",
@@ -1315,10 +1483,24 @@
       "commit_date": null,
       "theme": "kaja/hvorfor-ser-vi-et-naa-2026-10-18",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/kaja%2Fhvorfor-ser-vi-et-naa-2026-10-18",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 55,
+      "relevant_paths": [
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/kaja_katteluka_gentle_probe/README.md",
+        "experiments/kaja_katteluka_gentle_probe/kaja_katteluka_probe.py",
+        "experiments/kaja_probevekst/README.md",
+        "experiments/kaja_probevekst/probevekst.py",
+        "experiments/kaja_virksom_historie/README.md",
+        "experiments/kaja_virksom_historie/virksom_historie.py",
+        "experiments/microfluctuation_mass_gravity/README.md",
+        "experiments/microfluctuation_mass_gravity/falsify_shared_density.py"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "kaja/katteluka-varsom-probe-2026-10-17",
@@ -1327,10 +1509,21 @@
       "commit_date": null,
       "theme": "kaja/katteluka-varsom-probe-2026-10-17",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/kaja%2Fkatteluka-varsom-probe-2026-10-17",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 18,
+      "relevant_paths": [
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/kaja_katteluka_gentle_probe/README.md",
+        "experiments/kaja_katteluka_gentle_probe/kaja_katteluka_probe.py",
+        "experiments/microfluctuation_mass_gravity/README.md",
+        "experiments/microfluctuation_mass_gravity/falsify_shared_density.py",
+        "experiments/microfluctuation_mass_gravity/model.py"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "kaja/kjernealgoritmer-laering-2026-10-18",
@@ -1339,10 +1532,24 @@
       "commit_date": null,
       "theme": "kaja/kjernealgoritmer-laering-2026-10-18",
       "url": "https://github.com/martintommerstigen/GTRCM/tree/kaja%2Fkjernealgoritmer-laering-2026-10-18",
-      "tree_indexed": false,
-      "files_total": null,
-      "relevant_paths": [],
-      "content_read": false
+      "tree_indexed": true,
+      "files_total": 31,
+      "relevant_paths": [
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md",
+        "README.md",
+        "experiments/kaja_katteluka_gentle_probe/README.md",
+        "experiments/kaja_katteluka_gentle_probe/kaja_katteluka_probe.py",
+        "experiments/kaja_probevekst/README.md",
+        "experiments/kaja_probevekst/probevekst.py",
+        "experiments/kaja_virksom_historie/README.md",
+        "experiments/kaja_virksom_historie/virksom_historie.py",
+        "experiments/microfluctuation_mass_gravity/README.md",
+        "experiments/microfluctuation_mass_gravity/falsify_shared_density.py"
+      ],
+      "content_read": false,
+      "tree_truncated": false
     },
     {
       "name": "kaja/klokkelokker-malehistorie-2026-10-17",
