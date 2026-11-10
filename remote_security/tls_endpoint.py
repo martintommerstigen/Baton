@@ -6,6 +6,7 @@ No certificates or private keys are stored in Git.
 """
 from __future__ import annotations
 
+import hashlib
 import os
 import ssl
 import stat
@@ -37,18 +38,33 @@ def _private_pem(path, *, limit=65536):
         os.close(fd)
 
 
-def pinned_client_context(certificate_file):
-    """Trust only the explicit PEM CA/certificate, never ambient trust roots.
+def pinned_client_context_and_leaf_digest(certificate_file):
+    """Return a CA-verifying context AND the exact pinned leaf SHA-256.
 
-    HTTPSConnection checks the IP SAN 127.0.0.1 before sending HTTP headers.
+    The same bounded owner-only read supplies both values. Trusting a PEM as a
+    CA alone is NOT exact certificate pinning: a CA may sign a different leaf
+    with the same IP SAN. The caller must check the peer DER certificate before
+    writing even the first HTTP header.
     """
     pem = _private_pem(certificate_file).decode('ascii')
+    if (pem.count('-----BEGIN CERTIFICATE-----') != 1
+            or pem.count('-----END CERTIFICATE-----') != 1):
+        raise ValueError('pin must contain exactly one PEM certificate')
+    der = ssl.PEM_cert_to_DER_cert(pem)
     ctx = ssl.create_default_context(purpose=ssl.Purpose.SERVER_AUTH, cadata=pem)
     ctx.minimum_version = ssl.TLSVersion.TLSv1_2
     ctx.check_hostname = True
     ctx.verify_mode = ssl.CERT_REQUIRED
-    return ctx
+    return ctx, hashlib.sha256(der).digest()
 
+
+def pinned_client_context(certificate_file):
+    """Compatibility helper for TLS verification; does not check leaf pin.
+
+    Use pinned_client_context_and_leaf_digest with ExactLeafHTTPSConnection
+    for an authenticated Baton request.
+    """
+    return pinned_client_context_and_leaf_digest(certificate_file)[0]
 
 def server_tls_context(certificate_file, private_key_file):
     """Validate private paths before SSL reads; never log PEM material."""
