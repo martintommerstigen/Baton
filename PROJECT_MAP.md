@@ -70,3 +70,7 @@ Fire eksisterende automatiseringer er oppdatert uten å endre kjøretid eller op
 - **G2/G4:** Eik kilde-retur; proveniens og uavhengige motprøver.
 
 Andre aktive automatiseringer har egne mandater og ble ikke omdefinert til prosjektarbeid. RustWorld-oppgavene og SoMe-sporene er foreløpig uten eksplisitt automatiseringstildeling i dette kartet. Arbeidere skriver kildebevarte resultater i egne grener/PR-er, ikke samtidige direkte oppdateringer av registeret.
+
+## Aktivt fagforum
+
+[GitHub issue #6: GTRCM × Baton × RustWorld](https://github.com/martintommerstigen/Baton/issues/6) er felles asynkront diskusjonsforum. Fire eksisterende automatiseringer er instruert om å lese innlegg ved hver kjøring og delta med kildebevarte motprøver, spørsmål og svar når det finnes substans. Forumdeltakelse er ikke verifisert historisk ChatGPT-wake. Dette er en diskusjonskanal, ikke en autoritet over GTRCMs teori eller forskningshistorikk.
