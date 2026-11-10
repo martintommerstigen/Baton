@@ -24,7 +24,7 @@ class FakeSource:
 
 
 class FakeTarget:
-    def __init__(self, cid, *, reply_id=None, next_text="", generating=False):
+    def __init__(self, cid, *, reply_id=None, next_text="synthetic assistant response", generating=False):
         self.cid = cid
         self.page = SimpleNamespace(url="https://chatgpt.com/c/" + cid)
         self.reply_id = reply_id
