@@ -11,6 +11,7 @@ on:
       - 'tests/test_source_broker*.py'
       - 'tests/test_source_broker_client.py'
       - 'tests/test_admission_sender_scope*.py'
+      - 'tests/test_observed_source_handoff.py'
       - 'tests/test_host_manifest.py'
       - 'deploy/systemd/**'
       - 'tests/test_remote_*.py'
@@ -29,6 +30,7 @@ on:
       - 'tests/test_source_broker*.py'
       - 'tests/test_source_broker_client.py'
       - 'tests/test_admission_sender_scope*.py'
+      - 'tests/test_observed_source_handoff.py'
       - 'tests/test_host_manifest.py'
       - 'deploy/systemd/**'
       - 'tests/test_remote_*.py'
@@ -47,6 +49,18 @@ jobs:
           python-version: '3.12'
       - run: python -m compileall -q remote_security tests
       - run: python -W error::ResourceWarning -m unittest discover -s tests -p 'test_*.py' -v
+      # Read the original B1 H20 handler at an immutable tested commit, not
+      # an unpinned mutable branch or a copied substitute implementation.
+      - name: Pin actual B1 H20 broker source (read-only)
+        uses: actions/checkout@v4
+        with:
+          ref: 658755b872a87e93ccf6fefaf4e6451016ddcae5
+          path: .b1_h20_pinned
+          persist-credentials: false
+      - name: Actual B1 H20 AF_UNIX SQLite handoff contract (synthetic role UIDs)
+        env:
+          B1_H20_BROKER: .b1_h20_pinned/wake_admission_broker.py
+        run: python -W error::ResourceWarning -m unittest discover -s tests -p 'test_observed_source_handoff.py' -v
       # Only on trusted branch pushes: the fork-based SO_PEERCRED regression
       # needs root to create two *different* real Linux UIDs. Never run PR
       # supplied code as root, and never use production secrets.
