@@ -12,10 +12,35 @@ NONCE=re.compile(r"^[0-9a-f]{32}$")
 CALL=re.compile(r"\ABATON_TOOL_V1 ([0-9a-f]{32})\n(\{[^\n]*\})\nEND_BATON_TOOL_V1\Z",re.S)
 REQUEST=re.compile(r"^[0-9a-f]{32}$")
 
+
+def _extract_single_v2_line(text, expected_nonce):
+    """Extract one exact nonce-bound V2 line from rendered assistant text.
+
+    ChatGPT's rendered turn can include toolbar/accessibility text around the
+    actual model content. We therefore ignore non-protocol lines, but reject
+    zero or multiple matching protocol lines. The candidate itself is still
+    parsed strictly and must contain the current session nonce.
+    """
+    if not isinstance(text, str) or not NONCE.fullmatch(expected_nonce):
+        return None
+    prefix = "BATON_TOOL_V2 " + expected_nonce + " "
+    candidates = []
+    for line in text.replace("\r\n", "\n").replace("\r", "\n").split("\n"):
+        stripped = line.strip()
+        if stripped.startswith(prefix):
+            candidates.append(stripped)
+    if len(candidates) != 1:
+        return None
+    return candidates[0]
+
+
 def parse_assistant_tool_call(text, expected_nonce):
     if not isinstance(text,str) or len(text)>7000 or not NONCE.fullmatch(expected_nonce):
         return None
     cleaned = text.strip()
+    extracted_v2 = _extract_single_v2_line(text, expected_nonce)
+    if extracted_v2 is not None:
+        cleaned = extracted_v2
     if cleaned.startswith("BATON_TOOL_V2 "):
         # A single rendered text line survives hosted ChatGPT markdown/DIL
         # handling that can discard bare multiline JSON in assistant replies.
@@ -95,8 +120,15 @@ def observe_assistant_script():
       const loading=Boolean(document.querySelector('[data-testid="stop-button"]'));
       if (loading) return [];
       const turns=Array.from(document.querySelectorAll('[data-message-author-role="assistant"]')).slice(-8);
-      return turns.map(turn=>({
-        id:turn.getAttribute('data-message-id')||null,
-        text:(turn.innerText||'').slice(0,7000)
-      }));
+      return turns.map(turn=>{
+        const content =
+          turn.querySelector('[data-message-content]') ||
+          turn.querySelector('.markdown') ||
+          turn.querySelector('[class*="markdown"]') ||
+          turn;
+        return {
+          id:turn.getAttribute('data-message-id')||null,
+          text:(content.innerText||content.textContent||'').slice(0,7000)
+        };
+      });
     })()"""

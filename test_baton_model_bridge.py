@@ -38,6 +38,8 @@ class ModelToolTests(unittest.TestCase):
     def test_observer_restricts_assistant(self):
         script=observe_assistant_script()
         self.assertIn('data-message-author-role="assistant"',script)
+        self.assertIn("data-message-content", script)
+        self.assertIn("markdown", script)
     def test_qt_json_result_bridge(self):
         self.assertEqual(_decode_js_result('{"ok":true,"reason":"prepared"}'),
                          {"ok": True, "reason": "prepared"})
@@ -79,6 +81,20 @@ class ModelToolTests(unittest.TestCase):
         self.assertEqual(parse_assistant_tool_call(line, NONCE), request)
         self.assertEqual(_assistant_tool_turn({"id":None, "text":line}, NONCE),
                          ("request:" + REQ, request))
+
+    def test_v2_accepts_one_nonce_bound_line_with_rendered_chrome(self):
+        request = self.payload()
+        line = render_tool_call_v2(NONCE, request)
+        noisy = "Copy\n" + line + "\nGood response\n"
+        self.assertEqual(parse_assistant_tool_call(noisy, NONCE), request)
+        self.assertEqual(
+            _assistant_tool_turn({"id":"turn-noisy","text":noisy}, NONCE),
+            ("turn-noisy", request))
+
+    def test_v2_rejects_multiple_nonce_bound_candidates(self):
+        request = self.payload()
+        line = render_tool_call_v2(NONCE, request)
+        self.assertIsNone(parse_assistant_tool_call(line + "\n" + line, NONCE))
 
     def test_v2_reject_invalid_frames(self):
         request = self.payload()
