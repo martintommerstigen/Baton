@@ -186,11 +186,11 @@ class TwoHopTests(unittest.TestCase):
 
         def other_writer():
             script = (
-                "import sys\\n"
-                "from wake_ui_lock import ui_controller_lock\\n"
-                "try:\\n"
-                " with ui_controller_lock(sys.argv[1]): sys.exit(3)\\n"
-                "except RuntimeError: sys.exit(0)\\n"
+                "import sys\n"
+                "from wake_ui_lock import ui_controller_lock\n"
+                "try:\n"
+                " with ui_controller_lock(sys.argv[1]): sys.exit(3)\n"
+                "except RuntimeError: sys.exit(0)\n"
             )
             return subprocess.run(
                 [sys.executable, "-c", script, str(lock_path)],
