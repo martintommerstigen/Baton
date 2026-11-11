@@ -1,0 +1,46 @@
+name: B1 H23 Ronja R24 scoped observer preflight
+on:
+  push:
+    branches:
+      - feature/b1-r24-observer-preflight-2026-11-11
+  pull_request:
+    paths:
+      - 'run_b1_snapshot_observer.py'
+      - 'b1_snapshot_relay.py'
+      - 'test_b1_r24_observer_preflight.py'
+      - 'test_b1_snapshot_relay.py'
+      - 'test_b1_snapshot_kernel.py'
+      - '.github/workflows/b1-r24-observer-preflight.yml'
+jobs:
+  boundary-integration:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Pin Ronja R24 source and prior R23 frame authentication
+        uses: actions/checkout@v4
+        with:
+          repository: martintommerstigen/Baton
+          ref: 1a52dc5b03acef2f6ba4621bc4edbec2413eed0f
+          path: .b5-r24
+          persist-credentials: false
+      - name: Pin Ronja R23 source
+        uses: actions/checkout@v4
+        with:
+          repository: martintommerstigen/Baton
+          ref: 961f49a7230c65e479cb252a33a38fee634b5a2e
+          path: .b5-r23
+          persist-credentials: false
+      - name: Compile and test B1 H23 and H22 synthetic negative controls
+        env:
+          PYTHONPATH: ${{ github.workspace }}/.b5-r24:${{ github.workspace }}/.b5-r23:${{ github.workspace }}
+        run: |
+          python3 -m py_compile run_b1_snapshot_observer.py b1_snapshot_relay.py
+          python3 -m unittest -v test_b1_r24_observer_preflight.py test_b1_snapshot_relay.py
+      - name: Real Linux cross-UID H22 snapshot relay, synthetic source only
+        env:
+          PYTHONPATH: ${{ github.workspace }}/.b5-r24:${{ github.workspace }}/.b5-r23:${{ github.workspace }}
+        run: sudo env PYTHONPATH="$PYTHONPATH" python3 -m unittest -v test_b1_snapshot_kernel.py
