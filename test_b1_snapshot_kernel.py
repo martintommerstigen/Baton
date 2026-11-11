@@ -80,18 +80,30 @@ class SnapshotKernelTests(unittest.TestCase):
                            stderr=subprocess.DEVNULL)
         subprocess.run(['groupdel', 'b1snapgroup'], check=False)
 
-    def run_as(self, user, code, args, *, timeout=6):
-        env = 'PYTHONPATH=' + os.environ.get('PYTHONPATH', os.getcwd())
+    def run_as(self, user, code, args, *, timeout=6, source_path=None):
+        env = 'PYTHONPATH=' + str(source_path or os.getcwd())
         return subprocess.run(['runuser', '-u', user, '--', 'env', env,
                                sys.executable, '-c', code, *args],
                               capture_output=True, text=True, timeout=timeout)
 
     def test_real_kernel_snapshot_and_wrong_uid_and_restart(self):
-        # GitHub runner checkout ancestors may be non-traversable by test UIDs.\n        # Stage only trusted, non-secret source in a world-readable CI temp dir.\n        stage = Path(tempfile.mkdtemp(prefix='b1snap-src-', dir='/tmp'))\n        os.chmod(stage, 0o755)\n        for name in ('b1_snapshot_relay.py', 'chatgpt_ui_driver.py',\n                     'wake_adapter.py', 'wake_contract.py'):\n            shutil.copy2(Path.cwd() / name, stage / name)\n        (stage / 'remote_security').mkdir(mode=0o755)\n        for name in ('broker_peer.py', 'frame_credentials.py', '__init__.py'):\n            source = Path.cwd() / '.b5-r23' / 'remote_security' / name\n            if source.exists():\n                shutil.copy2(source, stage / 'remote_security' / name)\n        base = Path(tempfile.mkdtemp(prefix='b1snap-', dir='/tmp'))
+        # GitHub runner checkout ancestors may be non-traversable by test UIDs.
+        # Stage only trusted, non-secret source in a world-readable CI temp dir.
+        stage = Path(tempfile.mkdtemp(prefix='b1snap-src-', dir='/tmp'))
+        os.chmod(stage, 0o755)
+        for name in ('b1_snapshot_relay.py', 'chatgpt_ui_driver.py',
+                     'wake_adapter.py', 'wake_contract.py'):
+            shutil.copy2(Path.cwd() / name, stage / name)
+        (stage / 'remote_security').mkdir(mode=0o755)
+        for name in ('broker_peer.py', 'frame_credentials.py', '__init__.py'):
+            source = Path.cwd() / '.b5-r23' / 'remote_security' / name
+            if source.exists():
+                shutil.copy2(source, stage / 'remote_security' / name)
+        base = Path(tempfile.mkdtemp(prefix='b1snap-', dir='/tmp'))
         os.chown(base, COLLECTOR_UID, SHARED_GID)
         os.chmod(base, 0o2750)
         path = str(base / 'snapshot.sock')
-        env = 'PYTHONPATH=' + os.environ.get('PYTHONPATH', os.getcwd())
+        env = 'PYTHONPATH=' + str(stage)
         cmd = ['runuser', '-u', self.users[0], '--', 'env', env, sys.executable,
                '-u', '-c', SERVER_CODE, A, B, D, path, str(OBSERVER_UID)]
         proc = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
@@ -134,7 +146,8 @@ class SnapshotKernelTests(unittest.TestCase):
                                   [A, B, D, path, str(OBSERVER_UID)], source_path=stage)
             self.assertNotEqual(restart.returncode, 0)
             Path(path).unlink(missing_ok=True)
-            base.rmdir()\n            shutil.rmtree(stage)
+            base.rmdir()
+            shutil.rmtree(stage)
 
 
 if __name__ == '__main__':
