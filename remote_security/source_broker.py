@@ -202,6 +202,10 @@ class SourceBroker:
             raw.extend(part)
         try:
             request = parse_request(bytes(raw), self.source_ids)
+            # A directory can be renamed while an accepted client trickles
+            # bytes. Do not enter a source backend after losing the endpoint.
+            if not self._parent_unchanged():
+                raise Rejected("socket directory moved before backend execution")
             if request["action"] == "capture":
                 result = self.capture(request["source_id"], request["job_id"])
             else:
@@ -222,6 +226,10 @@ class SourceBroker:
             raise Rejected("socket directory moved; stop serving")
         conn, _ = self.sock.accept()
         with conn:
+            # The directory may have moved *during* the blocking accept.
+            # Check before reading even a permitted peer's request bytes.
+            if not self._parent_unchanged():
+                return
             try:
                 self._handle(conn)
             except (OSError, TimeoutError, Rejected):
