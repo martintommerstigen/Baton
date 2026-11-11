@@ -26,6 +26,28 @@ stored in ChatGPT config, command arguments, or chat content.
 
 The existing V1/V2 text protocol remains legacy-only for the embedded browser.
 
+## Recommended one-command launcher
+
+After updating this repository, run as `olliver` on Greg:
+
+    bash run_baton_direct.sh
+
+This creates or verifies the local ChatGPT/Codex MCP registration and opens a
+small dedicated **Baton Core** window. Keep that window open while using the
+**official ChatGPT Linux desktop app**. This route does NOT open the hosted
+ChatGPT website inside QtWebEngine or inject BATON_TOOL_V2 messages.
+Closing the small Core window revokes the local MCP liveness lease. The
+ordinary-user Core listener is loopback-only.
+
+The first-time install of the official ChatGPT desktop application is a
+separate user action. Get the official package from
+https://learn.chatgpt.com/docs/linux/linux-app, sign in and restart the app
+after registering the MCP server. Open Settings → MCP servers and verify
+`baton_greg`.
+
+If GitHub created the launcher without an executable bit, use
+`bash run_baton_direct.sh`, not `./run_baton_direct.sh`.
+
 ## One-time registration on Greg
 
 1. Download/install the **official** ChatGPT Linux desktop preview. Ubuntu
