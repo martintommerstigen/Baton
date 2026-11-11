@@ -77,6 +77,13 @@ class ModelClientTests(unittest.TestCase):
                             "remote", "hi", bearer="private-secret", opener=fake)
         self.assertNotIn("private-secret", str(error.exception))
 
+    def test_empty_provider_response_is_error_not_inbox_message(self):
+        fake = Mock()
+        fake.open.return_value = _Reply("   ")
+        with self.assertRaisesRegex(RuntimeError, "usable text"):
+            chat_completion("http://localhost:11434/v1/chat/completions",
+                            "local-model", "prompt", opener=fake)
+
     def test_reject_invalid_fields(self):
         fake = Mock()
         with self.assertRaises(ValueError):
