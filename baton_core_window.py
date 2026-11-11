@@ -58,13 +58,18 @@ def main():
     title.setStyleSheet("font-size: 24px; font-weight: 650;")
     root.addWidget(title)
     summary = QLabel(
-        "Én app for modellenes tilkoblinger, Greg Core og kommunikasjon. "
-        "Baton gir bare en bekreftet og autorisert modell tilgang til enheten."
+        "Én app for eksisterende ChatGPT-samtaler, Greg Core og kommunikasjon. "
+        "Åpne en kjent samtale i første fane, og aktiver lokale verktøy manuelt."
     )
     summary.setWordWrap(True)
     root.addWidget(summary)
     tabs = QTabWidget(panel)
     root.addWidget(tabs)
+
+    # Primary Baton workflow: the actual existing ChatGPT chat and its
+    # history, never a fresh/anonymous Responses API model request.
+    from baton_existing_chat_tab import attach_existing_conversation_tab
+    tabs.addTab(attach_existing_conversation_tab(tabs), "Eksisterende ChatGPT")
 
     # The model catalogue is explicit about connected vs planned adapters.
     models = QWidget(tabs)
