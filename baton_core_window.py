@@ -496,6 +496,38 @@ def main():
     )
     device_status.setWordWrap(True)
     device_layout.addWidget(device_status)
+    from baton_install_status import inspect_installation
+    install_status = QLabel("Installasjonskontroll: ikke kjørt.")
+    install_status.setWordWrap(True)
+    device_layout.addWidget(install_status)
+
+    def refresh_install_status():
+        # Read only: do not print tokens, config values, browser sessions,
+        # private message text, process argv or Git remote credentials.
+        info = inspect_installation()
+        install_status.setText(
+            "Installert branch: " + str(info["branch"] or "ukjent") + "\\n" +
+            "Revisjon: " + str(info["revision"] or "ukjent") + "\\n" +
+            "Ren arbeidstre: " + str(info["clean_worktree"]) + "\\n" +
+            "Core-port åpen (ikke autentisert): " +
+            str(info["core_port_open_unverified"]) + "\\n" +
+            "Core-tjeneste aktiv (ikke autentisert): " +
+            str(info["core_service_active_unverified"]) + "\\n" +
+            "UI-lease: " + str(info["ui_lease_live"]) + "\\n" +
+            "Core-token har private filrettigheter: " +
+            str(info["core_token_private_mode_only"]) + "\\n" +
+            "Codex MCP-registrering: " + info["codex_mcp_config_state"] + "\\n" +
+            "Baton KDE-snarvei: " +
+            str(info["baton_desktop_entry_matches"]) + "\\n" +
+            "Offisiell ChatGPT-klient funnet: " +
+            str(info["official_chatgpt_binary_present"]) + "\\n" +
+            "Faktisk wake av eksisterende chatter: ikke verifisert"
+        )
+
+    check_install = QPushButton("Kontroller lokal installasjon (skrivebeskyttet)")
+    check_install.clicked.connect(refresh_install_status)
+    device_layout.addWidget(check_install)
+    QTimer.singleShot(600, refresh_install_status)
     stop = QPushButton("Stopp Baton og trekk tilbake ny verktøytilgang")
     stop.clicked.connect(panel.close)
     device_layout.addWidget(stop)
