@@ -57,3 +57,6 @@ jobs:
       - name: Read-only source probe real-UID zero-payload regression
         if: github.event_name == 'push' && github.repository == 'martintommerstigen/Baton'
         run: sudo "$(command -v python)" -W error::ResourceWarning -m unittest discover -s tests -p 'test_source_broker_probe_cross_uid.py' -v
+      - name: Separate-UID retirement candidate quarantine (no UI send)
+        if: github.event_name == 'push' && github.repository == 'martintommerstigen/Baton'
+        run: sudo "$(command -v python)" -W error::ResourceWarning -m unittest discover -s tests -p 'test_retirement_quarantine_cross_uid.py' -v
