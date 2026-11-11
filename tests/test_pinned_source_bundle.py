@@ -7,6 +7,7 @@ import hashlib
 import io
 import json
 import os
+import stat
 from pathlib import Path
 import tempfile
 import unittest
@@ -142,6 +143,103 @@ class PinnedBundleTests(unittest.TestCase):
                 self.assertEqual(cli_main(["capture", *common, "--source-root", str(self.root),
                                            "--source-id", "rustworld-world", "--job-id", "pinned0001"]), 3)
             self.assertIn("rejected_or_uncertain_no_retry", error.getvalue())
+
+    def test_parent_swap_inside_save_open_never_writes_to_decoy(self):
+        # A path validation alone cannot pin the parent of O_EXCL creation.
+        # Rename it exactly inside openat; the artifact must not land in the
+        # new pathname and success must not be claimed after the swap.
+        private = self.base / "evidence-parent"
+        private.mkdir(mode=0o700)
+        decoy = self.base / "decoy-parent"
+        decoy.mkdir(mode=0o700)
+        moved = self.base / "moved-parent"
+        artifact = private / "capture.json"
+        bundle = self.bundle()
+        real_open = os.open
+        swaps = []
+        def swap_open(name, *args, **kwargs):
+            if name == "capture.json" and kwargs.get("dir_fd") is not None:
+                private.rename(moved)
+                private.symlink_to(decoy, target_is_directory=True)
+                swaps.append(kwargs["dir_fd"])
+            return real_open(name, *args, **kwargs)
+        try:
+            with patch("remote_security.pinned_source_bundle.os.open", side_effect=swap_open):
+                with self.assertRaises((ValueError, PermissionError)):
+                    save_pinned_bundle(self.jobs, self.policy, bundle, artifact)
+            self.assertEqual(len(swaps), 1)
+            self.assertFalse((decoy / "capture.json").exists())
+            self.assertTrue((moved / "capture.json").exists(),
+                            "uncertain original artifact must not be silently retried")
+        finally:
+            if private.is_symlink():
+                private.unlink()
+            if moved.exists():
+                moved.rename(private)
+
+    def test_parent_swap_inside_load_open_fails_closed(self):
+        private = self.base / "audit-parent"
+        private.mkdir(mode=0o700)
+        decoy = self.base / "audit-decoy"
+        decoy.mkdir(mode=0o700)
+        moved = self.base / "audit-moved"
+        artifact = private / "capture.json"
+        save_pinned_bundle(self.jobs, self.policy, self.bundle(), artifact)
+        real_open = os.open
+        swaps = []
+        def swap_open(name, *args, **kwargs):
+            if name == "capture.json" and kwargs.get("dir_fd") is not None:
+                private.rename(moved)
+                private.symlink_to(decoy, target_is_directory=True)
+                swaps.append(kwargs["dir_fd"])
+            return real_open(name, *args, **kwargs)
+        try:
+            with patch("remote_security.pinned_source_bundle.os.open", side_effect=swap_open):
+                with self.assertRaises((ValueError, PermissionError)):
+                    load_pinned_bundle(self.jobs, self.policy, artifact)
+            self.assertEqual(len(swaps), 1)
+            self.assertFalse((decoy / "capture.json").exists())
+            self.assertTrue((moved / "capture.json").exists())
+        finally:
+            if private.is_symlink():
+                private.unlink()
+            if moved.exists():
+                moved.rename(private)
+
+    def test_saved_basename_replaced_during_fsync_is_uncertain(self):
+        bundle = self.bundle()
+        real_fsync = os.fsync
+        replaced = []
+        def replace_after_file_fsync(fd):
+            if stat.S_ISREG(os.fstat(fd).st_mode) and not replaced:
+                self.artifact.unlink()
+                self.artifact.write_bytes(b"replacement")
+                replaced.append(True)
+            return real_fsync(fd)
+        with patch("remote_security.pinned_source_bundle.os.fsync",
+                   side_effect=replace_after_file_fsync):
+            with self.assertRaises(UntrustedReceipt):
+                save_pinned_bundle(self.jobs, self.policy, bundle, self.artifact)
+        self.assertEqual(replaced, [True])
+        self.assertEqual(self.artifact.read_bytes(), b"replacement")
+
+    def test_audit_basename_replaced_after_read_is_not_verified(self):
+        save_pinned_bundle(self.jobs, self.policy, self.bundle(), self.artifact)
+        real_read = os.read
+        replaced = []
+        def replace_after_read(fd, count):
+            data = real_read(fd, count)
+            if not replaced:
+                self.artifact.unlink()
+                self.artifact.write_bytes(b"replacement")
+                replaced.append(True)
+            return data
+        with patch("remote_security.pinned_source_bundle.os.read",
+                   side_effect=replace_after_read):
+            with self.assertRaises(UntrustedReceipt):
+                load_pinned_bundle(self.jobs, self.policy, self.artifact)
+        self.assertEqual(replaced, [True])
+        self.assertEqual(self.artifact.read_bytes(), b"replacement")
 
     def test_cli_root_rejected_before_key_or_source(self):
         with patch("remote_security.pinned_source_cli.os.geteuid", return_value=0):
