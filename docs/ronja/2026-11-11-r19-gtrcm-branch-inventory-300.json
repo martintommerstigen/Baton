@@ -24,10 +24,10 @@
   "unchanged_sha_metadata_reused": 298,
   "changed_or_new_ref_count": 2,
   "trees_refreshed": 2,
-  "content_read_branch_refs_this_run": 6,
-  "original_file_bodies_read_this_run": 6,
+  "content_read_branch_refs_this_run": 7,
+  "original_file_bodies_read_this_run": 7,
   "complete_branch_histories_read": 0,
-  "notes": "R19 300 paginated tip names and SHAs; 298 prior tip metadata reused without rereading their original file bodies; 2 new tips tree and commit metadata checked, source documents read. Additional original content this run: RustWorld OVERSIKT, Riss R20, Kaja dynamic observability, main NEGATIVE_RESULTS, Rolf O/K/I. Counting distinct GTRCM branch refs in this run: RustWorld, Riss R20, Kaja, main, Eik C28, Vanja R37 = 6; content body files 6. The two new branches are not complete histories. Greg/Mac/private conversations not accessed.",
+  "notes": "R19 300 paginated tip names and SHAs; 298 prior tip metadata reused without rereading their original file bodies; 2 new tips tree and commit metadata checked, source documents read. Additional original content this run: RustWorld OVERSIKT, Riss R20, Kaja dynamic observability, main NEGATIVE_RESULTS, Rolf O/K/I. Counting distinct GTRCM branch refs in this run: RustWorld, Riss R20, Kaja, main, Rolf O/K/I, Eik C28, Vanja R37 = 7; original content body files 7. The two new branches are not complete histories. Greg/Mac/private conversations not accessed.",
   "branches": [
     {
       "name": "GTRCM",
