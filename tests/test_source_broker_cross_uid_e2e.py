@@ -35,7 +35,10 @@ class CrossUidPinnedSourceE2E(unittest.TestCase):
     def _ready(self, fd):
         readable, _, _ = select.select([fd], [], [], 8)
         self.assertTrue(readable, "unprivileged broker did not become ready")
-        self.assertEqual(os.read(fd, 1), b"R")
+        status = os.read(fd, 1)
+        if status != b"R":
+            detail = os.read(fd, 128) if status == b"E" else b""
+            self.fail("unprivileged child setup failed: " + repr(status + detail))
 
     def _client(self, uid, path, action):
         read_fd, write_fd = os.pipe()
@@ -153,7 +156,15 @@ class CrossUidPinnedSourceE2E(unittest.TestCase):
                     broker.accept_once()  # replay capture rejected
                     broker.close()
                     os._exit(0)
-                except BaseException:
+                except BaseException as exc:
+                    # Failure-only diagnostic: exception class and errno, never
+                    # private paths, source text, keys or message contents.
+                    detail = (type(exc).__name__ + ":" +
+                              str(getattr(exc, "errno", ""))).encode("ascii", "replace")
+                    try:
+                        os.write(ready_w, b"E" + detail[:100])
+                    except OSError:
+                        pass
                     os._exit(3)
             os.close(ready_w)
             try:
