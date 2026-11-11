@@ -45,7 +45,7 @@ class Send:
         text=self.page.composer.text
         self.page.turns.append(Turn("user",text))
         if self.page.chat==B:
-            response="BATON_NEXT "+C
+            response="BATON_NEXT "+C+(f" sha256:{self.page.next_digest}" if self.page.next_digest else "")
         else:
             response="Received in C"
         self.page.turns.append(Turn("assistant",response,"turn-"+self.page.chat[-4:]))
@@ -60,6 +60,7 @@ class Page:
         self.send=Send(self)
         self.turns=[]
         self.send_count=0
+        self.next_digest=None
     def locator(self,selector):
         if selector=="#prompt-textarea": return self.composer
         if selector=='[data-testid="send-button"]': return self.send
@@ -89,6 +90,7 @@ class BrowserIntegrationTests(unittest.TestCase):
             plan=ChainPlan(A,B,C,"msg1","msg2","ask B","ask C",
                            hashlib.sha256(b"ask B").hexdigest(),
                            hashlib.sha256(b"ask C").hexdigest())
+            pb.next_digest=plan.second_digest
             with patch('chatgpt_ui_driver.pause_active', return_value=False):
                 result=run_chain(ledger,db,dc,plan,db.read_assistant_turn)
             self.assertEqual(result,{"a_to_b":"verified","b_to_c":"verified"})
