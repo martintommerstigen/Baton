@@ -29,6 +29,11 @@ class NativeInstallerTests(unittest.TestCase):
     def test_register_just_one_verified_extension_without_root(self):
         data=self.install()
         self.assertEqual(data["extension_id"],EXPECTED_EXTENSION_ID)
+        stable=Path(data["extension_directory"])
+        self.assertEqual(stable, self.home/".local/share/baton/browser-extension")
+        self.assertTrue((stable/"manifest.json").is_file())
+        self.assertTrue((stable/"content.js").is_file())
+        self.assertTrue((stable/"background.js").is_file())
         native=Path(data["host_launcher"])
         self.assertTrue(native.is_file())
         self.assertEqual(native.stat().st_mode & 0o077,0)
@@ -67,6 +72,14 @@ class NativeInstallerTests(unittest.TestCase):
         path.write_text(json.dumps(data))
         with self.assertRaisesRegex(ValueError,"identity changed"):
             self.install()
+
+    def test_refuse_replacing_another_extension_in_stable_path(self):
+        target=self.home/".local/share/baton/browser-extension/manifest.json"
+        target.parent.mkdir(parents=True)
+        target.write_text('{"key":"not-Baton"}')
+        with self.assertRaisesRegex(ValueError,"unrelated extension"):
+            self.install()
+        self.assertEqual(target.read_text(),'{"key":"not-Baton"}')
 
     def test_does_not_overwrite_unrelated_launcher(self):
         dest=self.home/".local/bin/baton-browser-native-host"
