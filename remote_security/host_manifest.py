@@ -85,6 +85,13 @@ def _source_file_digest(path):
         if (before.st_dev, before.st_ino, before.st_size, before.st_mtime_ns) != (
                 after.st_dev, after.st_ino, after.st_size, after.st_mtime_ns):
             raise ManifestUncertain('source file changed while reading')
+        try:
+            named = os.stat(path, follow_symlinks=False)
+        except OSError as exc:
+            raise ManifestUncertain('source path disappeared while reading') from exc
+        if (not stat.S_ISREG(named.st_mode)
+                or (named.st_dev, named.st_ino) != (after.st_dev, after.st_ino)):
+            raise ManifestUncertain('source pathname replaced while reading')
         return h.hexdigest()
     finally:
         os.close(fd)
