@@ -24,15 +24,22 @@ jobs:
           ref: 4366521d2194ca936d1fb46bf0a29fcf40dce196
           path: .b5-r25
           persist-credentials: false
+      - name: Pin Ronja R23 frame credentials for cross-UID snapshot test
+        uses: actions/checkout@v4
+        with:
+          repository: martintommerstigen/Baton
+          ref: 961f49a7230c65e479cb252a33a38fee634b5a2e
+          path: .b5-r23
+          persist-credentials: false
       - name: Check actual libseccomp dependency
         run: ldconfig -p | grep 'libseccomp.so.2'
       - name: Compile and run B1 R25 direct-entry, kernel, R24 and snapshot negatives
         env:
-          PYTHONPATH: ${{ github.workspace }}/.b5-r25:${{ github.workspace }}
+          PYTHONPATH: ${{ github.workspace }}/.b5-r25:${{ github.workspace }}/.b5-r23:${{ github.workspace }}
         run: |
           python3 -m py_compile run_b1_snapshot_observer.py
           python3 -m unittest -v test_b1_r25_lifetime_entry.py test_b1_r24_observer_preflight.py test_b1_snapshot_relay.py
       - name: Cross-UID snapshot transport (synthetic source, real Linux UIDs)
         env:
-          PYTHONPATH: ${{ github.workspace }}/.b5-r25:${{ github.workspace }}
+          PYTHONPATH: ${{ github.workspace }}/.b5-r25:${{ github.workspace }}/.b5-r23:${{ github.workspace }}
         run: sudo env PYTHONPATH="$PYTHONPATH" python3 -m unittest -v test_b1_snapshot_kernel.py
