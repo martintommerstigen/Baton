@@ -51,7 +51,8 @@ def attach_existing_conversation_tab(tabs):
         "Baton gir den ChatGPT-samtalen du selv velger tilgang til Greg Core "
         "med dine vanlige Linux-rettigheter. GitHub er ikke mellomledd. "
         "Brave beholder din eksisterende innlogging, historikk og denne chatten. "
-        "Du aktiverer og stopper verktøyene fra en synlig Baton-kontroll i chatten."
+        "Brave-broen har en synlig tilkoblingskontroll; i Batons innebygde visning "
+        "aktiveres den lokale Core-broen automatisk for den åpne samtalen."
     )
     hint.setWordWrap(True)
     layout.addWidget(hint)
@@ -148,8 +149,9 @@ def attach_existing_conversation_tab(tabs):
         button.setEnabled(False)
         view.setUrl(QUrl("https://chatgpt.com/"))
         status.setText(
-            "Åpne din eksisterende /c/ samtale og aktiver modellverktøy "
-            "med Baton-knappen. Ingen automatisk adgang til andre chatter."
+            "Åpne din eksisterende /c/ samtale. I den innebygde visningen "
+            "aktiveres den lokale Core-broen automatisk for den åpne samtalen. "
+            "Ingen automatisk adgang til andre chatter."
         )
 
     button.clicked.connect(open_existing)
