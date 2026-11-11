@@ -103,6 +103,14 @@ class GuardTests(unittest.TestCase):
             self.call()
         self.assertTrue(stat.S_ISFIFO((self.target / NAME).lstat().st_mode))
 
+    def test_root_or_setuid_execution_rejected(self):
+        with patch("remote_security.desktop_install_guard.os.geteuid", return_value=0):
+            with self.assertRaises(UnsafeInstallation):
+                self.call()
+        with patch("remote_security.desktop_install_guard.os.geteuid", return_value=1234), patch("remote_security.desktop_install_guard.os.getuid", return_value=4321):
+            with self.assertRaises(UnsafeInstallation):
+                self.call()
+
     def test_two_concurrent_publishers_one_wins(self):
         import concurrent.futures
         with concurrent.futures.ThreadPoolExecutor(max_workers=2) as pool:
