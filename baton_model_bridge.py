@@ -92,13 +92,21 @@ def _assistant_tool_turn(turn, expected_nonce):
     return turn_id, call
 
 
+def should_auto_arm(chat_id, attempted_chat, suspended, active_session,
+                    pending, manual_draft):
+    """Only one automatic bootstrap per visit to an existing chat."""
+    return (bool(chat_id) and chat_id != attempted_chat and
+            not suspended and not active_session and not pending and
+            not manual_draft)
+
+
 def attach_model_bridge(layout, view, page, parent):
     from PySide6.QtCore import QTimer
     from PySide6.QtWidgets import QGroupBox, QVBoxLayout, QPushButton, QLabel
     group=QGroupBox("Baton · ChatGPT ⇄ Greg Core",parent)
     content=QVBoxLayout(group)
-    description=QLabel("Modellen kan be om lokale kommandoer i denne samtalen. "
-                       "Full brukertilgang på Greg. Aktiver eksplisitt.")
+    description=QLabel("Baton Core: full brukertilgang på Greg mens Baton er åpen. "
+                       "Valgt samtale kobles til automatisk. Stopp avbryter økten.")
     description.setWordWrap(True)
     start=QPushButton("Aktiver modellverktøy i åpen samtale")
     stop=QPushButton("Stopp verktøyøkt")
@@ -113,6 +121,9 @@ def attach_model_bridge(layout, view, page, parent):
 
     session=[None]
     pending=[False]
+    auto_attempted=[None]
+    auto_suspended=[False]
+    last_chat=[None]
     last_send_error=[""]
     processed=set()
     observed_turns=set()
@@ -290,9 +301,40 @@ def attach_model_bridge(layout, view, page, parent):
                 report("Resultat kunne ikke sendes. Ingen automatisk gjensending.")
         transmit(result_text,result_sent)
 
-    start.clicked.connect(begin)
-    stop.clicked.connect(lambda: (disable(),report("Verktøyøkten er stoppet.")))
+    def auto_arm():
+        chat_id = chat_id_from_url(view.url().toString())
+        controls = getattr(parent, "baton_controls", None)
+        has_draft = bool(controls and controls["message"].toPlainText().strip())
+        if should_auto_arm(chat_id, auto_attempted[0], auto_suspended[0],
+                           session[0] is not None, pending[0], has_draft):
+            auto_attempted[0] = chat_id
+            begin()
+
+    def on_chat_navigation(url):
+        chat_id = chat_id_from_url(url.toString())
+        if chat_id != last_chat[0]:
+            last_chat[0] = chat_id
+            auto_attempted[0] = None
+            if session[0] is not None and session[0]["chat_id"] != chat_id:
+                disable()
+            if chat_id and not auto_suspended[0]:
+                report("Baton starter verktøyøkt automatisk for åpen samtale ...")
+
+    def manual_begin():
+        auto_suspended[0] = False
+        auto_attempted[0] = chat_id_from_url(view.url().toString())
+        begin()
+
+    def manual_stop():
+        auto_suspended[0] = True
+        disable()
+        report("Baton-verktøy stoppet. Aktiver manuelt for å fortsette.")
+
+    start.clicked.connect(manual_begin)
+    stop.clicked.connect(manual_stop)
     observer.timeout.connect(inspect)
     output_poller.timeout.connect(flush)
+    view.urlChanged.connect(on_chat_navigation)
+    page.loadFinished.connect(lambda ok: QTimer.singleShot(800, auto_arm) if ok else None)
     group.baton_bridge={"start":start,"stop":stop,"state":state,"observer":observer}
     return group
