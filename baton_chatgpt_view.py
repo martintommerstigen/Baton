@@ -1,7 +1,7 @@
 """Baton-integrated ChatGPT view (optional PySide6 QtWebEngine dependency).
 
 Runs ChatGPT *inside* a Baton-owned window with a persistent, local browser
-profile. No cookie extraction. Model-to-Core bridge requires explicit per-chat activation.
+profile. No cookie extraction. Local model tools are armed for the active chat while Baton runs.
 """
 import re
 from urllib.parse import urlparse
@@ -49,6 +49,11 @@ def main():
     except ImportError as exc:
         raise SystemExit("Requires PySide6 and PySide6-Addons (QtWebEngine): "+str(exc))
     app = QApplication([])
+    # Baton owns the local Core lifetime; an existing authenticated user Core
+    # is reused. Never expose this service beyond loopback.
+    from baton_local_runtime import start_local_core, stop_local_core
+    local_core = start_local_core()
+    app.aboutToQuit.connect(lambda: stop_local_core(local_core))
     profile = QWebEngineProfile("baton-chatgpt", app)
     storage = Path.home()/".local/share/baton/chatgpt-profile"
     storage.mkdir(parents=True,exist_ok=True)
