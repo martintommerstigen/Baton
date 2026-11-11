@@ -127,7 +127,7 @@ def attach_model_bridge(layout, view, page, parent):
             page.runJavaScript(script,checked_prepared)
         def checked_prepared(result):
             if result is None:
-                if attempts[0] < 4 and page.isLoading():
+                if attempts[0] < 4:
                     QTimer.singleShot(700,evaluate)
                     return
                 last_send_error[0] = 'js-evaluation-returned-null'
