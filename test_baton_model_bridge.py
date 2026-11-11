@@ -82,14 +82,13 @@ class ModelToolTests(unittest.TestCase):
         self.assertEqual(_assistant_tool_turn({"id":None, "text":line}, NONCE),
                          ("request:" + REQ, request))
 
-    def test_v2_accepts_one_nonce_bound_line_with_rendered_chrome(self):
+    def test_v2_never_executes_line_embedded_in_browser_chrome_or_prose(self):
         request = self.payload()
         line = render_tool_call_v2(NONCE, request)
         noisy = "Copy\n" + line + "\nGood response\n"
-        self.assertEqual(parse_assistant_tool_call(noisy, NONCE), request)
-        self.assertEqual(
-            _assistant_tool_turn({"id":"turn-noisy","text":noisy}, NONCE),
-            ("turn-noisy", request))
+        self.assertIsNone(parse_assistant_tool_call(noisy, NONCE))
+        self.assertIsNone(_assistant_tool_turn(
+            {"id":"turn-noisy","text":noisy}, NONCE))
 
     def test_v2_rejects_multiple_nonce_bound_candidates(self):
         request = self.payload()
