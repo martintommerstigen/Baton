@@ -11,6 +11,7 @@ The inner B1 AdmissionStore alone controls PAUSE_UI_WRITES, target admission
 and the durable begin_click -> uncertain transition.
 """
 from contextlib import closing
+import hashlib
 import os
 import re
 import sqlite3
@@ -22,7 +23,7 @@ IDENT = re.compile(r"^[A-Za-z0-9_.:-]{1,128}$")
 DIGEST = re.compile(r"^[0-9a-f]{64}$")
 ENVELOPE = frozenset({"conversation_id", "message_id", "origin_turn_id",
                       "sender_id", "payload_sha256"})
-OBSERVED = ENVELOPE | {"source_text_sha256"}
+OBSERVED = ENVELOPE | {"source_command"}
 SCHEMA = """
 CREATE TABLE IF NOT EXISTS b5_source_witness_v1 (
  sender_id TEXT NOT NULL,
@@ -105,9 +106,14 @@ class ObservedSourceHandoff:
             return False
         if not _digest(req["payload_sha256"]):
             return False
-        if "source_text_sha256" in keys and not _digest(req["source_text_sha256"]):
-            return False
         sender, target = req["sender_id"], req["conversation_id"]
+        if "source_command" in keys:
+            # Match B1 H20's actual exact-command grammar; an arbitrary digest
+            # or a quoted/example command is not a source-turn witness.
+            expected = (f"BATON_WAKE {target} {req['message_id']} "
+                        f"sha256:{req['payload_sha256']}")
+            if type(req["source_command"]) is not str or req["source_command"] != expected:
+                return False
         return sender in self.routes and target in self.routes[sender]
 
     def _record_observation(self, req):
@@ -119,9 +125,10 @@ class ObservedSourceHandoff:
                       (sender_id,origin_turn_id,conversation_id,message_id,
                        payload_sha256,source_text_sha256,state)
                       VALUES (?,?,?,?,?,?,'witnessed')""",
-                      tuple(req[k] for k in ("sender_id", "origin_turn_id",
-                         "conversation_id", "message_id", "payload_sha256",
-                         "source_text_sha256")))
+                      (req["sender_id"], req["origin_turn_id"],
+                       req["conversation_id"], req["message_id"],
+                       req["payload_sha256"],
+                       hashlib.sha256(req["source_command"].encode("utf-8")).hexdigest()))
                     result = {"state": "source_observation_recorded_not_authorship"}
                 except sqlite3.IntegrityError:
                     result = {"state": "rejected", "reason": "observation_replay"}
