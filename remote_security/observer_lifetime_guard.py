@@ -107,7 +107,7 @@ def install_observer_lifetime_guard():
     # recvmsg must fail immediately even on a valid connected AF_UNIX pair.
     pair = socket.socketpair(socket.AF_UNIX, socket.SOCK_STREAM)
     try:
-        pair[0].settimeout(0.1)  # a broken filter must fail, never hang
+        pair[1].sendall(b'x')  # make recvmsg readable even if the filter is broken
         for attempt in (lambda: pair[0].recvmsg(1),
                         lambda: pair[0].sendmsg([b'x'])):
             try:
