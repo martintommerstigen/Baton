@@ -2,7 +2,7 @@ from pathlib import Path
 from tempfile import TemporaryDirectory
 import unittest
 
-from baton_selected_context import load_selected_context, with_selected_context
+from baton_selected_context import load_selected_context, with_selected_context, snapshot_chatgpt_turn
 
 
 class SelectedContextTests(unittest.TestCase):
@@ -59,6 +59,32 @@ class SelectedContextTests(unittest.TestCase):
         path = self.root / "norsk.md"
         path.write_text(text)
         self.assertIn(text, load_selected_context(path)["text"])
+
+
+    def test_send_snapshot_is_immune_to_later_file_selection(self):
+        first = {"name": "first.md", "text": "ONLY-FIRST-CONTEXT"}
+        second = {"name": "second.md", "text": "ONLY-SECOND-CONTEXT"}
+        history = [{"role": "assistant", "content": "Previous reply"}]
+        sent, request = snapshot_chatgpt_turn(history, "New question", first)
+        # Simulate UI replacing its selection before the worker starts.
+        selected = second
+        first["text"] = "CHANGED-AFTER-SEND"
+        first["name"] = "changed.md"
+        self.assertIs(selected, second)
+        self.assertIn("ONLY-FIRST-CONTEXT", request[0]["content"])
+        self.assertIn("first.md", request[0]["content"])
+        self.assertNotIn("ONLY-SECOND-CONTEXT", request[0]["content"])
+        self.assertNotIn("CHANGED-AFTER-SEND", request[0]["content"])
+        self.assertEqual(sent[-1], {"role": "user", "content": "New question"})
+        self.assertEqual(history, [{"role": "assistant", "content": "Previous reply"}])
+
+    def test_send_without_context_still_has_new_turn(self):
+        sent, request = snapshot_chatgpt_turn([], "Hei", None)
+        self.assertEqual(sent, [{"role": "user", "content": "Hei"}])
+        self.assertEqual(request, sent)
+        self.assertIsNot(request, sent)
+        with self.assertRaises(ValueError):
+            snapshot_chatgpt_turn([], "   ", None)
 
 
 if __name__ == "__main__":
