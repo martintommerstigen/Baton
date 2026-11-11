@@ -33,6 +33,16 @@ def _check_pinned_parent(path, directory_fd):
         raise PermissionError("evidence parent changed or became unsafe")
 
 
+
+def _check_pinned_file(directory_fd, basename, original):
+    """Require the public evidence basename still to name the opened inode."""
+    current = os.stat(basename, dir_fd=directory_fd, follow_symlinks=False)
+    if (not stat.S_ISREG(current.st_mode) or current.st_uid != os.getuid()
+            or current.st_mode & 0o077 or current.st_nlink != 1
+            or (current.st_dev, current.st_ino) != (original.st_dev, original.st_ino)):
+        raise UntrustedReceipt("evidence basename replaced during operation")
+
+
 def _open_pinned_parent(path):
     path = _validate_path(path)
     flags = os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW | os.O_CLOEXEC
@@ -77,6 +87,7 @@ def save_pinned_bundle(jobs, policy, bundle, path):
         _check_pinned_parent(p, directory_fd)
         os.fsync(directory_fd)
         _check_pinned_parent(p, directory_fd)
+        _check_pinned_file(directory_fd, p.name, s)
     finally:
         os.close(directory_fd)
     return {"state": "private_pinned_bundle_saved_once", "sha256": hashlib.sha256(data).hexdigest(),
@@ -106,6 +117,7 @@ def load_pinned_bundle(jobs, policy, path):
         finally:
             os.close(fd)
         _check_pinned_parent(p, directory_fd)
+        _check_pinned_file(directory_fd, p.name, before)
     finally:
         os.close(directory_fd)
     try:
