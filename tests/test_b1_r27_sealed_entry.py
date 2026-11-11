@@ -104,6 +104,17 @@ class H26Entry(unittest.TestCase):
         self.assertFalse(self.streams)
         self.seal.assert_not_called()
 
+    def test_incomplete_preflight_is_rejected(self):
+        self.preflight.side_effect = None
+        self.preflight.return_value = {
+            "status": "scoped_preflight_pass_not_attestation",
+            "checks": ["distinct_uid", "no_inherited_sockets",
+                       "profile_open_denied", "declared_loopback_cdp_unreachable",
+                       "snapshot_peer_uid"]}
+        with self.assertRaises(PermissionError):
+            self.run_it()
+        self.assertFalse(self.streams)
+
     def test_guard_receipt_forgery_denied(self):
         self.guard.side_effect = None
         self.guard.return_value = "claimed_ok"
