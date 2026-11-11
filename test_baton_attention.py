@@ -111,6 +111,13 @@ class AttentionTests(unittest.TestCase):
         self.assertNotIn("DIFFERENT CONTENT", str(list_inbox(self.db, OWNER, include_muted=True)))
         self.assertNotEqual(first["decision_id"], "")
 
+    def test_same_transport_id_from_different_sender_is_not_duplicate(self):
+        first = self.message("transport:shared-id", sender_id="provider:alice")
+        second = self.message("transport:shared-id", sender_id="provider:bob")
+        self.assertEqual(first["status"], "filtered")
+        self.assertEqual(second["status"], "filtered")
+        self.assertEqual(len(recent_audit(self.db, OWNER)), 2)
+
     def test_retention_expiration_and_bounded_replay(self):
         set_rule(self.db, OWNER, "keyword", "ignore-me", "mute")
         self.message("transport:muted", body="ignore-me")
