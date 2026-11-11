@@ -47,18 +47,19 @@ def _extract_single_chat_line(text, expected_nonce):
     return candidates[0] if len(candidates) == 1 else None
 
 
-def parse_assistant_tool_call(text, expected_nonce):
+def parse_assistant_tool_call(text, expected_nonce, *, allow_rendered_chrome=False):
     if not isinstance(text,str) or len(text)>7000 or not NONCE.fullmatch(expected_nonce):
         return None
     cleaned = text.strip()
-    extracted_chat = _extract_single_chat_line(text, expected_nonce)
-    extracted_v2 = _extract_single_v2_line(text, expected_nonce)
-    if extracted_chat is not None and extracted_v2 is not None:
-        return None
-    if extracted_chat is not None:
-        cleaned = extracted_chat
-    elif extracted_v2 is not None:
-        cleaned = extracted_v2
+    if allow_rendered_chrome:
+        extracted_chat = _extract_single_chat_line(text, expected_nonce)
+        extracted_v2 = _extract_single_v2_line(text, expected_nonce)
+        if extracted_chat is not None and extracted_v2 is not None:
+            return None
+        if extracted_chat is not None:
+            cleaned = extracted_chat
+        elif extracted_v2 is not None:
+            cleaned = extracted_v2
     if cleaned.startswith("BATON_CHAT_V1 "):
         if "\n" in cleaned or "\r" in cleaned:
             return None
