@@ -204,5 +204,47 @@ else:raise AssertionError('path traversal')
 """, "PATH_DENIED")
 
 
+    def test_symlinked_parent_denied(self):
+        alias = self.tmp.name + "-alias"
+        os.symlink(self.tmp.name, alias)
+        self.addCleanup(lambda: os.unlink(alias))
+        self.assert_client(f"""
+try:seal_observer_sessions(snaps,w,snapshot_endpoint={alias!r}+'/collector/snapshot.sock',witness_endpoint=witness_path,collector_uid=29101,broker_uid=29103,approved_snapshot=APPROVED,pause_checker=lambda:False)
+except SessionSealDenied:print('SYMLINK_DENIED')
+else:raise AssertionError('symlinked parent accepted')
+""", "SYMLINK_DENIED")
+
+    def test_duplicate_socket_descriptor_denied(self):
+        self.assert_client("""
+try:seal_observer_sessions((snaps[0],snaps[0],snaps[2]),w,snapshot_endpoint=snap_path,witness_endpoint=witness_path,collector_uid=29101,broker_uid=29103,approved_snapshot=APPROVED,pause_checker=lambda:False)
+except SessionSealDenied:print('DUPLICATE_FD_DENIED')
+else:raise AssertionError('duplicated FD accepted')
+""", "DUPLICATE_FD_DENIED")
+
+    def test_forged_path_owner_not_kernel_peer(self):
+        os.chown(self.witness, 29104, GROUP)
+        self.assert_client("""
+try:seal_observer_sessions(snaps,w,snapshot_endpoint=snap_path,witness_endpoint=witness_path,collector_uid=29101,broker_uid=29104,approved_snapshot=APPROVED,pause_checker=lambda:False)
+except SessionSealDenied:print('FORGED_OWNER_DENIED')
+else:raise AssertionError('pathname owner forged actual UID')
+""", "FORGED_OWNER_DENIED")
+
+    def test_concurrent_witness_only_one_allowed(self):
+        self.assert_client("""
+import threading
+q=seal_observer_sessions(snaps,w,snapshot_endpoint=snap_path,witness_endpoint=witness_path,collector_uid=29101,broker_uid=29103,approved_snapshot=APPROVED,pause_checker=lambda:False)
+for _ in range(2):q.snapshot_query(dict(APPROVED))
+out=[]
+def send():
+ try:out.append(q.witness_query(dict(q._witness))['state'])
+ except SessionSealDenied:out.append('denied')
+threads=[threading.Thread(target=send) for _ in range(2)]
+for t in threads:t.start()
+for t in threads:t.join()
+assert sorted(out)==['denied','source_observation_recorded_not_authorship'],out
+print('CONCURRENT_WITNESS_ONE_SHOT')
+""", "CONCURRENT_WITNESS_ONE_SHOT")
+
+
 if __name__ == "__main__":
     unittest.main()
