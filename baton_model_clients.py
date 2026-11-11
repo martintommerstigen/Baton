@@ -72,6 +72,6 @@ def chat_completion(url, model, prompt, *, bearer=None, timeout=45, opener=None)
         content = document["choices"][0]["message"]["content"]
     except (ValueError, TypeError, KeyError, IndexError):
         raise RuntimeError("provider reply has invalid format") from None
-    if not isinstance(content, str):
-        raise RuntimeError("provider reply does not contain text")
+    if not isinstance(content, str) or not content.strip():
+        raise RuntimeError("provider reply does not contain usable text")
     return content[:50000]
