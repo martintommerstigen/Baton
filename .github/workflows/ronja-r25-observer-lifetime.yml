@@ -21,6 +21,8 @@ jobs:
         run: ldconfig -p | grep 'libseccomp.so.2'
       - name: Run actual non-root Linux seccomp negatives
         run: python3 -m unittest discover -s tests -p 'test_observer_lifetime_guard*.py' -v
+      - name: Real Linux separate-UID AF_UNIX integration
+        run: sudo python3 -m unittest discover -s tests -p 'test_observer_lifetime_guard_cross_uid.py' -v
       - name: Reject root observer
         run: |
           sudo python3 - <<'PY'
