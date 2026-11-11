@@ -7,6 +7,7 @@ on:
     paths:
       - remote_security/observer_boundary.py
       - tests/test_observer_boundary.py
+      - tests/test_observer_boundary_cross_uid.py
       - .github/workflows/ronja-r24-observer-boundary.yml
 jobs:
   scoped-negative-controls:
@@ -18,6 +19,6 @@ jobs:
         with:
           persist-credentials: false
       - name: Non-root Linux profile, socket, CDP and namespace negatives
-        run: python3 -m unittest discover -s tests -p 'test_observer_boundary.py' -v
+        run: python3 -m unittest discover -s tests -p 'test_observer_boundary*.py' -v
       - name: Root must not be treated as a valid observer
-        run: sudo python3 -m unittest discover -s tests -p 'test_observer_boundary.py' -v
+        run: sudo python3 -m unittest discover -s tests -p 'test_observer_boundary*.py' -v
