@@ -107,6 +107,8 @@ def install(client_path, destination_dir=None, *, python_executable=sys.executab
     elevation. This function cannot defend against a malicious same-UID actor
     who controls the directory after the last identity check.
     """
+    if os.geteuid() == 0 or os.geteuid() != os.getuid():
+        raise UnsafeInstallation("run as an ordinary non-setuid user")
     data = _entry(client_path, python_executable)
     directory = os.fspath(destination_dir or Path.home() / ".local/share/applications")
     chain = _open_chain(directory)
