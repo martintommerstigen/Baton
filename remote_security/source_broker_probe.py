@@ -83,6 +83,8 @@ def probe(socket_path, expected_uid, *, connect=False, timeout=0.5):
             result["state"] = "kernel_peer_uid_verified_no_request"
             result["peer_uid_verified"] = True
             return result
+    except UntrustedBroker:
+        raise
     except (OSError, TimeoutError) as exc:
         raise ProbeUncertain("socket peer probe uncertain; no retry") from exc
 
