@@ -1,6 +1,8 @@
 # Start here: Baton, GTRCM and RustWorld (new LLM orientation)
 **Verified GitHub snapshot:** 2026-11-11. **Purpose:** locate the correct source before acting. This is a public navigation guide, not an installation claim or authorization to send messages.
 
+**2026-11-12 delta:** A fresh owner-affiliated GitHub enumeration found **327 GTRCM + 81 Baton = 408 branch tips**. The previous 326+81/407 figures below are explicitly historical snapshots, not the current count. The [private question-first router](https://github.com/martintommerstigen/GTRCM/blob/docs/eik-g2-g4-repo-navigation-2026-11-11/research/navigation/2026-11-12_QUESTION_FIRST_ROUTER.md) now asks a new LLM to check whether an answer already exists, read the original and negative control, and state what changed. R54 adds source-grounded physical-bootstrap limits, not a live Baton or natural-physics proof.
+
 ## Project map (do not conflate)
 
 | Project | GitHub location | Source of truth |
