@@ -191,9 +191,14 @@ class BrokerHandler(socketserver.StreamRequestHandler):
             req = json.loads(data.decode("utf-8"))
             # A renamed/replaced public parent must not authorize a new
             # admission through a previously accepted connection.
-            if not self.server.parent_unchanged():
+            if not self.server.endpoint_unchanged():
                 return
             result = self.server.store.request(req)
+            # The callback may have durably admitted/begun an attempt. If the
+            # public endpoint changed meanwhile, never return a success-like
+            # receipt. The durable ledger blocks blind retry after restart.
+            if not self.server.endpoint_unchanged():
+                return
             self.wfile.write((json.dumps(result, sort_keys=True) + "\n").encode("utf-8"))
         except (ValueError, UnicodeError, json.JSONDecodeError, OSError, sqlite3.Error):
             # Malformed requests do not authorize a send.
@@ -264,6 +269,26 @@ class Broker(socketserver.ThreadingMixIn, socketserver.UnixStreamServer):
     def parent_unchanged(self):
         return self.parent_fd is not None and self._same_public_parent(self.parent_fd)
 
+    def endpoint_unchanged(self):
+        """Verify that the *public* socket still names our bound inode.
+
+        Parent pinning alone does not detect unlink/rebind of the basename.
+        A connection accepted before replacement can remain usable. This
+        check cannot defend against malicious same-UID code racing each
+        individual syscall; use separate UIDs for that threat model.
+        """
+        if self.bound_inode is None or not self.parent_unchanged():
+            return False
+        try:
+            st = os.stat(self.public_path.name, dir_fd=self.parent_fd,
+                         follow_symlinks=False)
+            return (stat.S_ISSOCK(st.st_mode)
+                    and (st.st_dev, st.st_ino) == self.bound_inode
+                    and st.st_uid == os.geteuid()
+                    and not (st.st_mode & 0o077))
+        except (OSError, ValueError):
+            return False
+
     def _unlink_own_socket(self):
         """Remove only the socket inode created by this instance, via dirfd."""
         if self.parent_fd is None or self.bound_inode is None:
@@ -277,7 +302,7 @@ class Broker(socketserver.ThreadingMixIn, socketserver.UnixStreamServer):
             pass
 
     def process_request(self, request, client_address):
-        if not self.parent_unchanged():
+        if not self.endpoint_unchanged():
             self.shutdown_request(request)
             return
         if not self._handler_slots.acquire(blocking=False):
