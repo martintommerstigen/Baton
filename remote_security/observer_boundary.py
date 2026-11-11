@@ -77,7 +77,7 @@ def _no_inherited_socket_capabilities():
     except OSError as exc:
         raise BoundaryDenied('inherited FD inventory unavailable') from exc
     for name in names:
-        if not name.isdecimal() or int(name) <= 2:
+        if not name.isdecimal():
             continue
         try:
             duplicate = os.dup(int(name))
