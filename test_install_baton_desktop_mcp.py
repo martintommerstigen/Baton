@@ -76,7 +76,7 @@ class DesktopMcpEndToEndTests(unittest.TestCase):
                 def via_core(argv, cwd, timeout):
                     return original_exec(argv, cwd, timeout, token_file=token_file)
                 with patch.object(baton_core_client, "CORE_URL", endpoint):
-                    with patch("baton_mcp_stdio.execute_on_greg", side_effect=via_core):
+                    with patch("baton_mcp_stdio.execute_on_greg", side_effect=via_core), patch("baton_mcp_stdio.ui_lease_active", return_value=True):
                         def invoke(command):
                             result = handle({"jsonrpc": "2.0", "id": 3, "method": "tools/call",
                                              "params": {"name": "greg_exec",
