@@ -10,6 +10,7 @@ import unittest
 from pathlib import Path
 
 from remote_security.observer_lifetime_guard import install_observer_lifetime_guard
+from remote_security import observer_boundary  # preload before dropping UID; runner checkout is private
 from remote_security.broker_peer import query_verified_broker
 
 
@@ -64,6 +65,8 @@ class CrossUidTests(unittest.TestCase):
                             os._exit(9)
                         os._exit(0 if result == {'state':'synthetic_snapshot'} else 7)
                     except BaseException:
+                        import traceback
+                        traceback.print_exc()
                         os._exit(8)
                 _, observer_status = os.waitpid(observer, 0)
                 self.assertTrue(os.WIFEXITED(observer_status))
