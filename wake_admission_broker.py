@@ -16,8 +16,11 @@ import sqlite3
 import stat
 import struct
 import threading
+import time
 
 MAX_REQUEST = 8192
+FRAME_TIMEOUT = 3.0  # Monotonic budget for a complete request or reply.
+MAX_HANDLERS = 8  # Bound concurrent connections, including partial frames.
 ID = re.compile(r"^[A-Za-z0-9_.:-]{1,128}$")
 DIGEST = re.compile(r"^[0-9a-f]{64}$")
 SCHEMA = """
@@ -126,6 +129,28 @@ class AdmissionStore:
                 raise
 
 
+def read_bounded_frame(conn, limit=MAX_REQUEST):
+    """Read one newline frame under a single absolute monotonic deadline.
+
+    One-byte reads intentionally avoid accepting extra buffered frames. A peer
+    that keeps trickling data cannot reset the deadline.
+    """
+    deadline = time.monotonic() + FRAME_TIMEOUT
+    data = bytearray()
+    while len(data) <= limit:
+        remaining = deadline - time.monotonic()
+        if remaining <= 0:
+            raise TimeoutError("Broker frame deadline exceeded")
+        conn.settimeout(remaining)
+        part = conn.recv(1)
+        if not part:
+            return None
+        data.extend(part)
+        if part == b"\n":
+            return bytes(data) if len(data) <= limit else None
+    return None
+
+
 class BrokerHandler(socketserver.StreamRequestHandler):
     def handle(self):
         # Kernel-supplied credentials, not an asserted sender name in JSON.
@@ -134,8 +159,8 @@ class BrokerHandler(socketserver.StreamRequestHandler):
             _pid, uid, _gid = struct.unpack("3i", raw)
             if uid not in self.server.allowed_uids:
                 return
-            data = self.rfile.readline(MAX_REQUEST + 1)
-            if not data or len(data) > MAX_REQUEST or not data.endswith(b"\n"):
+            data = read_bounded_frame(self.request)
+            if not data:
                 return
             req = json.loads(data.decode("utf-8"))
             result = self.server.store.request(req)
@@ -149,24 +174,54 @@ class Broker(socketserver.ThreadingMixIn, socketserver.UnixStreamServer):
     daemon_threads = True
     allow_reuse_address = False
 
-    def __init__(self, socket_path, store, allowed_uids):
+    def __init__(self, socket_path, store, allowed_uids, max_handlers=MAX_HANDLERS):
+        if type(max_handlers) is not int or max_handlers < 1:
+            raise ValueError("max_handlers must be positive")
         self.store = store
         self.allowed_uids = frozenset(allowed_uids)
+        self._handler_slots = threading.BoundedSemaphore(max_handlers)
         super().__init__(str(socket_path), BrokerHandler)
         os.chmod(socket_path, 0o600)
 
+    def process_request(self, request, client_address):
+        if not self._handler_slots.acquire(blocking=False):
+            self.shutdown_request(request)
+            return
+        try:
+            super().process_request(request, client_address)
+        except BaseException:
+            self._handler_slots.release()
+            raise
+
+    def process_request_thread(self, request, client_address):
+        try:
+            super().process_request_thread(request, client_address)
+        finally:
+            self._handler_slots.release()
+
 
 def query(socket_path, payload):
+    # The entire connect/send/response operation has one elapsed-time budget.
+    deadline = time.monotonic() + FRAME_TIMEOUT
     with socket.socket(socket.AF_UNIX, socket.SOCK_STREAM) as conn:
+        conn.settimeout(FRAME_TIMEOUT)
         conn.connect(str(socket_path))
+        remaining = deadline - time.monotonic()
+        if remaining <= 0:
+            raise TimeoutError("Broker request deadline exceeded")
+        conn.settimeout(remaining)
         conn.sendall((json.dumps(payload) + "\n").encode())
         conn.shutdown(socket.SHUT_WR)
-        response = b""
+        response = bytearray()
         while not response.endswith(b"\n"):
+            remaining = deadline - time.monotonic()
+            if remaining <= 0:
+                raise TimeoutError("Broker reply deadline exceeded")
+            conn.settimeout(remaining)
             chunk = conn.recv(4096)
             if not chunk:
                 raise RuntimeError("No authenticated broker response")
-            response += chunk
+            response.extend(chunk)
             if len(response) > MAX_REQUEST:
                 raise RuntimeError("Oversized response")
         return json.loads(response)
