@@ -36,17 +36,20 @@ class CrossUIDObservedSource(unittest.TestCase):
             server_pid = os.fork()
             if server_pid == 0:
                 os.close(read_fd)
-                stage='drop_uid'
+                stage='load_pinned_b1'
                 try:
-                    os.setgroups([])
-                    os.setgid(21001)
-                    os.setuid(21001)
-                    os.umask(0o077)
-                    stage='load_pinned_b1'
+                    # CI workspace may be private to the runner UID. Load the
+                    # immutable B1 source BEFORE dropping privileges; all
+                    # source operations below still run as service UID 21001.
                     spec = importlib.util.spec_from_file_location("b1_h20_uid",b1_path)
                     b1 = importlib.util.module_from_spec(spec)
                     spec.loader.exec_module(b1)
                     from remote_security.observed_source_handoff import ObservedSourceHandoff
+                    stage='drop_uid'
+                    os.setgroups([])
+                    os.setgid(21001)
+                    os.setuid(21001)
+                    os.umask(0o077)
                     stage='create_b1_store'
                     inner = b1.AdmissionStore(db,pause,{"chat-B"})
                     proxy = ObservedSourceHandoff(inner,broker_uid=21001,
