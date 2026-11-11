@@ -40,11 +40,7 @@ class DesktopMcpInstallTests(unittest.TestCase):
 
     def test_existing_auto_approval_is_not_silently_rewritten(self):
         self.config.parent.mkdir()
-        original = (
-            "[mcp_servers.baton_greg]\\n"
-            "command = \\"/usr/bin/python3\\"\\n"
-            "default_tools_approval_mode = \\"auto\\"\\n"
-        )
+        original = '[mcp_servers.baton_greg]\ncommand = "/usr/bin/python3"\ndefault_tools_approval_mode = "auto"\n'
         self.config.write_text(original)
         with self.assertRaisesRegex(ValueError, "differs"):
             install(self.config, self.script, sys.executable)
