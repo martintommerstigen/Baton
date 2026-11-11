@@ -71,7 +71,7 @@ class MCPTests(unittest.TestCase):
             {"jsonrpc":"2.0","id":11,"method":"tools/list"}
         ]
         proc=subprocess.run([sys.executable,"baton_mcp_stdio.py"],
-                            input="".join(json.dumps(frame)+"\\n" for frame in frames),
+                            input="".join(json.dumps(frame)+"\n" for frame in frames),
                             text=True,capture_output=True,timeout=5)
         self.assertEqual(proc.returncode,0,proc.stderr)
         replies=[json.loads(line) for line in proc.stdout.splitlines()]
