@@ -11,7 +11,7 @@ from uuid import uuid4
 from pathlib import Path
 from baton_chatgpt_view import is_chatgpt_conversation_url
 from baton_conversation_panel import chat_id_from_url
-from baton_embedded_send import prepare_send_script, send_click_script
+from baton_embedded_send import prepare_send_script, send_click_script, clear_prepared_script
 from baton_model_protocol import (
     parse_assistant_tool_call, tool_result_message, observe_assistant_script
 )
@@ -171,20 +171,47 @@ def attach_model_bridge(layout, view, page, parent):
             if active() is None:
                 on_complete(False)
                 return
+            # DOM event handlers may enable the Send action after a delay.
+            # Retry READINESS checks only; never retry once a click occurred.
+            click_checks=[0]
+            def discard_failed_draft():
+                if active() is None:
+                    on_complete(False)
+                    return
+                def cleared(result):
+                    outcome = _decode_js_result(result)
+                    if isinstance(outcome,dict) and outcome.get("ok"):
+                        report("Baton fikk ikke sendt. Eget utkast fjernet; ingen melding sendt.")
+                    else:
+                        report("Baton fikk ikke sendt. Kontroller ChatGPT-feltet: " +
+                               last_send_error[0])
+                    on_complete(False)
+                page.runJavaScript(_json_result_script(clear_prepared_script(text)),cleared)
             def clicked(result):
                 result = _decode_js_result(result)
-                success=isinstance(result,dict) and bool(result.get("ok"))
-                if not success:
-                    last_send_error[0] = "send: " + str(result.get("reason", "ukjent") if isinstance(result,dict) else "mangler JS-resultat")
-                    report("ChatGPT-sendeknappen var ikke klar: " + last_send_error[0])
-                on_complete(success)
+                if isinstance(result,dict) and result.get("ok"):
+                    on_complete(True)
+                    return
+                reason = result.get("reason", "ukjent") if isinstance(result,dict) else "mangler JS-resultat"
+                detail = result.get("detail", "") if isinstance(result,dict) else ""
+                if reason == "send-not-ready" and click_checks[0] < 9:
+                    QTimer.singleShot(450,click_once)
+                    return
+                last_send_error[0] = "send: " + str(reason) + (" (" + str(detail) + ")" if detail else "")
+                report("ChatGPT kunne ikke sende: " + last_send_error[0])
+                # Only clean up on a proven pre-click readiness failure. If
+                # the click's outcome is uncertain, never attempt resend/erase.
+                if reason == "send-not-ready":
+                    discard_failed_draft()
+                else:
+                    on_complete(False)
             def click_once():
                 if active() is None:
                     on_complete(False)
                     return
+                click_checks[0] += 1
                 page.runJavaScript(_json_result_script(send_click_script(text)),clicked)
-            # The hosted composer enables Send asynchronously after input.
-            QTimer.singleShot(350,click_once)
+            QTimer.singleShot(500,click_once)
         # Wait for the page to finish loading before evaluating the composer.
         # Retry only null evaluations, never an inserted message or send click.
         attempts=[0]
