@@ -21,15 +21,15 @@ class ChainPlan:
     origin_turn_id: str | None = None
 
 def next_target_from_reply(reply_text, expected_target, expected_digest=None):
-    # Exact one-line control statement; reject prose, multiple commands and
-    # other targets. Treat model output as an untrusted request, not authority.
+    # Exact one-line control statement: no whitespace normalization, prose,
+    # or digest-free delegation. Model output is a request, not authority.
     expected=f'BATON_NEXT {expected_target}'
     if expected_digest is not None:
         import re
         if type(expected_digest) is not str or not re.fullmatch(r'[0-9a-f]{64}', expected_digest):
             raise ValueError('Expected SHA-256 must be lowercase 64 hex characters')
         expected += f' sha256:{expected_digest}'
-    if not isinstance(reply_text,str) or reply_text.strip()!=expected:
+    if not isinstance(reply_text,str) or reply_text!=expected:
         return None
     return expected_target
 
@@ -44,7 +44,7 @@ def run_chain(ledger, driver_b, driver_c, plan, read_reply):
         return {'a_to_b':first,'b_to_c':'not_attempted'}
     turn_id=ledger.state(plan.first_id)[2]
     reply=read_reply(plan.b,turn_id)
-    if not isinstance(reply,str) or next_target_from_reply(reply,plan.c) is None:
+    if not isinstance(reply,str) or next_target_from_reply(reply,plan.c,plan.second_digest) is None:
         return {'a_to_b':'verified','b_to_c':'not_authorized'}
     second=wake_once(ledger,driver_c,plan.second_id,plan.b,plan.c,
                      plan.second_digest,plan.second_body,turn_id)
