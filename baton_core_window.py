@@ -109,6 +109,89 @@ def main():
     models_layout.addWidget(chat_status)
     tabs.addTab(models, "Modeller")
 
+    # Working model-neutral chat: local Ollama or a chosen HTTPS
+    # OpenAI-compatible endpoint, without scraping website accounts.
+    # This plain-text answer never becomes an executable Greg command.
+    from queue import Queue, Empty
+    from threading import Thread
+    from baton_model_clients import chat_completion
+
+    model_chat = QWidget(tabs)
+    chat_layout = QVBoxLayout(model_chat)
+    chat_layout.addWidget(QLabel("Samtale med lokal eller API-tilkoblet modell"))
+    endpoint = QLineEdit(model_chat)
+    endpoint.setText("http://127.0.0.1:11434/v1/chat/completions")
+    endpoint.setPlaceholderText("OpenAI-kompatibelt /chat/completions-endepunkt")
+    model_id = QLineEdit(model_chat)
+    model_id.setPlaceholderText("Modell-ID hos valgt leverandør")
+    api_secret = QLineEdit(model_chat)
+    api_secret.setEchoMode(QLineEdit.EchoMode.Password)
+    api_secret.setPlaceholderText("API-nøkkel (valgfri; bare i denne økten)")
+    chat_layout.addWidget(endpoint)
+    chat_layout.addWidget(model_id)
+    chat_layout.addWidget(api_secret)
+    transcript = QTextEdit(model_chat)
+    transcript.setReadOnly(True)
+    chat_layout.addWidget(transcript)
+    model_prompt = QTextEdit(model_chat)
+    model_prompt.setPlaceholderText("Skriv til modellen")
+    model_prompt.setMaximumHeight(100)
+    chat_layout.addWidget(model_prompt)
+    send_to_model = QPushButton("Send til modell")
+    chat_layout.addWidget(send_to_model)
+    model_result = QLabel(
+        "Denne tilkoblingen bruker et dokumentert API, ikke innlogging "
+        "eller scraping av en annen leverandørs ChatGPT-nettside."
+    )
+    model_result.setWordWrap(True)
+    chat_layout.addWidget(model_result)
+    model_results = Queue()
+    model_busy = [False]
+
+    def send_model_prompt():
+        if model_busy[0]:
+            return
+        question = model_prompt.toPlainText()
+        if not question.strip():
+            model_result.setText("Skriv en melding først.")
+            return
+        endpoint_url, model_name = endpoint.text(), model_id.text()
+        token = api_secret.text().strip() or None
+        model_busy[0] = True
+        send_to_model.setEnabled(False)
+        model_result.setText("Venter på modellen ...")
+        transcript.append("Du: " + question)
+        model_prompt.clear()
+
+        def perform():
+            try:
+                reply = chat_completion(endpoint_url, model_name, question,
+                                        bearer=token, timeout=45)
+                model_results.put(("ok", reply))
+            except (OSError, ValueError, RuntimeError) as exc:
+                model_results.put(("error", type(exc).__name__ + ": " + str(exc)))
+        Thread(target=perform, name="baton-model-chat", daemon=True).start()
+
+    def poll_model_results():
+        try:
+            status, payload = model_results.get_nowait()
+        except Empty:
+            return
+        model_busy[0] = False
+        send_to_model.setEnabled(True)
+        if status == "ok":
+            transcript.append("Modell: " + payload)
+            model_result.setText("Modellsvar mottatt lokalt i Baton.")
+        else:
+            model_result.setText("Modellforespørsel feilet: " + payload)
+
+    send_to_model.clicked.connect(send_model_prompt)
+    model_poller = QTimer(panel)
+    model_poller.setInterval(180)
+    model_poller.timeout.connect(poll_model_results)
+    model_poller.start()
+    tabs.addTab(model_chat, "Modellsamtale")
+
     # An auditable outbox is not an external transport. The local user must
     # explicitly approve a draft, and approval is not equivalent to delivery.
     channels = QWidget(tabs)
