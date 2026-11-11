@@ -90,6 +90,23 @@ def checked_socket_parent(socket_path):
     return path, (parent.st_dev, parent.st_ino)
 
 
+def checked_shared_socket_group(directory_fd, shared_gid):
+    """Opt-in group-traversable socket; parent stays private and non-writable.
+
+    Group access is not operation authorization: SO_PEERCRED still gates each
+    request. The UI worker must belong to the dedicated group and be separately
+    allowlisted by kernel UID.
+    """
+    if type(shared_gid) is not int or shared_gid <= 0:
+        raise ValueError("dedicated non-root shared group GID required")
+    if shared_gid not in set(os.getgroups()) | {os.getegid()}:
+        raise PermissionError("service process is not a member of shared group")
+    parent = os.fstat(directory_fd)
+    if (parent.st_gid != shared_gid or not (parent.st_mode & stat.S_IXGRP)
+            or parent.st_mode & stat.S_IWGRP or parent.st_mode & stat.S_IRWXO):
+        raise PermissionError("socket directory must be group-traversable, private and not group-writable")
+
+
 class AdmissionStore:
     def __init__(self, db_path, pause_path, allowed_conversations):
         self.db_path = str(db_path)
@@ -217,11 +234,15 @@ class Broker(socketserver.ThreadingMixIn, socketserver.UnixStreamServer):
     daemon_threads = True
     allow_reuse_address = False
 
-    def __init__(self, socket_path, store, allowed_uids, max_handlers=MAX_HANDLERS):
+    def __init__(self, socket_path, store, allowed_uids, max_handlers=MAX_HANDLERS,
+                 shared_gid=None):
         if type(max_handlers) is not int or max_handlers < 1:
             raise ValueError("max_handlers must be positive")
         self.store = store
         self.allowed_uids = frozenset(allowed_uids)
+        self.shared_gid = shared_gid
+        self.socket_mode = 0o660 if shared_gid is not None else 0o600
+        self.socket_gid = shared_gid if shared_gid is not None else os.getegid()
         self._handler_slots = threading.BoundedSemaphore(max_handlers)
         self.public_path, self.parent_identity = checked_socket_parent(socket_path)
         self.parent_fd = None
@@ -234,6 +255,8 @@ class Broker(socketserver.ThreadingMixIn, socketserver.UnixStreamServer):
             if ((parent.st_dev, parent.st_ino) != self.parent_identity
                     or not self._same_public_parent(directory_fd)):
                 raise ValueError("broker parent changed before bind")
+            if shared_gid is not None:
+                checked_shared_socket_group(directory_fd, shared_gid)
             try:
                 os.stat(self.public_path.name, dir_fd=directory_fd, follow_symlinks=False)
             except FileNotFoundError:
@@ -248,11 +271,16 @@ class Broker(socketserver.ThreadingMixIn, socketserver.UnixStreamServer):
             if not stat.S_ISSOCK(st.st_mode) or st.st_uid != os.geteuid():
                 raise ValueError("broker bound an untrusted endpoint")
             self.bound_inode = (st.st_dev, st.st_ino)
-            os.chmod(self.public_path.name, 0o600, dir_fd=directory_fd,
+            if shared_gid is not None:
+                os.chown(self.public_path.name, -1, shared_gid, dir_fd=directory_fd,
+                         follow_symlinks=False)
+            os.chmod(self.public_path.name, self.socket_mode, dir_fd=directory_fd,
                      follow_symlinks=False)
             st = os.stat(self.public_path.name, dir_fd=directory_fd, follow_symlinks=False)
             if ((st.st_dev, st.st_ino) != self.bound_inode
-                    or not stat.S_ISSOCK(st.st_mode) or st.st_mode & 0o077
+                    or not stat.S_ISSOCK(st.st_mode)
+                    or stat.S_IMODE(st.st_mode) != self.socket_mode
+                    or st.st_gid != self.socket_gid
                     or not self.parent_unchanged()):
                 raise ValueError("broker endpoint changed during bind")
         except BaseException:
@@ -293,7 +321,8 @@ class Broker(socketserver.ThreadingMixIn, socketserver.UnixStreamServer):
             return (stat.S_ISSOCK(st.st_mode)
                     and (st.st_dev, st.st_ino) == self.bound_inode
                     and st.st_uid == os.geteuid()
-                    and not (st.st_mode & 0o077))
+                    and st.st_gid == self.socket_gid
+                    and stat.S_IMODE(st.st_mode) == self.socket_mode)
         except (OSError, ValueError):
             return False
 
@@ -375,14 +404,19 @@ def main():
     parser.add_argument("--pause-path", required=True)
     parser.add_argument("--conversation", action="append", required=True)
     parser.add_argument("--allow-uid", action="append", type=int, default=[])
+    parser.add_argument("--shared-gid", type=int, default=None,
+                        help="Dedicated service/UI group; socket 0660 in 0710 directory")
     args = parser.parse_args()
+    allowed_uids = args.allow_uid or [os.getuid()]
+    if any(uid != os.getuid() for uid in allowed_uids) and args.shared_gid is None:
+        raise SystemExit("Separate-UID client requires --shared-gid; 0600 socket is inaccessible")
     # Do not remove/replace an existing socket: a second broker must fail closed.
     os.umask(0o077)
     sock = Path(args.socket)
     if sock.exists() or sock.is_symlink():
         raise SystemExit("Socket already exists; inspect existing broker before restart")
     store = AdmissionStore(args.db, args.pause_path, args.conversation)
-    with Broker(sock, store, args.allow_uid or [os.getuid()]) as server:
+    with Broker(sock, store, allowed_uids, shared_gid=args.shared_gid) as server:
         server.serve_forever(poll_interval=0.05)
 
 
