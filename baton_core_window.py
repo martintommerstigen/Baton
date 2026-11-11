@@ -167,21 +167,45 @@ def main():
             try:
                 reply = chat_completion(endpoint_url, model_name, question,
                                         bearer=token, timeout=45)
-                model_results.put(("ok", reply))
+                model_results.put(("ok", reply, endpoint_url, model_name))
             except (OSError, ValueError, RuntimeError) as exc:
-                model_results.put(("error", type(exc).__name__ + ": " + str(exc)))
+                model_results.put(("error", type(exc).__name__ + ": " + str(exc),
+                                   endpoint_url, model_name))
         Thread(target=perform, name="baton-model-chat", daemon=True).start()
 
     def poll_model_results():
         try:
-            status, payload = model_results.get_nowait()
+            status, payload, answered_endpoint, answered_model = model_results.get_nowait()
         except Empty:
             return
         model_busy[0] = False
         send_to_model.setEnabled(True)
         if status == "ok":
-            transcript.append("Modell: " + payload)
-            model_result.setText("Modellsvar mottatt lokalt i Baton.")
+            # Incoming model replies obey the same recipient-owned attention
+            # policy as future email, model-to-model and social adapters.
+            # The endpoint/model label is unverified: no claimed model name
+            # can grant its own access through an identity allowlist.
+            from hashlib import sha256
+            sender = "model-api:" + sha256(
+                (answered_endpoint + "|" + answered_model).encode("utf-8")
+            ).hexdigest()[:20]
+            verdict = receive(
+                outbox, attention_owner, source_id="model-reply:" + uuid4().hex,
+                channel="model", sender_id=sender, sender_verified=False,
+                body=payload, topics=(), topics_trusted=False,
+                sender_display=answered_model
+            )
+            if verdict["decision"] == "pass":
+                transcript.append("Modell: " + payload)
+                model_result.setText(
+                    "Modellsvar mottatt. Filteravsender: " + sender
+                )
+            else:
+                model_result.setText(
+                    "Modellsvar " + verdict["decision"] +
+                    " av mottakerens filter (" + verdict["reason"] + "). "
+                    "Ingen tekst lagt i samtalevisningen. Avsender: " + sender
+                )
         else:
             model_result.setText("Modellforespørsel feilet: " + payload)
 
