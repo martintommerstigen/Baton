@@ -210,7 +210,9 @@ def receive(conn, recipient, *, source_id, channel, sender_id, body,
     verdict = decide(conn, recipient, sender_id=sender_id,
                      sender_verified=sender_verified, topics=topics,
                      topics_trusted=topics_trusted, body=body)
-    digest = _digest(source_id)
+    # A transport ID is scoped to its sender. Reusing an ID cannot
+    # suppress a different participant's message.
+    digest = _digest(sender_id + "\x00" + source_id)
     with conn:
         prior = conn.execute(
             "SELECT decision FROM attention_decisions "
