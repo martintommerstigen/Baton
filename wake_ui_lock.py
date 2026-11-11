@@ -45,3 +45,26 @@ def ui_controller_lock(path=None):
             fcntl.flock(fd, fcntl.LOCK_UN)
     finally:
         os.close(fd)
+
+
+class LockingUIDriver:
+    """Hold the shared host UI lock only across one actual submission.
+
+    Observing an assistant response does not need the write lock. Releasing it
+    during generation permits another authorized conversation's independent
+    action, as Riss R20's 7 Nov Greg test required. This wrapper never retries.
+    Verified broker admission still serializes outstanding target attempts.
+    """
+
+    def __init__(self, driver, lock_path=None):
+        self.driver = driver
+        self.lock_path = lock_path
+
+    def submit_once(self, *args, **kwargs):
+        # Includes exact composer readback, broker begin_click and Send click.
+        # Failure to acquire is conservative: wake_once retains uncertainty.
+        with ui_controller_lock(self.lock_path):
+            return self.driver.submit_once(*args, **kwargs)
+
+    def __getattr__(self, name):
+        return getattr(self.driver, name)
