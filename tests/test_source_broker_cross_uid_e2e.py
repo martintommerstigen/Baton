@@ -115,10 +115,12 @@ class CrossUidPinnedSourceE2E(unittest.TestCase):
             ready_r, ready_w = os.pipe()
             pid = os.fork()
             if pid == 0:
+                phase = "drop"
                 try:
                     os.close(ready_r)
                     os.setgid(SHARED_GID)
                     os.setuid(SERVICE_UID)
+                    phase = "jobs"
                     jobs = ResearchJobs(db, key, {"RustWorld": ["sha256-echo"]})
 
                     def capture(source_id, job_id):
@@ -141,6 +143,7 @@ class CrossUidPinnedSourceE2E(unittest.TestCase):
                                 "source_sha256": checked["bundle"]["capture"]["content_sha256"],
                                 "evidence_sha256": checked["evidence_sha256"]}
 
+                    phase = "broker-start"
                     broker = SourceBroker(str(path), {CLIENT_UID},
                                           set(policy), capture, audit)
                     broker.start()
@@ -159,7 +162,7 @@ class CrossUidPinnedSourceE2E(unittest.TestCase):
                 except BaseException as exc:
                     # Failure-only diagnostic: exception class and errno, never
                     # private paths, source text, keys or message contents.
-                    detail = (type(exc).__name__ + ":" +
+                    detail = (phase + ":" + type(exc).__name__ + ":" +
                               str(getattr(exc, "errno", ""))).encode("ascii", "replace")
                     try:
                         os.write(ready_w, b"E" + detail[:100])
