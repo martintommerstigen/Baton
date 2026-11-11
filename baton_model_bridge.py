@@ -75,6 +75,23 @@ def _decode_js_result(result):
     return result
 
 
+def _assistant_tool_turn(turn, expected_nonce):
+    """Parse a verified assistant-labelled DOM turn; DOM IDs are optional.
+
+    Only the assistant selector supplies turns. This does not authenticate
+    the web page; the local user must explicitly enable the exact session.
+    """
+    if not isinstance(turn, dict):
+        return None
+    call = parse_assistant_tool_call(turn.get("text"), expected_nonce)
+    if call is None:
+        return None
+    turn_id = turn.get("id")
+    if not isinstance(turn_id, str) or not turn_id:
+        turn_id = "request:" + call["request_id"]
+    return turn_id, call
+
+
 def attach_model_bridge(layout, view, page, parent):
     from PySide6.QtCore import QTimer
     from PySide6.QtWidgets import QGroupBox, QVBoxLayout, QPushButton, QLabel
@@ -225,16 +242,16 @@ def attach_model_bridge(layout, view, page, parent):
                        ("null JS-resultat" if turns is None else "ugyldig observatørresultat"))
                 return
             for turn in turns:
-                if not isinstance(turn,dict):
+                parsed = _assistant_tool_turn(turn, nonce)
+                if parsed is None:
+                    # Surface a rejected tool-looking frame rather than silently
+                    # ignoring it; do not execute untrusted or malformed prose.
+                    if (isinstance(turn,dict) and
+                        isinstance(turn.get("text"),str) and
+                        turn["text"].lstrip().startswith("BATON_TOOL_V1 "+nonce)):
+                        report("Baton så en verktøyramme, men avviste formatet.")
                     continue
-                call=parse_assistant_tool_call(turn.get("text"),nonce)
-                if call is None:
-                    continue
-                # ChatGPT may omit data-message-id on otherwise valid turns.
-                # The session nonce and unique request_id are the command guards.
-                turn_id=turn.get("id")
-                if not isinstance(turn_id,str) or not turn_id:
-                    turn_id="request:"+call["request_id"]
+                turn_id,call = parsed
                 if turn_id in observed_turns:
                     continue
                 observed_turns.add(turn_id)
