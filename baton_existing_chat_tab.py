@@ -37,7 +37,7 @@ def attach_existing_conversation_tab(tabs):
     """Two ways to access an original /c/ conversation, never a blank model."""
     import shutil
     import subprocess
-    from PySide6.QtCore import QUrl
+    from PySide6.QtCore import QUrl, Qt
     from PySide6.QtWidgets import (
         QApplication, QWidget, QVBoxLayout, QLabel, QPushButton, QMainWindow
     )
@@ -61,8 +61,7 @@ def attach_existing_conversation_tab(tabs):
         "velg Last inn upakket/Load unpacked og marker mappen:\n" + bridge_path
     )
     details.setWordWrap(True)
-    details.setTextInteractionFlags(details.textInteractionFlags() |
-                                    details.textInteractionFlags().TextSelectableByMouse)
+    details.setTextInteractionFlags(Qt.TextInteractionFlag.TextSelectableByMouse)
     layout.addWidget(details)
     start_brave = QPushButton("Åpne Brave-utvidelser (kopier mappeadresse)")
     layout.addWidget(start_brave)
