@@ -2,6 +2,8 @@
 import errno
 import os
 import socket
+import subprocess
+import sys
 import tempfile
 import unittest
 from pathlib import Path
@@ -45,6 +47,19 @@ class BoundaryTests(unittest.TestCase):
         with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
             with self.assertRaisesRegex(b.BoundaryDenied, 'inherited network socket'):
                 b._no_inherited_socket_capabilities()
+
+    def test_inherited_tcp_socket_in_stdin_denied(self):
+        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+            code = """from remote_security.observer_boundary import _no_inherited_socket_capabilities, BoundaryDenied
+try:
+    _no_inherited_socket_capabilities()
+except BoundaryDenied as exc:
+    print(str(exc))
+"""
+            result = subprocess.run([sys.executable, '-c', code], stdin=s,
+                                    capture_output=True, text=True, timeout=4)
+            self.assertEqual(result.returncode, 0, result.stderr)
+            self.assertIn('inherited network socket capability', result.stdout)
 
     def test_missing_profile_is_not_proof_of_denial(self):
         with tempfile.TemporaryDirectory() as d:
