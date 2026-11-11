@@ -1,0 +1,17 @@
+{
+  "manifest_version": 3,
+  "name": "Baton · Greg",
+  "version": "0.2.0",
+  "description": "Connect a selected existing ChatGPT conversation to your own local Baton Core on Greg. No GitHub runtime transport.",
+  "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA0Ze7JOrPEFn8kAUOP0kIBNpoW9zdvC5dcoaoAR86vFMUB6D5gguk5c6+g5a8gpW1ecntYwSwULlYLZLqrmv8Hi9tuON6cyaaSmmNqVOt905bgDeD2uOG4gfnbMq5jW2NpMp0sThABwkRbGWw3K99x8jZfZwxMPIgDpMNRziJPWiCc1KZJeuUJz0+UntQaCqmrISiBiMuNVeE4mCJLD5CO0kpLCBfIukdYO8zIRICKZ4ulqztNvimtDla/Wo8LUKSd662Sl1uFuqAOWeK85PNlR7G2pRb0j8PiJXVGE28i7M+SWA2hQ4p7DMX2deHPKv53F5LphsGWZ+rRsyfRM3jOQIDAQAB",
+  "permissions": ["nativeMessaging", "tabs"],
+  "host_permissions": ["https://chatgpt.com/*"],
+  "background": {"service_worker": "background.js"},
+  "content_scripts": [
+    {
+      "matches": ["https://chatgpt.com/*"],
+      "js": ["content.js"],
+      "run_at": "document_idle"
+    }
+  ]
+}
