@@ -136,7 +136,7 @@ def main():
     # OpenAI-compatible endpoint, without scraping website accounts.
     # This plain-text answer never becomes an executable Greg command.
     from baton_model_clients import chat_completion
-    from baton_selected_context import load_selected_context, with_selected_context
+    from baton_selected_context import load_selected_context, snapshot_chatgpt_turn
 
     model_chat = QWidget(tabs)
     chat_layout = QVBoxLayout(model_chat)
@@ -255,13 +255,18 @@ def main():
         model_result.setText("Venter på modellen ...")
         transcript.append("Du: " + question)
         model_prompt.clear()
-        sent_history = list(chatgpt_history) + [{"role": "user", "content": question}]
+        # Freeze the selected context on the UI thread at Send time.
+        # A later file selection must never alter an in-flight model request.
+        if use_chatgpt:
+            sent_history, request_history = snapshot_chatgpt_turn(
+                chatgpt_history, question, context_selection[0])
+        else:
+            sent_history = list(chatgpt_history) + [{"role": "user", "content": question}]
+            request_history = None
 
         def perform():
             try:
                 if use_chatgpt:
-                    request_history = with_selected_context(
-                        sent_history, context_selection[0])
                     reply, _ = chatgpt_chat(model_name, request_history)
                     model_results.put(("ok", reply, "chatgpt-siwc", model_name,
                                        sent_history))
