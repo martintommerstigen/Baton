@@ -351,7 +351,7 @@ class PinnedB1H20Contract(unittest.TestCase):
                 self.assertEqual(ask(controller_uid,dict(envelope,op="admit"))["reason"],
                                  "no_source_observation")
                 observed=dict(envelope,op="observe_source",
-                     source_text_sha256="c"*64)
+                     source_command=f"BATON_WAKE chat-B m1 sha256:{envelope['payload_sha256']}")
                 self.assertEqual(ask(observer_uid,observed)["state"],
                                  "source_observation_recorded_not_authorship")
                 self.assertEqual(ask(controller_uid,dict(envelope,op="admit"))["state"],
