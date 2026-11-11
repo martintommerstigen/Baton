@@ -141,3 +141,46 @@ class ForgedOwnerProbe(unittest.TestCase):
                 os.close(child_r)
                 _, status = os.waitpid(pid, 0)
                 self.assertEqual(os.waitstatus_to_exitcode(status), 0)
+
+@unittest.skipUnless(os.name == 'posix' and os.geteuid() == 0
+                     and hasattr(os, 'fork') and hasattr(socket, 'SO_PEERCRED'),
+                     'trusted root-only kernel test')
+class StaleSocketProbe(unittest.TestCase):
+    def test_stale_socket_metadata_is_not_live_service(self):
+        with tempfile.TemporaryDirectory() as temp:
+            base = Path(temp)
+            base.chmod(0o755)
+            parent = base / 'socketdir'
+            parent.mkdir()
+            os.chown(parent, SERVICE_UID, SHARED_GID)
+            parent.chmod(0o710)
+            path = parent / 'source.sock'
+            with socket.socket(socket.AF_UNIX, socket.SOCK_STREAM) as stale:
+                stale.bind(str(path))
+                os.chown(path, SERVICE_UID, SHARED_GID)
+                path.chmod(0o660)
+            # Socket inode exists but no process listens.
+            child_r, child_w = os.pipe()
+            pid = os.fork()
+            if pid == 0:
+                try:
+                    os.close(child_r)
+                    os.setgid(SHARED_GID)
+                    os.setuid(CLIENT_UID)
+                    metadata = probe(str(path), SERVICE_UID)
+                    try:
+                        probe(str(path), SERVICE_UID, connect=True)
+                    except Exception as exc:
+                        result = [metadata['state'], type(exc).__name__]
+                    else:
+                        result = [metadata['state'], 'FALSE_LIVE']
+                    os.write(child_w, json.dumps(result).encode())
+                    os._exit(0)
+                except BaseException:
+                    os._exit(3)
+            os.close(child_w)
+            outcome = json.loads(os.read(child_r, 512))
+            os.close(child_r)
+            _, status = os.waitpid(pid, 0)
+            self.assertEqual(os.waitstatus_to_exitcode(status), 0)
+            self.assertEqual(outcome, ['endpoint_metadata_only', 'ProbeUncertain'])
