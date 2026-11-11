@@ -4,6 +4,7 @@ import json
 import os
 from pathlib import Path
 import socket
+import socketserver
 import tempfile
 import threading
 import time
@@ -292,6 +293,58 @@ class AdmissionTests(unittest.TestCase):
                     query(reply_path, {"op": "status"})
             self.assertLess(time.monotonic() - start, 0.75)
             worker.join(timeout=1)
+
+
+    def test_socket_parent_symlink_rejected_before_bind(self):
+        self.stop()
+        actual = self.root / "actual"
+        actual.mkdir(mode=0o700)
+        link = self.root / "link"
+        link.symlink_to(actual, target_is_directory=True)
+        with self.assertRaises(ValueError):
+            Broker(link / "broker.sock", self.store, [os.getuid()])
+        self.assertFalse((actual / "broker.sock").exists())
+
+    def test_socket_parent_swap_during_bind_fails_without_decoy_socket(self):
+        """Inject a rename at the real AF_UNIX bind boundary."""
+        self.stop()
+        parent = self.root / "public"
+        moved = self.root / "moved"
+        decoy = self.root / "decoy"
+        parent.mkdir(mode=0o700)
+        decoy.mkdir(mode=0o700)
+        original_bind = socketserver.UnixStreamServer.server_bind
+
+        def swap_then_bind(server):
+            parent.rename(moved)
+            parent.symlink_to(decoy, target_is_directory=True)
+            return original_bind(server)
+
+        with mock.patch.object(socketserver.UnixStreamServer, "server_bind", swap_then_bind):
+            with self.assertRaises(ValueError):
+                Broker(parent / "broker.sock", self.store, [os.getuid()])
+        self.assertFalse((decoy / "broker.sock").exists())
+        self.assertFalse((moved / "broker.sock").exists())
+        self.assertEqual(self.store.request({"op": "status"})["outstanding"], 0)
+
+    def test_shutdown_unlinks_only_pinned_original_socket(self):
+        """A replacement public path cannot make broker delete a decoy."""
+        self.stop()
+        parent = self.root / "public"
+        moved = self.root / "moved"
+        decoy = self.root / "decoy"
+        parent.mkdir(mode=0o700)
+        decoy.mkdir(mode=0o700)
+        broker = Broker(parent / "broker.sock", self.store, [os.getuid()])
+        parent.rename(moved)
+        parent.symlink_to(decoy, target_is_directory=True)
+        with socket.socket(socket.AF_UNIX, socket.SOCK_STREAM) as other:
+            other.bind(str(decoy / "broker.sock"))
+            broker.server_close()
+            self.assertTrue((decoy / "broker.sock").exists())
+            self.assertFalse((moved / "broker.sock").exists())
+        self.assertEqual(self.store.request({"op": "status"})["outstanding"], 0)
+
 
 
 if __name__ == "__main__":
