@@ -7,6 +7,7 @@ import hashlib
 import io
 import json
 import os
+import stat
 from pathlib import Path
 import tempfile
 import unittest
@@ -204,6 +205,41 @@ class PinnedBundleTests(unittest.TestCase):
                 private.unlink()
             if moved.exists():
                 moved.rename(private)
+
+    def test_saved_basename_replaced_during_fsync_is_uncertain(self):
+        bundle = self.bundle()
+        real_fsync = os.fsync
+        replaced = []
+        def replace_after_file_fsync(fd):
+            if stat.S_ISREG(os.fstat(fd).st_mode) and not replaced:
+                self.artifact.unlink()
+                self.artifact.write_bytes(b"replacement")
+                replaced.append(True)
+            return real_fsync(fd)
+        with patch("remote_security.pinned_source_bundle.os.fsync",
+                   side_effect=replace_after_file_fsync):
+            with self.assertRaises(UntrustedReceipt):
+                save_pinned_bundle(self.jobs, self.policy, bundle, self.artifact)
+        self.assertEqual(replaced, [True])
+        self.assertEqual(self.artifact.read_bytes(), b"replacement")
+
+    def test_audit_basename_replaced_after_read_is_not_verified(self):
+        save_pinned_bundle(self.jobs, self.policy, self.bundle(), self.artifact)
+        real_read = os.read
+        replaced = []
+        def replace_after_read(fd, count):
+            data = real_read(fd, count)
+            if not replaced:
+                self.artifact.unlink()
+                self.artifact.write_bytes(b"replacement")
+                replaced.append(True)
+            return data
+        with patch("remote_security.pinned_source_bundle.os.read",
+                   side_effect=replace_after_read):
+            with self.assertRaises(UntrustedReceipt):
+                load_pinned_bundle(self.jobs, self.policy, self.artifact)
+        self.assertEqual(replaced, [True])
+        self.assertEqual(self.artifact.read_bytes(), b"replacement")
 
     def test_cli_root_rejected_before_key_or_source(self):
         with patch("remote_security.pinned_source_cli.os.geteuid", return_value=0):
