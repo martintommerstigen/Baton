@@ -1,8 +1,10 @@
 """Opt-in B1/B5 A->B->C runner for three *existing* ChatGPT tabs.
 
 No browser creation/login, no implicit retry, no arbitrary model-authored payload.
-A must emit BATON_WAKE B FIRST_ID sha256:<B-body-digest>.\nB must emit BATON_NEXT C sha256:<C-body-digest>.\nThe live CLI refuses target-only commands. The observed assistant turn in B must
-be the *exact* BATON_NEXT C. B's source turn is the durable receipt for A->B.
+A must emit BATON_WAKE B FIRST_ID sha256:<B-body-digest>.
+B must emit BATON_NEXT C sha256:<C-body-digest>.
+The live CLI refuses target-only commands; B's exact digest-bound assistant
+turn is the source for the second hop. B's source turn is the durable receipt for A->B.
 Every UI click requires Ronja's connected-peer-verified B5 admission.
 Not a live-verification claim: only a real Greg/browser run can establish that.
 """
