@@ -19,7 +19,8 @@ _SHA256 = re.compile(r"^[0-9a-f]{64}$")
 
 def inspect_boundary(browser, *, a, b, c, source_turn_id, first_id,
                      payload_sha256, pause_checker, broker_probe,
-                     driver_factory=ChatGPTUIDriver):
+                     driver_factory=ChatGPTUIDriver,
+                     require_payload_authority=False):
     """Return a sanitized report; never call a UI write method.
 
     A's existing assistant command authorizes the B target and first message
@@ -106,7 +107,11 @@ def inspect_boundary(browser, *, a, b, c, source_turn_id, first_id,
                 report["reasons"].append("source_turn_unreadable")
             else:
                 report["source_turn_sha256"] = hashlib.sha256(text.encode("utf-8")).hexdigest()
-                if source_requested_wake(text, b, first_id):
+                if source_requested_wake(text, b, first_id, payload_sha256):
+                    report["source_command"] = "exact_target_message_id_and_payload_digest"
+                    report["source_authorizes_exact_payload"] = True
+                    report["payload_provenance"] = "source_turn_committed_digest_operator_supplied_body"
+                elif not require_payload_authority and source_requested_wake(text, b, first_id):
                     report["source_command"] = "exact_target_and_message_id"
                 else:
                     report["reasons"].append("source_command_mismatch")
@@ -123,7 +128,8 @@ def inspect_boundary(browser, *, a, b, c, source_turn_id, first_id,
 
     if (not report["reasons"] and report["pause"] == "clear"
             and report["broker"] == "ready_no_outstanding"
-            and report["source_command"] == "exact_target_and_message_id"):
+            and (report["source_authorizes_exact_payload"]
+                 if require_payload_authority else report["source_command"] != "not_verified")):
         report["status"] = "preflight_passed_not_delivery"
     return report
 
@@ -164,6 +170,7 @@ def main(argv=None):
             payload_sha256=args.payload_sha256,
             pause_checker=lambda: pause_active(PAUSE_FILE),
             broker_probe=broker_status,
+            require_payload_authority=True,
         )
     print(json.dumps(report, sort_keys=True))
     return 0 if report["status"] == "preflight_passed_not_delivery" else 2
