@@ -66,6 +66,45 @@ def _network_guard(collector_pid):
     raise BoundaryDenied('network isolation not established')
 
 
+def _no_inherited_socket_capabilities():
+    """Reject sockets already open before AF_INET/AF_INET6 creation policy.
+
+    An inherited connected CDP descriptor can bypass address-family creation
+    restrictions. This is a point-in-time check, not an FD-receive sandbox.
+    """
+    try:
+        names = os.listdir('/proc/self/fd')
+    except OSError as exc:
+        raise BoundaryDenied('inherited FD inventory unavailable') from exc
+    for name in names:
+        if not name.isdecimal() or int(name) <= 2:
+            continue
+        try:
+            duplicate = os.dup(int(name))
+        except OSError as exc:
+            if exc.errno == errno.EBADF:  # ephemeral proc directory FD
+                continue
+            raise BoundaryDenied('inherited FD inspection ambiguous') from exc
+        try:
+            endpoint = socket.socket(fileno=duplicate)
+        except OSError as exc:
+            os.close(duplicate)
+            if exc.errno in (errno.ENOTSOCK, errno.EINVAL, errno.EBADF):
+                continue
+            raise BoundaryDenied('inherited FD type ambiguous') from exc
+        with endpoint:
+            if endpoint.family in (socket.AF_INET, socket.AF_INET6):
+                raise BoundaryDenied('inherited network socket capability')
+            if endpoint.family == socket.AF_UNIX:
+                try:
+                    endpoint.getpeername()
+                except OSError as exc:
+                    if exc.errno not in (errno.ENOTCONN, errno.EINVAL):
+                        raise BoundaryDenied('inherited Unix socket state ambiguous') from exc
+                else:
+                    raise BoundaryDenied('inherited connected Unix socket capability')
+
+
 def _profile_denied(path):
     _canonical_path(path)
     try:
@@ -141,6 +180,7 @@ def audit_observer_boundary(*, collector_pid, collector_uid, profile,
     if process.st_uid != collector_uid:
         raise BoundaryDenied('collector PID owner mismatch')
     network_guard = _network_guard(collector_pid)
+    _no_inherited_socket_capabilities()
     _profile_denied(profile)
     _cdp_denied(cdp_host, cdp_port)
     _snapshot_peer(snapshot_socket, collector_uid)
@@ -154,7 +194,7 @@ def audit_observer_boundary(*, collector_pid, collector_uid, profile,
             or _network_guard(collector_pid) != network_guard):
         raise BoundaryDenied('collector identity or namespace changed')
     return {'status': 'scoped_preflight_pass_not_attestation',
-            'checks': ['distinct_uid', network_guard, 'profile_open_denied',
+            'checks': ['distinct_uid', network_guard, 'no_inherited_sockets', 'profile_open_denied',
                        'declared_loopback_cdp_unreachable', 'snapshot_peer_uid'],
             'limits': 'declared endpoints only; no ChatGPT authorship or live wake'}
 
