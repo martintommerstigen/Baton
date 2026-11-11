@@ -60,7 +60,7 @@ def execute(operation, workspace):
 
 def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("operation", choices=sorted(COMMANDS))
+    parser.add_argument("operation", choices=sorted(set(COMMANDS) | READ_ONLY_INSPECTIONS))
     parser.add_argument("--workspace", required=True)
     args = parser.parse_args(argv)
     try:
