@@ -43,7 +43,7 @@ jobs:
           cp pinned-r27/tests/test_sealed_observer_sessions.py tests/
       - name: Compile exact B1 entry and tests
         run: python3 -m compileall -q run_b1_r27_sealed_observer.py tests/test_b1_r27_sealed_entry.py tests/test_b1_r27_kernel_integration.py
-      - name: Nine fail-closed B1 ordering and uncertainty controls
+      - name: Ten fail-closed B1 ordering and uncertainty controls
         run: python3 -m unittest discover -s tests -p 'test_b1_r27_sealed_entry.py' -v
       - name: Two real four-UID Linux kernel B1-R27 integration controls
         run: sudo python3 -m unittest discover -s tests -p 'test_b1_r27_kernel_integration.py' -v
