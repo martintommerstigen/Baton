@@ -7,6 +7,7 @@ import tempfile
 import unittest
 
 from remote_security.source_broker_probe import probe
+from remote_security.source_broker import SourceBroker
 
 SERVICE_UID = 21001
 CLIENT_UID = 21003
@@ -35,16 +36,20 @@ class RealUidProbe(unittest.TestCase):
                     os.close(data_r)
                     os.setgid(SHARED_GID)
                     os.setuid(SERVICE_UID)
-                    with socket.socket(socket.AF_UNIX, socket.SOCK_STREAM) as server:
-                        server.bind(str(path))
-                        path.chmod(0o660)
-                        server.listen(1)
-                        server.settimeout(5)
-                        os.write(ready_w, b'R')
-                        with server.accept()[0] as conn:
-                            conn.settimeout(3)
-                            payload = conn.recv(4096)
-                            os.write(data_w, str(len(payload)).encode())
+                    backend_calls = []
+                    def capture(_source, _job):
+                        backend_calls.append("capture")
+                        return {"state": "completed_local_pinned_source"}
+                    def audit(_source, _job):
+                        backend_calls.append("audit")
+                        return {"state": "verified_local_pinned_source"}
+                    broker = SourceBroker(str(path), {CLIENT_UID}, {"rustworld-world"},
+                                          capture, audit)
+                    broker.start()
+                    os.write(ready_w, b'R')
+                    broker.accept_once()  # empty probe must not enter backend
+                    os.write(data_w, str(len(backend_calls)).encode())
+                    broker.close()
                     os._exit(0)
                 except BaseException:
                     os.write(ready_w, b'E')
