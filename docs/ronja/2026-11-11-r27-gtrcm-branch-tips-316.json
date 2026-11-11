@@ -31,13 +31,13 @@
       "branch": "research/eik-c36-hidden-intermediate-priority-2026-11-11",
       "path": "research/eik/corpus/2026-11-11_G2_G4_C36_HIDDEN_INTERMEDIATE_PRIORITY.md",
       "sha": "11a081d8dc67396ea3a8a868f4e6c3427061ec07",
-      "read": "excerpt"
+      "read": "full"
     },
     {
       "branch": "research/vanja-r45-hidden-sector-and-gravity-gates-2026-11-11",
       "path": "research/vanja/r45/2026-11-11_C61_C63_HIDDEN_SECTOR_GRAVITY_CALIBRATION_GATES.md",
       "sha": "18cb415c343ae776def8b954aafb767e1e3cbfdf",
-      "read": "excerpt"
+      "read": "full"
     },
     {
       "branch": "RustWorld",
