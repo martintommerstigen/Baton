@@ -2,7 +2,7 @@ import unittest
 from baton_model_protocol import (
     parse_assistant_tool_call,tool_result_message,observe_assistant_script
 )
-from baton_model_bridge import bootstrap_message
+from baton_model_bridge import bootstrap_message, _json_result_script, _decode_js_result
 
 NONCE="b"*32
 REQ="c"*32
@@ -38,6 +38,17 @@ class ModelToolTests(unittest.TestCase):
     def test_observer_restricts_assistant(self):
         script=observe_assistant_script()
         self.assertIn('data-message-author-role="assistant"',script)
+    def test_qt_json_result_bridge(self):
+        self.assertEqual(_decode_js_result('{"ok":true,"reason":"prepared"}'),
+                         {"ok": True, "reason": "prepared"})
+        self.assertEqual(_decode_js_result('{"ok":false,"reason":"composer-not-found"}'),
+                         {"ok": False, "reason": "composer-not-found"})
+        self.assertEqual(_decode_js_result(None), None)
+        self.assertEqual(_decode_js_result('not-json')["reason"], "invalid-json-result")
+        script = _json_result_script("(() => ({ok:true}))()")
+        self.assertIn("JSON.stringify", script)
+        self.assertIn("js-exception:", script)
+
     def test_bootstrap_explicit_protocol(self):
         text=bootstrap_message(NONCE,"/home/olliver")
         self.assertIn("BATON_TOOL_V1 "+NONCE,text)
