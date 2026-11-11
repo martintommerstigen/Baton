@@ -176,5 +176,52 @@ class TwoHopTests(unittest.TestCase):
         self.assertEqual(self.b.clicks, 0)
 
 
+    def test_verified_chain_lock_scoped_to_each_click_not_response(self):
+        """Cross-process negative: B/C response polling cannot monopolize UI."""
+        import subprocess
+        import sys
+        from wake_ui_lock import LockingUIDriver
+
+        lock_path = self.path.parent / "ui" / "host.lock"
+
+        def other_writer():
+            script = (
+                "import sys\\n"
+                "from wake_ui_lock import ui_controller_lock\\n"
+                "try:\\n"
+                " with ui_controller_lock(sys.argv[1]): sys.exit(3)\\n"
+                "except RuntimeError: sys.exit(0)\\n"
+            )
+            return subprocess.run(
+                [sys.executable, "-c", script, str(lock_path)],
+                cwd=str(Path(__file__).parent), capture_output=True,
+                text=True, timeout=5,
+            ).returncode
+
+        class ObservingTarget(FakeTarget):
+            def observe_reply(self, conversation_id, message_id, digest):
+                # Independent cooperating writer can act while B/C generates.
+                assert other_writer() == 3
+                return super().observe_reply(conversation_id, message_id, digest)
+
+        self.b = LockingUIDriver(
+            ObservingTarget(B, reply_id="turn-b", next_text="BATON_NEXT " + C),
+            lock_path,
+        )
+        self.c = LockingUIDriver(ObservingTarget(C, reply_id="turn-c"), lock_path)
+
+        def broker_under_lock(envelope):
+            # Both B5 admission and durable begin_click are in the same lock.
+            self.assertEqual(other_writer(), 0)
+            return self.broker(envelope)
+
+        outcome = self.attempt(broker_request=broker_under_lock)
+        self.assertEqual((outcome["a_to_b"], outcome["b_to_c"]),
+                         ("verified", "verified"))
+        self.assertEqual([x["op"] for x in self.ops],
+                         ["admit", "begin_click", "admit", "begin_click"])
+        self.assertEqual((self.b.clicks, self.c.clicks), (1, 1))
+
+
 if __name__ == "__main__":
     unittest.main()
