@@ -39,3 +39,10 @@ The first non-root suite passed (4/4), but the **first privileged cross-UID CI f
 - [Persistence negatives](../../tests/test_observer_lifetime_guard_persistence.py) confirm the kernel denies pidfd_getfd and preserves socket restrictions after exec, not merely before a simulated restart.
 
 **Status boundaries:** syscall filter and synthetic AF_UNIX query = tested-simulated with real Linux kernel; integration into B1 H23 observer runner = implemented-unverified; Greg/CDP/525/live ChatGPT = blocked. A successful source snapshot is O, not K or I.
+
+
+## Second-pass falsifier and complete tip register
+
+[312-tip name/SHA JSON](2026-11-11-r25-gtrcm-branch-tips-312.json) was written from four fresh paginated REST pages; date/theme/document fields are explicitly unknown for uninspected branches. [Andreas AB1 original and executable proof code](https://github.com/martintommerstigen/GTRCM/blob/research/andreas-g20-antibuild-no-minimum-2026-11-04/research/andreas/2026-11-04_ANDREAS_G20_ANTIBUILD_NO_MINIMUM.md) were additionally read: hidden carrier copies do not automatically create operational distinctions. That is a prior representational result, not a new seccomp theorem.
+
+The [AF_UNIX negative control](../../tests/test_observer_lifetime_guard_persistence.py) deliberately shows that an undeclared local Unix endpoint remains reachable after R25 is installed. Thus a successful R25 filter cannot itself prove the observer has no access to an alternate CDP Unix socket. An independent OS filesystem/endpoint policy is still required. Do not promote this scoped K-block to a universal isolation or authorship claim.
