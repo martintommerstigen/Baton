@@ -56,6 +56,7 @@ def attach_model_bridge(layout, view, page, parent):
 
     session=[None]
     pending=[False]
+    last_send_error=[""]
     processed=set()
     observed_turns=set()
     results=queue.Queue()
@@ -94,8 +95,8 @@ def attach_model_bridge(layout, view, page, parent):
             return
         def prepared(result):
             if not isinstance(result,dict) or not result.get("ok"):
-                report("Baton kunne ikke fylle ChatGPT-feltet: "+
-                       (str(result.get("reason")) if isinstance(result,dict) else "ukjent"))
+                last_send_error[0] = "composer: " + (str(result.get("reason")) if isinstance(result,dict) else "ukjent")
+                report("Baton kunne ikke fylle ChatGPT-feltet: " + last_send_error[0])
                 on_complete(False)
                 return
             if active() is None:
@@ -104,7 +105,8 @@ def attach_model_bridge(layout, view, page, parent):
             def clicked(result):
                 success=isinstance(result,dict) and bool(result.get("ok"))
                 if not success:
-                    report("ChatGPT-sendeknappen var ikke klar: " + str(result.get("reason", "ukjent") if isinstance(result,dict) else "mangler JS-resultat"))
+                    last_send_error[0] = "send: " + str(result.get("reason", "ukjent") if isinstance(result,dict) else "mangler JS-resultat")
+                    report("ChatGPT-sendeknappen var ikke klar: " + last_send_error[0])
                 on_complete(success)
             def click_once():
                 if active() is None:
@@ -126,6 +128,7 @@ def attach_model_bridge(layout, view, page, parent):
         if chat_id is None:
             report("Velg en eksisterende samtale fra ChatGPT-listen først.")
             return
+        last_send_error[0] = ""
         nonce=uuid4().hex
         session[0]={"chat_id":chat_id,"nonce":nonce}
         processed.clear()
@@ -138,7 +141,7 @@ def attach_model_bridge(layout, view, page, parent):
         def booted(sent):
             pending[0]=False
             if not sent:
-                report("Oppstart feilet. Kontroller composer/send-diagnostikk i Baton-terminalen.")
+                report("Oppstart feilet: " + (last_send_error[0] or "send/økt avbrutt"))
                 disable()
                 return
             report("Oppstartsmeldingen ble forsøkt sendt. Venter på modellens verktøyforespørsel ...")
