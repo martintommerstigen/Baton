@@ -35,3 +35,10 @@ H15 adds `LockingUIDriver`: hold the *same existing* host lock only for one `sub
 ## Hosted CI evidence (verified after implementation)
 
 [GitHub Actions run 42959309837](https://github.com/martintommerstigen/Baton/actions/runs/42959309837), code/test head [6afc7ed](https://github.com/martintommerstigen/Baton/commit/6afc7ed3e2d1898c84286462f2f14cab81c660af), completed **SUCCESS**. The decoded regression job log (job 130321775644) explicitly shows all **five** `test_wake_ui_lock_scope` cases `ok`, and **Ran 229 tests / OK**. Compileall and offline A→B→C simulation also ran. This upgrades H15's lock-scope code to **tested-simulated on hosted Linux**, not Greg-live. Later documentation-only commits do not change the tested Python or workflow code. No actual independent Lodd/Vev/Søm conversation or Greg UI action occurred in this run.
+
+
+## Independent two-hop integration negative (same run)
+
+After the first five controls, added `test_verified_chain_lock_scoped_to_each_click_not_response` in the existing B1 two-hop test suite. It runs the actual `run_verified_chain` orchestration with `LockingUIDriver` wrappers, an injected B5 broker callback, synthetic B/C responses and independent Linux child processes. It asserts that **both** B5 `admit` and `begin_click` for **both hops** exclude a competing writer, while both B/C reply observations allow one. This is still offline; no existing ChatGPT conversation was contacted.
+
+[GitHub Actions run 42959481345](https://github.com/martintommerstigen/Baton/actions/runs/42959481345), final Python code/test head [4c51ded](https://github.com/martintommerstigen/Baton/commit/4c51dedc5be3c5423b31ef4cedb31f7b4481615f), **SUCCESS**. Decoded job 130322353537 shows the new integration test and **Ran 230 tests / OK**. This supersedes the earlier 229/229 code snapshot. The run still does not prove a Greg-live wake, a true ChatGPT response, or operative I.
