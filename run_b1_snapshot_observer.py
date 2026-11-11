@@ -61,6 +61,27 @@ def guarded_query(query, preflight, pause_checker):
     return send
 
 
+def require_lifetime_guard(installer=None):
+    """Install Ronja R25's persistent kernel policy before ANY B1 observation.
+
+    R24 is a point-in-time check. Without R25, a direct invocation of this
+    module would silently bypass the lifetime restriction. A missing R25
+    dependency, failed kernel installation or wrong receipt must fail closed.
+    This receipt is not a host attestation or ChatGPT authorship evidence.
+    """
+    if installer is None:
+        try:
+            from remote_security.observer_lifetime_guard import install_observer_lifetime_guard
+        except ImportError as exc:
+            raise PermissionError("R25 lifetime guard unavailable") from exc
+        installer = install_observer_lifetime_guard
+    if not callable(installer):
+        raise TypeError("R25 installer must be callable")
+    receipt = installer()
+    if type(receipt) is not str or receipt != "lifetime_guard_loaded_not_host_attestation":
+        raise PermissionError("R25 kernel lifetime restriction not established")
+    return receipt
+
 def main(argv=None):
     p = argparse.ArgumentParser(description=__doc__)
     for arg in ("source", "source-turn-id", "target", "id", "payload-sha256",
@@ -80,6 +101,9 @@ def main(argv=None):
             or collector_uid == broker_uid
             or os.geteuid() in (0, collector_uid, broker_uid)):
         p.error("observer, collector and broker must use distinct non-root UIDs")
+
+    # A direct B1 entry point must never bypass Ronja R25's persistent guard.
+    require_lifetime_guard()
 
     from remote_security.broker_peer import query_verified_broker
     pause_checker = lambda: pause_active(PAUSE_FILE)
