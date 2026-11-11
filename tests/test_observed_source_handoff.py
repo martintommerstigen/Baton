@@ -215,13 +215,20 @@ class HandoffTests(unittest.TestCase):
         outcomes = []
         lock = threading.Lock()
         def work():
-            barrier.wait()
-            result = self.admit()
+            with ExitStack() as stack:
+                a,b = socket.socketpair(socket.AF_UNIX,socket.SOCK_STREAM)
+                stack.enter_context(a); stack.enter_context(b)
+                barrier.wait()
+                result = self.proxy.request_from_socket(a,dict(self.envelope,op="admit"))
             with lock:
                 outcomes.append(result["state"])
-        threads = [threading.Thread(target=work) for _ in range(2)]
-        for t in threads: t.start()
-        for t in threads: t.join(timeout=8)
+        # One shared patch spans both threads: overlapping patch contexts
+        # could otherwise restore a stale mock and corrupt later UID tests.
+        with patch("remote_security.observed_source_handoff.kernel_uid",
+                   return_value=self.controller_uid):
+            threads = [threading.Thread(target=work) for _ in range(2)]
+            for t in threads: t.start()
+            for t in threads: t.join(timeout=8)
         self.assertFalse(any(t.is_alive() for t in threads))
         self.assertEqual(outcomes.count("admitted_not_delivered"),1)
         self.assertEqual(outcomes.count("rejected"),1)
