@@ -93,6 +93,24 @@ class HostManifestTests(unittest.TestCase):
         with self.assertRaises(hm.ManifestUncertain):
             hm._source_file_digest(real)
 
+    def test_source_digest_detects_path_swap_during_read(self):
+        path = self.root / 'module.py'
+        path.write_bytes(b'original')
+        actual_read = os.read
+        switched = False
+        def swap_after_read(fd, count):
+            nonlocal switched
+            block = actual_read(fd, count)
+            if not switched:
+                switched = True
+                path.unlink()
+                path.write_bytes(b'forged')
+            return block
+        with patch.object(hm.os, 'read', side_effect=swap_after_read):
+            with self.assertRaises(hm.ManifestUncertain):
+                hm._source_file_digest(path)
+        self.assertTrue(switched)
+
     def test_socket_inode_snapshot_and_replacement_rejected(self):
         path = self.root / 'source.sock'
         with socket.socket(socket.AF_UNIX, socket.SOCK_STREAM) as server:
