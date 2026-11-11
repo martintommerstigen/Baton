@@ -1,5 +1,5 @@
 import unittest
-from baton_embedded_send import may_send, prepare_send_script, send_click_script
+from baton_embedded_send import may_send, prepare_send_script, send_click_script, clear_prepared_script
 
 class EmbeddedSendTests(unittest.TestCase):
     def test_target(self):
@@ -32,6 +32,26 @@ class EmbeddedSendTests(unittest.TestCase):
     def test_draft_escaped_in_send_guard(self):
         script=send_click_script('one "quote"\\ntwo')
         self.assertIn('one \\"quote\\"\\\\ntwo',script)
+    def test_send_current_composer_submit_selector(self):
+        script=send_click_script("Baton probe")
+        self.assertIn("button#composer-submit-button",script)
+        self.assertIn("button.composer-submit-btn",script)
+        self.assertIn("composerForm.querySelectorAll",script)
+        self.assertIn("node.closest('form') !== composerForm",script)
+        self.assertIn("enabled.length !== 1",script)
+        self.assertIn("candidate-count=",script)
+        self.assertIn("clicked-not-delivery-proof",script)
+    def test_clear_only_exact_prepared_unsent_draft(self):
+        script=clear_prepared_script("Baton probe")
+        self.assertIn('value !== expected',script)
+        self.assertIn('draft-was-changed',script)
+        self.assertIn('cleared-only-baton-draft',script)
+        self.assertIn("document.execCommand('delete'",script)
+        self.assertNotIn("document.querySelector('body').innerHTML",script)
+    def test_no_unauthorized_cleanup(self):
+        script=clear_prepared_script('draft "quoted"\\nsecond line')
+        self.assertIn('draft \\"quoted\\"\\\\nsecond line',script)
+
     def test_send_script_requires_enabled_button(self):
         script=send_click_script()
         self.assertIn("send-button",script)
