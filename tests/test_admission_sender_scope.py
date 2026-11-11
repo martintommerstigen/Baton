@@ -3,6 +3,7 @@ import hashlib
 import os
 import socket
 import unittest
+from unittest.mock import patch
 from remote_security.admission_sender_scope import (SenderScopePolicy,
     AuthenticatedAdmissionProxy, kernel_uid)
 
@@ -158,6 +159,20 @@ class SenderScopeTests(unittest.TestCase):
         inner=RecordingB1Store()
         with self.assertRaises(PermissionError):
             AuthenticatedAdmissionProxy(inner,self.policy)
+
+    def test_broker_uid_change_after_proxy_creation_fails_closed(self):
+        inner=RecordingB1Store()
+        policy=SenderScopePolicy(broker_uid=os.geteuid(),controller_uid=21002,
+                                 sender_uids={21003:"chat-A"},allowed_targets={"chat-B"},
+                                 sender_routes={"chat-A":{"chat-B"}})
+        proxy=AuthenticatedAdmissionProxy(inner,policy)
+        a,b=socket.socketpair(socket.AF_UNIX,socket.SOCK_STREAM)
+        try:
+            with patch("remote_security.admission_sender_scope.os.geteuid",return_value=21001):
+                self.assertEqual(proxy.request_from_socket(a,self.admit)["reason"],"broker_uid_changed")
+            self.assertEqual(inner.calls,[])
+        finally:
+            a.close();b.close()
 
     def test_proxy_rejects_tcp_connection_without_forwarding(self):
         inner=RecordingB1Store()
