@@ -139,7 +139,11 @@ class AdmissionTests(unittest.TestCase):
             s.connect(str(self.sock))
             s.sendall(b"x" * 9000 + b"\n")
             s.shutdown(socket.SHUT_WR)
-            self.assertEqual(s.recv(128), b"")
+            # Early fail-closed close with unread oversized bytes can produce RST.
+            try:
+                self.assertEqual(s.recv(128), b"")
+            except ConnectionResetError:
+                pass
         self.assertEqual(self.ask({"op": "status"})["state"], "ready")
 
     def test_existing_socket_is_not_replaced(self):
