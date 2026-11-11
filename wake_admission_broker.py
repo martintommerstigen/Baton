@@ -218,7 +218,17 @@ class BrokerHandler(socketserver.StreamRequestHandler):
             # admission through a previously accepted connection.
             if not self.server.endpoint_unchanged():
                 return
-            result = self.server.store.request(req)
+            # B5/R21 opt-in store: preserve the accepted AF_UNIX socket so
+            # SO_PEERCRED can scope each *claim*. Never call its unscoped API.
+            # Legacy store remains available for isolated H19 compatibility;
+            # it does not authenticate a ChatGPT source assistant turn.
+            scoped = getattr(self.server.store, "request_from_socket", None)
+            if scoped is not None:
+                if not callable(scoped):
+                    return
+                result = scoped(self.request, req)
+            else:
+                result = self.server.store.request(req)
             # The callback may have durably admitted/begun an attempt. If the
             # public endpoint changed meanwhile, never return a success-like
             # receipt. The durable ledger blocks blind retry after restart.
