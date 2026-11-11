@@ -94,9 +94,14 @@ class CrossUIDBrokerTests(unittest.TestCase):
     def query_as(self, uid, request, *, expect_success=True):
         # The isolated client deliberately uses B1's unverified query() only
         # to test server-side kernel UID admission. Never use it in live UI.
-        code = ("import json; from wake_admission_broker import query; "
-                "print(json.dumps(query(" + repr(str(self.sock)) + ", "
-                + repr(request) + ")))")
+        # A standalone test client avoids importing source from the runner's
+        # private checkout directory after dropping to an unrelated UID.
+        frame = (json.dumps(request, sort_keys=True) + "\\n").encode("utf-8")
+        code = ("import json,socket; s=socket.socket(socket.AF_UNIX); "
+                "s.connect(" + repr(str(self.sock)) + "); "
+                "s.sendall(" + repr(frame) + "); "
+                "s.shutdown(socket.SHUT_WR); "
+                "data=s.recv(8192); s.close(); print(json.dumps(json.loads(data)))")
         def drop():
             os.setgroups([SHARED_GID])
             os.setgid(uid)
