@@ -35,6 +35,23 @@ def bootstrap_message(nonce, cwd):
     )
 
 
+def _json_result_script(script):
+    """Return a JSON string from Qt JS; avoid QVariant object conversion."""
+    return """(() => {
+      try { return JSON.stringify(%s); }
+      catch (e) { return JSON.stringify({ok:false,reason:'js-exception:'+String(e).slice(0,160)}); }
+    })()""" % script
+
+
+def _decode_js_result(result):
+    if isinstance(result, str):
+        try:
+            result = json.loads(result)
+        except (ValueError, TypeError):
+            return {"ok": False, "reason": "invalid-json-result"}
+    return result
+
+
 def attach_model_bridge(layout, view, page, parent):
     from PySide6.QtCore import QTimer
     from PySide6.QtWidgets import QGroupBox, QVBoxLayout, QPushButton, QLabel
@@ -94,6 +111,7 @@ def attach_model_bridge(layout, view, page, parent):
             on_complete(False)
             return
         def prepared(result):
+            result = _decode_js_result(result)
             if not isinstance(result,dict) or not result.get("ok"):
                 last_send_error[0] = "composer: " + (str(result.get("reason")) if isinstance(result,dict) else "ukjent")
                 report("Baton kunne ikke fylle ChatGPT-feltet: " + last_send_error[0])
@@ -103,6 +121,7 @@ def attach_model_bridge(layout, view, page, parent):
                 on_complete(False)
                 return
             def clicked(result):
+                result = _decode_js_result(result)
                 success=isinstance(result,dict) and bool(result.get("ok"))
                 if not success:
                     last_send_error[0] = "send: " + str(result.get("reason", "ukjent") if isinstance(result,dict) else "mangler JS-resultat")
@@ -112,7 +131,7 @@ def attach_model_bridge(layout, view, page, parent):
                 if active() is None:
                     on_complete(False)
                     return
-                page.runJavaScript(send_click_script(),clicked)
+                page.runJavaScript(_json_result_script(send_click_script()),clicked)
             # The hosted composer enables Send asynchronously after input.
             QTimer.singleShot(350,click_once)
         # Wait for the page to finish loading before evaluating the composer.
@@ -124,7 +143,7 @@ def attach_model_bridge(layout, view, page, parent):
                 on_complete(False)
                 return
             attempts[0] += 1
-            page.runJavaScript(script,checked_prepared)
+            page.runJavaScript(_json_result_script(script),checked_prepared)
         def checked_prepared(result):
             if result is None:
                 if attempts[0] < 4:
