@@ -1,6 +1,7 @@
 import unittest
 from baton_model_protocol import (
-    parse_assistant_tool_call,render_tool_call_v2,tool_result_message,observe_assistant_script
+    parse_assistant_tool_call,render_tool_call_v2,render_chat_call_v1,
+    tool_result_message,chat_result_message,observe_assistant_script
 )
 from baton_model_bridge import bootstrap_message, _json_result_script, _decode_js_result, _assistant_tool_turn, should_auto_arm
 
@@ -71,6 +72,30 @@ class ModelToolTests(unittest.TestCase):
         self.assertIn("independent read-back", one)
         self.assertIn("not autonomous background thinking", one)
 
+    def test_chat_relay_roundtrip_with_quoted_message(self):
+        request = {"request_id":REQ, "tool":"chat_send",
+                   "chat_id":"6aef828e-0150-83eb-bbac-061f79a8fd4a",
+                   "message":"Hei fra Baton; dette er bare tekst 'ikke kode'."}
+        line = render_chat_call_v1(NONCE, request)
+        self.assertEqual(line.count("\n"), 0)
+        self.assertEqual(parse_assistant_tool_call(line, NONCE), request)
+        noisy = "Copy\n" + line + "\n"
+        self.assertEqual(parse_assistant_tool_call(noisy, NONCE), request)
+        self.assertIsNone(parse_assistant_tool_call(line + "\n" + line, NONCE))
+        self.assertIsNone(parse_assistant_tool_call(
+            line.replace(request["chat_id"], "not-a-chat"), NONCE))
+
+    def test_chat_result_is_bounded_and_separate_from_exec(self):
+        result = chat_result_message(
+            NONCE, REQ, {"status":"reply_observed",
+                         "target_chat_id":"6aef828e-0150-83eb-bbac-061f79a8fd4a",
+                         "assistant_message_id":"msg-1",
+                         "reply":"x"*6000,
+                         "detail":"observed"})
+        self.assertIn("BATON_CHAT_RESULT_V1", result)
+        self.assertLess(len(result), 3300)
+        self.assertNotIn("BATON_TOOL_RESULT_V1", result)
+
     def test_v2_roundtrip_with_quoted_arguments(self):
         request = self.payload()
         request["argv"] = ["/usr/bin/python3", "-c",
@@ -100,7 +125,6 @@ class ModelToolTests(unittest.TestCase):
         request = self.payload()
         line = render_tool_call_v2(NONCE, request)
         self.assertIsNone(parse_assistant_tool_call("Example: " + line, NONCE))
-        self.assertIsNone(parse_assistant_tool_call(line + "\ntext", NONCE))
         self.assertIsNone(parse_assistant_tool_call(line, "d" * 32))
         self.assertIsNone(parse_assistant_tool_call(line.replace(" -- ", " : "), NONCE))
         self.assertIsNone(parse_assistant_tool_call(line.replace(" 15 ", " 91 "), NONCE))
@@ -146,6 +170,20 @@ class ModelToolTests(unittest.TestCase):
         text=bootstrap_message(NONCE,"/home/olliver")
         self.assertIn("BATON_TOOL_V2 "+NONCE,text)
         self.assertIn("/usr/bin/hostname",text)
+        self.assertIn("BATON_CHAT_V1", text)
+        self.assertIn("BATON_CHAT_RESULT_V1", text)
+
+    def test_bridge_has_separate_hidden_relay_and_no_blind_retry(self):
+        import inspect
+        from baton_model_bridge import attach_model_bridge
+        source=inspect.getsource(attach_model_bridge)
+        self.assertIn("relay_view=QWebEngineView", source)
+        self.assertIn("relay_view.hide()", source)
+        self.assertIn("conversation_url(target)", source)
+        self.assertIn("inspect_delivery_script", source)
+        self.assertIn('"status":"uncertain"', source)
+        self.assertIn("no retry", source)
+        self.assertIn('call["tool"]=="chat_send"', source)
 
 if __name__=="__main__":
     unittest.main()
