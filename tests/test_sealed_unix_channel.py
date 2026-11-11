@@ -39,6 +39,7 @@ lib.seccomp_release(ctx)
 SERVER = '''
 import os,socket,sys
 path=sys.argv[1];s=socket.socket(socket.AF_UNIX,socket.SOCK_STREAM);s.bind(path);os.chmod(path,0o660);s.listen(3)
+u=socket.socket(socket.AF_UNIX,socket.SOCK_STREAM);u.bind(path.replace('snapshot.sock','undeclared.sock'));os.chmod(path.replace('snapshot.sock','undeclared.sock'),0o660);u.listen(2)
 open(path+'.ready','w').close()
 for i in range(3):
  s.settimeout(5)
@@ -49,7 +50,7 @@ for i in range(3):
    b=c.recv(64)
    if not b:break
    c.sendall(b'echo:'+b)
-s.close()
+s.close();u.close()
 '''
 
 def drop(uid):
@@ -119,6 +120,25 @@ print('SEALED_KERNEL_PASS')
 ''')
         self.assertEqual(r.returncode,0,r.stderr)
         self.assertIn('SEALED_KERNEL_PASS',r.stdout)
+
+    def test_same_group_undeclared_unix_endpoint_access_revoked(self):
+        r=self.client('''
+other=path.replace('snapshot.sock','undeclared.sock')
+probe=socket.socket(socket.AF_UNIX,socket.SOCK_STREAM)
+probe.connect(other)  # reachable under same group BEFORE the seal
+probe.close()
+seal_unix_channel(s,endpoint=path,peer_uid=29101)
+try:
+ probe=socket.socket(socket.AF_UNIX,socket.SOCK_STREAM)
+except OSError as e:assert e.errno==errno.EPERM
+else:
+ probe.close()
+ raise AssertionError('undeclared endpoint still reachable')
+s.sendall(b'allowed');assert s.recv(64)==b'echo:allowed'
+print('UNDECLARED_ENDPOINT_DENIED')
+''')
+        self.assertEqual(r.returncode,0,r.stderr)
+        self.assertIn('UNDECLARED_ENDPOINT_DENIED',r.stdout)
 
     def test_no_r25_kernel_prerequisite_fails_closed(self):
         r=self.client('''
