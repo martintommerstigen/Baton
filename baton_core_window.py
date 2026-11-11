@@ -14,7 +14,7 @@ def main():
     from PySide6.QtWidgets import (
         QApplication, QWidget, QVBoxLayout, QHBoxLayout, QTabWidget,
         QLabel, QPushButton, QListWidget, QLineEdit, QTextEdit,
-        QComboBox, QGroupBox, QCheckBox
+        QComboBox, QGroupBox, QCheckBox, QFileDialog
     )
     from baton_local_runtime import start_local_core, stop_local_core
     from baton_desktop_lease import create_ui_lease, release_ui_lease
@@ -136,6 +136,7 @@ def main():
     # OpenAI-compatible endpoint, without scraping website accounts.
     # This plain-text answer never becomes an executable Greg command.
     from baton_model_clients import chat_completion
+    from baton_selected_context import load_selected_context, with_selected_context
 
     model_chat = QWidget(tabs)
     chat_layout = QVBoxLayout(model_chat)
@@ -155,6 +156,51 @@ def main():
     chat_layout.addWidget(endpoint)
     chat_layout.addWidget(model_id)
     chat_layout.addWidget(api_secret)
+    context_note = QLabel(
+        "Ny uavhengig modellsamtale. ChatGPT-innlogging gir IKKE tilgang "
+        "til dine tidligere ChatGPT-samtaler, minne eller denne samtalen. "
+        "For relevant bakgrunn: velg en lokal .md- eller .txt-fil."
+    )
+    context_note.setWordWrap(True)
+    chat_layout.addWidget(context_note)
+    context_buttons = QHBoxLayout()
+    choose_context = QPushButton("Velg lokal kontekstfil")
+    clear_context = QPushButton("Fjern kontekst")
+    context_buttons.addWidget(choose_context)
+    context_buttons.addWidget(clear_context)
+    chat_layout.addLayout(context_buttons)
+    context_selection = [None]
+
+    def select_context_file():
+        path, _ = QFileDialog.getOpenFileName(
+            model_chat, "Velg prosjektkontekst for denne modellsamtalen",
+            str(Path.home()), "Tekst og Markdown (*.txt *.md)"
+        )
+        if not path:
+            return
+        try:
+            selected = load_selected_context(path)
+        except (OSError, ValueError) as exc:
+            context_note.setText("Kontekst ikke lastet: " + str(exc))
+            return
+        context_selection[0] = selected
+        context_note.setText(
+            "Valgt: " + selected["name"] +
+            " (" + str(selected["bytes"]) + " byte, SHA-256 " +
+            selected["sha256"][:12] + "…). Innholdet sendes til valgt "
+            "modell som bakgrunn ved hver forespørsel. Dette er ikke "
+            "synkronisering av ChatGPT-historikk."
+        )
+
+    def remove_context():
+        context_selection[0] = None
+        context_note.setText(
+            "Ingen kontekst vedlagt. Dette er en ny modellsamtale uten "
+            "ChatGPT-historikk eller kontominne."
+        )
+
+    choose_context.clicked.connect(select_context_file)
+    clear_context.clicked.connect(remove_context)
     models_available = []
     chatgpt_history = []
 
@@ -214,7 +260,9 @@ def main():
         def perform():
             try:
                 if use_chatgpt:
-                    reply, _ = chatgpt_chat(model_name, sent_history)
+                    request_history = with_selected_context(
+                        sent_history, context_selection[0])
+                    reply, _ = chatgpt_chat(model_name, request_history)
                     model_results.put(("ok", reply, "chatgpt-siwc", model_name,
                                        sent_history))
                 else:
