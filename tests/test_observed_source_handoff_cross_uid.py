@@ -126,7 +126,7 @@ class CrossUIDObservedSource(unittest.TestCase):
                      origin_turn_id="turn-A",sender_id="chat-A",
                      payload_sha256=hashlib.sha256(b"approved").hexdigest())
                 observed=dict(envelope,op="observe_source",
-                     source_text_sha256=hashlib.sha256(b"claimed source").hexdigest())
+                     source_command=f"BATON_WAKE chat-B m1 sha256:{envelope['payload_sha256']}")
                 self.assertEqual(ask(21002,observed)["reason"],"observer_only")
                 self.assertEqual(ask(21003,dict(envelope,op="admit"))["reason"],"controller_only")
                 self.assertEqual(ask(21003,observed)["state"],
