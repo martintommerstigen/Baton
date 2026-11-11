@@ -17,7 +17,7 @@
 - B1 direct `main()` now invokes `require_lifetime_guard()` **before** importing the peer transport, before R24 preflight and before any snapshot or witness. It requires Ronja R25's exact `lifetime_guard_loaded_not_host_attestation` receipt. Missing dependency or any unexpected return is an error, never a permissive fallback.
 - `test_b1_r25_lifetime_entry.py` checks forged/absent receipts, missing module, installer exception with no retry, direct invocation denied before R24, ordering R25→R24→source, and R24 denial after R25. A separate subprocess test checks **real Linux kernel** denial of AF_INET/AF_INET6 and recvmsg while AF_UNIX sendall/recv still works. The synthetic source never becomes a ChatGPT author.
 - CI pins Ronja R25 at `4366521d2194ca936d1fb46bf0a29fcf40dce196` (including R24/R23) in a separate checkout. No Ronja file is copied or modified in B1's branch. H23/H22 regression and actual cross-UID synthetic socket test run alongside H24.
-- Security limitation: R25 allows AF_UNIX, including an undeclared local CDP endpoint. A compromised host/collector, malicious alias, late profile access, wrong pause, or lack of actual assistant-turn verification still blocks live acceptance. Double-install through Ronja's original launcher must be tested before recommending that invocation; direct B1 runner now enforces the guard itself.
+- Security limitation: R25 allows AF_UNIX, including an undeclared local CDP endpoint. A compromised host/collector, malicious alias, late profile access, wrong pause, or lack of actual assistant-turn verification still blocks live acceptance. A second actual-kernel subprocess now verifies that two sequential R25 installations remain restrictive (Ronja launcher then B1 main). This is a bounded compatibility check, not a Greg deployment proof.
 - No change to SQLite delivery semantics, payload hashes, per-chat locks, no-blind-retry, RFP, node_id or Core/Skin.
 
 ## Free software and deployment boundary
@@ -34,3 +34,11 @@ Next: check H24 exact-head CI, inspect failure logs and fix any actual test fail
 ## CI correction ledger (2026-11-11)
 
 [First H24 PR workflow run 43020831637](https://github.com/martintommerstigen/Baton/actions/runs/43020831637) **FAILED** after **37/37** H24+H23+H22 unit/negative tests passed (including the non-root actual seccomp subprocess). The *separate* cross-UID H22 kernel test failed before its collector could start: `ModuleNotFoundError: remote_security.frame_credentials` in a subprocess. Cause: the pinned R25 checkout contains the lifetime guard but does not supply the older R23 `frame_credentials.py` needed by that subprocess. This is a CI dependency composition error, not a proven B1 transport/security failure. The workflow was corrected to pin R23 commit `961f49a7230c65e479cb252a33a38fee634b5a2e` separately and include it in `PYTHONPATH`. The failed run remains evidence; corrected exact-head CI must be checked before claiming pass.
+
+
+## Exact-head hosted receipts after correction
+
+- [H24 CI 43020956497](https://github.com/martintommerstigen/Baton/actions/runs/43020956497) **SUCCESS** on documentation-inclusive commit `837fc84`: 37/37 unit/negative tests including actual non-root Linux seccomp and 1/1 real cross-UID AF_UNIX snapshot (synthetic source).
+- [H23 CI 43020956585](https://github.com/martintommerstigen/Baton/actions/runs/43020956585) **SUCCESS**; [H22 snapshot CI 43020956593](https://github.com/martintommerstigen/Baton/actions/runs/43020956593) **SUCCESS**; [Baton regression CI 43020956574](https://github.com/martintommerstigen/Baton/actions/runs/43020956574) **SUCCESS** (271/271 Python, 6/6 R21 and 2/2 R22).
+- New second-pass falsifier: [H24 CI 43021152148](https://github.com/martintommerstigen/Baton/actions/runs/43021152148) **SUCCESS** on test commit `d8188c1`, **38/38** including two successive actual seccomp installations and **1/1** cross-UID snapshot. This is **tested-simulated** with real Linux kernel restrictions, not Greg-live. The separate R25 launcher path was not used to send any message.
+- The first failed H24 CI `43020831637` remains documented above; no failed test has been erased or relabeled as success.
