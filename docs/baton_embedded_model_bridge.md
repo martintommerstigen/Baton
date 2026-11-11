@@ -1,23 +1,34 @@
-# Baton embedded ChatGPT ↔ Core bridge (experimental)
+# Baton ↔ ChatGPT ↔ Greg Core — automatic session while UI is open
 
-## Goal
-ChatGPT runs inside Baton's Qt window. Baton native Skin calls the already-running local Core API on 127.0.0.1:52526 with a private local token. No GitHub command relay or cloud reverse proxy.
+## Runtime behavior
 
-This is not a native ChatGPT/MCP tool registration. It is an opt-in text protocol read from assistant-labelled ChatGPT conversation turns.
+Launching Baton as Greg's normal user starts a private Core service on 127.0.0.1:52526. If an existing service occupies that port, Baton will use it only when it accepts a harmless authenticated command using the user's private token. Core is owned by Baton while UI runs; no root or external listener.
 
-## Live activation on Greg
-1. Update the Baton worktree and restart run_baton_chatgpt.sh.
-2. Select one existing ChatGPT conversation from the sidebar; the address must have its exact /c/<id>.
-3. Click Aktiver modellverktøy i åpen samtale in the native Baton panel.
-4. Baton sends a bootstrap message to that same conversation; ChatGPT may reply with a BATON_TOOL_V1 framed command for hostname.
-5. Baton forwards the structured argv/cwd/timeout call to the already running local Core, then tries to return BATON_TOOL_RESULT_V1 to the same chat.
-6. Stopper: use Stopp verktøyøkt. Navigation to a different conversation also disables the session.
+Opening an existing ChatGPT conversation inside Baton automatically arms the tool bridge for that **exact conversation URL**. A one-time bootstrap asks the model to issue BATON_TOOL_V1 for /usr/bin/hostname; further commands use new request IDs. There is no per-command activation button. Switching chats terminates the previous session and permits a new one when the next page loads. The visible Stop button suspends automatic activation until manually restarted.
 
-## Evidence boundaries
-CI success proves tests pass, not that the full live round trip works. A send-button click is not durable delivery. A rendered assistant turn is UI observation, not cryptographic provenance. A completed A→B→C wake requires actual independent replies from each specified existing conversation.
+Commands execute with the ordinary Linux user's file privileges, including write permission. The program returns BATON_TOOL_RESULT_V1. A reported write must be confirmed by a matching successful result and independent read-back. This is not a ChatGPT-native tool; it works only for the conversation rendered in the running Baton Qt window, and it does not make the model work autonomously while no chat turn is being produced.
 
-## Security
-Enabling this bridge permits full Greg user-level commands requested by assistant output from the selected chat. Prompt injection remains a risk; enable only in trusted conversations. Do not run as root. No cookies or local API bearer token enter the ChatGPT page. Command output up to 2400 characters is sent back into the conversation and may be sensitive. The composer must be empty before Baton sends; wrong chat, duplicate request or uncertain sends fail closed. No automatic resend.
+## Start
+
+1. Close all Baton windows.
+2. On Greg run:
+
+    cd ~/.local/share/baton-evening
+    git pull --ff-only origin feature/evening-local-terminal-2026-11-10
+    python3 -m unittest -v test_baton_local_runtime.py test_baton_model_bridge.py
+    ./run_baton_chatgpt.sh
+
+3. Open an existing chat. Baton should send its bootstrap automatically. The assistant must emit the three-line tool frame; a click is not proof of a successful Core operation.
+
+## Evidence and safety
+
+- test_baton_local_runtime.py performs a real authenticated HTTP write/read-back through a loopback-only Core on the test machine, and verifies unauthenticated requests fail. It is **not** a live test on Greg or proof that the ChatGPT UI accepted a tool response.
+- The Core token file is owner-only (0600). Neither that token nor ChatGPT browser cookies should enter messages, GitHub or terminal output.
+- Broad user-level command execution presents prompt-injection risk. Use this window only with trusted chats; close Baton or click Stop to disable the model bridge. Stop does not necessarily cancel an already-running OS command.
+- The app does not provide root privileges and should not be exposed to a public network.
+- If an external Core was started separately before Baton, closing Baton disables the UI-to-Core bridge, not the pre-existing Core process.
+- DOM changes, failed sends, incomplete tool frames, duplicate request IDs, and uncertain delivery must fail closed; do not infer successful execution from queued or clicked messages.
 
 ## Known limitations
-ChatGPT site DOM selectors may change. Automatic message sending and Core tool call acceptance require testing on Greg. The bridge does not itself provide ChatGPT-native tools or A→B→C unattended conversation waking.
+
+Authentication of the selected ChatGPT turn is currently based on the page's assistant-labelled DOM and a per-session nonce; it is not cryptographic model identity. This implementation does not create native ChatGPT tool registration or prove autonomous A→B→C conversation handoff.
