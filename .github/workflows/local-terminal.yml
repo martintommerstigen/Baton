@@ -47,6 +47,14 @@ on:
       - test_baton_local_runtime.py
       - baton_mcp_stdio.py
       - baton_desktop_lease.py
+      - baton_browser_native_host.py
+      - test_baton_browser_native_host.py
+      - test_baton_browser_core_e2e.py
+      - install_baton_browser_bridge.py
+      - test_install_baton_browser_bridge.py
+      - baton_extension/manifest.json
+      - baton_extension/background.js
+      - baton_extension/content.js
       - baton_existing_chat_tab.py
       - test_baton_existing_chat_tab.py
       - baton_core_window.py
@@ -106,8 +114,10 @@ jobs:
         with:
           persist-credentials: false
       - run: python3 -m pip install --disable-pip-version-check 'PyJWT[crypto]>=2.10,<3'
-      - run: python3 -m unittest -v test_baton_local_terminal.py test_preflight_greg.py test_baton_loopback_http.py test_baton_mcp.py test_baton_github_bus.py test_baton_exec_agent.py test_baton_local_api.py test_baton_local_runtime.py test_baton_mcp_stdio.py test_baton_desktop_lease.py test_baton_attention.py test_baton_chatgpt_signin.py test_baton_selected_context.py test_baton_install_status.py test_install_baton_app.py test_baton_model_clients.py test_baton_universal_app.py test_install_baton_desktop_mcp.py test_baton_remote_mcp.py test_baton_embedded_send.py test_baton_conversation_panel.py test_baton_chat_observe.py test_baton_model_bridge.py test_baton_existing_chat_tab.py test_baton_core_client.py test_baton_wake_receipt.py test_baton_update_preflight.py test_baton_chatgpt_view.py test_baton_wake_queue.py test_baton_wake_claim.py
-      - run: python3 -m py_compile baton_existing_chat_tab.py baton_model_bridge.py baton_selected_context.py baton_chatgpt_signin.py baton_chatgpt_inference.py baton_core_window.py baton_install_status.py baton_attention.py baton_model_clients.py baton_outbox.py install_baton_app.py
+      - run: python3 -m unittest -v test_baton_local_terminal.py test_preflight_greg.py test_baton_loopback_http.py test_baton_mcp.py test_baton_github_bus.py test_baton_exec_agent.py test_baton_local_api.py test_baton_local_runtime.py test_baton_mcp_stdio.py test_baton_desktop_lease.py test_baton_attention.py test_baton_chatgpt_signin.py test_baton_selected_context.py test_baton_install_status.py test_install_baton_app.py test_baton_model_clients.py test_baton_universal_app.py test_install_baton_desktop_mcp.py test_baton_remote_mcp.py test_baton_embedded_send.py test_baton_conversation_panel.py test_baton_chat_observe.py test_baton_model_bridge.py test_baton_existing_chat_tab.py test_baton_browser_native_host.py test_baton_browser_core_e2e.py test_install_baton_browser_bridge.py test_baton_core_client.py test_baton_wake_receipt.py test_baton_update_preflight.py test_baton_chatgpt_view.py test_baton_wake_queue.py test_baton_wake_claim.py
+      - run: python3 -m py_compile baton_browser_native_host.py install_baton_browser_bridge.py baton_existing_chat_tab.py baton_model_bridge.py baton_selected_context.py baton_chatgpt_signin.py baton_chatgpt_inference.py baton_core_window.py baton_install_status.py baton_attention.py baton_model_clients.py baton_outbox.py install_baton_app.py
+      - run: node --check baton_extension/background.js && node --check baton_extension/content.js
+      - run: python3 -m json.tool baton_extension/manifest.json >/dev/null
       - run: bash -n install_evening.sh install_baton_greg_service.sh run_baton_chatgpt.sh run_baton_direct.sh test_greg_mcp_http_e2e.sh
       - run: BATON_WORKTREE="$PWD" bash test_greg_mcp_http_e2e.sh
       - run: python3 baton_local_terminal.py identity --workspace .
