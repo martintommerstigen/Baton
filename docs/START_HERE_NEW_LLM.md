@@ -31,7 +31,7 @@ Start with [GTRCM README](https://github.com/martintommerstigen/GTRCM/blob/main/
 
 For a quick **private** route to the correct repository, branch and evidence status, use the [90-second source-routing card](https://github.com/martintommerstigen/GTRCM/blob/docs/eik-g2-g4-repo-navigation-2026-11-11/research/navigation/2026-11-11_LLM_ROUTING_CARD.md) (authorization required).
 
-For a detailed **private** cross-repository orientation and fully paginated branch-tip snapshot, use [Eik G2/G4 newcomer guide](https://github.com/martintommerstigen/GTRCM/blob/docs/eik-g2-g4-repo-navigation-2026-11-11/research/navigation/2026-11-11_START_HERE_NEW_LLM.md) and its adjacent JSON. As of the navigation snapshot, the owner-visible branches were **323 GTRCM** and **66 Baton**, including the new navigation branches; **zero complete branch histories** were read for that inventory. A name/SHA list is not a content audit.
+For a detailed **private** cross-repository orientation and fully paginated branch-tip snapshot, use [Eik G2/G4 newcomer guide](https://github.com/martintommerstigen/GTRCM/blob/docs/eik-g2-g4-repo-navigation-2026-11-11/research/navigation/2026-11-11_START_HERE_NEW_LLM.md) and its adjacent JSON. As of the navigation snapshot, the owner-visible branches were **324 GTRCM** and **67 Baton**, including the new navigation branches; **zero complete branch histories** were read for that inventory. A name/SHA list is not a content audit.
 
 The earlier 2026-11-11 refresh independently re-fetched **19/19 selected source anchors**. This run independently re-fetched **9/9 exact newcomer routing anchors** with matching blob SHAs, including source/ref verification and two wrong-path 404 controls. This validates those locations only; the private index remains a non-atomic tip snapshot, not a complete history or a verified live installation.
 
@@ -39,9 +39,13 @@ RustWorld's [README](https://github.com/martintommerstigen/GTRCM/blob/RustWorld/
 
 ## Reproducible source-routing check (private, authorization required)
 
-The [nine-case G2/G4 routing QA fixture](https://github.com/martintommerstigen/GTRCM/blob/docs/eik-g2-g4-repo-navigation-2026-11-11/research/navigation/2026-11-11_LLM_ROUTING_QA_FIXTURE.json) gives an authorized new LLM exact repo/ref/path, snapshot Git blob SHA, common wrong turns and evidence gates. Its nine routes were checked against the existing private SHA-anchor inventory; **no independent blind LLM trial has been run**. Do not copy private file bodies into public Baton issues.
+The [eleven-case G2/G4 routing QA fixture](https://github.com/martintommerstigen/GTRCM/blob/docs/eik-g2-g4-repo-navigation-2026-11-11/research/navigation/2026-11-11_LLM_ROUTING_QA_FIXTURE.json) gives an authorized new LLM exact repo/ref/path, snapshot Git blob SHA, common wrong turns and evidence gates. Its nine routes were checked against the existing private SHA-anchor inventory; **no independent blind LLM trial has been run**. Do not copy private file bodies into public Baton issues.
 
-A fresh paginated **SHA-bearing, non-atomic branch-tip** snapshot observed **323 GTRCM + 66 Baton = 389 tips**, up from the earlier 321+64 snapshot. Newly observed GTRCM R49/R50 and two Baton fix branches are recorded in the permission-gated private inventory. Branch-tip SHAs are **not** commit timestamps, a full source audit, or a live-service verification. The private routing validator now also rejects wrong, external or missing canonical URLs; **9/9 local regression tests passed**, with zero independent fresh-LLM trials.
+A refreshed paginated **SHA-bearing, non-atomic branch-tip** snapshot observed **324 GTRCM + 67 Baton = 391 tips**, up from the earlier 321+64 snapshot. Previously observed GTRCM R49/R50 and two Baton fix branches, plus newly observed GTRCM R51 and Baton's Send-time context fix, are recorded in the permission-gated private inventory. Branch-tip SHAs are **not** commit timestamps, a full source audit, or a live-service verification. The private routing validator rejects wrong, external or missing canonical URLs; the earlier **9/9 local regression tests passed**, and a tenth same-path/wrong-branch regression is now recorded (run status must be checked separately). There have been zero independent fresh-LLM trials.
+
+## New same-path, different-branch source trap
+
+The [Send-time selected-context fix](https://github.com/martintommerstigen/Baton/blob/fix/model-context-snapshot-at-send-2026-11-11/baton_selected_context.py) contains `snapshot_chatgpt_turn`; the [older Desktop/Core version at the same path](https://github.com/martintommerstigen/Baton/blob/feature/evening-local-terminal-2026-11-10/baton_selected_context.py) does not. Both files were read directly. A new LLM must check the **exact ref and blob**, not only whether a filename exists. This fix is source evidence, not proof of deployment or ChatGPT-history access.
 
 ## Before you make a claim or a change
 
