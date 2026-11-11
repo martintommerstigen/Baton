@@ -116,6 +116,12 @@ def attach_model_bridge(layout, view, page, parent):
         page.runJavaScript(script,prepared)
 
     def begin():
+        # Never bootstrap while the human-operated conversation composer is in use.
+        if getattr(parent, "baton_controls", None) is not None:
+            controls=parent.baton_controls
+            if controls["message"].toPlainText().strip():
+                report("Tøm den manuelle Baton-meldingen før modelløkten startes.")
+                return
         chat_id=chat_id_from_url(view.url().toString())
         if chat_id is None:
             report("Velg en eksisterende samtale fra ChatGPT-listen først.")
