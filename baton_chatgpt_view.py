@@ -54,6 +54,9 @@ def main():
     from baton_local_runtime import start_local_core, stop_local_core
     local_core = start_local_core()
     app.aboutToQuit.connect(lambda: stop_local_core(local_core))
+    from baton_desktop_lease import create_ui_lease, release_ui_lease
+    lease = create_ui_lease()
+    app.aboutToQuit.connect(lambda: release_ui_lease(lease))
     profile = QWebEngineProfile("baton-chatgpt", app)
     storage = Path.home()/".local/share/baton/chatgpt-profile"
     storage.mkdir(parents=True,exist_ok=True)
