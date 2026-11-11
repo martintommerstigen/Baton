@@ -54,7 +54,7 @@ class ModelToolTests(unittest.TestCase):
         import json
         one = bootstrap_message(NONCE, "/home/olliver")
         two = bootstrap_message(NONCE, "/home/olliver")
-        pattern = r"(?m)^BATON_TOOL_V1 ([0-9a-f]{32})\\n(\\{[^\\n]+\\})\\nEND_BATON_TOOL_V1$"
+        pattern = r"(?m)^BATON_TOOL_V1 ([0-9a-f]{32})\n(\{[^\n]+\})\nEND_BATON_TOOL_V1$"
         match_one = re.search(pattern, one)
         match_two = re.search(pattern, two)
         self.assertIsNotNone(match_one)
@@ -76,7 +76,7 @@ class ModelToolTests(unittest.TestCase):
         self.assertEqual(parsed, self.payload())
         self.assertEqual(_assistant_tool_turn({"id":"turn42","text":valid},NONCE)[0], "turn42")
         self.assertIsNone(_assistant_tool_turn({"id":None,"text":valid},"d"*32))
-        self.assertIsNone(_assistant_tool_turn({"id":None,"text":"Example:\\n"+valid},NONCE))
+        self.assertIsNone(_assistant_tool_turn({"id":None,"text":"Example:\n"+valid},NONCE))
         self.assertIsNone(_assistant_tool_turn({"id":None,"text":frame(self.payload(), "d"*32)},NONCE))
         self.assertIsNone(_assistant_tool_turn({"id":None,"text":""},NONCE))
 
