@@ -20,10 +20,15 @@ class ChainPlan:
     second_digest: str
     origin_turn_id: str | None = None
 
-def next_target_from_reply(reply_text, expected_target):
+def next_target_from_reply(reply_text, expected_target, expected_digest=None):
     # Exact one-line control statement; reject prose, multiple commands and
     # other targets. Treat model output as an untrusted request, not authority.
     expected=f'BATON_NEXT {expected_target}'
+    if expected_digest is not None:
+        import re
+        if type(expected_digest) is not str or not re.fullmatch(r'[0-9a-f]{64}', expected_digest):
+            raise ValueError('Expected SHA-256 must be lowercase 64 hex characters')
+        expected += f' sha256:{expected_digest}'
     if not isinstance(reply_text,str) or reply_text.strip()!=expected:
         return None
     return expected_target
