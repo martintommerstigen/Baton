@@ -141,6 +141,8 @@ class AuthenticatedAdmissionProxy:
         raise PermissionError("unscoped admission request forbidden; pass accepted AF_UNIX socket")
 
     def request_from_socket(self, accepted_socket, req):
+        if os.geteuid() != self.policy.broker_uid:
+            return {"state": "rejected", "reason": "broker_uid_changed"}
         try:
             uid = kernel_uid(accepted_socket)
         except (OSError, ValueError, TypeError):
