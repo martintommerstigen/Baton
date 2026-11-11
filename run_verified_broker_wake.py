@@ -1,6 +1,8 @@
 """B1 opt-in, fail-closed single-hop existing-chat wake using Ronja's B5 peer gate.
 
-The existing A assistant turn must be exactly\nBATON_WAKE <target-UUID> <message-id> sha256:<approved-body-UTF8-SHA256>.\nThe verified live CLI refuses legacy target-only commands.\n\nRequires the B5 remote_security.broker_peer module on PYTHONPATH, a broker
+The existing A assistant turn must be exactly:
+BATON_WAKE <target-UUID> <message-id> sha256:<approved-body-UTF8-SHA256>.
+The verified live CLI refuses legacy target-only commands.\n\nRequires the B5 remote_security.broker_peer module on PYTHONPATH, a broker
 running under a different unprivileged Linux UID, and two already-open
 authorized ChatGPT tabs. No browser launch, cookie access or blind retry.
 """
