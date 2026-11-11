@@ -3,13 +3,14 @@
   "repository": "martintommerstigen/GTRCM",
   "source": "GitHub REST branches?per_page=100&page=1..4",
   "total": 293,
-  "read_branch_refs": 10,
+  "read_branch_refs": 11,
   "full_branch_histories_read": 0,
   "notes": [
     "Branch tip SHA is directly returned by REST. Tip commit date is NOT retrieved; null is intentional.",
     "Date embedded in branch name is only a label, not a verified commit date.",
     "Relevant documents are populated only for original files actually fetched in this run; null means not inspected.",
-    "Content read is not exhaustive branch content or commit history. No Greg/Mac access."
+    "Content read is not exhaustive branch content or commit history. No Greg/Mac access.",
+    "Source gate checked 16 distinct original file bodies across 11 branch refs, not complete histories."
   ],
   "branches": [
     {
@@ -29,7 +30,8 @@
       "topic_hint_from_name": "RustWorld",
       "relevant_documents": [
         "README.md",
-        "OVERSIKT.md"
+        "OVERSIKT.md",
+        "manifest.json"
       ],
       "content_read_in_this_run": true
     },
@@ -67,7 +69,8 @@
       "tip_commit_date_utc": null,
       "topic_hint_from_name": "archive/rolf-source-excerpts-2026-10-25",
       "relevant_documents": [
-        "archives/rolf-fragments/README.md"
+        "archives/rolf-fragments/README.md",
+        "notes/2026-10-05_source_law_from_local_transport.md"
       ],
       "content_read_in_this_run": true
     },
@@ -733,8 +736,12 @@
       "branch_label_date_unverified": null,
       "tip_commit_date_utc": null,
       "topic_hint_from_name": "main",
-      "relevant_documents": null,
-      "content_read_in_this_run": false
+      "relevant_documents": [
+        "METHOD.md",
+        "NEGATIVE_RESULTS.md",
+        "OPEN_PROBLEMS.md"
+      ],
+      "content_read_in_this_run": true
     },
     {
       "branch": "mina/archaeology-notes-2026-10-07",
@@ -2670,5 +2677,6 @@
       "relevant_documents": null,
       "content_read_in_this_run": false
     }
-  ]
+  ],
+  "original_documents_fetched": 16
 }
