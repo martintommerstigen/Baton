@@ -55,7 +55,7 @@ class EmbeddedSendTests(unittest.TestCase):
     def test_send_script_requires_enabled_button(self):
         script=send_click_script()
         self.assertIn("send-button",script)
-        self.assertIn("button.disabled",script)
+        self.assertIn("!node.disabled",script)
         self.assertIn("clicked-not-delivery-proof",script)
 if __name__=="__main__":
     unittest.main()
