@@ -24,9 +24,9 @@
   "unchanged_sha_metadata_reused": 292,
   "changed_or_new_ref_count": 5,
   "trees_refreshed": 5,
-  "content_read_branch_refs_this_run": 7,
+  "content_read_branch_refs_this_run": 10,
   "complete_branch_histories_read": 0,
-  "notes": "R17: 100+100+97+0 fully paginated branch name/SHA check. Reuse R16 metadata for 292 unchanged SHA refs; refresh tree and commit metadata for five changed/new refs. Content-read flags are only seven exact original file bodies in this run, not all files on their branches. No Greg/Mac access, no private chat corpus.",
+  "notes": "R17: 100+100+97+0 fully paginated branch name/SHA check. Reuse R16 metadata for 292 unchanged SHA refs; refresh tree and commit metadata for five changed/new refs. Content-read flags are ten exact original file bodies in this run, not all files on their branches. No Greg/Mac access, no private chat corpus. Three more full original bodies were read after the initial inventory commit: Eik C27, Sigrid optical response, Kaja mutual archive. Historical O/K/I prior work is reused, not claimed new.",
   "branches": [
     {
       "name": "GTRCM",
@@ -1345,7 +1345,9 @@
         "experiments/microfluctuation_mass_gravity/falsify_shared_density.py"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [
+        "research/kaja_arkiv_hukommelse/README.md"
+      ]
     },
     {
       "name": "kaja/arkivets-begrepsgrense-2026-10-18",
@@ -3382,7 +3384,9 @@
         "research/eik/corpus/2026-11-11_G2_G4_C28_AFMEPHYS_SOURCE_RETURN.md"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [
+        "research/eik/corpus/2026-11-11_G2_G4_C27_HISTORICAL_OKI_AND_PREREG_GATE.md"
+      ]
     },
     {
       "name": "research/eik-full-physics-2026-11-03",
@@ -6192,7 +6196,9 @@
         "experiments/gtrcm_geometry/metric_results.json"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [
+        "experiments/qball_self_field/OPTICAL_RESPONSE.md"
+      ]
     },
     {
       "name": "soelve/individuasjon-subjekt-opplevelse-2026-10-31",
