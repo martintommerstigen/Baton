@@ -5,13 +5,14 @@ import os
 from pathlib import Path
 import socket
 import socketserver
+import stat
 import tempfile
 import threading
 import time
 import unittest
 from unittest import mock
 
-from wake_admission_broker import AdmissionStore, Broker, query, pause_present_or_untrusted
+from wake_admission_broker import AdmissionStore, Broker, query, pause_present_or_untrusted, main
 
 
 class AdmissionTests(unittest.TestCase):
@@ -198,6 +199,107 @@ class AdmissionTests(unittest.TestCase):
             AdmissionStore(legacy, self.pause, self.allowed)
         with sqlite3.connect(legacy) as db:
             self.assertEqual(db.execute("SELECT COUNT(*) FROM admissions").fetchone()[0], 2)
+
+    def test_default_private_socket_mode_is_0600(self):
+        self.assertEqual(stat.S_IMODE(self.sock.stat().st_mode), 0o600)
+        self.assertTrue(self.broker.endpoint_unchanged())
+
+    def test_opt_in_group_socket_0660_and_identity_check(self):
+        self.stop()
+        parent = self.root / "shared"
+        parent.mkdir(mode=0o710)
+        parent.chmod(0o710)
+        path = parent / "broker.sock"
+        broker = Broker(path, self.store, [os.getuid()], shared_gid=os.getegid())
+        try:
+            st = path.stat()
+            self.assertEqual(stat.S_IMODE(st.st_mode), 0o660)
+            self.assertEqual(st.st_gid, os.getegid())
+            self.assertTrue(broker.endpoint_unchanged())
+            worker = threading.Thread(target=broker.serve_forever,
+                                      kwargs={"poll_interval": .01}, daemon=True)
+            worker.start()
+            self.assertEqual(query(path, {"op": "status"})["state"], "ready")
+            broker.shutdown()
+            worker.join(timeout=2)
+        finally:
+            broker.server_close()
+        self.assertFalse(path.exists())
+
+    def test_group_socket_rejects_nontraversable_parent(self):
+        self.stop()
+        parent = self.root / "no-traverse"
+        parent.mkdir(mode=0o700)
+        with self.assertRaises(PermissionError):
+            Broker(parent / "broker.sock", self.store, [os.getuid()],
+                   shared_gid=os.getegid())
+        self.assertFalse((parent / "broker.sock").exists())
+
+    def test_group_socket_rejects_group_writable_parent(self):
+        self.stop()
+        parent = self.root / "writable"
+        parent.mkdir(mode=0o700)
+        parent.chmod(0o770)
+        with self.assertRaises(ValueError):
+            Broker(parent / "broker.sock", self.store, [os.getuid()],
+                   shared_gid=os.getegid())
+        self.assertFalse((parent / "broker.sock").exists())
+
+    def test_group_parent_mode_tamper_invalidates_endpoint(self):
+        self.stop()
+        parent = self.root / "shared"
+        parent.mkdir(mode=0o710)
+        parent.chmod(0o710)
+        path = parent / "broker.sock"
+        broker = Broker(path, self.store, [os.getuid()], shared_gid=os.getegid())
+        try:
+            self.assertTrue(broker.endpoint_unchanged())
+            # A previously private group-traversable directory becomes
+            # world-traversable without changing its inode or the socket inode.
+            parent.chmod(0o711)
+            self.assertFalse(broker.endpoint_unchanged())
+        finally:
+            broker.server_close()
+
+    def test_group_socket_rejects_invalid_group(self):
+        self.stop()
+        parent = self.root / "shared"
+        parent.mkdir(mode=0o710)
+        parent.chmod(0o710)
+        for gid in (0, os.getegid() + 100000):
+            with self.subTest(gid=gid), self.assertRaises((ValueError, PermissionError)):
+                Broker(parent / "broker.sock", self.store, [os.getuid()],
+                       shared_gid=gid)
+        self.assertFalse((parent / "broker.sock").exists())
+
+    def test_group_socket_mode_tamper_invalidates_endpoint(self):
+        self.stop()
+        parent = self.root / "shared"
+        parent.mkdir(mode=0o710)
+        parent.chmod(0o710)
+        path = parent / "broker.sock"
+        broker = Broker(path, self.store, [os.getuid()], shared_gid=os.getegid())
+        try:
+            self.assertTrue(broker.endpoint_unchanged())
+            path.chmod(0o600)
+            self.assertFalse(broker.endpoint_unchanged())
+        finally:
+            broker.server_close()
+
+    def test_cli_distinct_uid_without_group_fails_before_db_or_bind(self):
+        import sys
+        from unittest import mock
+        self.stop()
+        db = self.root / "uncreated.sqlite"
+        sock = self.root / "uncreated.sock"
+        argv = ["wake_admission_broker.py", "--socket", str(sock),
+                "--db", str(db), "--pause-path", str(self.pause),
+                "--conversation", "chat-B", "--allow-uid", str(os.getuid() + 100000)]
+        with mock.patch.object(sys, "argv", argv):
+            with self.assertRaisesRegex(SystemExit, "requires --shared-gid"):
+                main()
+        self.assertFalse(db.exists())
+        self.assertFalse(sock.exists())
 
     def test_peer_uid_denied(self):
         self.stop()
