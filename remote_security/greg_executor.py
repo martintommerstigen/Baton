@@ -11,6 +11,7 @@ import socket
 import struct
 import subprocess
 import stat
+import grp
 from pathlib import Path
 
 MAX_FRAME = 16384
@@ -43,7 +44,7 @@ def execute(request, workdir, timeout=20):
         return {"state":"timeout_uncertain", "returncode":None,
                 "stdout":"", "stderr":"", "truncated":False}
 
-def serve(path, uid, workdir):
+def serve(path, uid, workdir, group):
     if os.name != "posix" or not hasattr(socket, "SO_PEERCRED") or os.geteuid() == 0:
         raise RuntimeError("Linux non-root execution required")
     if uid <= 0 or uid == os.geteuid():
@@ -62,6 +63,10 @@ def serve(path, uid, workdir):
         s.bind(path)
     finally:
         os.umask(old)
+    group_id = grp.getgrnam(group).gr_gid
+    if group_id not in os.getgroups() and group_id != os.getegid():
+        raise PermissionError('executor is not member of socket group')
+    os.chown(path, -1, group_id)
     os.chmod(path, 0o660)
     # The socket group must be the dedicated Baton caller group.
     # Group membership is a host-level privilege, not ChatGPT authentication.
@@ -103,5 +108,6 @@ if __name__ == "__main__":
     p.add_argument("--socket", required=True)
     p.add_argument("--allowed-uid", required=True, type=int)
     p.add_argument("--workdir", required=True)
+    p.add_argument("--group", required=True)
     a=p.parse_args()
-    serve(a.socket,a.allowed_uid,a.workdir)
+    serve(a.socket,a.allowed_uid,a.workdir,a.group)
