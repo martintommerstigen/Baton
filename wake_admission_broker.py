@@ -215,6 +215,7 @@ class Broker(socketserver.ThreadingMixIn, socketserver.UnixStreamServer):
         self.bound_inode = None
         flags = os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW | getattr(os, "O_CLOEXEC", 0)
         directory_fd = os.open(self.public_path.parent, flags)
+        self.parent_fd = directory_fd
         try:
             parent = os.fstat(directory_fd)
             if ((parent.st_dev, parent.st_ino) != self.parent_identity
@@ -226,7 +227,6 @@ class Broker(socketserver.ThreadingMixIn, socketserver.UnixStreamServer):
                 pass
             else:
                 raise FileExistsError("broker endpoint already exists; never replace it")
-            self.parent_fd = directory_fd
             # AF_UNIX bind resolves the basename through the pinned directory
             # descriptor, not through a mutable public pathname.
             pinned_path = f"/proc/self/fd/{directory_fd}/{self.public_path.name}"
@@ -246,9 +246,11 @@ class Broker(socketserver.ThreadingMixIn, socketserver.UnixStreamServer):
             if hasattr(self, "socket"):
                 self.socket.close()
             if self.parent_fd is not None:
-                self._unlink_own_socket()
-                self.parent_fd = None
-            os.close(directory_fd)
+                try:
+                    self._unlink_own_socket()
+                finally:
+                    os.close(self.parent_fd)
+                    self.parent_fd = None
             raise
 
     def _same_public_parent(self, directory_fd):
@@ -348,12 +350,7 @@ def main():
         raise SystemExit("Socket already exists; inspect existing broker before restart")
     store = AdmissionStore(args.db, args.pause_path, args.conversation)
     with Broker(sock, store, args.allow_uid or [os.getuid()]) as server:
-        try:
-            server.serve_forever(poll_interval=0.05)
-        finally:
-            # Broker.server_close removes only its own pinned socket inode.
-            # Never unlink an attacker-replaced public path on shutdown.
-            pass
+        server.serve_forever(poll_interval=0.05)
 
 
 if __name__ == "__main__":
