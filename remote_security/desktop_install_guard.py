@@ -13,6 +13,7 @@ import secrets
 import stat
 import sys
 
+# Fixed target name: never infer executable commands from filenames or user input.
 NAME = "baton-local.desktop"
 SAFE_EXEC = re.compile(r"^/[A-Za-z0-9_./-]+$")
 DIR_FLAGS = os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW | getattr(os, "O_CLOEXEC", 0)
