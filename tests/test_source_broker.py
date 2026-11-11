@@ -172,9 +172,9 @@ class BrokerTests(unittest.TestCase):
         path = self.base / "replaced.sock"
         other = SourceBroker(str(path), {self.allowed}, {"rustworld-world"},
                              self.broker.capture, self.broker.audit)
-        def replace_and_fail(socket_path, _mode):
-            os.unlink(socket_path)
-            Path(socket_path).write_text("replacement belongs to another inode")
+        def replace_and_fail(socket_path, _mode, **kwargs):
+            os.unlink(socket_path, dir_fd=kwargs["dir_fd"])
+            path.write_text("replacement belongs to another inode")
             raise PermissionError("synthetic post-bind replacement")
         with patch("remote_security.source_broker.os.chmod", side_effect=replace_and_fail):
             with self.assertRaises(PermissionError):
@@ -183,6 +183,70 @@ class BrokerTests(unittest.TestCase):
         self.assertIsNone(other.sock)
         with self.assertRaises(Rejected):
             other.start()
+
+    def test_parent_replacement_before_start_is_rejected(self):
+        parent = self.base / "prestart"
+        parent.mkdir(mode=0o710)
+        path = parent / "guard.sock"
+        other = SourceBroker(str(path), {self.allowed}, {"rustworld-world"},
+                             self.broker.capture, self.broker.audit)
+        parent.rename(self.base / "old-prestart")
+        parent.mkdir(mode=0o710)  # same owner/mode, different inode
+        with self.assertRaises(Rejected):
+            other.start()
+        self.assertFalse(path.exists())
+        self.assertFalse((self.base / "old-prestart" / "guard.sock").exists())
+
+    def test_parent_swap_between_validation_and_bind_is_anchored_and_rejected(self):
+        parent = self.base / "swap-parent"
+        parent.mkdir(mode=0o710)
+        moved = self.base / "moved-parent"
+        decoy = self.base / "decoy"
+        decoy.mkdir(mode=0o710)
+        path = parent / "guard.sock"
+        other = SourceBroker(str(path), {self.allowed}, {"rustworld-world"},
+                             self.broker.capture, self.broker.audit)
+        real_bind = socket.socket.bind
+        swaps = []
+        def swap_before_bind(sock, address):
+            parent.rename(moved)
+            parent.symlink_to(decoy, target_is_directory=True)
+            swaps.append(address)
+            return real_bind(sock, address)
+        with patch.object(socket.socket, "bind", new=swap_before_bind):
+            with self.assertRaises(Rejected):
+                other.start()
+        self.assertEqual(len(swaps), 1)
+        self.assertIn("/proc/self/fd/", swaps[0])
+        self.assertFalse((decoy / "guard.sock").exists(),
+                         "never bind into a replaced directory")
+        self.assertFalse((moved / "guard.sock").exists(),
+                         "rollback must target the original pinned directory")
+        self.assertIsNone(other.sock)
+        self.assertIsNone(other.parent_fd)
+
+    def test_parent_swap_after_start_fails_closed_and_preserves_replacement(self):
+        parent = self.base / "live-parent"
+        parent.mkdir(mode=0o710)
+        moved = self.base / "moved-live-parent"
+        path = parent / "guard.sock"
+        other = SourceBroker(str(path), {self.allowed}, {"rustworld-world"},
+                             self.broker.capture, self.broker.audit)
+        other.start()
+        parent.rename(moved)
+        parent.mkdir(mode=0o710)
+        replacement = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
+        try:
+            replacement.bind(str(path))
+            with self.assertRaises(Rejected):
+                other.accept_once()  # must not process a request at the stale path
+            other.close()
+            self.assertTrue(path.exists(), "never unlink replacement")
+            self.assertFalse((moved / "guard.sock").exists(),
+                             "cleanup must use pinned original directory")
+        finally:
+            replacement.close()
+            other.close()
 
     def test_socket_restart_refuses_stale_endpoint(self):
         other = SourceBroker(str(self.path), {self.allowed}, {"rustworld-world"}, self.broker.capture, self.broker.audit)
