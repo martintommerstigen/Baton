@@ -4,7 +4,7 @@ The default suite uses a disposable SQLite B1-compatible stub. An additional
 CI step sets B1_H20_BROKER to the pinned original H20 broker file, exercising
 its actual AF_UNIX handler and AdmissionStore (not a replacement model).
 """
-from contextlib import closing
+from contextlib import closing, ExitStack
 import hashlib
 import importlib.util
 import json
@@ -109,7 +109,9 @@ class HandoffTests(unittest.TestCase):
                    source_routes=self.routes)
 
     def call(self, uid, req):
-        with socket.socketpair(socket.AF_UNIX,socket.SOCK_STREAM) as (a,b):
+        with ExitStack() as stack:
+            a,b = socket.socketpair(socket.AF_UNIX,socket.SOCK_STREAM)
+            stack.enter_context(a); stack.enter_context(b)
             with patch("remote_security.observed_source_handoff.kernel_uid",return_value=uid):
                 return self.proxy.request_from_socket(a,req)
 
@@ -360,7 +362,9 @@ class PinnedB1H20Contract(unittest.TestCase):
             new_proxy=ObservedSourceHandoff(restarted,broker_uid=broker_uid,
                  observer_uid=observer_uid,controller_uid=controller_uid,
                  source_routes={"chat-A":{"chat-B"}})
-            with socket.socketpair() as (a,b):
+            with ExitStack() as stack:
+                a,b = socket.socketpair()
+                stack.enter_context(a); stack.enter_context(b)
                 with patch("remote_security.observed_source_handoff.kernel_uid",
                            return_value=controller_uid):
                     self.assertEqual(new_proxy.request_from_socket(a,dict(envelope,op="admit"))["state"],
