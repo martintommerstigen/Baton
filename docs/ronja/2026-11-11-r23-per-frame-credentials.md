@@ -30,3 +30,15 @@ Date: 2026-11-11 UTC. Tasks **B5/B2**, B1 integration contract. This is a securi
 **Locally executed in isolated Linux container, not Greg:** 19 tests discovered; root **13 PASS/6 SKIP** (seven real kernel cross-UID tests); non-root UID 21003 **10 PASS/9 SKIP** (socket/SQLite pause/restart included). Actual B1 source was accessible through GitHub connector but not locally mounted, so pinned-B1 test was **not run locally**; check hosted CI separately. All messages synthetic. No Greg/Mac, 525 or live A→B→C, no Desktop Commander, no external social posting.
 
 **Next falsifiers:** (1) actual B1 H21 pinned Broker/SQLite under the guarded handler and real distinct UIDs; (2) R22 observer→controller handoff under SCM_CREDENTIALS with FD delegation and lost reply; (3) independent OS-enforced CDP isolation or a capability-limited read-only source relay, since B1 H21's read-only code does not make the CDP endpoint read-only. Preserve PAUSE_UI_WRITES and no blind retry throughout.
+
+
+## Post-test revision, 2026-11-11T09:34Z — CI evidence
+
+The first trusted-push root run at [42996009517](https://github.com/martintommerstigen/Baton/actions/runs/42996009517) exposed a **test-harness race**, not a proven protocol bypass: the mixed-writer negative closed the accepted socket before its second writer had exited; the child sometimes received EPIPE and the test asserted its exit code was zero. [Commit e6fad85](https://github.com/martintommerstigen/Baton/commit/e6fad85bbc1e8fe0811ba1ae4b3053cf4d3f26f5) keeps that socket open until the writer exits. Repeated isolated local root suite: 30/30 PASS. The underlying credential rejection was already passing; this correction makes the adversarial test deterministic.
+
+**Exact final commit e6fad85:**
+- [Trusted push CI 42996128065 — SUCCESS](https://github.com/martintommerstigen/Baton/actions/runs/42996128065): unprivileged **11 PASS/8 SKIP** (including **actual pinned B1 H21 Broker/SQLite** source), privileged Linux **12 PASS/4 SKIP**, including 7 real UID/fork negative controls.
+- [PR CI 42996137454 — SUCCESS](https://github.com/martintommerstigen/Baton/actions/runs/42996137454): unprivileged job passed, privileged job correctly skipped for PR.
+- [Existing remote envelope CI 42996074623 — SUCCESS](https://github.com/martintommerstigen/Baton/actions/runs/42996074623) on the earlier code commit; this is not a Greg-live test.
+
+**Revised classification:** per-frame Linux kernel gate + pinned B1 H21 cooperative socket/SQLite = `tested-simulated` on hosted Linux; **full R22 distinct observer/controller UID deployment = implemented-unverified**; Greg/525/existing-chat A→B→C = `blocked` for live evidence. The actual B1 contract used a deliberately cooperative wrapper; it does **not** replace R22 role authorization. No automatic retry and no PAUSE_UI_WRITES relaxation.
