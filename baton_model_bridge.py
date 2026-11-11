@@ -131,7 +131,7 @@ def attach_model_bridge(layout, view, page, parent):
                 if active() is None:
                     on_complete(False)
                     return
-                page.runJavaScript(_json_result_script(send_click_script()),clicked)
+                page.runJavaScript(_json_result_script(send_click_script(text)),clicked)
             # The hosted composer enables Send asynchronously after input.
             QTimer.singleShot(350,click_once)
         # Wait for the page to finish loading before evaluating the composer.
