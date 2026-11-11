@@ -9,6 +9,7 @@ Never retry a possibly processed witness. Do not deploy on Greg yet.
 from __future__ import annotations
 
 import errno
+import hashlib
 import json
 import os
 import re
@@ -214,6 +215,21 @@ class SealedObserverQueries:
                                     parse_constant=lambda _: (_ for _ in ()).throw(ValueError()))
                 if type(result) is not dict or type(result.get("state")) is not str:
                     raise ValueError("invalid broker state")
+                if witness:
+                    if result != {"state": "source_observation_recorded_not_authorship"}:
+                        raise ValueError("witness not affirmatively recorded")
+                else:
+                    command = self._witness["source_command"]
+                    expected = {
+                        "state": "source_snapshot_not_authorship",
+                        "source_id": self._approved["source_id"],
+                        "origin_turn_id": self._approved["origin_turn_id"],
+                        "source_url": "https://chatgpt.com/c/" + self._approved["source_id"],
+                        "source_text_sha256": hashlib.sha256(
+                            command.encode("utf-8")).hexdigest(),
+                    }
+                    if result != expected:
+                        raise ValueError("snapshot schema or source digest mismatch")
                 if self._pause() is not False:
                     raise PermissionError("pause changed after possible commit")
                 return result
