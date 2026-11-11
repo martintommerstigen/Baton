@@ -20,7 +20,7 @@ import unittest
                      os.environ.get("B1_H20_BROKER"),
                      "trusted root-only pinned H20 kernel test")
 class CrossUIDObservedSource(unittest.TestCase):
-    def test_actual_kernel_uid_handoff_spend_restart_pause(self):
+    def test_actual_kernel_uid_handoff_spend_pause_persistence(self):
         b1_path = Path(os.environ["B1_H20_BROKER"]).resolve(strict=True)
         with tempfile.TemporaryDirectory() as td:
             root = Path(td)
