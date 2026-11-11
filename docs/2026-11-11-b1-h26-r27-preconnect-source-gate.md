@@ -17,7 +17,7 @@
 | Baton B5 | [R24 original](https://github.com/martintommerstigen/Baton/blob/research/ronja-r27-four-session-seal-2026-11-11/remote_security/observer_boundary.py), [R26](https://github.com/martintommerstigen/Baton/blob/research/ronja-r27-four-session-seal-2026-11-11/remote_security/sealed_unix_channel.py), [R27](https://github.com/martintommerstigen/Baton/blob/research/ronja-r27-four-session-seal-2026-11-11/remote_security/sealed_observer_sessions.py), [R27 tests](https://github.com/martintommerstigen/Baton/blob/research/ronja-r27-four-session-seal-2026-11-11/tests/test_sealed_observer_sessions.py) | Original source and negative tests read | Four preconnected streams, kernel UID and seccomp already implemented by Ronja |
 | Coordination | [project map](https://github.com/martintommerstigen/Baton/blob/planning/cross-project-map-2026-11-10/PROJECT_MAP.md), [forum #6](https://github.com/martintommerstigen/Baton/issues/6) | Map and latest comments read | B1 owns orchestration, B5 owns kernel modules |
 
-**Measured coverage:** [317 paginated branch-tip names and SHA values](docs/b1/2026-11-11-gtrcm-branch-tips-317-h26.json), pages 100+100+100+17+0 on 11 Nov; **0/317 complete branch histories**. The above is a selected original-file inspection, not a claim that all branches or conversations were read. Tip dates/themes and full document indexes remain unknown. Greg, Mac, private chat history and installed `PAUSE_UI_WRITES` not accessible. The cited original GTRCM texts are a source sample, not evidence of global novelty.
+**Measured coverage:** [317 paginated branch-tip names and SHA values](b1/2026-11-11-gtrcm-branch-tips-317-h26.json), pages 100+100+100+17+0 on 11 Nov; **0/317 complete branch histories**. The above is a selected original-file inspection, not a claim that all branches or conversations were read. Tip dates/themes and full document indexes remain unknown. Greg, Mac, private chat history and installed `PAUSE_UI_WRITES` not accessible. The cited original GTRCM texts are a source sample, not evidence of global novelty.
 
 ## Concrete delta from R27 and H24
 
@@ -25,7 +25,7 @@
 
 **H26 change:** a separate opt-in source-only entry validates exact B1 request, checks PAUSE, installs R25, runs R24 *once before any preconnection*, validates both socket paths, preconnects three collector streams and one broker witness stream, applies Ronja R27, and calls B1's existing `observe_via_snapshots` using R27's callbacks. R27 controls peer UIDs, FD inventory, strict ordering, payload and uncertainty; B1 preserves its source/witness rechecks. No new transport protocol, CDP write, UI Send or R22 schema change. No Ronja-owned source file modified.
 
-**Threat / negative controls:** missing R25 or R24, wrong role UID, wrong payload digest, active/ambiguous pause, wrong endpoint, extra socket, seal failure, changed pause, uncertain witness disconnect, duplicate witness and post-seal socket creation. The R27 tests are pinned; H26 adds an actual B1→R27 kernel integration test with synthetic source and a separate nine-case orchestration test. A verified source snapshot is still *not* ChatGPT authorship, an authorized UI Send, or an existing-chat assistant reply.
+**Threat / negative controls:** missing R25 or R24, wrong role UID, wrong payload digest, active/ambiguous pause, wrong endpoint, extra socket, seal failure, changed pause, uncertain witness disconnect, duplicate witness and post-seal socket creation. The R27 tests are pinned; H26 adds an actual B1→R27 kernel integration test with synthetic source and a separate ten-case orchestration test. A verified source snapshot is still *not* ChatGPT authorship, an authorized UI Send, or an existing-chat assistant reply.
 
 **Important limitation:** The new integration harness uses a synthetic positive R24 preflight receipt to isolate the four-UID R27+B1 integration. It does **not** establish Greg's CDP/profile isolation. R24 itself is separately tested in its own branch. A real R24 pass, R22 SQLite persistence/restart and genuine A→B→C turn receipts are still required before any live claim.
 
@@ -35,8 +35,8 @@
 
 ## Evidence / state
 
-- Local isolated stubbed B1 orchestration: **9/9 PASS** (not a test of GitHub's exact B1 imports or live Linux policy).
-- GitHub H26 workflow: **pending CI at initial commit**; update after checking the exact commit.
+- Local isolated stubbed B1 orchestration: **10/10 PASS** (not a test of GitHub's exact B1 imports or live Linux policy).
+- GitHub H26 workflow: initial [CI 43038549860](https://github.com/martintommerstigen/Baton/actions/runs/43038549860) failed because the test fixture omitted inherited cleanup; later [CI 43039109029](https://github.com/martintommerstigen/Baton/actions/runs/43039109029) failed at compile due to a literal escaped newline in a Python import. Both are retained as negative test/development evidence; final CI must be checked separately.
 - Existing R27 baseline: [Ronja CI 43034035940](https://github.com/martintommerstigen/Baton/actions/runs/43034035940), 11/11 actual Linux cross-UID kernel tests; these are not H26 results.
 - **B1/B5 H26 classification:** implemented-unverified until exact pinned CI completes; later at most tested-simulated.
 - **A→B→C:** blocked. No Greg, CDP, actual ChatGPT assistant turn IDs, authorized Send, or 525 connection observed.
