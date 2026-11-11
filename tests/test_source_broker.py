@@ -248,6 +248,74 @@ class BrokerTests(unittest.TestCase):
             replacement.close()
             other.close()
 
+    def test_parent_swap_inside_blocking_accept_rejects_before_request_read(self):
+        parent = self.base / "accept-parent"
+        parent.mkdir(mode=0o710)
+        moved = self.base / "moved-accept-parent"
+        path = parent / "guard.sock"
+        other = SourceBroker(str(path), {self.allowed}, {"rustworld-world"},
+                             self.broker.capture, self.broker.audit)
+        other.start()
+        real_accept = socket.socket.accept
+        def accept_and_move(sock):
+            conn, address = real_accept(sock)
+            parent.rename(moved)
+            parent.mkdir(mode=0o710)
+            return conn, address
+        try:
+            with patch.object(socket.socket, "accept", new=accept_and_move), \\
+                    patch.object(other, "_peer_uid", return_value=self.allowed):
+                worker = threading.Thread(target=other.accept_once, daemon=True)
+                worker.start()
+                with socket.socket(socket.AF_UNIX, socket.SOCK_STREAM) as client:
+                    client.settimeout(2)
+                    client.connect(str(path))
+                    client.sendall(frame())
+                    client.shutdown(socket.SHUT_WR)
+                    try:
+                        self.assertEqual(client.recv(4096), b"")
+                    except ConnectionResetError:
+                        pass
+                worker.join(2)
+                self.assertFalse(worker.is_alive())
+            self.assertEqual(self.calls, [], "no backend after accepted socket moved")
+        finally:
+            other.close()
+        self.assertFalse((moved / "guard.sock").exists())
+
+    def test_parent_swap_after_frame_parse_rejects_before_backend(self):
+        parent = self.base / "parse-parent"
+        parent.mkdir(mode=0o710)
+        moved = self.base / "moved-parse-parent"
+        path = parent / "guard.sock"
+        other = SourceBroker(str(path), {self.allowed}, {"rustworld-world"},
+                             self.broker.capture, self.broker.audit)
+        other.start()
+        real_parse = parse_request
+        def parse_and_move(raw, ids):
+            result = real_parse(raw, ids)
+            parent.rename(moved)
+            parent.mkdir(mode=0o710)
+            return result
+        try:
+            with patch("remote_security.source_broker.parse_request", side_effect=parse_and_move), \\
+                    patch.object(other, "_peer_uid", return_value=self.allowed):
+                worker = threading.Thread(target=other.accept_once, daemon=True)
+                worker.start()
+                with socket.socket(socket.AF_UNIX, socket.SOCK_STREAM) as client:
+                    client.settimeout(2)
+                    client.connect(str(path))
+                    client.sendall(frame())
+                    client.shutdown(socket.SHUT_WR)
+                    response = client.recv(4096)
+                worker.join(2)
+                self.assertFalse(worker.is_alive())
+            self.assertEqual(json.loads(response)["state"], "rejected_or_uncertain_no_retry")
+            self.assertEqual(self.calls, [], "no backend after parsed frame moved")
+        finally:
+            other.close()
+        self.assertFalse((moved / "guard.sock").exists())
+
     def test_socket_restart_refuses_stale_endpoint(self):
         other = SourceBroker(str(self.path), {self.allowed}, {"rustworld-world"}, self.broker.capture, self.broker.audit)
         with self.assertRaises(Rejected):
