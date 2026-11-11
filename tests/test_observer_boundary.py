@@ -32,6 +32,20 @@ class BoundaryTests(unittest.TestCase):
             with self.assertRaisesRegex(b.BoundaryDenied, 'network isolation not established'):
                 b._network_guard(123)
 
+    def test_inherited_connected_unix_socket_denied(self):
+        left, right = socket.socketpair()
+        try:
+            with self.assertRaisesRegex(b.BoundaryDenied, 'inherited connected Unix'):
+                b._no_inherited_socket_capabilities()
+        finally:
+            left.close()
+            right.close()
+
+    def test_inherited_tcp_socket_denied(self):
+        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+            with self.assertRaisesRegex(b.BoundaryDenied, 'inherited network socket'):
+                b._no_inherited_socket_capabilities()
+
     def test_missing_profile_is_not_proof_of_denial(self):
         with tempfile.TemporaryDirectory() as d:
             with self.assertRaisesRegex(b.BoundaryDenied, 'not established'):
@@ -104,6 +118,7 @@ class BoundaryTests(unittest.TestCase):
         statinfo = type('S', (), {'st_uid': 21001, 'st_dev': 1, 'st_ino': 8})()
         with mock.patch.object(b.os, 'stat', return_value=statinfo), \
              mock.patch.object(b, '_netns', side_effect=lambda p: (1, 1) if p == '/proc/self/ns/net' else (1, 2)), \
+             mock.patch.object(b, '_no_inherited_socket_capabilities'), \
              mock.patch.object(b, '_profile_denied'), \
              mock.patch.object(b, '_cdp_denied'), \
              mock.patch.object(b, '_snapshot_peer'):
