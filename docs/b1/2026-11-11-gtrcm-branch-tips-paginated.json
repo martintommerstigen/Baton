@@ -13,7 +13,7 @@
   "unique": 310,
   "actual_tip_commit_dates_fetched": 0,
   "full_branch_histories_read": 0,
-  "distinct_branch_refs_with_original_bodies_read_this_run": 8,
+  "distinct_branch_refs_with_original_bodies_read_this_run": 10,
   "prior_inventory": "https://github.com/martintommerstigen/GTRCM/blob/research/vanja-r41-constraint-source-gen-gate-2026-11-11/research/vanja/r41/2026-11-11_BRANCH_TIPS_FULL_PAGINATION.json",
   "limitations": "date_hint_in_name is NOT a verified commit date; tip SHA is NOT full branch content. Documents inspected are only those listed. No Greg/Mac access.",
   "branches": [
@@ -994,7 +994,9 @@
       "date_hint_in_name": "2026-11-04",
       "tip_commit_date": null,
       "theme_group": "research",
-      "original_file_bodies_read_this_run": [],
+      "original_file_bodies_read_this_run": [
+        "research/gaia/2026-11-04_ANDREAS_G21_TEMPORAL_CONTINUITY_GRAPH.md"
+      ],
       "full_branch_history_read": false
     },
     {
@@ -1014,7 +1016,9 @@
       "date_hint_in_name": "2026-11-04",
       "tip_commit_date": null,
       "theme_group": "research",
-      "original_file_bodies_read_this_run": [],
+      "original_file_bodies_read_this_run": [
+        "research/gaia/2026-11-04_ANDREAS_G22_TEMPORAL_CERTIFICATION_BUDGET.md"
+      ],
       "full_branch_history_read": false
     },
     {
@@ -3135,5 +3139,5 @@
       "full_branch_history_read": false
     }
   ],
-  "original_file_bodies_read_this_run": 9
+  "original_file_bodies_read_this_run": 11
 }
