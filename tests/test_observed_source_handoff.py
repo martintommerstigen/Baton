@@ -101,7 +101,7 @@ class HandoffTests(unittest.TestCase):
                              origin_turn_id="turn-A",sender_id="chat-A",
                              payload_sha256=hashlib.sha256(b"approved").hexdigest())
         self.observation = dict(self.envelope,op="observe_source",
-                 source_text_sha256=hashlib.sha256(b"observed assistant text").hexdigest())
+                 source_command=f"BATON_WAKE chat-B m1 sha256:{self.envelope['payload_sha256']}")
 
     def new_proxy(self):
         return ObservedSourceHandoff(self.store,broker_uid=self.broker_uid,
@@ -152,7 +152,9 @@ class HandoffTests(unittest.TestCase):
 
     def test_same_source_turn_new_message_is_rejected(self):
         self.observe()
-        self.assertEqual(self.observe(message_id="m2")["reason"],"observation_replay")
+        self.assertEqual(self.observe(message_id="m2",
+            source_command=f"BATON_WAKE chat-B m2 sha256:{self.envelope['payload_sha256']}")["reason"],
+            "observation_replay")
 
     def test_same_message_different_source_turn_is_rejected(self):
         self.observe()
@@ -177,11 +179,12 @@ class HandoffTests(unittest.TestCase):
 
     def test_b_to_c_explicit_route(self):
         observation = dict(self.observation,sender_id="chat-B",conversation_id="chat-C",
-                           origin_turn_id="turn-B",message_id="m2")
+                           origin_turn_id="turn-B",message_id="m2",
+                           source_command=f"BATON_WAKE chat-C m2 sha256:{self.envelope['payload_sha256']}")
         self.assertEqual(self.call(self.observer_uid,observation)["state"],
                          "source_observation_recorded_not_authorship")
         req = dict(observation)
-        req.pop("source_text_sha256")
+        req.pop("source_command")
         req["op"]="admit"
         self.assertEqual(self.call(self.controller_uid,req)["state"],"admitted_not_delivered")
 
@@ -233,15 +236,17 @@ class HandoffTests(unittest.TestCase):
         self.assertEqual(outcomes.count("admitted_not_delivered"),1)
         self.assertEqual(outcomes.count("rejected"),1)
 
-    def test_source_text_digest_is_not_source_authentication(self):
-        forged = "a"*64
-        self.assertEqual(self.observe(source_text_sha256=forged)["state"],
+    def test_exact_command_is_not_source_authentication(self):
+        # The test itself fabricates a perfectly canonical command. No actual
+        # ChatGPT assistant turn was read. A real observer UID can still lie.
+        self.assertEqual(self.observe()["state"],
                          "source_observation_recorded_not_authorship")
-        # A real authorized observer UID can lie. This is an explicit NEG.
         self.assertEqual(self.admit()["state"],"admitted_not_delivered")
 
     def test_malformed_and_extra_fields(self):
-        self.assertEqual(self.observe(source_text_sha256="bad")["reason"],
+        self.assertEqual(self.observe(source_command="bad")["reason"],
+                         "invalid_observation_or_route")
+        self.assertEqual(self.observe(source_command=self.observation["source_command"]+" quoted")["reason"],
                          "invalid_observation_or_route")
         self.assertEqual(self.observe(payload_sha256="X"*64)["reason"],
                          "invalid_observation_or_route")
