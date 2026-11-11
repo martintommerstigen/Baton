@@ -37,18 +37,18 @@ class BatonExistingConversationTests(unittest.TestCase):
         self.assertNotIn("baton_github_bus", source)
         self.assertNotIn("chatgpt_chat(", source)
 
-    def test_existing_chat_panel_auto_arms_core_bridge(self):
+    def test_existing_chat_panel_requires_manual_opt_in(self):
         source = inspect.getsource(attach_model_bridge)
         self.assertIn("auto_enable=False", source)
         self.assertIn("if not auto_enable:", source)
         self.assertIn("chat_id and auto_enable", source)
         self.assertIn("if ok and auto_enable", source)
         panel = inspect.getsource(attach_baton_panel)
-        self.assertIn("attach_model_bridge(layout, view, page, dock, auto_enable=True)", panel)
+        self.assertIn("attach_model_bridge(layout, view, page, dock, auto_enable=False)", panel)
         self.assertIn("manual_begin", source)
         self.assertIn("start.clicked.connect(manual_begin)", source)
         tab = inspect.getsource(attach_existing_conversation_tab)
-        self.assertIn("aktiveres den lokale Core-broen automatisk", tab)
+        self.assertIn("Brave – bruk akkurat denne eksisterende ChatGPT-samtalen", tab)
 
 
 if __name__ == "__main__":
