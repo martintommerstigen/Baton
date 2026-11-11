@@ -93,14 +93,7 @@ class DigestBoundSourceTests(unittest.TestCase):
         self.assertEqual(self.c.clicks, 0)
 
     def test_b_changes_during_c_broker_admission_fails_closed(self):
-        def mutate(envelope):
-            result = self.broker(envelope)
-            if envelope["sender_id"] == B and envelope["op"] == "admit":
-                self.b.next_text = self.b_command("changed")
-            return result
-        original = self.broker
-        self.broker = mutate
-        # Use a nonrecursive callback to mutate after the first C admission.
+        # Mutate the B turn after authenticated C admission.
         def safe_broker(envelope):
             result = {"admit": {"state": "admitted_not_delivered"},
                       "begin_click": {"state": "click_started_uncertain"}}[envelope["op"]]
