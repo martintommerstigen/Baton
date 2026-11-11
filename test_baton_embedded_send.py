@@ -13,6 +13,25 @@ class EmbeddedSendTests(unittest.TestCase):
     def test_empty_rejected(self):
         with self.assertRaises(ValueError):
             prepare_send_script("")
+    def test_current_composer_variants(self):
+        script=prepare_send_script('probe')
+        self.assertIn("'#prompt-textarea'",script)
+        self.assertIn("'.ProseMirror[contenteditable]'",script)
+        self.assertIn("'[role=\"textbox\"][contenteditable]'",script)
+        self.assertIn("'form textarea'",script)
+        self.assertIn('item.isContentEditable',script)
+        self.assertIn('composer-not-empty',script)
+        self.assertIn('composer-insertion-not-verified',script)
+        self.assertIn('editor-candidates=',script)
+    def test_send_guard_checks_same_draft(self):
+        script=send_click_script('baton probe')
+        self.assertIn('baton probe',script)
+        self.assertIn('composer-changed-before-send',script)
+        self.assertIn('composer-lost-before-send',script)
+        self.assertIn('clicked-not-delivery-proof',script)
+    def test_draft_escaped_in_send_guard(self):
+        script=send_click_script('one "quote"\\ntwo')
+        self.assertIn('one \\"quote\\"\\\\ntwo',script)
     def test_send_script_requires_enabled_button(self):
         script=send_click_script()
         self.assertIn("send-button",script)
