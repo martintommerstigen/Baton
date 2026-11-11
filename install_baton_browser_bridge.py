@@ -73,6 +73,29 @@ def install_bridge(*, root=None, home=None, browsers=BROWSERS):
     if not script.is_file() or script.is_symlink():
         raise ValueError("Baton Native Messaging host source missing")
     extension_id = _extension_id(root)
+
+    # Keep a stable unpacked-extension directory across future Baton releases.
+    # Chromium remembers this path; the user should never need to re-load
+    # a new hashed release directory after every .deb update.
+    stable_extension = home / ".local/share/baton/browser-extension"
+    if stable_extension.is_symlink():
+        raise ValueError("Baton browser extension directory symlink forbidden")
+    stable_extension.mkdir(mode=0o700,parents=True,exist_ok=True)
+    installed_manifest = stable_extension / "manifest.json"
+    if installed_manifest.exists():
+        if installed_manifest.is_symlink() or not installed_manifest.is_file():
+            raise ValueError("invalid installed extension manifest")
+        existing = json.loads(installed_manifest.read_text(encoding="utf-8"))
+        current = json.loads((root/"baton_extension/manifest.json").read_text(encoding="utf-8"))
+        if existing.get("key") != current.get("key"):
+            raise ValueError("refusing to replace unrelated extension")
+    for name in ("manifest.json","background.js","content.js"):
+        source = root / "baton_extension" / name
+        if source.is_symlink() or not source.is_file() or source.stat().st_size>1048576:
+            raise ValueError("invalid Baton extension file")
+        _atomic_private(stable_extension/name,source.read_text(encoding="utf-8"),
+                        mode=0o600)
+
     origin = "chrome-extension://" + extension_id + "/"
     executable = home / ".local/bin/baton-browser-native-host"
     wrapper = ("#!/bin/sh\n"
@@ -101,7 +124,7 @@ def install_bridge(*, root=None, home=None, browsers=BROWSERS):
                 raise ValueError("refusing overwrite of different native host registration")
         _atomic_private(path,json.dumps(host,indent=2)+"\n",mode=0o600)
     return {"extension_id":extension_id,
-            "extension_directory":str(root/"baton_extension"),
+            "extension_directory":str(stable_extension),
             "host_launcher":str(executable),
             "registered_browsers":len(browsers)}
 
