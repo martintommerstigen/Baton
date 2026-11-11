@@ -65,10 +65,7 @@ def main():
     window.setCentralWidget(view)
     dock = attach_baton_panel(window, view, page,
                               initial_chat=args.chat_id, initial_message=args.message)
-    # Preserve the existing conversation dock; add the opt-in model/Core bridge
-    # to the same window rather than creating a parallel ChatGPT frontend.
-    from baton_model_bridge import attach_model_bridge
-    attach_model_bridge(dock.widget().layout(), view, page, dock.widget())
+    # attach_baton_panel already installs the model/Core bridge in its scrollable layout.
     window.resize(1200,800)
     view.setUrl(QUrl(target))
     window.show()
