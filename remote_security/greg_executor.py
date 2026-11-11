@@ -63,6 +63,8 @@ def serve(path, uid, workdir):
     finally:
         os.umask(old)
     os.chmod(path, 0o660)
+    # The socket group must be the dedicated Baton caller group.
+    # Group membership is a host-level privilege, not ChatGPT authentication.
     bound = os.lstat(path)
     if not stat.S_ISSOCK(bound.st_mode) or bound.st_uid != os.geteuid():
         raise PermissionError('invalid bound socket')
