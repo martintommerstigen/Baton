@@ -29,10 +29,10 @@ def run():
                        "Please request BATON_NEXT C","Hello from B",
                        hashlib.sha256(b"Please request BATON_NEXT C").hexdigest(),
                        hashlib.sha256(b"Hello from B").hexdigest())
-        result=run_chain(ledger,b,c,plan,lambda chat,turn:"BATON_NEXT C")
+        result=run_chain(ledger,b,c,plan,lambda chat,turn:f"BATON_NEXT C sha256:{plan.second_digest}")
         assert result=={"a_to_b":"verified","b_to_c":"verified"},result
         assert len(b.sends)==1 and len(c.sends)==1
-        replay=run_chain(ledger,b,c,plan,lambda chat,turn:"BATON_NEXT C")
+        replay=run_chain(ledger,b,c,plan,lambda chat,turn:f"BATON_NEXT C sha256:{plan.second_digest}")
         assert replay==result
         assert len(b.sends)==1 and len(c.sends)==1
         return {"simulation":result,"unique_sends":2,"replay_sends":0}
