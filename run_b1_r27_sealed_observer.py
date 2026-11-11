@@ -13,7 +13,7 @@ import socket
 
 from b1_snapshot_relay import observe_via_snapshots, snapshot_request
 from chatgpt_ui_driver import PAUSE_FILE, pause_active
-from run_b1_snapshot_observer import enforce_scoped_boundary
+from run_b1_snapshot_observer import (\n    enforce_scoped_boundary, REQUIRED_CHECKS, NETWORK_CHECKS)
 
 EXPECTED_GUARD = "lifetime_guard_loaded_not_host_attestation"
 EXPECTED_SEAL = "four_role_pinned_sessions_sealed_not_host_attestation"
@@ -47,7 +47,12 @@ def run_sealed_observation(*, source, source_turn_id, target, message_id,
         raise PermissionError("pause changed before R24 preflight")
     boundary = preflight()
     if (type(boundary) is not dict
-            or boundary.get("status") != "scoped_preflight_pass_not_attestation"):
+            or boundary.get("status") != "scoped_preflight_pass_not_attestation"
+            or type(boundary.get("checks")) is not list
+            or any(type(c) is not str for c in boundary["checks"])
+            or len(set(boundary["checks"])) != len(boundary["checks"])
+            or not REQUIRED_CHECKS.issubset(boundary["checks"])
+            or not NETWORK_CHECKS.intersection(boundary["checks"])):
         raise PermissionError("R24 boundary not established")
     if pause_checker() is not False:
         raise PermissionError("pause changed after R24 preflight")
