@@ -19,8 +19,15 @@ import threading
 import time
 
 from remote_security.sealed_unix_channel import (
-    _check_path, _load_filter, _r25_kernel_prerequisite,
+    ChannelSealDenied, _check_path, _load_filter, _r25_kernel_prerequisite,
 )
+
+
+def _required(check, *args):
+    try:
+        return check(*args)
+    except ChannelSealDenied as exc:
+        raise SessionSealDenied(str(exc)) from exc
 
 
 class SessionSealDenied(PermissionError):
@@ -85,8 +92,8 @@ def seal_observer_sessions(snapshots, witness, *, snapshot_endpoint,
             or len({s.fileno() for s in streams}) != 4
             or snapshot_endpoint == witness_endpoint):
         raise SessionSealDenied("four separate role-pinned descriptors required")
-    before = (_check_path(snapshot_endpoint, collector_uid),
-              _check_path(witness_endpoint, broker_uid))
+    before = (_required(_check_path, snapshot_endpoint, collector_uid),
+              _required(_check_path, witness_endpoint, broker_uid))
     for sock, endpoint, uid in zip(
             streams, (snapshot_endpoint,) * 3 + (witness_endpoint,),
             (collector_uid,) * 3 + (broker_uid,)):
@@ -105,12 +112,12 @@ def seal_observer_sessions(snapshots, witness, *, snapshot_endpoint,
     if (set(inventory) != {s.fileno() for s in streams}
             or len(set(inventory.values())) != 4):
         raise SessionSealDenied("unexpected inherited or duplicate socket")
-    _r25_kernel_prerequisite()
-    if (before != (_check_path(snapshot_endpoint, collector_uid),
-                   _check_path(witness_endpoint, broker_uid))
+    _required(_r25_kernel_prerequisite)
+    if (before != (_required(_check_path, snapshot_endpoint, collector_uid),
+                   _required(_check_path, witness_endpoint, broker_uid))
             or _socket_inventory() != inventory):
         raise SessionSealDenied("endpoint or FD changed before sealing")
-    _load_filter()  # R26's irreversible socket/connect/FD-transfer deny list
+    _required(_load_filter)  # R26's irreversible socket/connect/FD-transfer deny list
     for op in (lambda: socket.socket(socket.AF_UNIX, socket.SOCK_STREAM),
                lambda: socket.socketpair(socket.AF_UNIX, socket.SOCK_STREAM)):
         try:
