@@ -217,18 +217,25 @@ def attach_model_bridge(layout, view, page, parent):
             return
         nonce=data["nonce"]
         def inspected(turns):
-            if active() is None or pending[0] or not isinstance(turns,list):
+            turns = _decode_js_result(turns)
+            if active() is None or pending[0]:
+                return
+            if not isinstance(turns,list):
+                report("Baton kan ikke lese assistentsvar: " +
+                       ("null JS-resultat" if turns is None else "ugyldig observatørresultat"))
                 return
             for turn in turns:
                 if not isinstance(turn,dict):
                     continue
-                turn_id=turn.get("id")
-                if not isinstance(turn_id,str) or not turn_id:
-                    continue
-                if turn_id in observed_turns:
-                    continue
                 call=parse_assistant_tool_call(turn.get("text"),nonce)
                 if call is None:
+                    continue
+                # ChatGPT may omit data-message-id on otherwise valid turns.
+                # The session nonce and unique request_id are the command guards.
+                turn_id=turn.get("id")
+                if not isinstance(turn_id,str) or not turn_id:
+                    turn_id="request:"+call["request_id"]
+                if turn_id in observed_turns:
                     continue
                 observed_turns.add(turn_id)
                 request_id=call["request_id"]
@@ -245,7 +252,7 @@ def attach_model_bridge(layout, view, page, parent):
                     results.put((request_nonce,cid,request["request_id"],outcome))
                 threading.Thread(target=perform,args=(call,nonce,data["chat_id"]),daemon=True).start()
                 break
-        page.runJavaScript(observe_assistant_script(),inspected)
+        page.runJavaScript(_json_result_script(observe_assistant_script()),inspected)
 
     def flush():
         if results.empty():
