@@ -58,7 +58,9 @@ class AdmissionTests(unittest.TestCase):
 
     def test_two_distinct_conversations_admitted_once(self):
         self.assertEqual(self.ask(self.envelope())["state"], "admitted_not_delivered")
-        self.assertEqual(self.ask(self.envelope("chat-C", "m2"))["state"], "admitted_not_delivered")
+        second = self.envelope("chat-C", "m2")
+        second.update(sender_id="chat-B", origin_turn_id="turn-B")
+        self.assertEqual(self.ask(second)["state"], "admitted_not_delivered")
 
     def test_negative_claimed_b_to_c_without_observed_b_turn(self):
         """NEG: kernel UID admission does not prove asserted ChatGPT source."""
@@ -125,6 +127,77 @@ class AdmissionTests(unittest.TestCase):
         for t in threads: t.join()
         self.assertEqual(answers.count("admitted_not_delivered"), 1)
         self.assertEqual(answers.count("rejected"), 5)
+
+    def test_cross_target_message_id_replay_rejected(self):
+        self.assertEqual(self.ask(self.envelope())["state"], "admitted_not_delivered")
+        other = self.envelope("chat-C", "m1")
+        other.update(sender_id="chat-B", origin_turn_id="turn-B")
+        self.assertEqual(self.ask(other),
+                         {"state": "rejected", "reason": "outstanding_attempt"})
+        self.assertEqual(self.ask({"op": "status"})["outstanding"], 1)
+
+    def test_cross_target_asserted_source_turn_double_spend_rejected(self):
+        self.assertEqual(self.ask(self.envelope())["state"], "admitted_not_delivered")
+        self.assertEqual(self.ask(self.envelope("chat-C", "m2")),
+                         {"state": "rejected", "reason": "outstanding_attempt"})
+        self.assertEqual(self.ask({"op": "status"})["outstanding"], 1)
+
+    def test_source_turn_scope_is_sender_specific(self):
+        self.assertEqual(self.ask(self.envelope())["state"], "admitted_not_delivered")
+        other = self.envelope("chat-C", "m2")
+        other["sender_id"] = "chat-B"
+        self.assertEqual(self.ask(other)["state"], "admitted_not_delivered")
+
+    def test_cross_target_replay_remains_blocked_after_restart(self):
+        self.assertEqual(self.ask(self.envelope())["state"], "admitted_not_delivered")
+        self.stop()
+        self.store = AdmissionStore(self.db, self.pause, self.allowed)
+        self.broker = Broker(self.sock, self.store, [os.getuid()])
+        self.thread = threading.Thread(target=self.broker.serve_forever,
+                                       kwargs={"poll_interval": .01}, daemon=True)
+        self.thread.start()
+        self.assertEqual(self.ask(self.envelope("chat-C", "m2"))["reason"],
+                         "outstanding_attempt")
+        self.assertEqual(self.ask({"op": "status"})["outstanding"], 1)
+
+    def test_concurrent_cross_target_source_double_spend(self):
+        barrier = threading.Barrier(2)
+        outcomes = []
+        lock = threading.Lock()
+        def send(req):
+            barrier.wait()
+            response = self.ask(req)
+            with lock:
+                outcomes.append(response["state"])
+        threads = [threading.Thread(target=send, args=(self.envelope(target, msg),))
+                   for target, msg in (("chat-B", "m1"), ("chat-C", "m2"))]
+        for t in threads: t.start()
+        for t in threads: t.join(timeout=5)
+        self.assertFalse(any(t.is_alive() for t in threads))
+        self.assertEqual(outcomes.count("admitted_not_delivered"), 1)
+        self.assertEqual(outcomes.count("rejected"), 1)
+        self.assertEqual(self.ask({"op": "status"})["outstanding"], 1)
+
+    def test_legacy_duplicate_source_rows_fail_closed_during_migration(self):
+        import sqlite3
+        self.stop()
+        legacy = self.root / "legacy.sqlite"
+        with sqlite3.connect(legacy) as db:
+            db.executescript("""CREATE TABLE admissions (
+                conversation_id TEXT PRIMARY KEY, message_id TEXT NOT NULL,
+                origin_turn_id TEXT NOT NULL, sender_id TEXT NOT NULL,
+                payload_sha256 TEXT NOT NULL, state TEXT NOT NULL,
+                created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP);
+                CREATE TABLE settings (key TEXT PRIMARY KEY, value TEXT NOT NULL);""")
+            for target, msg in (("chat-B", "m1"), ("chat-C", "m2")):
+                db.execute("""INSERT INTO admissions
+                    (conversation_id,message_id,origin_turn_id,sender_id,payload_sha256,state)
+                    VALUES (?,?,?,?,?,'admitted')""",
+                    (target, msg, "turn-A", "chat-A", "a" * 64))
+        with self.assertRaises(sqlite3.IntegrityError):
+            AdmissionStore(legacy, self.pause, self.allowed)
+        with sqlite3.connect(legacy) as db:
+            self.assertEqual(db.execute("SELECT COUNT(*) FROM admissions").fetchone()[0], 2)
 
     def test_peer_uid_denied(self):
         self.stop()
