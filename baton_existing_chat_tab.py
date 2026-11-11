@@ -55,7 +55,7 @@ def attach_existing_conversation_tab(tabs):
     )
     hint.setWordWrap(True)
     layout.addWidget(hint)
-    bridge_path = str(Path(__file__).resolve().parent/"baton_extension")
+    bridge_path = str(Path.home()/".local/share/baton/browser-extension")
     details = QLabel(
         "Én gangs tilkobling: Åpne Brave-utvidelser, slå på Utviklermodus, "
         "velg Last inn upakket/Load unpacked og marker mappen:\n" + bridge_path
