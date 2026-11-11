@@ -37,3 +37,8 @@ Prior art: Riss demonstrated actual UI sending, Rolf showed a missing wake edge,
 Tests must be checked in GitHub Actions before marking tested-simulated. This code has **not** been executed on Greg or Mac. No UI Send occurred and PAUSE_UI_WRITES remains unknown. preflight_passed_not_delivery is not a durable observation of an assistant response.
 
 Next on an authorized free Greg channel: compare the installed baton-local-api.service code/manifest and pause state to GitHub, then run this read-only probe against Riss's existing-chat CDP session. Only after explicit permission, safe pause and independent UI verification attempt a harmless A→B→C and an O/K/I correction control. No subscription/quota bypass. Next uninspected source branches: older Hedda H6/H7 and Bodil alternative notes, and the Rolf archive beyond the one read original.
+
+
+## Verified offline CI (2026-11-11T02:29Z)
+
+The first Python-code push run did not include the new tests because the workflow had a fixed explicit test list. This was corrected in [workflow commit 935030ef](https://github.com/martintommerstigen/Baton/commit/935030ef5201b720e31b69ab123ff66772ec9484), which now includes test_inspect_b1_readiness.py and watches inspect_b1_readiness.py. [GitHub Actions run 42946338168](https://github.com/martintommerstigen/Baton/actions/runs/42946338168) completed **SUCCESS**, decoded regression job 130279966530 explicitly showed all **12 new readiness tests ... ok** and **Ran 221 tests / OK**. This is tested-simulated for the offline code path only. It does not attest Greg, installed Baton Core, browser DOM, live B5 dedicated UID, A→B→C or operational learning.
