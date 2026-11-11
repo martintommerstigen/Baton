@@ -91,7 +91,7 @@ def _assistant_tool_turn(turn, expected_nonce):
     """
     if not isinstance(turn, dict):
         return None
-    call = parse_assistant_tool_call(turn.get("text"), expected_nonce)
+    call = parse_assistant_tool_call(turn.get("text"), expected_nonce, allow_rendered_chrome=True)
     if call is None:
         return None
     turn_id = turn.get("id")
