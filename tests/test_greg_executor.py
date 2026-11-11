@@ -18,7 +18,7 @@ class GregExecutorTests(unittest.TestCase):
                 self.assertEqual(f.read(),"baton")
     def test_rejects_injection_schema(self):
         with tempfile.TemporaryDirectory() as d:
-            for req in ({"argv":"echo hello"},{"argv":[]},{"argv":["echo","a\\x00b"]},{"argv":["echo"],"shell":True}):
+            for req in ({"argv":"echo hello"},{"argv":[]},{"argv":["echo",chr(0)]},{"argv":["echo"],"shell":True}):
                 with self.assertRaises(ValueError):
                     execute(req,d)
     def test_failed_command_reports_exit(self):
