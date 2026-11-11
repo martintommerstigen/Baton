@@ -96,7 +96,7 @@ class CrossUIDBrokerTests(unittest.TestCase):
         # to test server-side kernel UID admission. Never use it in live UI.
         # A standalone test client avoids importing source from the runner's
         # private checkout directory after dropping to an unrelated UID.
-        frame = (json.dumps(request, sort_keys=True) + "\\n").encode("utf-8")
+        frame = (json.dumps(request, sort_keys=True) + "\n").encode("utf-8")
         code = ("import json,socket; s=socket.socket(socket.AF_UNIX); "
                 "s.connect(" + repr(str(self.sock)) + "); "
                 "s.sendall(" + repr(frame) + "); "
