@@ -69,6 +69,9 @@ class B1R27Kernel(unittest.TestCase):
             shutil.copy2(ROOT/name,self.sandbox/name)
             os.chmod(self.sandbox/name,0o644)
 
+    def stop(self):
+        R27Kernel.stop(self)
+
     def run_mode(self,mode):
         script=f'SNAP={self.snap!r}\nWITNESS={self.witness!r}\nMODE={mode!r}\n'+CLIENT
         return subprocess.run([sys.executable,'-c',script],cwd=self.sandbox,
