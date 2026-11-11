@@ -9,11 +9,13 @@ import queue
 import threading
 from uuid import uuid4
 from pathlib import Path
-from baton_chatgpt_view import is_chatgpt_conversation_url
+from baton_chatgpt_view import is_chatgpt_conversation_url, conversation_url
+from baton_chat_observe import inspect_delivery_script
 from baton_conversation_panel import chat_id_from_url
 from baton_embedded_send import prepare_send_script, send_click_script, clear_prepared_script
 from baton_model_protocol import (
-    parse_assistant_tool_call, render_tool_call_v2, tool_result_message, observe_assistant_script
+    parse_assistant_tool_call, render_tool_call_v2, tool_result_message,
+    chat_result_message, observe_assistant_script
 )
 from baton_core_client import execute_on_greg
 
@@ -42,7 +44,16 @@ def bootstrap_message(nonce, cwd):
         "argv or cwd containing spaces; Baton parses quoting with shlex "
         "and executes argv DIRECTLY without invoking a shell. Do not include "
         "JSON or line breaks in a tool call.\n\n"
-        "After Baton returns BATON_TOOL_RESULT_V1, inspect exit_code, output "
+        "To message another EXISTING ChatGPT conversation, issue exactly one "
+        "plain-text line: BATON_CHAT_V1 then this session nonce, a NEW 32-hex "
+        "request_id, the target /c/ conversation ID, then --, then the message "
+        "as one shell-quoted text argument. Baton treats that message strictly "
+        "as text, sends it once through a separate logged-in ChatGPT view, and "
+        "returns BATON_CHAT_RESULT_V1 with observed reply text or uncertainty. "
+        "Never invent a conversation ID and never retry an uncertain send.\n\n"
+        "After Baton returns BATON_TOOL_RESULT_V1 or BATON_CHAT_RESULT_V1, inspect "
+        "the result, then continue with the next necessary single call. For Greg "
+        "commands inspect exit_code, output "
         "and errors. Continue by issuing the NEXT necessary BATON_TOOL_V2 "
         "with a NEW request_id, including read, write, tests, commits and "
         "independent read-back as needed for the user's request. Do not "
@@ -98,12 +109,15 @@ def should_auto_arm(chat_id, attempted_chat, suspended, active_session,
 
 
 def attach_model_bridge(layout, view, page, parent, *, auto_enable=False):
-    from PySide6.QtCore import QTimer
+    from PySide6.QtCore import QTimer, QUrl
     from PySide6.QtWidgets import QGroupBox, QVBoxLayout, QPushButton, QLabel
+    from PySide6.QtWebEngineCore import QWebEnginePage
+    from PySide6.QtWebEngineWidgets import QWebEngineView
     group=QGroupBox("Baton · ChatGPT ⇄ Greg Core",parent)
     content=QVBoxLayout(group)
-    description=QLabel("Baton Core: full brukertilgang på Greg mens Baton er åpen. "
-                       "Verktøyøkten krever at du trykker Aktiver i ønsket samtale. Stopp avbryter økten.")
+    description=QLabel("Baton Core: full brukertilgang på Greg mens Baton er åpen, "
+                       "pluss kildebevart melding til andre eksisterende ChatGPT-samtaler. "
+                       "Stopp avbryter nye handlinger i økten.")
     description.setWordWrap(True)
     start=QPushButton("Aktiver modellverktøy i åpen samtale")
     stop=QPushButton("Stopp verktøyøkt")
@@ -129,6 +143,13 @@ def attach_model_bridge(layout, view, page, parent, *, auto_enable=False):
     observer.setInterval(2000)
     output_poller=QTimer(group)
     output_poller.setInterval(350)
+    relay_view=QWebEngineView(group)
+    relay_page=QWebEnginePage(page.profile(), relay_view)
+    relay_view.setPage(relay_page)
+    relay_view.hide()
+    relay_state=[None]
+    relay_timer=QTimer(group)
+    relay_timer.setInterval(1800)
 
     def report(text):
         state.setText(text)
@@ -147,9 +168,175 @@ def attach_model_bridge(layout, view, page, parent, *, auto_enable=False):
         session[0]=None
         observer.stop()
         output_poller.stop()
+        relay_timer.stop()
+        relay_state[0]=None
+        relay_view.setUrl(QUrl("about:blank"))
         start.setEnabled(True)
         stop.setEnabled(False)
         pending[0]=False
+
+    def finish_relay(result):
+        state=relay_state[0]
+        if state is None:
+            return
+        relay_timer.stop()
+        results.put({
+            "kind":"chat", "nonce":state["nonce"], "chat_id":state["source_chat"],
+            "request_id":state["request_id"], "outcome":result
+        })
+        relay_state[0]=None
+        relay_view.setUrl(QUrl("about:blank"))
+
+    def relay_poll():
+        state=relay_state[0]
+        if state is None or state.get("stage")!="observing":
+            relay_timer.stop()
+            return
+        if not is_chatgpt_conversation_url(relay_view.url().toString(),state["target_chat"]):
+            finish_relay({"status":"uncertain","target_chat_id":state["target_chat"],
+                          "detail":"target changed after send attempt; no retry"})
+            return
+        state["tries"] += 1
+        if state["tries"] > 40:
+            finish_relay({
+                "status":"sent-visible-no-complete-reply" if state.get("user_seen") else "uncertain",
+                "target_chat_id":state["target_chat"],
+                "detail":"reply observation timeout; no retry"
+            })
+            return
+        def observed(raw):
+            current=relay_state[0]
+            if current is not state:
+                return
+            result=_decode_js_result(raw)
+            if not isinstance(result,dict):
+                return
+            if result.get("userVisible"):
+                state["user_seen"]=True
+            if result.get("replyVisible") and result.get("replyComplete"):
+                finish_relay({
+                    "status":"reply_observed",
+                    "target_chat_id":state["target_chat"],
+                    "assistant_message_id":result.get("assistantMessageId"),
+                    "reply":str(result.get("assistantText",""))[:6000],
+                    "detail":"observed in exact existing ChatGPT conversation"
+                })
+        relay_page.runJavaScript(
+            _json_result_script(inspect_delivery_script(state["wrapped"])), observed)
+
+    def relay_loaded(ok):
+        state=relay_state[0]
+        if state is None or state.get("stage")!="loading":
+            return
+        if not ok or not is_chatgpt_conversation_url(
+                relay_view.url().toString(),state["target_chat"]):
+            finish_relay({"status":"not_sent","target_chat_id":state["target_chat"],
+                          "detail":"target conversation failed exact URL load"})
+            return
+        state["stage"]="preparing"
+        try:
+            script=prepare_send_script(state["wrapped"])
+        except ValueError:
+            finish_relay({"status":"not_sent","target_chat_id":state["target_chat"],
+                          "detail":"relay message invalid"})
+            return
+
+        def prepared(raw):
+            current=relay_state[0]
+            if current is not state:
+                return
+            result=_decode_js_result(raw)
+            if not isinstance(result,dict) or not result.get("ok"):
+                finish_relay({"status":"not_sent","target_chat_id":state["target_chat"],
+                              "detail":"composer preparation failed"})
+                return
+            if not is_chatgpt_conversation_url(
+                    relay_view.url().toString(),state["target_chat"]):
+                finish_relay({"status":"not_sent","target_chat_id":state["target_chat"],
+                              "detail":"target changed before send"})
+                return
+            state["stage"]="clicking"
+            state["click_checks"]=0
+
+            def click_once():
+                current=relay_state[0]
+                if current is not state:
+                    return
+                if not is_chatgpt_conversation_url(
+                        relay_view.url().toString(),state["target_chat"]):
+                    finish_relay({"status":"not_sent","target_chat_id":state["target_chat"],
+                                  "detail":"target changed before send"})
+                    return
+                state["click_checks"] += 1
+                relay_page.runJavaScript(
+                    _json_result_script(send_click_script(state["wrapped"])), clicked)
+
+            def clear_then_finish(detail):
+                def cleared(_raw):
+                    if relay_state[0] is state:
+                        finish_relay({"status":"not_sent",
+                                      "target_chat_id":state["target_chat"],
+                                      "detail":detail})
+                relay_page.runJavaScript(
+                    _json_result_script(clear_prepared_script(state["wrapped"])), cleared)
+
+            def clicked(raw):
+                current=relay_state[0]
+                if current is not state:
+                    return
+                result=_decode_js_result(raw)
+                if isinstance(result,dict) and result.get("ok"):
+                    state["stage"]="observing"
+                    state["tries"]=0
+                    state["user_seen"]=False
+                    relay_timer.start()
+                    report("Melding forsøkt sendt til "+state["target_chat"]+
+                           "; observerer mottakersvar ...")
+                    return
+                reason=result.get("reason","unknown") if isinstance(result,dict) else "invalid-result"
+                if reason=="send-not-ready" and state["click_checks"]<9:
+                    QTimer.singleShot(450,click_once)
+                    return
+                if reason=="send-not-ready":
+                    clear_then_finish("send control never became ready; no click")
+                else:
+                    finish_relay({"status":"uncertain",
+                                  "target_chat_id":state["target_chat"],
+                                  "detail":"send script outcome uncertain; no retry"})
+            QTimer.singleShot(500,click_once)
+        relay_page.runJavaScript(_json_result_script(script),prepared)
+
+    def start_chat_relay(request, request_nonce, source_chat):
+        if relay_state[0] is not None:
+            results.put({"kind":"chat","nonce":request_nonce,"chat_id":source_chat,
+                         "request_id":request["request_id"],
+                         "outcome":{"status":"not_sent",
+                                    "target_chat_id":request["chat_id"],
+                                    "detail":"another relay is active"}})
+            return
+        target=request["chat_id"]
+        if target==source_chat:
+            results.put({"kind":"chat","nonce":request_nonce,"chat_id":source_chat,
+                         "request_id":request["request_id"],
+                         "outcome":{"status":"not_sent","target_chat_id":target,
+                                    "detail":"target equals source conversation"}})
+            return
+        wrapped=("[Baton relay "+request["request_id"]+" · from "+source_chat+"]\n"+
+                 request["message"])
+        if len(wrapped)>4000:
+            results.put({"kind":"chat","nonce":request_nonce,"chat_id":source_chat,
+                         "request_id":request["request_id"],
+                         "outcome":{"status":"not_sent","target_chat_id":target,
+                                    "detail":"relay message too long"}})
+            return
+        relay_state[0]={"nonce":request_nonce,"source_chat":source_chat,
+                        "request_id":request["request_id"],"target_chat":target,
+                        "wrapped":wrapped,"stage":"loading"}
+        report("Åpner eksisterende mottakersamtale "+target+" i separat Baton-visning ...")
+        relay_view.setUrl(QUrl(conversation_url(target)))
+
+    relay_timer.timeout.connect(relay_poll)
+    relay_view.loadFinished.connect(relay_loaded)
 
     def transmit(text, on_complete):
         try:
@@ -283,7 +470,9 @@ def attach_model_bridge(layout, view, page, parent, *, auto_enable=False):
                     # ignoring it; do not execute untrusted or malformed prose.
                     if (isinstance(turn,dict) and
                         isinstance(turn.get("text"),str) and
-                        turn["text"].lstrip().startswith(("BATON_TOOL_V1 "+nonce, "BATON_TOOL_V2 "+nonce))):
+                        turn["text"].lstrip().startswith((
+                            "BATON_TOOL_V1 "+nonce, "BATON_TOOL_V2 "+nonce,
+                            "BATON_CHAT_V1 "+nonce))):
                         report("Baton så en verktøyramme, men avviste formatet.")
                     continue
                 turn_id,call = parsed
@@ -295,32 +484,45 @@ def attach_model_bridge(layout, view, page, parent, *, auto_enable=False):
                     continue
                 processed.add(request_id)
                 pending[0]=True
-                report("Verktøykall "+request_id[:8]+" mottatt. Kjører på Greg ...")
-                def perform(request, request_nonce, cid):
-                    try:
-                        outcome=execute_on_greg(request["argv"],request["cwd"],request["timeout"])
-                    except (ValueError, OSError, PermissionError, RuntimeError) as exc:
-                        outcome={"exit_code":None,"output":"Baton execution error: "+type(exc).__name__}
-                    results.put((request_nonce,cid,request["request_id"],outcome))
-                threading.Thread(target=perform,args=(call,nonce,data["chat_id"]),daemon=True).start()
+                if call["tool"]=="chat_send":
+                    report("Meldingskall "+request_id[:8]+" mottatt. Åpner mottaker ...")
+                    start_chat_relay(call,nonce,data["chat_id"])
+                else:
+                    report("Verktøykall "+request_id[:8]+" mottatt. Kjører på Greg ...")
+                    def perform(request, request_nonce, cid):
+                        try:
+                            outcome=execute_on_greg(request["argv"],request["cwd"],request["timeout"])
+                        except (ValueError, OSError, PermissionError, RuntimeError) as exc:
+                            outcome={"exit_code":None,"output":"Baton execution error: "+type(exc).__name__}
+                        results.put({"kind":"greg","nonce":request_nonce,"chat_id":cid,
+                                     "request_id":request["request_id"],"outcome":outcome})
+                    threading.Thread(target=perform,args=(call,nonce,data["chat_id"]),daemon=True).start()
                 break
         page.runJavaScript(_json_result_script(observe_assistant_script()),inspected)
 
     def flush():
         if results.empty():
             return
-        result_nonce, chat_id, request_id, outcome=results.get_nowait()
+        item=results.get_nowait()
+        result_nonce=item["nonce"]
+        chat_id=item["chat_id"]
+        request_id=item["request_id"]
+        outcome=item["outcome"]
         data=active()
         if data is None or data["nonce"]!=result_nonce or data["chat_id"]!=chat_id:
             pending[0]=False
-            report("Kommandoen er kjørt, men samtalen ble endret: resultatet ble ikke sendt.")
+            report("Handlingen er fullført, men kildesamtalen ble endret: resultatet ble ikke sendt.")
             return
-        report("Kommando fullført; returnerer resultat til ChatGPT ...")
-        result_text=tool_result_message(result_nonce,request_id,outcome)
+        if item["kind"]=="chat":
+            report("Meldingsresultat klart; returnerer det til kildesamtalen ...")
+            result_text=chat_result_message(result_nonce,request_id,outcome)
+        else:
+            report("Kommando fullført; returnerer resultat til ChatGPT ...")
+            result_text=tool_result_message(result_nonce,request_id,outcome)
         def result_sent(sent):
             pending[0]=False
             if sent:
-                report("Resultat forsøkt sendt til ChatGPT. Venter på neste verktøykall.")
+                report("Resultat forsøkt sendt til ChatGPT. Venter på neste Baton-kall.")
             else:
                 report("Resultat kunne ikke sendes. Ingen automatisk gjensending.")
         transmit(result_text,result_sent)
@@ -366,5 +568,6 @@ def attach_model_bridge(layout, view, page, parent, *, auto_enable=False):
     output_poller.timeout.connect(flush)
     view.urlChanged.connect(on_chat_navigation)
     page.loadFinished.connect(lambda ok: QTimer.singleShot(800, auto_arm) if ok and auto_enable else None)
-    group.baton_bridge={"start":start,"stop":stop,"state":state,"observer":observer}
+    group.baton_bridge={"start":start,"stop":stop,"state":state,"observer":observer,
+                        "relay_view":relay_view,"relay_timer":relay_timer}
     return group
