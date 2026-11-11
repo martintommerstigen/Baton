@@ -147,7 +147,7 @@ def read_bounded_frame(conn, limit=MAX_REQUEST):
             return None
         data.extend(part)
         if part == b"\n":
-            return bytes(data)
+            return bytes(data) if len(data) <= limit else None
     return None
 
 
