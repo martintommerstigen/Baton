@@ -49,5 +49,24 @@ os.execv(sys.executable,[sys.executable,'-c',
         self.assertIn("PASS", r.stdout)
 
 
+    def test_unlisted_unix_endpoint_remains_reachable_negative(self):
+        """Known limitation: syscall filter does not allowlist AF_UNIX paths."""
+        r = isolated("""
+import socket,tempfile
+with tempfile.TemporaryDirectory() as directory:
+    path=directory+'/undeclared.sock'
+    with socket.socket(socket.AF_UNIX,socket.SOCK_STREAM) as listener:
+        listener.bind(path); listener.listen(1)
+        with socket.socket(socket.AF_UNIX,socket.SOCK_STREAM) as client:
+            client.connect(path)
+            peer,_=listener.accept()
+            with peer:
+                client.sendall(b'x')
+                assert peer.recv(1)==b'x'
+print('NEGATIVE: undeclared Unix path reachable')
+""")
+        self.assertEqual(r.returncode, 0, r.stderr)
+        self.assertIn("undeclared Unix path reachable", r.stdout)
+
 if __name__ == "__main__":
     unittest.main()
