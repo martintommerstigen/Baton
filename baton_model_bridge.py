@@ -319,6 +319,10 @@ def attach_model_bridge(layout, view, page, parent):
                 disable()
             if chat_id and not auto_suspended[0]:
                 report("Baton starter verktøyøkt automatisk for åpen samtale ...")
+                # ChatGPT changes /c/<id> through SPA navigation; Qt does not
+                # necessarily emit loadFinished. Schedule arming on urlChanged
+                # as well, with should_auto_arm preventing duplicate bootstrap.
+                QTimer.singleShot(1000, auto_arm)
 
     def manual_begin():
         auto_suspended[0] = False
