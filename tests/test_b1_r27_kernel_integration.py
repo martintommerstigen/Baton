@@ -30,7 +30,11 @@ args=dict(source='aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa',
           snapshot_socket=SNAP,broker_socket=WITNESS,
           collector_uid=29101,broker_uid=29103,
           pause_checker=lambda:False,
-          preflight=lambda:{'status':'scoped_preflight_pass_not_attestation'},
+          preflight=lambda:{'status':'scoped_preflight_pass_not_attestation',
+                            'checks':['distinct_uid','no_inherited_sockets',
+                                      'profile_open_denied',
+                                      'declared_loopback_cdp_unreachable',
+                                      'snapshot_peer_uid','tcp_socket_families_denied']},
           install_guard=install_observer_lifetime_guard,
           check_endpoint=_check_path,sealer=seal_observer_sessions)
 if MODE=='uncertain':
