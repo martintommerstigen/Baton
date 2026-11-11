@@ -6,7 +6,9 @@ from pathlib import Path
 import socket
 import tempfile
 import threading
+import time
 import unittest
+from unittest import mock
 
 from wake_admission_broker import AdmissionStore, Broker, query, pause_present_or_untrusted
 
@@ -226,6 +228,66 @@ class AdmissionTests(unittest.TestCase):
             self.assertEqual(db.execute("SELECT state FROM admissions").fetchone()[0], "uncertain")
         finally:
             db.close()
+
+
+    def test_authorized_partial_request_has_absolute_deadline(self):
+        """A permitted peer trickling bytes cannot hold a worker indefinitely."""
+        with mock.patch("wake_admission_broker.FRAME_TIMEOUT", 0.18):
+            with socket.socket(socket.AF_UNIX, socket.SOCK_STREAM) as conn:
+                conn.settimeout(0.8)
+                conn.connect(str(self.sock))
+                conn.sendall(b"{")
+                time.sleep(0.25)
+                self.assertEqual(conn.recv(128), b"")
+        self.assertEqual(self.ask({"op": "status"}), {"state": "ready", "outstanding": 0})
+
+    def test_concurrent_partial_frames_cannot_exhaust_unbounded_threads(self):
+        """Excess connection is refused; it never mutates the admission ledger."""
+        self.stop()
+        self.broker = Broker(self.sock, self.store, [os.getuid()], max_handlers=2)
+        self.thread = threading.Thread(target=self.broker.serve_forever,
+                                       kwargs={"poll_interval": .01}, daemon=True)
+        self.thread.start()
+        held = []
+        try:
+            for _ in range(2):
+                conn = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
+                conn.connect(str(self.sock))
+                conn.sendall(b"{")
+                held.append(conn)
+            time.sleep(0.08)
+            with self.assertRaises((RuntimeError, OSError)):
+                self.ask({"op": "status"})
+        finally:
+            for conn in held:
+                conn.close()
+        time.sleep(0.08)
+        self.assertEqual(self.ask({"op": "status"})["outstanding"], 0)
+
+    def test_slow_trickle_reply_has_absolute_deadline(self):
+        """A peer answering a byte at a time cannot extend query forever."""
+        reply_path = self.root / "slow-reply.sock"
+        with socket.socket(socket.AF_UNIX, socket.SOCK_STREAM) as listener:
+            listener.bind(str(reply_path))
+            listener.listen(1)
+            def reply_slowly():
+                with listener.accept()[0] as conn:
+                    while conn.recv(4096):
+                        pass
+                    for _ in range(10):
+                        try:
+                            conn.sendall(b"{")
+                        except OSError:
+                            break
+                        time.sleep(0.055)
+            worker = threading.Thread(target=reply_slowly, daemon=True)
+            worker.start()
+            start = time.monotonic()
+            with mock.patch("wake_admission_broker.FRAME_TIMEOUT", 0.18):
+                with self.assertRaises((TimeoutError, OSError)):
+                    query(reply_path, {"op": "status"})
+            self.assertLess(time.monotonic() - start, 0.75)
+            worker.join(timeout=1)
 
 
 if __name__ == "__main__":
