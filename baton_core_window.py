@@ -49,6 +49,11 @@ def main():
 
     app.aboutToQuit.connect(shutdown)
     panel = QWidget()
+    # Expire retained message bodies even when the user leaves Baton open.
+    retention_timer = QTimer(panel)
+    retention_timer.setInterval(10 * 60 * 1000)
+    retention_timer.timeout.connect(lambda: prune(outbox))
+    retention_timer.start()
     panel.setWindowTitle("Baton · modeller, enhet og kanaler")
     panel.setMinimumSize(700, 540)
     root = QVBoxLayout(panel)
