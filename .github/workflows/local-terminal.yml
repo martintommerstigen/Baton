@@ -87,6 +87,20 @@ on:
       - .github/workflows/local-terminal.yml
   pull_request:
     paths:
+      - baton_model_protocol.py
+      - baton_model_bridge.py
+      - test_baton_model_bridge.py
+      - baton_existing_chat_tab.py
+      - test_baton_existing_chat_tab.py
+      - baton_browser_native_host.py
+      - test_baton_browser_native_host.py
+      - test_baton_browser_core_e2e.py
+      - install_baton_browser_bridge.py
+      - test_install_baton_browser_bridge.py
+      - baton_extension/manifest.json
+      - baton_extension/background.js
+      - baton_extension/content.js
+      - baton_extension/bridge.test.cjs
       - baton_conversation_panel.py
       - test_baton_conversation_panel.py
       - baton_chat_observe.py
