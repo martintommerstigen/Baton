@@ -73,5 +73,43 @@ class RealUIDBinding(unittest.TestCase):
                             self.assertTrue(os.WIFEXITED(status) and os.WEXITSTATUS(status)==0)
 
 
+    def test_delegated_fd_keeps_connect_time_credentials(self):
+        # Negative boundary: SO_PEERCRED is NOT per-message writer identity.
+        with tempfile.TemporaryDirectory() as root:
+            os.chmod(root,0o711)
+            path=str(Path(root)/"delegated.sock")
+            with socket.socket(socket.AF_UNIX,socket.SOCK_STREAM) as listener:
+                listener.bind(path)
+                os.chmod(path,0o777)
+                listener.listen(1)
+                listener.settimeout(3)
+                with socket.socket(socket.AF_UNIX,socket.SOCK_STREAM) as client:
+                    os.seteuid(21003)
+                    try:
+                        client.connect(path)
+                    finally:
+                        os.seteuid(0)
+                    pid=os.fork()
+                    if pid == 0:
+                        try:
+                            os.setgroups([])
+                            os.setgid(21004)
+                            os.setuid(21004)
+                            client.sendall(b"delegated-writer")
+                            os._exit(0)
+                        except BaseException:
+                            os._exit(1)
+                    try:
+                        with listener.accept()[0] as conn:
+                            conn.settimeout(3)
+                            self.assertEqual(conn.recv(16),b"delegated-writer")
+                            # Credential is still the original CONNECTOR UID,
+                            # even though a distinct UID wrote the bytes.
+                            self.assertEqual(kernel_uid(conn),21003)
+                    finally:
+                        _,status=os.waitpid(pid,0)
+                        self.assertTrue(os.WIFEXITED(status) and os.WEXITSTATUS(status)==0)
+
+
 if __name__=="__main__":
     unittest.main()
