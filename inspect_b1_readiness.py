@@ -1,6 +1,7 @@
 """B1/B5 read-only readiness inspection for three *existing* ChatGPT tabs.
 
-The live CLI requires A's exact target, message ID and SHA-256 body commitment.\nThis program NEVER sends a message, creates a chat, starts a browser, or
+The live CLI requires A's exact target, message ID and SHA-256 body commitment.
+This program NEVER sends a message, creates a chat, starts a browser, or
 authorizes a wake. A successful preflight is NOT delivery, receipt, or I.
 Only connect to an already-running loopback CDP endpoint and a separately
 authenticated B5 broker using a single read-only "status" request.
