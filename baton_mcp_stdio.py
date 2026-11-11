@@ -26,6 +26,8 @@ def handle(message):
         return {"jsonrpc":"2.0","id":ident,"result":{"tools":[TOOL]}}
     if method=="tools/call":
         params=message.get("params",{})
+        if not isinstance(params, dict):
+            return {"jsonrpc":"2.0","id":ident,"error":{"code":-32602,"message":"invalid params"}}
         if params.get("name")!="greg_exec":
             return {"jsonrpc":"2.0","id":ident,"error":{"code":-32602,"message":"unknown tool"}}
         args=params.get("arguments",{})
