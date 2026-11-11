@@ -263,7 +263,7 @@ class BrokerTests(unittest.TestCase):
             parent.mkdir(mode=0o710)
             return conn, address
         try:
-            with patch.object(socket.socket, "accept", new=accept_and_move), \\
+            with patch.object(socket.socket, "accept", new=accept_and_move), \
                     patch.object(other, "_peer_uid", return_value=self.allowed):
                 worker = threading.Thread(target=other.accept_once, daemon=True)
                 worker.start()
@@ -298,7 +298,7 @@ class BrokerTests(unittest.TestCase):
             parent.mkdir(mode=0o710)
             return result
         try:
-            with patch("remote_security.source_broker.parse_request", side_effect=parse_and_move), \\
+            with patch("remote_security.source_broker.parse_request", side_effect=parse_and_move), \
                     patch.object(other, "_peer_uid", return_value=self.allowed):
                 worker = threading.Thread(target=other.accept_once, daemon=True)
                 worker.start()
