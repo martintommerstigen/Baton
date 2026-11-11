@@ -16,9 +16,21 @@ class BoundaryTests(unittest.TestCase):
             self.skipTest('non-root process required')
         with mock.patch.object(b, '_netns', return_value=(1, 7)), \
              mock.patch.object(b.os, 'stat', return_value=type('S', (), {'st_uid': 21001})()):
-            with self.assertRaisesRegex(b.BoundaryDenied, 'shares collector'):
+            with self.assertRaisesRegex(b.BoundaryDenied, 'network isolation not established'):
                 b.audit_observer_boundary(collector_pid=123, collector_uid=21001,
                     profile='/profile', snapshot_socket='/socket')
+
+    def test_uninspectable_collector_netns_with_af_unix_only_policy(self):
+        def blocked(family, kind):
+            raise OSError(errno.EAFNOSUPPORT, 'blocked by OS policy')
+        with mock.patch.object(b, '_netns', side_effect=b.BoundaryDenied('proc denied')), \
+             mock.patch.object(b.socket, 'socket', side_effect=blocked):
+            self.assertEqual(b._network_guard(123), 'tcp_socket_families_denied')
+
+    def test_connection_refused_does_not_prove_network_isolation(self):
+        with mock.patch.object(b, '_netns', side_effect=b.BoundaryDenied('proc denied')):
+            with self.assertRaisesRegex(b.BoundaryDenied, 'network isolation not established'):
+                b._network_guard(123)
 
     def test_missing_profile_is_not_proof_of_denial(self):
         with tempfile.TemporaryDirectory() as d:
