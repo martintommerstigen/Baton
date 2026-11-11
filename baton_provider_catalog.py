@@ -22,9 +22,11 @@ PROVIDERS = (
     Provider("mcp", "Annen MCP-kompatibel LLM-klient", "local-mcp", "client-specific",
              "adapter-available", "Client must register Baton STDIO MCP explicitly."),
     Provider("ollama", "Lokal modell (Ollama / OpenAI-kompatibel)", "openai-compatible",
-             "local-endpoint", "planned", "No account required for loopback models."),
-    Provider("api", "LLM-API (OpenAI / Anthropic / Gemini m.fl.)", "provider-api",
-             "scoped-api-key-or-oauth", "planned", "Each provider requires its own supported auth adapter."),
+             "local-endpoint", "adapter-implemented", "Send model prompts to a selected local /chat/completions endpoint."),
+    Provider("compatible", "OpenAI-kompatibelt modell-API", "openai-compatible",
+             "session-api-key", "adapter-implemented", "HTTPS /chat/completions, key held only in running app session."),
+    Provider("api", "Øvrige modeller (Anthropic / Gemini m.fl.)", "provider-api",
+             "scoped-api-key-or-oauth", "planned", "Requires a provider-specific authentication and request adapter."),
 )
 
 
