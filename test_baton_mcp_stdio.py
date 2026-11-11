@@ -13,9 +13,28 @@ class MCPTests(unittest.TestCase):
         r=handle({"jsonrpc":"2.0","id":2,"method":"tools/list"})
         self.assertEqual(r["result"]["tools"][0]["name"],"greg_exec")
     def test_exec(self):
-        with patch("baton_mcp_stdio.execute_command",return_value={"exit_code":0,"output":"hello","truncated":False}):
+        with patch("baton_mcp_stdio.execute_on_greg",return_value={"exit_code":0,"output":"hello","truncated":False}):
             r=handle({"jsonrpc":"2.0","id":3,"method":"tools/call","params":{"name":"greg_exec","arguments":{"argv":["echo","hello"],"cwd":"/tmp","timeout":5}}})
         self.assertIn("hello",r["result"]["content"][0]["text"])
+    def test_core_unreachable_fails_closed(self):
+        with patch("baton_mcp_stdio.execute_on_greg",
+                   side_effect=RuntimeError("Baton Core is unreachable")):
+            r=handle({"jsonrpc":"2.0","id":7,"method":"tools/call",
+                      "params":{"name":"greg_exec","arguments":{
+                          "argv":["/usr/bin/true"],"cwd":"/tmp","timeout":5}}})
+        self.assertTrue(r["result"]["isError"])
+        self.assertIn("RuntimeError",r["result"]["content"][0]["text"])
+        self.assertNotIn("Baton Core is unreachable",r["result"]["content"][0]["text"])
+
+    def test_command_nonzero_is_mcp_error(self):
+        with patch("baton_mcp_stdio.execute_on_greg",
+                   return_value={"exit_code":2,"output":"failed","timeout":False}):
+            r=handle({"jsonrpc":"2.0","id":8,"method":"tools/call",
+                      "params":{"name":"greg_exec","arguments":{
+                          "argv":["/usr/bin/false"],"cwd":"/tmp","timeout":5}}})
+        self.assertTrue(r["result"]["isError"])
+        self.assertIn("failed",r["result"]["content"][0]["text"])
+
     def test_missing_argument(self):
         r=handle({"jsonrpc":"2.0","id":4,"method":"tools/call","params":{"name":"greg_exec","arguments":{}}})
         self.assertEqual(r["error"]["code"],-32602)
