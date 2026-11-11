@@ -9,6 +9,7 @@ Linux desktop client must register this STDIO MCP server.
 import json
 import sys
 from baton_core_client import execute_on_greg
+from baton_desktop_lease import ui_lease_active
 
 TOOL = {"name":"greg_exec","description":"Execute a program on Greg as the logged-in user, with full user-level filesystem permissions. Do not include secrets in tool arguments or output.","inputSchema":{"type":"object","properties":{"argv":{"type":"array","items":{"type":"string"},"minItems":1,"maxItems":32},"cwd":{"type":"string"},"timeout":{"type":"integer","minimum":1,"maximum":90}},"required":["argv","cwd","timeout"],"additionalProperties":False}}
 
@@ -30,6 +31,11 @@ def handle(message):
         args=params.get("arguments",{})
         if not isinstance(args,dict) or set(args)!={"argv","cwd","timeout"}:
             return {"jsonrpc":"2.0","id":ident,"error":{"code":-32602,"message":"invalid arguments"}}
+        if not ui_lease_active():
+            return {"jsonrpc":"2.0","id":ident,
+                    "result":{"content":[{"type":"text",
+                                         "text":"Baton UI is closed or has no valid live lease"}],
+                              "isError":True}}
         try:
             result=execute_on_greg(args["argv"],args["cwd"],args["timeout"])
             failed = result.get("exit_code") != 0 or bool(result.get("timeout", False))
