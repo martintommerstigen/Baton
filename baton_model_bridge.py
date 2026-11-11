@@ -57,6 +57,7 @@ def attach_model_bridge(layout, view, page, parent):
     session=[None]
     pending=[False]
     processed=set()
+    observed_turns=set()
     results=queue.Queue()
     observer=QTimer(group)
     observer.setInterval(2000)
@@ -122,6 +123,7 @@ def attach_model_bridge(layout, view, page, parent):
         nonce=uuid4().hex
         session[0]={"chat_id":chat_id,"nonce":nonce}
         processed.clear()
+        observed_turns.clear()
         pending[0]=True
         start.setEnabled(False)
         stop.setEnabled(True)
@@ -149,9 +151,15 @@ def attach_model_bridge(layout, view, page, parent):
             for turn in turns:
                 if not isinstance(turn,dict):
                     continue
+                turn_id=turn.get("id")
+                if not isinstance(turn_id,str) or not turn_id:
+                    continue
+                if turn_id in observed_turns:
+                    continue
                 call=parse_assistant_tool_call(turn.get("text"),nonce)
                 if call is None:
                     continue
+                observed_turns.add(turn_id)
                 request_id=call["request_id"]
                 if request_id in processed:
                     continue
