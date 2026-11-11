@@ -6,7 +6,7 @@ The operator still supplies an allowlisted source tab and authorizes the action.
 from chatgpt_ui_driver import marker_for
 import re
 
-_DIGEST = re.compile(r'^[0-9a-f]{64}
+_DIGEST = re.compile(r'^[0-9a-f]{64}$')
 
 def source_requested_wake(reply_text, target_chat, message_id, expected_digest=None):
     """Accept exactly one standalone command in a verified assistant turn."""
