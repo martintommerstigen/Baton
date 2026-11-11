@@ -37,7 +37,7 @@ class ChainTests(unittest.TestCase):
         for reply in (
             'BATON_NEXT C',
             'BATON_NEXT C sha256:' + '0' * 64,
-            self.next_command + '\\n',
+            self.next_command + '\n',
             ' ' + self.next_command,
             self.next_command + ' ',
             'Example: ' + self.next_command,
