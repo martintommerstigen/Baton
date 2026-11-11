@@ -73,3 +73,5 @@ jobs:
           PYTHONPATH: ".b5-r21:."
           B1_REQUIRE_R21: "1"
         run: python3 -m unittest -v test_b1_r21_scoped_dispatch.py
+      - name: B1-B5 R21 real Linux four-UID admission integration (no UI)
+        run: sudo env PYTHONPATH="$PWD/.b5-r21:$PWD" B1_REQUIRE_R21=1 "$(command -v python3)" -m unittest discover -s tests -p 'test_b1_r21_cross_uid.py' -v
