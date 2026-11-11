@@ -44,8 +44,10 @@ def attach_existing_conversation_tab(tabs):
     hint = QLabel(
         "Bruk dine eksisterende ChatGPT-samtaler, med historikk og kontekst. "
         "Baton kobler seg lokalt til Greg Core, uten GitHub og uten ny "
-        "Responses API-samtale. Aktiver verktøy manuelt i ønsket samtale. "
-        "Dette er en lokal tekstprotokoll – ikke et innebygd ChatGPT-verktøy."
+        "Responses API-samtale. Når du åpner en eksisterende samtale mens "
+        "Baton kjører, aktiveres den lokale Core-broen automatisk for akkurat "
+        "den samtalen. Dette er en lokal tekstprotokoll – ikke et innebygd "
+        "ChatGPT-verktøy."
     )
     hint.setWordWrap(True)
     layout.addWidget(hint)
@@ -102,8 +104,9 @@ def attach_existing_conversation_tab(tabs):
         view.setUrl(QUrl("https://chatgpt.com/"))
         status.setText(
             "Velg en eksisterende ChatGPT-samtale i sidepanelet. "
-            "Baton-verktøy aktiveres først når du trykker på knappen. "
-            "Ikke naviger bort mens en kommando utføres."
+            "Baton aktiverer Core-broen automatisk for den åpne samtalen. "
+            "Stopp-knappen kan trekke tilbake tilgangen; ikke naviger bort "
+            "mens en kommando utføres."
         )
 
     button.clicked.connect(open_existing)
