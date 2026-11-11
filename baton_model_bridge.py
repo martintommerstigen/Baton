@@ -115,16 +115,27 @@ def attach_model_bridge(layout, view, page, parent):
                 page.runJavaScript(send_click_script(),clicked)
             # The hosted composer enables Send asynchronously after input.
             QTimer.singleShot(350,click_once)
-        # A null callback result can mean page navigation or failed JS evaluation.
-        # Preserve this diagnostic rather than collapsing it into 'ukjent'.
+        # Wait for the page to finish loading before evaluating the composer.
+        # Retry only null evaluations, never an inserted message or send click.
+        attempts=[0]
+        def evaluate():
+            if active() is None:
+                last_send_error[0] = 'conversation-changed'
+                on_complete(False)
+                return
+            attempts[0] += 1
+            page.runJavaScript(script,checked_prepared)
         def checked_prepared(result):
             if result is None:
+                if attempts[0] < 4 and page.isLoading():
+                    QTimer.singleShot(700,evaluate)
+                    return
                 last_send_error[0] = 'js-evaluation-returned-null'
-                report('Oppstart: ChatGPT-skript returnerte null (side/JS-evaluering).')
+                report('Oppstart: JS returnerte null; siden kan være uferdig eller blokkert.')
                 on_complete(False)
                 return
             prepared(result)
-        page.runJavaScript(script,checked_prepared)
+        evaluate()
 
     def begin():
         # Never bootstrap while the human-operated conversation composer is in use.
