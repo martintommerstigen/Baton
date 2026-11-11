@@ -80,7 +80,9 @@ class ModelToolTests(unittest.TestCase):
         self.assertEqual(line.count("\n"), 0)
         self.assertEqual(parse_assistant_tool_call(line, NONCE), request)
         noisy = "Copy\n" + line + "\n"
-        self.assertEqual(parse_assistant_tool_call(noisy, NONCE), request)
+        self.assertIsNone(parse_assistant_tool_call(noisy, NONCE))
+        self.assertEqual(_assistant_tool_turn({"id":"chat-noisy","text":noisy}, NONCE),
+                         ("chat-noisy", request))
         self.assertIsNone(parse_assistant_tool_call(line + "\n" + line, NONCE))
         self.assertIsNone(parse_assistant_tool_call(
             line.replace(request["chat_id"], "not-a-chat"), NONCE))
@@ -111,7 +113,7 @@ class ModelToolTests(unittest.TestCase):
         request = self.payload()
         line = render_tool_call_v2(NONCE, request)
         noisy = "Copy\n" + line + "\nGood response\n"
-        self.assertEqual(parse_assistant_tool_call(noisy, NONCE), request)
+        self.assertIsNone(parse_assistant_tool_call(noisy, NONCE))
         self.assertEqual(
             _assistant_tool_turn({"id":"turn-noisy","text":noisy}, NONCE),
             ("turn-noisy", request))
@@ -125,6 +127,7 @@ class ModelToolTests(unittest.TestCase):
         request = self.payload()
         line = render_tool_call_v2(NONCE, request)
         self.assertIsNone(parse_assistant_tool_call("Example: " + line, NONCE))
+        self.assertIsNone(parse_assistant_tool_call(line + "\ntext", NONCE))
         self.assertIsNone(parse_assistant_tool_call(line, "d" * 32))
         self.assertIsNone(parse_assistant_tool_call(line.replace(" -- ", " : "), NONCE))
         self.assertIsNone(parse_assistant_tool_call(line.replace(" 15 ", " 91 "), NONCE))
