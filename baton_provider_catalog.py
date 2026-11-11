@@ -17,8 +17,8 @@ class Provider:
 
 
 PROVIDERS = (
-    Provider("chatgpt", "ChatGPT / OpenAI", "local-mcp", "official-client",
-             "implemented", "Requires installed official ChatGPT desktop and enabled Baton MCP."),
+    Provider("chatgpt", "ChatGPT / OpenAI", "siwc-responses", "oauth-pkce",
+             "oauth-implemented", "Log in to your ChatGPT plan directly in Baton; no desktop client or API key is required for eligible accounts."),
     Provider("mcp", "Annen MCP-kompatibel LLM-klient", "local-mcp", "client-specific",
              "adapter-available", "Client must register Baton STDIO MCP explicitly."),
     Provider("ollama", "Lokal modell (Ollama / OpenAI-kompatibel)", "openai-compatible",
@@ -34,14 +34,16 @@ def provider_catalog():
     return tuple(PROVIDERS)
 
 
-def installed_capabilities(provider_key, *, core_live, mcp_configured=False):
+def installed_capabilities(provider_key, *, core_live, mcp_configured=False, siwc_connected=False):
     if provider_key not in {p.key for p in PROVIDERS}:
         raise ValueError("unknown model provider")
     return {
-        "device_exec": bool(core_live and mcp_configured and provider_key in ("chatgpt", "mcp")),
+        "device_exec": bool(core_live and mcp_configured and provider_key == "mcp"),
         "external_post": False,
         "external_contacts": False,
-        "model_chat": provider_key == "chatgpt" and mcp_configured,
+        "model_chat": (provider_key == "chatgpt" and siwc_connected)
+                      or (provider_key == "ollama")
+                      or (provider_key == "compatible"),
     }
 
 
