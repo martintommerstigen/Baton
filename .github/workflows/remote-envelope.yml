@@ -11,7 +11,7 @@ on:
       - 'tests/test_source_broker*.py'
       - 'tests/test_source_broker_client.py'
       - 'tests/test_admission_sender_scope*.py'
-      - 'tests/test_observed_source_handoff.py'
+      - 'tests/test_observed_source_handoff*.py'
       - 'tests/test_host_manifest.py'
       - 'deploy/systemd/**'
       - 'tests/test_remote_*.py'
@@ -30,7 +30,7 @@ on:
       - 'tests/test_source_broker*.py'
       - 'tests/test_source_broker_client.py'
       - 'tests/test_admission_sender_scope*.py'
-      - 'tests/test_observed_source_handoff.py'
+      - 'tests/test_observed_source_handoff*.py'
       - 'tests/test_host_manifest.py'
       - 'deploy/systemd/**'
       - 'tests/test_remote_*.py'
@@ -80,3 +80,9 @@ jobs:
       - name: Separate-UID asserted-sender binding (no ChatGPT authorship claim)
         if: github.event_name == 'push' && github.repository == 'martintommerstigen/Baton'
         run: sudo "$(command -v python)" -W error::ResourceWarning -m unittest discover -s tests -p 'test_admission_sender_scope_cross_uid.py' -v
+
+      # A separate trusted-push root step tests actual Linux connection UIDs.
+      # The B1 broker is still pinned; synthetic source text is NOT ChatGPT.
+      - name: Three-role kernel UID observed-source handoff with pinned B1 SQLite
+        if: github.event_name == 'push' && github.repository == 'martintommerstigen/Baton'
+        run: sudo env B1_H20_BROKER="$PWD/.b1_h20_pinned/wake_admission_broker.py" "$(command -v python)" -W error::ResourceWarning -m unittest discover -s tests -p 'test_observed_source_handoff_cross_uid.py' -v
