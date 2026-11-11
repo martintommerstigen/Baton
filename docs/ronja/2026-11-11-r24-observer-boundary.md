@@ -22,7 +22,7 @@
 2. Either network namespaces are independently distinguishable, or the kernel denies creation of BOTH AF_INET and AF_INET6 TCP sockets (e.g. systemd RestrictAddressFamilies=AF_UNIX). A refused connection is not isolation evidence.
 3. Opening the declared real browser-profile directory fails with EACCES/EPERM. Missing/symlinked path does not count.
 4. The declared numeric loopback CDP endpoint cannot be connected to; ambiguous timeout fails.
-5. No inherited AF_INET/AF_INET6 socket or already-connected AF_UNIX socket exists at the observer preflight instant; a pre-opened CDP FD could bypass address-family creation restrictions.
+5. No inherited AF_INET/AF_INET6 socket (including stdio fd 0–2) or already-connected AF_UNIX socket exists at the observer preflight instant; a pre-opened CDP FD could bypass address-family creation restrictions.
 6. The declared AF_UNIX snapshot socket is real, non-world-writable, owned by collector UID, and its live SO_PEERCRED matches that UID. Socket inode remains stable through the probe.
 7. Collector PID identity and network guard are checked again.
 
@@ -42,9 +42,9 @@ Exit 0 = scoped preflight only; exit 2 = blocked. Values must come from an indep
 
 ## Executed negative tests
 
-- [16 standard-library tests](../../tests/test_observer_boundary.py): live local loopback listener rejection, actual AF_UNIX SO_PEERCRED, path traversal, symlink/profile, wrong socket UID/type, timeout, mocked netns separation, AF_UNIX-only fallback and uninspectable cross-UID proc. Local isolated non-root Linux **16/16 PASS**; root **14 PASS/2 SKIP**. Two added negatives demonstrate that an inherited TCP socket or connected AF_UNIX socket is a capability despite a later address-family creation restriction.
+- [17 standard-library tests](../../tests/test_observer_boundary.py): live local loopback listener rejection, actual AF_UNIX SO_PEERCRED, path traversal, symlink/profile, wrong socket UID/type, timeout, mocked netns separation, AF_UNIX-only fallback and uninspectable cross-UID proc. Local isolated non-root Linux **17/17 PASS**; root **15 PASS/2 SKIP**. Three added negatives demonstrate that an inherited TCP socket (including as fd 0/stdin) or connected AF_UNIX socket is a capability despite a later address-family creation restriction.
 - [One actual two-UID Linux kernel negative](../../tests/test_observer_boundary_cross_uid.py): collector UID 29101 can read its 0700 profile; observer UID 29102 cannot; observer in same netns is rejected. Local isolated root **1/1 PASS**. The kernel may refuse cross-UID proc namespace inspection; this is an UNKNOWN, not evidence of separation. Hence the strict AF_INET/AF_INET6-denial alternative.
-- Combined local root: **15 PASS/2 SKIP**. Combined non-root: **16 PASS/1 SKIP**. CI evidence is separate; these are NOT Greg or live browser tests.
+- Combined local root: **16 PASS/2 SKIP**. Combined non-root: **17 PASS/1 SKIP**. CI evidence is separate; these are NOT Greg or live browser tests.
 
 **Next falsifier:** with authorized Greg access, run under the actual observer UID while collector CDP is live. Prove browser profile denial and network boundary plus authenticated snapshot. Remove one OS isolation rule deliberately and require a fail-closed result. Repeat after restart and socket replacement. A self-reported digest or absent CDP listener alone is insufficient.
 
