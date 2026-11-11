@@ -45,7 +45,7 @@ A refreshed paginated **SHA-bearing, non-atomic branch-tip** snapshot observed *
 
 ## New same-path, different-branch source trap
 
-The [Send-time selected-context fix](https://github.com/martintommerstigen/Baton/blob/fix/model-context-snapshot-at-send-2026-11-11/baton_selected_context.py) contains `snapshot_chatgpt_turn`; the [older Desktop/Core version at the same path](https://github.com/martintommerstigen/Baton/blob/feature/evening-local-terminal-2026-11-10/baton_selected_context.py) does not. Both files were read directly. A new LLM must check the **exact ref and blob**, not only whether a filename exists. This fix is source evidence, not proof of deployment or ChatGPT-history access.
+The [Send-time selected-context fix](https://github.com/martintommerstigen/Baton/blob/fix/model-context-snapshot-at-send-2026-11-11/baton_selected_context.py) contains `snapshot_chatgpt_turn`; the [older Desktop/Core version at the same path](https://github.com/martintommerstigen/Baton/blob/feature/evening-local-terminal-2026-11-10/baton_selected_context.py) does not. Both files were read directly. The Desktop launcher's own blob also changed between checks (`fefa2042…` → `9b1b1d08…`) to add optional QtWebEngine and OAuth dependencies; both versions were read, with no installation claim. A new LLM must check the **exact ref and blob**, not only whether a filename exists. This fix is source evidence, not proof of deployment or ChatGPT-history access.
 
 ## Before you make a claim or a change
 
