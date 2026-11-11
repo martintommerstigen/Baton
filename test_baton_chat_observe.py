@@ -13,6 +13,7 @@ class ObservationTests(unittest.TestCase):
         self.assertIn("assistant",script)
         self.assertIn("userVisible",script)
         self.assertIn("replyComplete",script)
+        self.assertIn("assistantText",script)
 
     def test_invalid_empty_message(self):
         with self.assertRaises(ValueError):
