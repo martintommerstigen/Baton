@@ -10,9 +10,18 @@ import os
 import socket
 import struct
 import subprocess
+import stat
+from pathlib import Path
 
 MAX_FRAME = 16384
 MAX_OUTPUT = 65536
+
+def _unique_pairs(pairs):
+    result = {}
+    for key, value in pairs:
+        if key in result: raise ValueError('duplicate JSON key')
+        result[key] = value
+    return result
 
 def execute(request, workdir, timeout=20):
     if type(request) is not dict or set(request) != {"argv"}:
@@ -41,6 +50,10 @@ def serve(path, uid, workdir):
         raise ValueError("caller must be a distinct authorized non-root UID")
     if not os.path.isdir(workdir) or not os.path.isabs(workdir):
         raise ValueError("absolute workdir required")
+    parent = Path(path).parent
+    pst = parent.stat()
+    if not parent.is_dir() or pst.st_uid != os.geteuid() or pst.st_mode & 0o027:
+        raise PermissionError('socket directory must be private and owned by executor')
     if os.path.lexists(path):
         raise FileExistsError("refusing to replace socket")
     old = os.umask(0o117)
@@ -50,11 +63,18 @@ def serve(path, uid, workdir):
     finally:
         os.umask(old)
     os.chmod(path, 0o660)
+    bound = os.lstat(path)
+    if not stat.S_ISSOCK(bound.st_mode) or bound.st_uid != os.geteuid():
+        raise PermissionError('invalid bound socket')
     s.listen(4)
     try:
         while True:
             conn, _ = s.accept()
             with conn:
+                current = os.lstat(path)
+                if (not stat.S_ISSOCK(current.st_mode) or
+                    (current.st_dev,current.st_ino) != (bound.st_dev,bound.st_ino)):
+                    raise RuntimeError('socket endpoint replaced')
                 conn.settimeout(3)
                 pid, peer_uid, gid = struct.unpack("3i", conn.getsockopt(socket.SOL_SOCKET, socket.SO_PEERCRED, 12))
                 if peer_uid != uid:
@@ -67,7 +87,7 @@ def serve(path, uid, workdir):
                 try:
                     if not raw.endswith(b"\n") or len(raw)>MAX_FRAME:
                         raise ValueError("invalid frame")
-                    req = json.loads(raw.decode("utf-8"))
+                    req = json.loads(raw.decode("utf-8"), object_pairs_hook=_unique_pairs)
                     result = execute(req, workdir)
                 except (ValueError, UnicodeError, json.JSONDecodeError) as e:
                     result = {"state":"rejected", "error":str(e)}
