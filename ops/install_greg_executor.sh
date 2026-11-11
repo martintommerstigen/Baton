@@ -41,7 +41,7 @@ After=default.target
 [Service]
 Type=simple
 WorkingDirectory=$repo
-ExecStart=$python -m remote_security.greg_executor --socket $socket --allowed-uid $caller_uid --workdir $HOME
+ExecStart=$python -m remote_security.greg_executor --socket $socket --allowed-uid $caller_uid --group $group --workdir $HOME
 Restart=no
 UMask=0117
 NoNewPrivileges=yes
