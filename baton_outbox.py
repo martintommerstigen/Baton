@@ -4,9 +4,10 @@ No platform request is sent until an explicitly configured transport adapter
 performs it. A queued draft is not delivery, read, or recipient acceptance.
 Distinct event IDs and provenance survive retries, without claiming receipt.
 """
-import json
+import os
 from pathlib import Path
 import sqlite3
+import stat
 import time
 from uuid import uuid4
 
@@ -18,8 +19,15 @@ def create_store(path):
     path = Path(path)
     if path.is_symlink():
         raise ValueError("outbox db symlink not allowed")
+    if path.parent.is_symlink():
+        raise ValueError("outbox directory symlink not allowed")
     path.parent.mkdir(parents=True, exist_ok=True, mode=0o700)
+    if path.exists():
+        mode = path.stat().st_mode
+        if not stat.S_ISREG(mode) or mode & 0o077:
+            raise ValueError("outbox db must be private regular file")
     conn = sqlite3.connect(path)
+    os.chmod(path, 0o600)
     conn.execute("""
         CREATE TABLE IF NOT EXISTS messages (
           message_id TEXT PRIMARY KEY,
