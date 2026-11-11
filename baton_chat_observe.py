@@ -21,12 +21,14 @@ def inspect_delivery_script(message):
       const replies = turns.slice(index + 1).filter(turn =>
         turn.getAttribute('data-message-author-role') === 'assistant');
       const reply = replies[replies.length - 1];
-      const replyVisible = Boolean(reply && normalized(reply.innerText));
+      const replyText = reply ? (reply.innerText || '').slice(0,6000) : '';
+      const replyVisible = Boolean(reply && normalized(replyText));
       const streaming = Boolean(document.querySelector('[data-testid="stop-button"]'));
       return {
         userVisible:true,
         replyVisible:replyVisible,
         replyComplete:replyVisible && !streaming,
-        assistantMessageId: reply ? (reply.getAttribute('data-message-id') || null) : null
+        assistantMessageId: reply ? (reply.getAttribute('data-message-id') || null) : null,
+        assistantText: replyText
       };
     })()""" % payload
