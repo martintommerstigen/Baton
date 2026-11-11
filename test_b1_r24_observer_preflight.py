@@ -75,6 +75,17 @@ class R24BoundaryContractTests(unittest.TestCase):
             with self.subTest(checks=checks), self.assertRaises(PermissionError):
                 boundary(lambda **kw: {**GOOD, "checks": checks})
 
+    def test_real_pinned_r24_rejects_same_uid_as_collector(self):
+        # This imports Ronja's actual pinned implementation in CI, not a mock.
+        import os
+        from remote_security.observer_boundary import audit_observer_boundary, BoundaryDenied
+        with self.assertRaises(BoundaryDenied):
+            enforce_scoped_boundary(
+                collector_pid=os.getpid(), collector_uid=os.geteuid(),
+                profile="/private/profile", snapshot_socket="/private/snapshot.sock",
+                cdp_host="127.0.0.1", cdp_port=9222,
+                auditor=audit_observer_boundary)
+
     def test_auditor_exception_propagates_fail_closed(self):
         def unavailable(**kw):
             raise PermissionError("collector namespace not inspectable")
