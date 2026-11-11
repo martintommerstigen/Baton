@@ -2,6 +2,8 @@
 
 This public note is a **source locator and safety reminder**, not authorization to access a machine, send messages, merge branches or claim an existing ChatGPT conversation has awakened.
 
+**2026-11-12 routing update:** The owner-affiliated GitHub branch inventory now observes **327 private GTRCM + 81 public Baton = 408 non-atomic branch tips**. Authorized readers should start from GTRCM's [question-first router](https://github.com/martintommerstigen/GTRCM/blob/docs/eik-g2-g4-repo-navigation-2026-11-11/research/navigation/2026-11-12_QUESTION_FIRST_ROUTER.md), not from a raw branch list. R54 is a new GTRCM research branch; no new Baton wake or Greg-live capability is inferred.
+
 ## Start here
 
 1. Read the [public newcomer guide](docs/START_HERE_NEW_LLM.md) and [Baton README](README.md). `main` is the older relay baseline; newer native Desktop/Core work is on [feature/evening-local-terminal-2026-11-10](https://github.com/martintommerstigen/Baton/tree/feature/evening-local-terminal-2026-11-10). A source branch is not a verified Greg installation.
