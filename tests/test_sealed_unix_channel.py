@@ -3,6 +3,7 @@ import ctypes
 import importlib.util
 import errno
 import os
+import shutil
 from pathlib import Path
 import socket
 import subprocess
@@ -67,6 +68,18 @@ class SealedCrossUid(unittest.TestCase):
         self.path=self.tmp.name+'/snapshot.sock'
         os.chown(self.tmp.name,BROKER_UID,GROUP)
         os.chmod(self.tmp.name,0o710)
+        # After setuid, CI checkout parents may be inaccessible (GitHub runner).
+        # Copy only pinned source modules to a group-traversable test sandbox.
+        self.sandbox=Path(self.tmp.name)/'code'
+        package=self.sandbox/'remote_security'
+        package.mkdir(parents=True)
+        for name in ('sealed_unix_channel.py','observer_lifetime_guard.py',
+                     'observer_boundary.py'):
+            source=ROOT/'remote_security'/name
+            if source.exists():
+                shutil.copy2(source,package/name)
+        os.chmod(self.sandbox,0o755)
+        os.chmod(package,0o755)
         self.server=subprocess.Popen([sys.executable,'-c',SERVER,self.path],
             preexec_fn=drop(BROKER_UID),stdout=subprocess.PIPE,stderr=subprocess.PIPE,text=True)
         self.addCleanup(self.stop)
@@ -91,7 +104,7 @@ class SealedCrossUid(unittest.TestCase):
         code+=f'path={self.path!r}\n'
         code+='s=socket.socket(socket.AF_UNIX,socket.SOCK_STREAM);s.connect(path)\n'
         code+=body
-        return subprocess.run([sys.executable,'-c',code],cwd=ROOT,
+        return subprocess.run([sys.executable,'-c',code],cwd=self.sandbox,
             preexec_fn=drop(OBS_UID),capture_output=True,text=True,timeout=10)
 
     def test_preconnected_channel_survives_but_new_connections_denied(self):
@@ -174,7 +187,7 @@ print('DIRECT_PATH_GUARD_PASS')
         self.assertIn('DIRECT_PATH_GUARD_PASS',r.stdout)
         # Actual symlink path is checked without attempting a new connection.
         code='from remote_security.sealed_unix_channel import _check_path,ChannelSealDenied\ntry:_check_path('+repr(alias+'/snapshot.sock')+',29101)\nexcept ChannelSealDenied:print("SYMLINK_BLOCKED")\nelse:raise AssertionError("symlink accepted")'
-        t=subprocess.run([sys.executable,'-c',code],cwd=ROOT,preexec_fn=drop(OBS_UID),capture_output=True,text=True,timeout=8)
+        t=subprocess.run([sys.executable,'-c',code],cwd=self.sandbox,preexec_fn=drop(OBS_UID),capture_output=True,text=True,timeout=8)
         self.assertEqual(t.returncode,0,t.stderr)
         self.assertIn('SYMLINK_BLOCKED',t.stdout)
 
