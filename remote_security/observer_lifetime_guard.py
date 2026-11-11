@@ -103,6 +103,17 @@ def install_observer_lifetime_guard():
             if exc.errno == errno.EPERM:
                 continue
         raise LifetimeGuardDenied('TCP socket restriction did not take effect')
+    # Verify the kernel actually enforces the descriptor-transfer restriction.
+    # recvmsg must fail immediately even on a valid connected AF_UNIX pair.
+    with socket.socketpair(socket.AF_UNIX, socket.SOCK_STREAM) as pair:
+        for attempt in (lambda: pair[0].recvmsg(1),
+                        lambda: pair[0].sendmsg([b'x'])):
+            try:
+                attempt()
+            except OSError as exc:
+                if exc.errno == errno.EPERM:
+                    continue
+            raise LifetimeGuardDenied('descriptor-transfer restriction did not take effect')
     return 'lifetime_guard_loaded_not_host_attestation'
 
 
