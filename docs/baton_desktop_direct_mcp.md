@@ -68,21 +68,28 @@ If GitHub created the launcher without an executable bit, use
    `baton_mcp_stdio.py`. It leaves all other TOML settings intact.
    If that entry already exists and differs, it refuses to overwrite it.
 
-4. Launch and leave Baton running:
+4. Launch and leave the **Baton app** running:
 
-       ./run_baton_chatgpt.sh
+       bash run_baton_direct.sh
 
-5. In the **official ChatGPT desktop app**, restart it after registration,
-   then open Settings → MCP servers. Confirm `baton_greg` is enabled.
-   In a Codex chat, type `/mcp` to inspect the server. Open this same
-   existing ChatGPT conversation through the desktop app if desired.
+   `run_baton_chatgpt.sh` is the previous embedded-website/text-protocol
+   experiment; do not run it as a second concurrent production UI.
+
+5. In the **official ChatGPT desktop/Codex client**, restart it after
+   registration and inspect MCP availability in the supported client.
+   The `~/.codex/config.toml` entry configures the **local Codex MCP host**;
+   this alone does not establish tool access in every ordinary ChatGPT
+   conversation. Client support and policy must be verified in the actual
+   session.
 
 6. Ask for an innocuous test: "Use the `greg_exec` tool to run
    `/usr/bin/hostname` on Greg, then write `BATON-MCP-WRITE-OK` to
    `~/baton-mcp-proof.txt` and read it back."
 
-The normal tool UI handles invocation and results. There is no need to type
-BATON_TOOL_V2. With the user's explicit one-time authorization, the generated
+When the verified client exposes `greg_exec`, its tool UI handles
+invocation and results. There is no need to type BATON_TOOL_V2 in that
+client. Until a live result is observed on Greg this is not verified
+end-to-end. With the user's explicit one-time authorization, the generated
 config uses `default_tools_approval_mode = "auto"`, which is powerful.
 If per-tool confirmation is preferred, change this to `"prompt"`.
 OpenAI client policy can still require its own approvals.
