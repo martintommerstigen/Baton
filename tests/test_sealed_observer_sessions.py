@@ -16,7 +16,7 @@ APPROVED = dict(op="snapshot", source_id="aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa",
                 message_id="wake-001", payload_sha256="a" * 64)
 
 SERVER = r"""
-import json,os,socket,sys
+import hashlib,json,os,socket,sys
 path=sys.argv[1]; count=int(sys.argv[2]); role=sys.argv[3]
 s=socket.socket(socket.AF_UNIX,socket.SOCK_STREAM)
 s.bind(path);os.chmod(path,0o660);s.listen(8)
@@ -34,10 +34,16 @@ for _ in range(count):
     buf+=part
   except socket.timeout:pass
   if not buf:continue
-  try:json.loads(buf)
+  try:req=json.loads(buf)
   except Exception:continue
-  state='source_snapshot_not_authorship' if role=='snapshot' else 'source_observation_recorded_not_authorship'
-  c.sendall((json.dumps({'state':state})+'\n').encode())
+  if role=='snapshot':
+   command=f"BATON_WAKE {req['target_id']} {req['message_id']} sha256:{req['payload_sha256']}"
+   result={'state':'source_snapshot_not_authorship','source_id':req['source_id'],
+           'origin_turn_id':req['origin_turn_id'],
+           'source_url':'https://chatgpt.com/c/'+req['source_id'],
+           'source_text_sha256':hashlib.sha256(command.encode()).hexdigest()}
+  else:result={'state':'source_observation_recorded_not_authorship'}
+  c.sendall((json.dumps(result)+'\n').encode())
 s.close()
 """
 
