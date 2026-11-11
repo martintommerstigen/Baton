@@ -61,7 +61,7 @@ def safe_fast_forward(checkout: str | Path, *, expected_origin: str, expected_br
     if not BRANCH_RE.fullmatch(expected_branch) or ".." in expected_branch:
         raise UpdateError("invalid branch")
 
-    origin = _git(root, "remote", "get-url", "origin").stdout.strip()
+    origin = _git(root, "config", "--get", "remote.origin.url").stdout.strip()
     branch = _git(root, "branch", "--show-current").stdout.strip()
     if origin != expected_origin:
         raise UpdateError("origin mismatch")
