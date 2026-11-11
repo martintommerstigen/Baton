@@ -29,6 +29,12 @@ fi
 if ! "$VENV/bin/python" -c 'from PySide6.QtWidgets import QApplication' >/dev/null 2>&1; then
     "$VENV/bin/python" -m pip install --disable-pip-version-check 'PySide6>=6.8,<6.12'
 fi
+# ChatGPT OAuth validates signed OpenID tokens using PyJWT + cryptography.
+# Installing the pinned-major authentication dependency is separate from the
+# user's protected account credentials and cannot authorize any account.
+if ! "$VENV/bin/python" -c 'import jwt; from cryptography.hazmat.primitives.asymmetric import rsa' >/dev/null 2>&1; then
+    "$VENV/bin/python" -m pip install --disable-pip-version-check 'PyJWT[crypto]>=2.10,<3'
+fi
 echo "Starting Baton desktop Core. Model-client MCP registration is optional."
 if [[ "${BATON_REGISTER_MCP:-0}" == "1" ]]; then
     echo "MCP registration requested; verify tool availability in the target client."
