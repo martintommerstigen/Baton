@@ -1,0 +1,36 @@
+name: Ronja R25 observer lifetime seccomp
+on:
+  push:
+    branches:
+      - research/ronja-r25-seccomp-observer-lifetime-2026-11-11
+  pull_request:
+    paths:
+      - remote_security/observer_lifetime_guard.py
+      - tests/test_observer_lifetime_guard*.py
+      - .github/workflows/ronja-r25-observer-lifetime.yml
+jobs:
+  linux-kernel-negatives:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Check libseccomp availability
+        run: ldconfig -p | grep 'libseccomp.so.2'
+      - name: Run actual non-root Linux seccomp negatives
+        run: python3 -m unittest discover -s tests -p 'test_observer_lifetime_guard*.py' -v
+      - name: Real Linux separate-UID AF_UNIX integration
+        run: sudo python3 -m unittest discover -s tests -p 'test_observer_lifetime_guard_cross_uid.py' -v
+      - name: Reject root observer
+        run: |
+          sudo python3 - <<'PY'
+          from remote_security.observer_lifetime_guard import install_observer_lifetime_guard, LifetimeGuardDenied
+          try:
+              install_observer_lifetime_guard()
+          except LifetimeGuardDenied:
+              print("PASS: root observer denied")
+          else:
+              raise AssertionError("root observer accepted")
+          PY
