@@ -36,6 +36,36 @@ def _netns(path):
     return (info.st_dev, info.st_ino)
 
 
+def _tcp_socket_families_denied():
+    """Independent fallback when /proc/<other UID>/ns/net is not inspectable.
+
+    This requires the OS to deny creation of BOTH TCP address families;
+    mere ECONNREFUSED on a selected port is never sufficient.
+    """
+    for family in (socket.AF_INET, socket.AF_INET6):
+        try:
+            probe = socket.socket(family, socket.SOCK_STREAM)
+        except OSError as exc:
+            if exc.errno in (errno.EAFNOSUPPORT, errno.EPERM, errno.EACCES):
+                continue
+            raise BoundaryDenied('TCP address-family policy ambiguous') from exc
+        else:
+            probe.close()
+            return False
+    return True
+
+
+def _network_guard(collector_pid):
+    try:
+        if _netns('/proc/self/ns/net') != _netns(f'/proc/{collector_pid}/ns/net'):
+            return 'different_netns'
+    except BoundaryDenied:
+        pass  # Cross-UID /proc inspection may be denied by the kernel.
+    if _tcp_socket_families_denied():
+        return 'tcp_socket_families_denied'
+    raise BoundaryDenied('network isolation not established')
+
+
 def _profile_denied(path):
     _canonical_path(path)
     try:
@@ -110,8 +140,7 @@ def audit_observer_boundary(*, collector_pid, collector_uid, profile,
         raise BoundaryDenied('collector process not inspectable') from exc
     if process.st_uid != collector_uid:
         raise BoundaryDenied('collector PID owner mismatch')
-    if _netns('/proc/self/ns/net') == _netns(f'/proc/{collector_pid}/ns/net'):
-        raise BoundaryDenied('observer shares collector network namespace')
+    network_guard = _network_guard(collector_pid)
     _profile_denied(profile)
     _cdp_denied(cdp_host, cdp_port)
     _snapshot_peer(snapshot_socket, collector_uid)
@@ -122,10 +151,10 @@ def audit_observer_boundary(*, collector_pid, collector_uid, profile,
         raise BoundaryDenied('collector disappeared during preflight') from exc
     if ((process.st_dev, process.st_ino, process.st_uid)
             != (final_process.st_dev, final_process.st_ino, final_process.st_uid)
-            or _netns('/proc/self/ns/net') == _netns(f'/proc/{collector_pid}/ns/net')):
+            or _network_guard(collector_pid) != network_guard):
         raise BoundaryDenied('collector identity or namespace changed')
     return {'status': 'scoped_preflight_pass_not_attestation',
-            'checks': ['distinct_uid', 'different_netns', 'profile_open_denied',
+            'checks': ['distinct_uid', network_guard, 'profile_open_denied',
                        'declared_loopback_cdp_unreachable', 'snapshot_peer_uid'],
             'limits': 'declared endpoints only; no ChatGPT authorship or live wake'}
 
