@@ -2,6 +2,8 @@
 
 All Baton UI runners on one host share this lock regardless of their ledger
 path. It is advisory; it does not protect against unrelated browser writers.
+A post-submission identity check detects persistent same-UID path replacement
+and fails closed, but cannot undo a click or prevent transient split-lock races.
 """
 from contextlib import contextmanager
 import fcntl
@@ -10,6 +12,35 @@ from pathlib import Path
 import stat
 
 DEFAULT_LOCK_PATH = Path.home() / ".cache" / "baton" / "chatgpt-ui.lock"
+
+def _assert_lock_binding(path, directory, lock):
+    """Reject a persistent same-UID lock/path swap while the flock is held.
+
+    Detection is NOT prevention of a transient split-lock race. In particular,
+    a click may already have happened: callers must retain delivery uncertainty.
+    """
+    try:
+        current_dir = os.lstat(path.parent)
+        current_lock = os.lstat(path)
+    except OSError as exc:
+        raise PermissionError(
+            "UI lock pathname disappeared during submission; delivery uncertain"
+        ) from exc
+    if (not stat.S_ISDIR(current_dir.st_mode)
+            or (current_dir.st_dev, current_dir.st_ino)
+            != (directory.st_dev, directory.st_ino)
+            or current_dir.st_uid != os.getuid()
+            or current_dir.st_mode & 0o022
+            or not stat.S_ISREG(current_lock.st_mode)
+            or (current_lock.st_dev, current_lock.st_ino)
+            != (lock.st_dev, lock.st_ino)
+            or current_lock.st_uid != os.getuid()
+            or current_lock.st_mode & 0o077
+            or current_lock.st_nlink != 1):
+        raise PermissionError(
+            "UI lock identity changed during submission; delivery uncertain"
+        )
+
 
 
 @contextmanager
@@ -40,7 +71,12 @@ def ui_controller_lock(path=None):
         if (current.st_dev, current.st_ino) != (lock.st_dev, lock.st_ino):
             raise PermissionError('UI lock inode changed before critical section')
         try:
-            yield
+            try:
+                yield
+            finally:
+                # Check before releasing the old inode's flock. A post-click
+                # mismatch cannot be reported as successful delivery.
+                _assert_lock_binding(path, directory, lock)
         finally:
             fcntl.flock(fd, fcntl.LOCK_UN)
     finally:
