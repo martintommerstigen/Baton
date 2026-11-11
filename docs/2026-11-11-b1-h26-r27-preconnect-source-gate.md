@@ -36,9 +36,9 @@
 ## Evidence / state
 
 - Local isolated stubbed B1 orchestration: **10/10 PASS** (not a test of GitHub's exact B1 imports or live Linux policy).
-- GitHub H26 workflow: initial [CI 43038549860](https://github.com/martintommerstigen/Baton/actions/runs/43038549860) failed because the test fixture omitted inherited cleanup; later [CI 43039109029](https://github.com/martintommerstigen/Baton/actions/runs/43039109029) failed at compile due to a literal escaped newline in a Python import. Both are retained as negative test/development evidence; final CI must be checked separately.
+- GitHub H26 exact-source [CI 43039230217](https://github.com/martintommerstigen/Baton/actions/runs/43039230217) **SUCCESS** on commit [30182935](https://github.com/martintommerstigen/Baton/commit/301829351ae08e5398279dc85723432860843aef): 10/10 H26 unit negatives, 2/2 real Linux cross-UID B1/R27 kernel integrations, 11/11 pinned R27 kernel negatives. The R27 11 tests also run during integration-test discovery and are not counted as independent additional cases. Earlier [CI 43038549860](https://github.com/martintommerstigen/Baton/actions/runs/43038549860) failed due to missing fixture cleanup; [CI 43039109029](https://github.com/martintommerstigen/Baton/actions/runs/43039109029) failed on a literal Python escaped newline. Both failures and fixes are preserved. No Greg/CDP/live assistant turn tested.
 - Existing R27 baseline: [Ronja CI 43034035940](https://github.com/martintommerstigen/Baton/actions/runs/43034035940), 11/11 actual Linux cross-UID kernel tests; these are not H26 results.
-- **B1/B5 H26 classification:** implemented-unverified until exact pinned CI completes; later at most tested-simulated.
+- **B1/B5 H26 classification:** tested-simulated with real Linux UID/seccomp and synthetic source/R24 positive receipt; not tested-live.
 - **A→B→C:** blocked. No Greg, CDP, actual ChatGPT assistant turn IDs, authorized Send, or 525 connection observed.
 
 **Next direct action:** run the H26 pinned workflow and fix any actual CI failure. Then obtain a read-only, authorized Greg host manifest, verify R24/R25/R27 and `PAUSE_UI_WRITES`, test forced witness disconnect against actual R22 SQLite across restart, and only then seek an authorized existing-chat A→B→C attempt. No blind retry.
