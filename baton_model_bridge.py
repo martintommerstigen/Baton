@@ -97,13 +97,13 @@ def should_auto_arm(chat_id, attempted_chat, suspended, active_session,
             not manual_draft)
 
 
-def attach_model_bridge(layout, view, page, parent):
+def attach_model_bridge(layout, view, page, parent, *, auto_enable=False):
     from PySide6.QtCore import QTimer
     from PySide6.QtWidgets import QGroupBox, QVBoxLayout, QPushButton, QLabel
     group=QGroupBox("Baton · ChatGPT ⇄ Greg Core",parent)
     content=QVBoxLayout(group)
     description=QLabel("Baton Core: full brukertilgang på Greg mens Baton er åpen. "
-                       "Valgt samtale kobles til automatisk. Stopp avbryter økten.")
+                       "Verktøyøkten krever at du trykker Aktiver i ønsket samtale. Stopp avbryter økten.")
     description.setWordWrap(True)
     start=QPushButton("Aktiver modellverktøy i åpen samtale")
     stop=QPushButton("Stopp verktøyøkt")
@@ -326,6 +326,8 @@ def attach_model_bridge(layout, view, page, parent):
         transmit(result_text,result_sent)
 
     def auto_arm():
+        if not auto_enable:
+            return
         chat_id = chat_id_from_url(view.url().toString())
         controls = getattr(parent, "baton_controls", None)
         has_draft = bool(controls and controls["message"].toPlainText().strip())
@@ -341,7 +343,7 @@ def attach_model_bridge(layout, view, page, parent):
             auto_attempted[0] = None
             if session[0] is not None and session[0]["chat_id"] != chat_id:
                 disable()
-            if chat_id and not auto_suspended[0]:
+            if chat_id and auto_enable and not auto_suspended[0]:
                 report("Baton starter verktøyøkt automatisk for åpen samtale ...")
                 # ChatGPT changes /c/<id> through SPA navigation; Qt does not
                 # necessarily emit loadFinished. Schedule arming on urlChanged
@@ -363,6 +365,6 @@ def attach_model_bridge(layout, view, page, parent):
     observer.timeout.connect(inspect)
     output_poller.timeout.connect(flush)
     view.urlChanged.connect(on_chat_navigation)
-    page.loadFinished.connect(lambda ok: QTimer.singleShot(800, auto_arm) if ok else None)
+    page.loadFinished.connect(lambda ok: QTimer.singleShot(800, auto_arm) if ok and auto_enable else None)
     group.baton_bridge={"start":start,"stop":stop,"state":state,"observer":observer}
     return group
