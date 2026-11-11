@@ -13,6 +13,7 @@ if [[ -z "${DISPLAY:-}" && -z "${WAYLAND_DISPLAY:-}" ]]; then
     exit 1
 fi
 "$PYTHON" "$ROOT/install_baton_desktop_mcp.py"
+"$PYTHON" "$ROOT/install_baton_app.py"
 if [[ ! -x "$VENV/bin/python" ]]; then
     "$PYTHON" -m venv "$VENV"
 fi
