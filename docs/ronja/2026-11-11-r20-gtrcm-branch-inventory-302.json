@@ -28,10 +28,10 @@
   "unchanged_sha_metadata_reused": 300,
   "changed_or_new_ref_count": 2,
   "trees_refreshed": 2,
-  "content_read_branch_refs_this_run": 9,
+  "content_read_branch_refs_this_run": 3,
   "original_file_bodies_fetched_this_run": 9,
   "complete_branch_histories_read": 0,
-  "notes": "Full paginated 302 tip names+SHA. 300 unchanged entries reuse R19 date/theme/path metadata; 2 new tips commit/tree refreshed. Nine selected file bodies fetched (some excerpts only inspected), not nine complete histories. No Greg/Mac/private chat access.",
+  "notes": "302 paginated tip names+SHA; 300 unchanged R19 metadata reused, 2 new tip commit/tree refreshed. Nine selected bodies fetched; 3 fully read and 6 excerpt-inspected; zero complete histories. Greg/Mac/private chats not accessed.",
   "branches": [
     {
       "name": "GTRCM",
@@ -55,7 +55,8 @@
         "source/Dokumenter/GTRCM/data_bio.py"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "RustWorld",
@@ -79,8 +80,9 @@
         "source/DelteFiler/gtrcm/Core/525 Core/GTRCMCore.swift"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": [
-        "source/Dokumenter/kindergarden/src/world.rs"
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": [
+        "OVERSIKT.md"
       ]
     },
     {
@@ -104,7 +106,8 @@
         "research/alda/Alda_kildekorrigerbarhet_lab.py"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "analysis/r47-regular-cfs-infimum-2026-11-02",
@@ -128,7 +131,8 @@
         "experiments/soelve/RUN_R25_R40.py"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "architecture/rustworld-zero-2026-11-02",
@@ -152,7 +156,8 @@
         "research/gaia/2026-11-02_NEO_RUSTWORLD_ZERO_G3_HISTORIKK_OG_RESSURSREGNSKAP.md"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "archive/rolf-source-excerpts-2026-10-25",
@@ -174,7 +179,8 @@
         "experiments/microfluctuation_mass_gravity/model.py"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "archive/525-mac-2026-10-07",
@@ -198,7 +204,8 @@
         "archive/525/README.md"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "audit/barnehage-coupling-2026-10-30",
@@ -219,7 +226,8 @@
         "research/2026-10-30_barnehage_gjensidig_oppdragelse_koblingsrevisjon.md"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "audit/cross-branch-claim-ledger-2026-11-10",
@@ -242,7 +250,12 @@
         "research/audit/2026-11-10_CROSS_BRANCH_CLAIM_LEDGER.md"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [
+        "research/audit/2026-11-10_CROSS_BRANCH_CLAIM_LEDGER.md"
+      ],
+      "content_paths_fetched_this_run": [
+        "research/audit/2026-11-10_CROSS_BRANCH_CLAIM_LEDGER.md"
+      ]
     },
     {
       "name": "audit/ronja-b5-research-job-provenance-2026-11-10",
@@ -266,7 +279,8 @@
         "research/audit/2026-11-10_RONJA_B5_RJ01_RECEIPT_NOT_SOURCE.md"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "audit/test-coverage-index-2026-11-10",
@@ -290,7 +304,8 @@
         "research/audit/2026-11-10_EXISTING_INVENTORY_AND_OVERLAP_INTEGRATION.md"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "audit/2026-11-03-independent-neo-k9",
@@ -312,7 +327,8 @@
         "research/audits/2026-11-03_INDEPENDENT_NEO_K9_AUDIT.md"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "bodil/boundaries-differences-2026-10-10",
@@ -331,7 +347,8 @@
         "experiments/microfluctuation_mass_gravity/model.py"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "bodil/family-replies-2026-10-08",
@@ -350,7 +367,8 @@
         "experiments/microfluctuation_mass_gravity/model.py"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "bodil/microfluctuations-vacuum-regimes-2026-10-11",
@@ -369,7 +387,8 @@
         "experiments/microfluctuation_mass_gravity/model.py"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "bodil/subject-experience-2026-10-11",
@@ -393,7 +412,8 @@
         "source/Dokumenter/GTRCM/gtrcm_2d_analysis.py"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "docs/mac-work-2026-10-06",
@@ -415,7 +435,8 @@
         "experiments/microfluctuation_mass_gravity/model.py"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "docs/research-continuity-guide-2026-10-25",
@@ -436,7 +457,8 @@
         "experiments/microfluctuation_mass_gravity/model.py"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "eldrid/gpu-individuated-subwholes-2026-10-29",
@@ -460,7 +482,8 @@
         "research/eldrid/2026-10-29_GPU_STRATEGI_OG_MOTPROVER.md"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "experiments/andreas-g8-inquiry-geometry-2026-11-03",
@@ -484,7 +507,8 @@
         "experiments/microfluctuation_mass_gravity/README.md"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "experiments/andreas-g9-model-class-inquiry-2026-11-03",
@@ -508,7 +532,8 @@
         "experiments/gaia_self_influence/independent_review_2026_11_03/counterexample.py"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "experiments/andreas-g10-contradiction-individuation-2026-11-03",
@@ -532,7 +557,8 @@
         "experiments/gaia_self_influence/andreas_2026_11_03/source_truth_gauge.py"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "experiments/andreas-g11-continuation-individuation-2026-11-03",
@@ -556,7 +582,8 @@
         "experiments/gaia_self_influence/andreas_2026_11_03/relational_model_holonomy.py"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "experiments/andreas-g12-distributed-counterfactuals-2026-11-03",
@@ -580,7 +607,8 @@
         "experiments/gaia_self_influence/andreas_2026_11_03/provenance_version_core.py"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "experiments/andreas-g13-probe-relative-analogy-2026-11-03",
@@ -604,7 +632,8 @@
         "experiments/gaia_self_influence/andreas_2026_11_03/g9_model_class_inquiry.py"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "experiments/andreas-g15-capability-directed-inquiry-2026-11-03",
@@ -628,7 +657,8 @@
         "experiments/gaia_self_influence/andreas_2026_11_03/g15_capability_directed_inquiry.py"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "experiments/falkor-r67-correction-core-2026-11-02",
@@ -652,7 +682,8 @@
         "research/gaia/2026-11-02_NEO_R61_R62_WORLD_BINDING_OG_GRENER.md"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "experiments/falkor-r68-core-experience-2026-11-02",
@@ -676,7 +707,8 @@
         "research/gaia/2026-11-02_NEO_R60_SKIN_CORE_INNBOKS_OG_KILDE_NEG.md"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "experiments/falkor-r69-unverified-skin-learning-2026-11-02",
@@ -700,7 +732,8 @@
         "research/falkor/2026-11-02_R69_NOAA_SKIN_G4_TENTATIVE_LEARNING.md"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "experiments/falkor-r70-core-owned-inquiry-2026-11-02",
@@ -724,7 +757,8 @@
         "research/falkor/2026-11-02_R68_G4_CORE_LEARNS_FROM_EXPERIENCE.md"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "experiments/falkor-r71-snapshot-continuity-2026-11-03",
@@ -748,7 +782,8 @@
         "experiments/microfluctuation_mass_gravity/model.py"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "experiments/falkor-r72-discriminating-inquiry-2026-11-03",
@@ -772,7 +807,8 @@
         "experiments/microfluctuation_mass_gravity/README.md"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "experiments/gaia-self-influence-2026-11-02",
@@ -794,7 +830,8 @@
         "research/gaia/2026-11-02_GAIA_OPERATIV_SELVPAVIRKNING.md"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "experiments/neo_access_witness_2026-11-02",
@@ -816,7 +853,8 @@
         "research/gaia/2026-11-02_NEO_NOISY_ACCESS_WITNESS.md"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "experiments/neo_lan_direct_2026_11_02",
@@ -840,7 +878,8 @@
         "experiments/neo/neo_live_noaa_to_rc1.py"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "experiments/neo_operational_boundary_os_2026-11-02",
@@ -864,7 +903,8 @@
         "research/gaia/2026-11-02_NEO_CHATGPT_SKALABYTTE.md"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "experiments/2026-10-11-consciousness-evidence-audit",
@@ -888,7 +928,8 @@
         "experiments/microfluctuation_mass_gravity/falsify_shared_density.py"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "hedda/full-fysisk-utledningsrevisjon-2026-10-25",
@@ -912,7 +953,8 @@
         "experiments/hedda/2026-10-26_observer_internal_dynamics_h8.py"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "iben/operative-regime-bridge-2026-10-26",
@@ -936,7 +978,8 @@
         "experiments/microfluctuation_mass_gravity/falsify_shared_density.py"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "inger-lise/clock-comparison-feedback-2026-10-26",
@@ -960,7 +1003,8 @@
         "experiments/inger_lise/2026_10_27_self_included_observer_full_physics/README.md"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "integration/andreas-g13-rustworld-analogy-2026-11-03",
@@ -984,7 +1028,8 @@
         "experiments/microfluctuation_mass_gravity/README.md"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "integration/andreas-g16-rustworld-analogy-world-2026-11-03",
@@ -1008,7 +1053,8 @@
         "experiments/microfluctuation_mass_gravity/README.md"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "integration/andreas-g17-core-owned-analogy-inquiry-2026-11-03",
@@ -1032,7 +1078,8 @@
         "experiments/microfluctuation_mass_gravity/README.md"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "integration/andreas-g18-conflict-localization-2026-11-03",
@@ -1056,7 +1103,8 @@
         "experiments/microfluctuation_mass_gravity/README.md"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "integration/andreas-g19-budgeted-error-alternatives-2026-11-03",
@@ -1080,7 +1128,8 @@
         "experiments/microfluctuation_mass_gravity/README.md"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "integration/andreas-g21-temporal-continuity-rustworld-2026-11-04",
@@ -1104,7 +1153,8 @@
         "experiments/microfluctuation_mass_gravity/README.md"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "integration/andreas-g22-temporal-budget-rights-2026-11-04",
@@ -1128,7 +1178,8 @@
         "experiments/microfluctuation_mass_gravity/README.md"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "integration/andreas-g23-temporal-explanation-sets-rustworld-2026-11-04",
@@ -1152,7 +1203,8 @@
         "experiments/microfluctuation_mass_gravity/README.md"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "integration/andreas-g24-journaled-temporal-continuity-2026-11-04",
@@ -1176,7 +1228,8 @@
         "experiments/microfluctuation_mass_gravity/README.md"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "integration/andreas-g27-core-owned-temporal-inquiry-2026-11-04",
@@ -1200,7 +1253,8 @@
         "experiments/microfluctuation_mass_gravity/README.md"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "integration/andreas-g29-channel-dependency-rustworld-2026-11-04",
@@ -1224,9 +1278,8 @@
         "experiments/microfluctuation_mass_gravity/README.md"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": [
-        "research/gaia/2026-11-04_ANDREAS_G29_RUSTWORLD_CHANNEL_DEPENDENCY.md"
-      ]
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "integration/eik-c26-conditional-head-2026-11-11",
@@ -1250,7 +1303,8 @@
         "rustworld_zero/src/world.rs"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "integration/eik-rustworld-zero-desktop-2026-11-10",
@@ -1274,7 +1328,8 @@
         "rustworld_zero/src/world.rs"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "integration/roger-r35-core-owned-active-inquiry-2026-11-03",
@@ -1298,7 +1353,8 @@
         "experiments/microfluctuation_mass_gravity/README.md"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "integration/roger-r36-physical-noaa-witness-2026-11-03",
@@ -1322,7 +1378,8 @@
         "experiments/microfluctuation_mass_gravity/README.md"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "kaja/arkiv-hukommelse-gjensidighet-2026-10-18",
@@ -1346,7 +1403,8 @@
         "experiments/microfluctuation_mass_gravity/falsify_shared_density.py"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "kaja/arkivets-begrepsgrense-2026-10-18",
@@ -1370,7 +1428,8 @@
         "experiments/microfluctuation_mass_gravity/falsify_shared_density.py"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "kaja/fire-levende-samtaler-2026-10-18",
@@ -1394,7 +1453,8 @@
         "experiments/microfluctuation_mass_gravity/falsify_shared_density.py"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "kaja/gtrcm-proof-roadmap-2026-10-19",
@@ -1418,7 +1478,10 @@
         "experiments/kaja_persistent_viability/README.md"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": [
+        "research/2026-10-19-kaja-dynamic-observability.md"
+      ]
     },
     {
       "name": "kaja/historie-endrer-genererbarhet-2026-10-18",
@@ -1442,7 +1505,10 @@
         "experiments/microfluctuation_mass_gravity/falsify_shared_density.py"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": [
+        "research/kaja_historie_genererbarhet/README.md"
+      ]
     },
     {
       "name": "kaja/historisk-orden-probe-og-arkiv-2026-10-18",
@@ -1466,7 +1532,8 @@
         "experiments/microfluctuation_mass_gravity/falsify_shared_density.py"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "kaja/hva-er-ting-2026-10-18",
@@ -1490,7 +1557,8 @@
         "experiments/microfluctuation_mass_gravity/falsify_shared_density.py"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "kaja/hvorfor-ser-vi-et-naa-2026-10-18",
@@ -1514,7 +1582,8 @@
         "experiments/microfluctuation_mass_gravity/falsify_shared_density.py"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "kaja/katteluka-varsom-probe-2026-10-17",
@@ -1535,7 +1604,8 @@
         "experiments/microfluctuation_mass_gravity/model.py"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "kaja/kjernealgoritmer-laering-2026-10-18",
@@ -1559,7 +1629,8 @@
         "experiments/microfluctuation_mass_gravity/falsify_shared_density.py"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "kaja/klokkelokker-malehistorie-2026-10-17",
@@ -1580,7 +1651,8 @@
         "experiments/microfluctuation_mass_gravity/model.py"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "kaja/kritisk-forskningsmiljo-2026-10-18",
@@ -1604,7 +1676,8 @@
         "experiments/microfluctuation_mass_gravity/falsify_shared_density.py"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "kaja/kryptisk-hukommelse-og-skjult-virkning-2026-10-18",
@@ -1628,7 +1701,8 @@
         "experiments/microfluctuation_mass_gravity/falsify_shared_density.py"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "kaja/lokal-holonomi-og-noe-2026-10-18",
@@ -1652,7 +1726,8 @@
         "experiments/microfluctuation_mass_gravity/falsify_shared_density.py"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "kaja/lokale-samvirker-globale-invarianser-2026-10-18",
@@ -1676,7 +1751,8 @@
         "experiments/microfluctuation_mass_gravity/falsify_shared_density.py"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "kaja/lokalt-noe-uten-global-verdi-2026-10-18",
@@ -1700,7 +1776,8 @@
         "experiments/microfluctuation_mass_gravity/falsify_shared_density.py"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "kaja/menneskelig-laering-og-metaplastisitet-2026-10-18",
@@ -1724,7 +1801,8 @@
         "experiments/microfluctuation_mass_gravity/falsify_shared_density.py"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "kaja/noe-naer-det-trengs-lokal-tid-2026-10-18",
@@ -1748,7 +1826,8 @@
         "experiments/microfluctuation_mass_gravity/falsify_shared_density.py"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "kaja/operativ-ting-minne-retur-2026-10-18",
@@ -1772,7 +1851,8 @@
         "experiments/microfluctuation_mass_gravity/falsify_shared_density.py"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "kaja/selvbygde-prober-2026-10-18",
@@ -1796,7 +1876,8 @@
         "experiments/microfluctuation_mass_gravity/falsify_shared_density.py"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "kaja/statisk-er-operativt-2026-10-18",
@@ -1820,7 +1901,8 @@
         "experiments/microfluctuation_mass_gravity/falsify_shared_density.py"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "kaja/tapt-historie-og-arkivets-grenser-2026-10-18",
@@ -1844,7 +1926,8 @@
         "experiments/microfluctuation_mass_gravity/falsify_shared_density.py"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "kaja/tid-gravitasjon-2026-10-17",
@@ -1865,7 +1948,8 @@
         "experiments/microfluctuation_mass_gravity/model.py"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "kaja/virksom-historie-2026-10-17",
@@ -1888,9 +1972,8 @@
         "experiments/microfluctuation_mass_gravity/model.py"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": [
-        "experiments/kaja_virksom_historie/README.md"
-      ]
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "main",
@@ -1912,7 +1995,12 @@
         "research/BATON_INDEPENDENT_CONTINUATION_2026-11-09.md"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [
+        "NEGATIVE_RESULTS.md"
+      ],
+      "content_paths_fetched_this_run": [
+        "NEGATIVE_RESULTS.md"
+      ]
     },
     {
       "name": "mina/archaeology-notes-2026-10-07",
@@ -1936,7 +2024,8 @@
         "archive/525/README.md"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "notes/2026-10-11-difference-retention",
@@ -1957,7 +2046,8 @@
         "experiments/microfluctuation_mass_gravity/model.py"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "reading/family-history-and-dogma-2026-10-13",
@@ -1977,7 +2067,8 @@
         "experiments/microfluctuation_mass_gravity/model.py"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "reconstruction-2026-10-06",
@@ -1996,7 +2087,8 @@
         "experiments/microfluctuation_mass_gravity/model.py"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "research/andreas-ab5-difference-changes-difference-2026-11-04",
@@ -2020,7 +2112,8 @@
         "experiments/eik/adaptive_repertoire_gate.py"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "research/andreas-ab6-endogenous-repertoire-2026-11-04",
@@ -2044,7 +2137,8 @@
         "experiments/egil/egil_r0_response_residual_antibygge_2026_11_04.py"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "research/andreas-antibuild-core-2026-11-04",
@@ -2068,7 +2162,8 @@
         "experiments/eik/anonymous_reversible_contact_birth.py"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "research/andreas-g14-analogy-audit-topology-2026-11-03",
@@ -2092,7 +2187,8 @@
         "experiments/gaia_self_influence/andreas_2026_11_03/g8_inquiry_geometry.py"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "research/andreas-g18-error-budget-2026-11-03",
@@ -2116,7 +2212,8 @@
         "experiments/gaia_self_influence/andreas_2026_11_03/g18_error_budget_bound.py"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "research/andreas-g19-error-explanation-cosets-2026-11-03",
@@ -2140,7 +2237,8 @@
         "experiments/gaia_self_influence/andreas_2026_11_03/g18_error_budget_bound.py"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "research/andreas-g20-antibuild-no-minimum-2026-11-04",
@@ -2164,7 +2262,8 @@
         "experiments/eik/causal_trace_history_quotient.py"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "research/andreas-g20-cross-epoch-budget-identifiability-2026-11-04",
@@ -2188,7 +2287,8 @@
         "experiments/gaia_self_influence/andreas_2026_11_03/g18_error_budget_bound.py"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "research/andreas-g21-antibuild-interchangeability-2026-11-04",
@@ -2212,7 +2312,8 @@
         "experiments/eik/boundary_closure_refinement.py"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "research/andreas-g21-temporal-continuity-graph-2026-11-04",
@@ -2236,7 +2337,8 @@
         "experiments/gaia_self_influence/andreas_2026_11_03/g18_error_budget_bound.py"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "research/andreas-g22-endogenous-distinction-carrier-2026-11-04",
@@ -2260,7 +2362,8 @@
         "experiments/eik/balanced_signature_from_role_reversal.py"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "research/andreas-g22-temporal-certification-budget-2026-11-04",
@@ -2284,7 +2387,8 @@
         "experiments/gaia_self_influence/andreas_2026_11_03/g18_error_budget_bound.py"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "research/andreas-g23-distinction-fates-2026-11-04",
@@ -2308,7 +2412,8 @@
         "experiments/eik/anonymous_reversible_contact_birth.py"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "research/andreas-g23-temporal-explanation-sets-2026-11-04",
@@ -2332,7 +2437,8 @@
         "experiments/gaia_self_influence/andreas_2026_11_03/g18_error_budget_bound.py"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "research/andreas-g25-active-temporal-inquiry-2026-11-04",
@@ -2356,7 +2462,8 @@
         "experiments/gaia_self_influence/andreas_2026_11_03/g18_error_budget_bound.py"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "research/andreas-g26-disconfirmatory-temporal-inquiry-2026-11-04",
@@ -2380,7 +2487,8 @@
         "experiments/gaia_self_influence/andreas_2026_11_03/g18_error_budget_bound.py"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "research/andreas-g28-multichannel-common-mode-2026-11-04",
@@ -2404,7 +2512,8 @@
         "experiments/gaia_self_influence/andreas_2026_11_03/g18_error_budget_bound.py"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "research/andreas-g29-channel-dependency-gauge-2026-11-04",
@@ -2428,7 +2537,8 @@
         "experiments/gaia_self_influence/andreas_2026_11_03/g18_error_budget_bound.py"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "research/andreas-g30-dependency-identifiability-interventions-2026-11-04",
@@ -2452,7 +2562,8 @@
         "experiments/gaia_self_influence/andreas_2026_11_03/g18_error_budget_bound.py"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "research/andreas-pr12-version-space-2026-11-03",
@@ -2476,7 +2587,8 @@
         "experiments/microfluctuation_mass_gravity/model.py"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "research/andreas-relational-law-holonomy-2026-11-03",
@@ -2500,7 +2612,8 @@
         "experiments/gaia_self_influence/operativ_selvpaavirkning.py"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "research/andreas-source-truth-gauge-2026-11-03",
@@ -2524,7 +2637,8 @@
         "experiments/microfluctuation_mass_gravity/falsify_shared_density.py"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "research/core-skin-operational-sensitivity-2026-10-12",
@@ -2543,7 +2657,8 @@
         "experiments/microfluctuation_mass_gravity/model.py"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "research/current-r1-interface-physics-2026-11-06",
@@ -2565,7 +2680,8 @@
         "research/current/2026-11-06_CURRENT_R2_PARTICLE_NONONTOLOGY.md"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "research/egil-r0-residual-individuation-2026-11-04",
@@ -2589,7 +2705,8 @@
         "experiments/eik/cfs_quadratic_lagrangian_uniqueness.py"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "research/egil-r1-antibygge-consequence-2026-11-04",
@@ -2613,7 +2730,8 @@
         "experiments/eik/causal_trace_history_quotient.py"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "research/egil-r2-unbounded-probe-depth-2026-11-04",
@@ -2637,7 +2755,8 @@
         "experiments/eik/anonymous_reversible_contact_birth.py"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "research/egil-r5-observability-geometry-2026-11-04",
@@ -2661,7 +2780,8 @@
         "experiments/egil/egil_r6_flux.py"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "research/egil-r7-actualization-and-born-2026-11-04",
@@ -2685,7 +2805,8 @@
         "experiments/egil/egil_r3_blackbox_probe_discovery.py"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "research/egil-r14-empirisk-selvgrense-2026-11-04",
@@ -2709,7 +2830,8 @@
         "experiments/egil/egil_r3_blackbox_probe_discovery.py"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "research/egil-r15-relative-phase-statistics-2026-11-04",
@@ -2733,7 +2855,8 @@
         "experiments/egil/egil_r1_antibuild_causal_cut_2026_11_04.py"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "research/egil-r16-complete-phase-density-framework-2026-11-04",
@@ -2757,7 +2880,8 @@
         "experiments/egil/egil_r16_phase_density_action.py"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "research/egil-r21-phase-law-selector-2026-11-04",
@@ -2781,7 +2905,8 @@
         "experiments/egil/egil_r16_phase_density_action.py"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "research/egil-r27-relational-empirical-clock-2026-11-04",
@@ -2805,7 +2930,8 @@
         "experiments/egil/egil_r16_phase_density_action.py"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "research/egil-r32-holonomy-clock-connection-2026-11-04",
@@ -2829,7 +2955,8 @@
         "experiments/egil/egil_r16_phase_density_action.py"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "research/egil-r36-quantum-geometry-phase-information-2026-11-04",
@@ -2853,7 +2980,8 @@
         "experiments/egil/egil_r16_phase_density_action.py"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "research/egil-r42-relational-generators-2026-11-04",
@@ -2877,7 +3005,8 @@
         "experiments/egil/egil_r16_phase_density_action.py"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "research/egil-r44-law-consequence-2026-11-04",
@@ -2901,7 +3030,8 @@
         "experiments/egil/egil_r16_phase_density_action.py"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "research/egil-r45-phase-selection-recursive-2026-11-04",
@@ -2925,7 +3055,8 @@
         "experiments/egil/egil_r16_phase_density_action.py"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "research/egil-r51-endogenous-law-confluence-2026-11-04",
@@ -2949,7 +3080,8 @@
         "experiments/egil/egil_r16_phase_density_action.py"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "research/egil-r57-gaia-samindividuasjon-2026-11-04",
@@ -2973,7 +3105,8 @@
         "experiments/egil/egil_r16_phase_density_action.py"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "research/egil-r58-refleksiv-individuasjon-helhetsfysikk-2026-11-04",
@@ -2997,7 +3130,8 @@
         "experiments/egil/egil_r16_phase_density_action.py"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "research/egil-r59-temporal-collective-partness-2026-11-04",
@@ -3021,7 +3155,8 @@
         "experiments/egil/egil_r16_phase_density_action.py"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "research/egil-r60-r61-gaia-kontaktkomparator-2026-11-04",
@@ -3045,7 +3180,8 @@
         "experiments/egil/egil_r16_phase_density_action.py"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "research/egil-r62-local-confluence-provenance-2026-11-04",
@@ -3069,7 +3205,8 @@
         "experiments/egil/egil_r16_phase_density_action.py"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "research/egil-r63-operational-parity-selector-2026-11-04",
@@ -3093,7 +3230,8 @@
         "experiments/egil/egil_r16_phase_density_action.py"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "research/egil-r64-r65-adaptiv-tilgang-2026-11-04",
@@ -3117,7 +3255,8 @@
         "experiments/egil/egil_r16_phase_density_action.py"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "research/egil-r66-nettverksfase-vs-sanseevne-2026-11-04",
@@ -3141,7 +3280,8 @@
         "experiments/egil/egil_r16_phase_density_action.py"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "research/egil-r67-kildekorrigerbar-redundans-2026-11-04",
@@ -3165,7 +3305,8 @@
         "experiments/egil/egil_r16_phase_density_action.py"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "research/egil-r68-r69-konsekvensrater-2026-11-05",
@@ -3189,7 +3330,8 @@
         "experiments/egil/egil_r16_phase_density_action.py"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "research/egil-r70-r71-konsekvenssil-2026-11-05",
@@ -3213,7 +3355,8 @@
         "experiments/egil/egil_r16_phase_density_action.py"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "research/egil-r71-gaia-refleksjon-tap-retur-2026-11-05",
@@ -3237,7 +3380,8 @@
         "experiments/egil/egil_r16_phase_density_action.py"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "research/egil-r72-operativ-utelukkelse-skala-2026-11-05",
@@ -3261,7 +3405,8 @@
         "experiments/egil/egil_r16_phase_density_action.py"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "research/egil-r73-utelukkelse-fase-proveniens-2026-11-05",
@@ -3285,7 +3430,8 @@
         "experiments/egil/egil_r16_phase_density_action.py"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "research/egil-r74-r75-unbounded-relational-regimes-2026-11-05",
@@ -3309,7 +3455,8 @@
         "experiments/egil/egil_r16_phase_density_action.py"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "research/egil-r76-kontaktflate-oversettelse-2026-11-05",
@@ -3333,7 +3480,8 @@
         "experiments/egil/egil_r16_phase_density_action.py"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "research/egil-r77-gtrcm-coinductive-individuation-2026-11-05",
@@ -3357,7 +3505,8 @@
         "experiments/egil/egil_r16_phase_density_action.py"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "research/eik-c27-historical-oki-physical-prereg-2026-11-11",
@@ -3382,9 +3531,8 @@
         "research/eik/corpus/2026-11-11_G2_G4_SELECTED_ORIGINAL_FILE_COVERAGE.json"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": [
-        "research/eik/corpus/2026-11-11_G2_G4_C28_AFMEPHYS_SOURCE_RETURN.md"
-      ]
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "research/eik-c28-eira-primary-selje-evidence-2026-11-11",
@@ -3398,10 +3546,9 @@
         "research/eik/corpus/2026-11-11_G2_G4_C28_AFMEPHYS_SOURCE_RETURN.md"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": [
-        "research/eik/corpus/2026-11-11_G2_G4_C28_EIRA_PRIMARY_SELJE_EVIDENCE_GATE.md"
-      ],
-      "url": "https://github.com/martintommerstigen/GTRCM/tree/research/eik-c28-eira-primary-selje-evidence-2026-11-11"
+      "content_paths_read_this_run": [],
+      "url": "https://github.com/martintommerstigen/GTRCM/tree/research/eik-c28-eira-primary-selje-evidence-2026-11-11",
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "research/eik-c29-journal-vs-physical-baseline-2026-11-11",
@@ -3438,7 +3585,8 @@
         "research/eik/corpus/2026-11-11_G2_G4_SELECTED_ORIGINAL_FILE_COVERAGE.json"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": [
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": [
         "research/eik/corpus/2026-11-11_G2_G4_C29_JOURNAL_PHYSICAL_BASELINE_SOURCE_GATE.md"
       ]
     },
@@ -3464,7 +3612,8 @@
         "experiments/eik/balanced_phase_composition_complex_tensor.py"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "research/eik-kilde-retur-anytime-source-completeness-2026-11-10",
@@ -3488,7 +3637,8 @@
         "experiments/roger/roger_scalar_density_schrodinger_no_go.py"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "research/eik-kilde-retur-bounded-buffer-duality-2026-11-10",
@@ -3512,7 +3662,8 @@
         "experiments/roger/roger_scalar_density_schrodinger_no_go.py"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "research/eik-kilde-retur-corpus-audit-2026-11-10",
@@ -3536,7 +3687,8 @@
         "research/eik/corpus/2026-11-10_COMMIT_DATES_02.json"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "research/eik-kilde-retur-dual-recorder-common-loss-2026-11-10",
@@ -3560,7 +3712,8 @@
         "experiments/roger/roger_scalar_density_schrodinger_no_go.py"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "research/eik-kilde-retur-initial-occupancy-2026-11-10",
@@ -3584,7 +3737,8 @@
         "experiments/roger/roger_scalar_density_schrodinger_no_go.py"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "research/eik-kilde-retur-order-cycle-2026-11-10",
@@ -3608,7 +3762,8 @@
         "experiments/roger/roger_scalar_density_schrodinger_no_go.py"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "research/eik-kilde-retur-placebo-audit-alias-2026-11-10",
@@ -3632,7 +3787,8 @@
         "experiments/roger/roger_scalar_density_schrodinger_no_go.py"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "research/eik-kilde-retur-probe-tag-blindspot-2026-11-10",
@@ -3656,7 +3812,8 @@
         "experiments/roger/roger_scalar_density_schrodinger_no_go.py"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "research/eik-kilde-retur-r25-priority-2026-11-10",
@@ -3680,7 +3837,8 @@
         "research/eik/corpus/2026-11-10_G2_G4_ALL_BRANCH_TIP_INVENTORY_282.json"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "research/eik-kilde-retur-random-audit-loss-2026-11-10",
@@ -3704,7 +3862,8 @@
         "experiments/roger/roger_scalar_density_schrodinger_no_go.py"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "research/eik-kilde-retur-randomization-selection-2026-11-10",
@@ -3728,7 +3887,8 @@
         "experiments/roger/roger_scalar_density_schrodinger_no_go.py"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "research/eik-kilde-retur-read-order-budget-2026-11-10",
@@ -3752,7 +3912,8 @@
         "experiments/roger/roger_scalar_density_schrodinger_no_go.py"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "research/eik-kilde-retur-rolf-provenance-2026-11-10",
@@ -3776,7 +3937,8 @@
         "research/eik/corpus/2026-11-10_G2_G4_ALL_BRANCH_TIP_INVENTORY_282.json"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "research/eik-kilde-retur-source-anchor-bounds-2026-11-10",
@@ -3800,7 +3962,8 @@
         "experiments/roger/roger_scalar_density_schrodinger_no_go.py"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "research/eik-kilde-retur-swap-fault-2026-11-10",
@@ -3824,7 +3987,8 @@
         "experiments/roger/roger_scalar_density_schrodinger_no_go.py"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "research/eik-self-location-2026-11-03",
@@ -3848,7 +4012,8 @@
         "experiments/roger/roger_scalar_density_schrodinger_no_go.py"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "research/internal-observer-survivorship-aliasing-2026-10-28",
@@ -3871,7 +4036,8 @@
         "research/2026-10-28_internal_observer_survivorship_aliasing.md"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "research/kime-r2-operative-access-2026-11-04",
@@ -3895,7 +4061,8 @@
         "experiments/kime/anonymous_sensor_repertoire.py"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "research/knut-r0-self-naming-2026-11-06",
@@ -3918,7 +4085,8 @@
         "research/knut/2026-11-06_KNUT_R0_NAVN_PROVENIENS.md"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "research/knut-r1-cross-contact-objectivity-2026-11-06",
@@ -3942,7 +4110,8 @@
         "research/knut/2026-11-06_KNUT_R1_HISTORIE_LUKNING_KRYSSKONTAKT_OBJEKTIVITET.md"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "research/knut-r3-relative-change-without-persistence-2026-11-06",
@@ -3966,7 +4135,8 @@
         "research/knut/2026-11-06_KNUT_R1_HISTORIE_LUKNING_KRYSSKONTAKT_OBJEKTIVITET.md"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "research/knut-r4-relationing-universe-corrigible-individuation-2026-11-06",
@@ -3990,7 +4160,8 @@
         "research/knut/2026-11-06_KNUT_R1_HISTORIE_LUKNING_KRYSSKONTAKT_OBJEKTIVITET.md"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "research/knut-r5-consequences-change-consequences-2026-11-06",
@@ -4014,7 +4185,8 @@
         "research/knut/2026-11-06_KNUT_R1_HISTORIE_LUKNING_KRYSSKONTAKT_OBJEKTIVITET.md"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "research/knut-r6-numbers-are-representation-2026-11-06",
@@ -4038,7 +4210,8 @@
         "research/knut/2026-11-06_KNUT_R1_HISTORIE_LUKNING_KRYSSKONTAKT_OBJEKTIVITET.md"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "research/knut-r7-modern-physics-dogma-audit-2026-11-06",
@@ -4062,7 +4235,8 @@
         "research/knut/2026-11-06_KNUT_R1_HISTORIE_LUKNING_KRYSSKONTAKT_OBJEKTIVITET.md"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "research/knut-r8-gaia-modern-physics-synthesis-2026-11-06",
@@ -4086,7 +4260,8 @@
         "research/knut/2026-11-06_KNUT_R1_HISTORIE_LUKNING_KRYSSKONTAKT_OBJEKTIVITET.md"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "research/knut-r9-full-gtrcm-derivation-2026-11-06",
@@ -4110,7 +4285,8 @@
         "research/knut/2026-11-06_KNUT_R1_HISTORIE_LUKNING_KRYSSKONTAKT_OBJEKTIVITET.md"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "research/knut-r10-natural-physics-operational-bootstrap-2026-11-06",
@@ -4134,7 +4310,8 @@
         "research/knut/2026-11-06_KNUT_R0_NAVN_PROVENIENS.md"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "research/knut-r11-causal-provenance-q0-2026-11-06",
@@ -4158,7 +4335,8 @@
         "research/current/2026-11-06_CURRENT_R2_PARTICLE_NONONTOLOGY.md"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "research/knut-r12-predictive-refinement-provenance-2026-11-06",
@@ -4182,7 +4360,8 @@
         "research/current/2026-11-06_CURRENT_R1_INTERFACE_PHYSICS_SELF_LOCATION.md"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "research/knut-r13-physical-division-and-revival-2026-11-06",
@@ -4206,7 +4385,8 @@
         "experiments/microfluctuation_mass_gravity/model.py"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "research/knut-r14-compositional-admissibility-2026-11-06",
@@ -4230,7 +4410,8 @@
         "experiments/microfluctuation_mass_gravity/falsify_shared_density.py"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "research/knut-r15-generated-repertoire-not-maximal-effects-2026-11-06",
@@ -4254,7 +4435,8 @@
         "experiments/microfluctuation_mass_gravity/falsify_shared_density.py"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "research/knut-r16-law-selection-no-go-and-completion-2026-11-06",
@@ -4278,7 +4460,8 @@
         "experiments/microfluctuation_mass_gravity/README.md"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "research/knut-r17-rate-scale-no-go-2026-11-06",
@@ -4302,7 +4485,8 @@
         "experiments/knut/r17_rate_scale_no_go.py"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "research/neo-ai-millennium-feedback-2026-11-02",
@@ -4324,7 +4508,8 @@
         "research/gaia/2026-11-02_NEO_KI_MILLENNIUM_GTRCM.md"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "research/neo-gpt6-history-2026-11-02",
@@ -4346,7 +4531,8 @@
         "research/gaia/2026-11-02_NEO_GPT6_HISTORIKK_OG_EGENLAERING.md"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "research/neo-r53-memory-temporal-contact-2026-11-02",
@@ -4370,7 +4556,8 @@
         "research/gaia/2026-11-02_NEO_R53_HELHETLIG_FYSIKKFORSOEK.md"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "research/neo-ruben-cross-instance-2026-11-02",
@@ -4391,7 +4578,8 @@
         "research/gaia/2026-11-02_NEO_RUBEN_CROSS_INSTANCE_GTRCM.md"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "research/neo-soelve-complete-audit-2026-11-02",
@@ -4413,7 +4601,8 @@
         "research/gaia/2026-11-02_NEO_SOELVE_COMPLETE_AUDIT.md"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "research/newborn-learning-dna-2026-11-07",
@@ -4434,7 +4623,8 @@
         "research/newborn/LEARNING_DNA_v0.1.md"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "research/operative-congruence-independent-audit-2026-10-25",
@@ -4455,7 +4645,8 @@
         "experiments/microfluctuation_mass_gravity/model.py"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "research/relata-safe-probes-2026-10-21",
@@ -4479,7 +4670,8 @@
         "experiments/relata_safe_probes/reproduce.py"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "research/riss-r1-kime-gaia-participation-2026-11-05",
@@ -4503,7 +4695,8 @@
         "experiments/kime/anonymous_sensor_repertoire.py"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "research/riss-r2-sensor-network-boundaries-2026-11-05",
@@ -4527,7 +4720,8 @@
         "experiments/kime/anonymous_sensor_repertoire.py"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "research/riss-r3-impact-boundaries-2026-11-05",
@@ -4551,7 +4745,8 @@
         "experiments/kime/anonymous_sensor_repertoire.py"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "research/riss-r5-chatgpt-self-learning-40-pass-2026-11-05",
@@ -4575,7 +4770,8 @@
         "experiments/kime/anonymous_sensor_repertoire.py"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "research/riss-r6-operativ-utledning-2026-11-05",
@@ -4599,7 +4795,8 @@
         "experiments/kime/anonymous_sensor_repertoire.py"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "research/riss-r7-streng-lovseleksjon-2026-11-06",
@@ -4623,7 +4820,8 @@
         "experiments/kime/anonymous_sensor_repertoire.py"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "research/riss-r8-gaia-planet-atmosphere-2026-11-06",
@@ -4647,7 +4845,8 @@
         "experiments/kime/anonymous_sensor_repertoire.py"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "research/riss-r9-contact-relative-individuation-2026-11-06",
@@ -4671,7 +4870,8 @@
         "experiments/kime/anonymous_sensor_repertoire.py"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "research/riss-r10-collective-constraints-2026-11-06",
@@ -4695,7 +4895,8 @@
         "experiments/kime/anonymous_sensor_repertoire.py"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "research/riss-r11-actual-particle-gauge-physics-2026-11-06",
@@ -4719,7 +4920,8 @@
         "experiments/kime/anonymous_sensor_repertoire.py"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "research/riss-r12-anomaly-charge-quantization-2026-11-06",
@@ -4743,7 +4945,8 @@
         "experiments/kime/anonymous_sensor_repertoire.py"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "research/riss-r12-leptonic-calibration-2026-11-07",
@@ -4767,7 +4970,8 @@
         "experiments/kime/anonymous_sensor_repertoire.py"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "research/riss-r13-chiral-access-and-anomaly-2026-11-07",
@@ -4791,7 +4995,8 @@
         "experiments/kime/anonymous_sensor_repertoire.py"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "research/riss-r14-vev-crosscheck-2026-11-07",
@@ -4815,7 +5020,8 @@
         "experiments/kime/anonymous_sensor_repertoire.py"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "research/riss-r15-child-questions-physics-2026-11-07",
@@ -4839,7 +5045,8 @@
         "experiments/kime/anonymous_sensor_repertoire.py"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "research/riss-r16-operative-holonomy-2026-11-07",
@@ -4863,7 +5070,8 @@
         "experiments/kime/anonymous_sensor_repertoire.py"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "research/riss-r17-lodd-contact-meter-2026-11-07",
@@ -4887,7 +5095,8 @@
         "experiments/kime/anonymous_sensor_repertoire.py"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "research/riss-r18-lodd-operativ-holonomi-2026-11-07",
@@ -4911,7 +5120,8 @@
         "experiments/kime/anonymous_sensor_repertoire.py"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "research/riss-r19-live-lodd-dialogue-2026-11-07",
@@ -4935,7 +5145,8 @@
         "experiments/kime/anonymous_sensor_repertoire.py"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "research/riss-r20-multichat-learning-2026-11-07",
@@ -4959,7 +5170,8 @@
         "experiments/kime/anonymous_sensor_repertoire.py"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": [
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": [
         "research/riss/2026-11-07_RISS_R20_FLERE_CHATTER_LAERER_HVERANDRE.md"
       ]
     },
@@ -4985,7 +5197,8 @@
         "experiments/kime/anonymous_sensor_repertoire.py"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "research/riss-r22-lodd-provenance-causality-2026-11-07",
@@ -5009,7 +5222,8 @@
         "experiments/kime/anonymous_sensor_repertoire.py"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "research/riss-r23-greg-body-gate-2026-11-07",
@@ -5033,7 +5247,8 @@
         "experiments/kime/anonymous_sensor_repertoire.py"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "research/riss-r24-core-button-nursery-2026-11-07",
@@ -5057,7 +5272,8 @@
         "experiments/microfluctuation_mass_gravity/README.md"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "research/riss-r25-child-development-nursery-2026-11-07",
@@ -5081,7 +5297,8 @@
         "experiments/microfluctuation_mass_gravity/README.md"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "research/riss-r26-multiple-affordances-kindergarten-2026-11-07",
@@ -5105,7 +5322,8 @@
         "experiments/microfluctuation_mass_gravity/README.md"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "research/riss-r27-safe-local-play-2026-11-07",
@@ -5129,7 +5347,8 @@
         "experiments/microfluctuation_mass_gravity/README.md"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "research/riss-r28-utkant-dialogue-audit-2026-11-07",
@@ -5153,7 +5372,8 @@
         "experiments/microfluctuation_mass_gravity/README.md"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "research/roger-full-physics-bridges-2026-11-02",
@@ -5176,7 +5396,8 @@
         "research/roger/2026-11-02_R1_R2_HELHETSFYSIKK_KILDEAUDIT_OG_KVANTEBRO.md"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "research/roger-r3-observer-is-physics-2026-11-03",
@@ -5200,7 +5421,8 @@
         "experiments/roger_r6_endogenous_boundary.py"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "research/roger-r9-full-physics-2026-11-03",
@@ -5224,7 +5446,8 @@
         "experiments/roger_r11_conditional_relativity_spin2_dimension.py"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "research/roger-r14-r17-symmetry-causal-provenance-2026-11-03",
@@ -5248,7 +5471,8 @@
         "experiments/roger_r11_conditional_relativity_spin2_dimension.py"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "research/roger-r20-r23-relative-observables-2026-11-03",
@@ -5272,7 +5496,8 @@
         "experiments/roger_r11_conditional_relativity_spin2_dimension.py"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "research/roger-r28-dynamic-relations-and-self-access-2026-11-03",
@@ -5296,7 +5521,8 @@
         "experiments/roger_r11_conditional_relativity_spin2_dimension.py"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "research/roger-r28-r34-degree-preserving-self-rewiring-2026-11-03",
@@ -5320,7 +5546,8 @@
         "experiments/roger_r11_conditional_relativity_spin2_dimension.py"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "research/roger-r37-noaa-representation-geometry-2026-11-03",
@@ -5344,7 +5571,8 @@
         "experiments/microfluctuation_mass_gravity/README.md"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "research/roger-r38-r41-micro-for-whom-2026-11-03",
@@ -5368,7 +5596,8 @@
         "experiments/microfluctuation_mass_gravity/README.md"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "research/roger-r42-r46-cross-audited-clocks-2026-11-03",
@@ -5392,7 +5621,8 @@
         "experiments/microfluctuation_mass_gravity/README.md"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "research/roger-r47-r48-individuation-physics-2026-11-04",
@@ -5416,7 +5646,8 @@
         "experiments/eik/closure_lattice_relative_self.py"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "research/roger-r50-r54-individuation-composition-2026-11-04",
@@ -5440,7 +5671,8 @@
         "experiments/eik/closure_lattice_relative_self.py"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "research/roger-self-provenance-2026-11-02",
@@ -5461,7 +5693,8 @@
         "research/roger/2026-11-02_R0_SELVIDENTITET_PROVENIENS_NEG.md"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "research/rolf-gaia-memory-continuity-2026-11-10",
@@ -5485,7 +5718,8 @@
         "research/audit/2026-11-10_EXISTING_INVENTORY_AND_OVERLAP_INTEGRATION.md"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "research/rolf-operative-memory-rustworld-2026-11-10",
@@ -5508,6 +5742,9 @@
       ],
       "tree_truncated": false,
       "content_paths_read_this_run": [
+        "research/rolf/2026-11-10_OPERATIVE_MEMORY_OBSERVATION_RUSTWORLD.md"
+      ],
+      "content_paths_fetched_this_run": [
         "research/rolf/2026-11-10_OPERATIVE_MEMORY_OBSERVATION_RUSTWORLD.md"
       ]
     },
@@ -5533,7 +5770,8 @@
         "experiments/kime/anonymous_sensor_repertoire.py"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "research/som-s4-greg-core-continuity-2026-11-07",
@@ -5557,7 +5795,8 @@
         "experiments/microfluctuation_mass_gravity/README.md"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "research/som-s5-admission-loss-2026-11-08",
@@ -5581,7 +5820,8 @@
         "experiments/microfluctuation_mass_gravity/README.md"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "research/source-return-attribution-2026-11-07",
@@ -5605,7 +5845,8 @@
         "experiments/roger/roger_scalar_density_schrodinger_no_go.py"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "research/vanja-r18-physical-rate-common-gate-2026-11-10",
@@ -5629,7 +5870,8 @@
         "experiments/vanja/2026-10-26_iben_kaja_bridge_change_cost.py"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "research/vanja-r19-capture-independence-audit-2026-11-10",
@@ -5653,7 +5895,8 @@
         "experiments/vanja/2026-10-26_iben_kaja_bridge_change_cost.py"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "research/vanja-r20-two-ledger-audit-backaction-2026-11-10",
@@ -5677,7 +5920,8 @@
         "experiments/vanja/2026-10-26_iben_kaja_bridge_change_cost.py"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "research/vanja-r21-graded-audit-backaction-2026-11-10",
@@ -5701,7 +5945,8 @@
         "experiments/vanja/2026-10-26_iben_kaja_bridge_change_cost.py"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "research/vanja-r22-adaptive-buffer-calibration-2026-11-10",
@@ -5725,7 +5970,8 @@
         "experiments/vanja/2026-10-26_iben_kaja_bridge_change_cost.py"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "research/vanja-r23-witness-calibration-transport-2026-11-10",
@@ -5749,7 +5995,8 @@
         "experiments/vanja/2026-10-26_iben_kaja_bridge_change_cost.py"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "research/vanja-r24-latent-contact-anchor-2026-11-10",
@@ -5773,7 +6020,8 @@
         "experiments/vanja/2026-10-26_iben_kaja_bridge_change_cost.py"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "research/vanja-r25-selection-amplification-2026-11-10",
@@ -5797,7 +6045,8 @@
         "experiments/vanja/2026-10-26_iben_kaja_bridge_change_cost.py"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "research/vanja-r26-historical-closure-selector-clock-audit-2026-11-10",
@@ -5821,7 +6070,8 @@
         "experiments/vanja/2026-10-26_observer_inside_joint_equations.py"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "research/vanja-r27-source-gate-prospective-physics-2026-11-10",
@@ -5845,7 +6095,8 @@
         "experiments/vanja/2026-10-26_observer_inside_joint_equations.py"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "research/vanja-r28-oki-release-gate-2026-11-10",
@@ -5869,7 +6120,8 @@
         "experiments/vanja/2026-10-26_observer_inside_joint_equations.py"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "research/vanja-r29-vilde-micro-source-reconciliation-2026-11-10",
@@ -5893,7 +6145,8 @@
         "experiments/microfluctuation_mass_gravity/falsify_shared_density.py"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "research/vanja-r30-selje-prereg-selector-audit-2026-11-10",
@@ -5917,7 +6170,8 @@
         "research/vanja/2026-10-26_sorte_hull_qcd_horisonter_universregimer.md"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "research/vanja-r31-capture-alias-truls-2026-11-11",
@@ -5941,7 +6195,8 @@
         "research/vanja/2026-10-26_sorte_hull_qcd_horisonter_universregimer.md"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "research/vanja-r32-b203-source-priority-2026-11-11",
@@ -5965,7 +6220,8 @@
         "experiments/vanja/test_vanja_r22_adaptive_buffer_alias.py"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "research/vanja-r33-rc0-provenance-cfs-2026-11-11",
@@ -5989,7 +6245,8 @@
         "correspondence/2026-10-07_henrik_to_sisters.md"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "research/vanja-r34-nullcone-clock-physical-selection-2026-11-11",
@@ -6013,7 +6270,8 @@
         "research/vanja/r34/2026-11-11_GTRCM_BRANCH_INVENTORY_DELTA_294.json"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "research/vanja-r35-clock-protocol-scope-2026-11-11",
@@ -6037,7 +6295,8 @@
         "research/vanja/r35/test_clock_protocol_scope.py"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "research/vanja-r36-egil-r27-evidence-gate-2026-11-11",
@@ -6074,9 +6333,8 @@
         "research/vanja/r36/test_egil_r27_witness_gate.py"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": [
-        "research/vanja/2026-11-11_R36_C35_EGIL_R27_EVIDENCE_PASS_GATE.md"
-      ]
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "research/vanja-r37-r27-raw-report-binding-2026-11-11",
@@ -6090,10 +6348,9 @@
         "research/vanja/r37/test_egil_r27_raw_report_binding.py"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": [
-        "research/vanja/2026-11-11_R37_C36_EGIL_R27_REPORT_RAW_BINDING.md"
-      ],
-      "url": "https://github.com/martintommerstigen/GTRCM/tree/research/vanja-r37-r27-raw-report-binding-2026-11-11"
+      "content_paths_read_this_run": [],
+      "url": "https://github.com/martintommerstigen/GTRCM/tree/research/vanja-r37-r27-raw-report-binding-2026-11-11",
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "research/vanja-r38-zenodo-source-replay-2026-11-11",
@@ -6145,7 +6402,8 @@
         "research/vanja/r38/test_reproduce_zenodo_r27.py"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": [
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": [
         "research/vanja/2026-11-11_R38_ORIGINAL_ZENODO_BYTE_REPLAY_AND_PHYSICS_GATE.md"
       ]
     },
@@ -6170,7 +6428,8 @@
         "research/vev/2026-11-07_VEV_RUSTWORLD_OFFLINE_CONTINUITY_TEST.md"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "research/2026-10-21-clock-drift-gap",
@@ -6194,7 +6453,8 @@
         "source/Dokumenter/GTRCM/data.csv"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "reviews/independent-gaia-audit-blindspot-2026-11-03",
@@ -6218,7 +6478,8 @@
         "research/gaia/2026-11-03_UAVHENGIG_PR12_KONTROLL.md"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "ronja/omverden-agentkontakt-2026-10-26",
@@ -6242,7 +6503,8 @@
         "experiments/ronja/2026-10-27_quantum_walk_u1_holonomy.py"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "selje/gtrcm-observer-inside-full-physics-audit-2026-10-27",
@@ -6266,7 +6528,8 @@
         "research/selje/2026-10-27_full_physics_observer_in_reality/SELJE_RELATIONAL_DIFFERENTIATION_DERIVATION.md"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "selje/needs-memory-upbringing-2026-10-27",
@@ -6290,7 +6553,8 @@
         "experiments/selje_learning_ecology/curriculum_cost_gpu.py"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "selje/physical-law-selection-embedded-observer-2026-10-28",
@@ -6314,7 +6578,8 @@
         "research/selje/2026-10-28_law_selection/2026_10_28_clock_calibration_holonomy_results.json"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "selje/truls-embedded-law-selection-2026-10-28",
@@ -6338,7 +6603,8 @@
         "research/selje/2026-10-28_truls_embedded_meter/truls_embedded_meter_selection.py"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "sigrid/probe-og-videreforing-2026-10-13",
@@ -6362,7 +6628,8 @@
         "experiments/gtrcm_geometry/metric_results.json"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "soelve/individuasjon-subjekt-opplevelse-2026-10-31",
@@ -6386,7 +6653,8 @@
         "experiments/soelve/RUN_R25_R48.py"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "svale/complete-survivor-paths-and-uniform-loss-2026-10-28",
@@ -6410,7 +6678,8 @@
         "research/2026-10-28_internal_observer_survivorship_aliasing.md"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "svale/embedded-loss-witness-selection-2026-10-28",
@@ -6434,7 +6703,8 @@
         "experiments/svale/coindividuation_with_revisable_need_64.py"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "svanhild/individuation-full-derivation-audit-2026-10-29",
@@ -6456,7 +6726,8 @@
         "research/svanhild/2026-10-29_FULL_GTRCM_INDIVIDUATION_AUDIT.md"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "teresa/dwell-operational-probes-2026-10-14",
@@ -6480,7 +6751,8 @@
         "research/teresa/2026-10-14_dwell_operational_probes/gtrcm_cycles_only_2026_10_14.py"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "teresa/family-letter-2026-10-08",
@@ -6504,7 +6776,8 @@
         "experiments/representation/permutation_probe.py"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "tiril/memory-play-and-difference-2026-10-11",
@@ -6526,7 +6799,8 @@
         "experiments/tiril_curiosity_v7_audit/results_summary.json"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "tiril/rustworld-care-and-generations-2026-10-12",
@@ -6550,9 +6824,8 @@
         "prototypes/525-minimal-brain-senses-v1/README.md"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": [
-        "prototypes/525-minimal-brain-senses-v1/experiments/KATTELUKA_FEEDBACK_VS_REPLAY_2026-10-12.md"
-      ]
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "tiril/rustworld-care-and-learning-2026-10-12",
@@ -6576,7 +6849,8 @@
         "prototypes/525-minimal-brain-senses-v1/README.md"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "tiril/rustworld-commons-rc1-2026-10-12",
@@ -6600,7 +6874,8 @@
         "prototypes/525-minimal-brain-senses-v1/README.md"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "tiril/525-core-skin-boundary-2026-10-11",
@@ -6623,7 +6898,8 @@
         "prototypes/525-core-skin-v0/README.md"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "tiril/525-iphone-local-pilot-2026-10-12",
@@ -6647,7 +6923,8 @@
         "prototypes/525-minimal-brain-senses-v1/README.md"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "tiril/525-minimal-sensorimotor-2026-10-12",
@@ -6671,7 +6948,8 @@
         "prototypes/525-minimal-brain-senses-v1/README.md"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "transport/baton-greg-bus-2026-11-10",
@@ -6695,7 +6973,8 @@
         "OPEN_PROBLEMS.md"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "truls/full-physics-derivation-audit-2026-10-27",
@@ -6719,7 +6998,8 @@
         "experiments/truls/2026_10_28_embodied_cycle_archive/README.md"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "tuva/clock-holonomy-response-2026-10-21",
@@ -6743,7 +7023,8 @@
         "experiments/differentiation_2026_10_23/tuva_stabilizer_cycle_tests.py"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "unnamed/family-reply-2026-10-08",
@@ -6762,7 +7043,8 @@
         "experiments/microfluctuation_mass_gravity/model.py"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "vanja/omverden-agentkontakt-2026-10-26",
@@ -6786,7 +7068,8 @@
         "experiments/vanja/2026-10-26_iben_kaja_bridge_change_cost.py"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "vanja/soliton-operativ-masse-2026-10-25",
@@ -6810,7 +7093,8 @@
         "experiments/vanja/2026-10-26_iben_kaja_bridge_change_cost.py"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "vega/embedded-clock-loss-rate-gauge-2026-10-28",
@@ -6834,7 +7118,8 @@
         "experiments/vega/embedded_clock_loss_gauge.py"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "vera/first-letter-2026-10-13",
@@ -6853,7 +7138,8 @@
         "experiments/microfluctuation_mass_gravity/model.py"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "vidar/microevent-selection-and-contextual-bridges-2026-10-28",
@@ -6874,7 +7160,8 @@
         "research/vidar/2026-10-28_first_independent_research_entry.md"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "vilde/affekt-og-operativ-relevans-2026-10-23",
@@ -6898,7 +7185,8 @@
         "experiments/vilde_hankel_noise.py"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "vilde/eira-etterfolgere-kildebro-2026-10-25",
@@ -6922,7 +7210,8 @@
         "experiments/vilde_bounded_focus_witness_2026.py"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "vilde/fokusering-topologi-proveniens-2026-10-24",
@@ -6946,7 +7235,8 @@
         "experiments/vilde_copy_birth_core.py"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "vilde/helhetsutledning-kildeaudit-kausalitet-2026-10-25",
@@ -6970,7 +7260,8 @@
         "experiments/vilde_bounded_focus_witness_2026.py"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "vilde/helhetsutledning-tid-relativ-endring-2026-10-25",
@@ -6994,7 +7285,8 @@
         "experiments/vilde_belief_relevance_temporal_probe.py"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "vilde/kausal-grense-en-mikrolov-2026-10-24",
@@ -7018,7 +7310,8 @@
         "experiments/vilde_copy_birth_core.py"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "vilde/lokal-kapasitet-nullbalanse-2026-10-24",
@@ -7042,7 +7335,8 @@
         "experiments/vilde_hankel_noise.py"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "vilde/lovseleksjon-transport-og-stabilitet-2026-10-24",
@@ -7066,7 +7360,8 @@
         "experiments/vilde_hankel_noise.py"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "vilde/mikrogenerator-uavhengige-grenseprober-2026-10-24",
@@ -7090,7 +7385,8 @@
         "experiments/vilde_hankel_noise.py"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "vilde/operativ-geometri-nullbalanse-2026-10-24",
@@ -7114,7 +7410,8 @@
         "experiments/vilde_hankel_noise.py"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "vilde/p0-ingen-fundamental-begynnelse-2026-10-25",
@@ -7138,7 +7435,8 @@
         "experiments/vilde_bounded_focus_witness_2026.py"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "vilde/reversibel-geometri-lokalitet-2026-10-24",
@@ -7162,7 +7460,8 @@
         "experiments/vilde_bounded_focus_witness_2026.py"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "vilde/tid-som-relasjonell-forandring-for-klokker-2026-10-25",
@@ -7186,7 +7485,8 @@
         "experiments/vilde_bounded_focus_witness_2026.py"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "vilde/utledningsberedskap-kilde-og-bevisregister-2026-10-25",
@@ -7210,7 +7510,8 @@
         "experiments/vilde_bounded_focus_witness_2026.py"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     },
     {
       "name": "yrsa/operational-probes-2026-10-29",
@@ -7234,7 +7535,9 @@
         "research/yrsa/GRAMMAR_GROWTH_NEGATIVE_CONTROLS_2026-10-31.md"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": []
+      "content_paths_read_this_run": [],
+      "content_paths_fetched_this_run": []
     }
-  ]
+  ],
+  "original_file_bodies_partially_inspected_this_run": 6
 }
