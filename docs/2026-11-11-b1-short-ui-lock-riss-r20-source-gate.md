@@ -1,0 +1,44 @@
+# Baton B1/B5 H15 — Riss R20 short UI write lock (2026-11-11)
+
+**Process:** Baton – faktisk samtalevekking. **Task IDs:** B1/B5. **Branch:** `feature/b1-short-ui-lock-2026-11-11`. **Draft:** [PR #41](https://github.com/martintommerstigen/Baton/pull/41), stacked on [H14 PR #39](https://github.com/martintommerstigen/Baton/pull/39). **Status:** implemented-unverified until hosted CI; not Greg-live, not existing-chat A→B→C.
+
+## History / priority gate (read originals before modifying code)
+
+| Source | Ref/blob SHA | What was checked | Classification |
+|---|---|---|---|
+| [Baton issue #3](https://github.com/martintommerstigen/Baton/issues/3), [PR #4](https://github.com/martintommerstigen/Baton/pull/4) | issue/PR 2026-11-09/10 | Existing chat identity, fresh assistant turns, pause and no blind retry | Earlier requirement |
+| [GTRCM C01–C06 ledger](https://github.com/martintommerstigen/GTRCM/blob/audit/cross-branch-claim-ledger-2026-11-10/research/audit/2026-11-10_CROSS_BRANCH_CLAIM_LEDGER.md) | `a5eea8b6` | Incomplete; C01/C02/C06 distinguish observation and contact | Prior synthesis |
+| [Rolf Spire original](https://github.com/martintommerstigen/GTRCM/blob/research/rolf-gaia-memory-continuity-2026-11-10/research/2026-11-09_BATON_SPIRE_WAKE_BOUNDARY.md) | `2a2b4da5` | Greg Baton message/wake job did not activate Spire existing chat; PAUSE was active at source time | Negative live boundary |
+| [Riss R20 original](https://github.com/martintommerstigen/GTRCM/blob/research/riss-r20-multichat-learning-2026-11-07/research/riss/2026-11-07_RISS_R20_FLERE_CHATTER_LAERER_HVERANDRE.md) | `a1c60348` | **Exact prior bug**: a shared UI lock held during response generation prevented Lodd contacting Vev. Riss changed send-only flow to release immediately after send. 12 UI sends / 11 replies are reported, original Greg JSON unavailable | Earlier implementation and correction; not new |
+| [Rolf O/K/I](https://github.com/martintommerstigen/GTRCM/blob/research/rolf-operative-memory-rustworld-2026-11-10/research/rolf/2026-11-10_OPERATIVE_MEMORY_OBSERVATION_RUSTWORLD.md) | `401799e7` | O observation ≠ K new contact ≠ I retained operational change | Conceptual scope |
+| [Kaja operative memory](https://github.com/martintommerstigen/GTRCM/blob/kaja/operativ-ting-minne-retur-2026-10-18/research/kaja_operativ_ting_minne/README.md) | `e1a2fabe` | Equal observations need not imply equal operative history | Prior DEM/NEG |
+| [Kaja historical generability](https://github.com/martintommerstigen/GTRCM/blob/kaja/historie-endrer-genererbarhet-2026-10-18/research/kaja_historie_genererbarhet/README.md) | `c35a02df` | Enabled next actions can change without enlarging total fixed-graph reachability | Prior DEM/NEG |
+| [Egil R76](https://github.com/martintommerstigen/GTRCM/blob/research/egil-r77-gtrcm-coinductive-individuation-2026-11-05/research/egil/2026-11-05_EGIL_R76_KONTAKTFLATE_FYSISK_OVERSETTELSE.md) | `633df462` | A transcript or transport contact is not a complete account of its source or effects | Prior DEM |
+| [RustWorld OVERSIKT](https://github.com/martintommerstigen/GTRCM/blob/RustWorld/OVERSIKT.md), [GTRCM NEGATIVE_RESULTS](https://github.com/martintommerstigen/GTRCM/blob/main/NEGATIVE_RESULTS.md) | `0d94b8e1`, `8ea8d589` | Historic machine snapshot; no physical law or live wake follows | Boundary |
+| [B1 H14 source gate](https://github.com/martintommerstigen/Baton/blob/feature/b1-bound-socket-identity-2026-11-11/docs/2026-11-11-b1-bound-endpoint-identity-source-gate.md), [B1 UI lock original](https://github.com/martintommerstigen/Baton/blob/feature/b1-bound-socket-identity-2026-11-11/wake_ui_lock.py) | `9087cdb8`, `af9d587d` | H14 endpoint checks and existing host-wide lock; original lock holds across entire runner in verified CLI | Pre-existing code |
+
+**Coverage:** Current paginated GitHub *branch-name* search returned **297 distinct GTRCM branch names (100+100+97+0)**, up from H14's 295-tip SHA snapshot. The search result did not supply per-tip SHA or commit date; **297 names ≠ 297 SHA-verified tips or content-read histories**. This run directly fetched 7 GTRCM original file bodies (Rolf boundary, Rolf O/K/I, Riss R20, Kaja operative memory, Kaja generability, Egil R76, main negative) plus RustWorld OVERSIKT and provisional ledger: **9 GTRCM file bodies from 9 branch refs**, **0 complete histories**. Existing ChatGPT transcripts and Greg/Mac/iPhone local files not accessible; no Desktop Commander call. Branches not content-read include Riss R19/R23 and most archived GTRCM branches. No physics novelty claim.
+
+## Prior-art match and falsifiable implementation delta
+
+The verified B1 CLI `run_verified_broker_chain.py` and single-hop `run_verified_broker_wake.py` used `with ui_controller_lock(), sync_playwright()`, retaining the **host-wide exclusive write lock for up to 120 seconds per assistant response**. This reproduces the exact class of coordination failure Riss had already corrected on Greg 7 Nov. The lock prevents other cooperating existing-chat workers from sending independent messages while B or C generates.
+
+H15 adds `LockingUIDriver`: hold the *same existing* host lock only for one `submit_once` call, including pre-click DOM readback, B5 authenticated admission, durable `begin_click` and the actual Send click. Release it before `observe_reply` and any polling. The verified single-hop and two-hop CLI instantiate it; the legacy unbrokered CLIs retain their existing longer lock pending separate safety audit. Broker per-target outstanding admission and SQLite no-blind-retry remain unchanged. No new transport protocol, no public shell, no token handling, no Ronja-owned file changes.
+
+**New negative controls:** `test_wake_ui_lock_scope.py` forks a separate Linux Python process to check (1) second writer denied while Send is in progress; (2) second writer admitted while first waits for a reply; (3) competing lock prevents submit; (4) exception releases lock and causes no retry; (5) verified entrypoints actually use the short-lock wrapper. Tests are in the explicit CI list.
+
+**Limits/falsifiers:** Another *noncooperating* browser writer can still race; source DOM turn is not cryptographic identity; shared lock only serializes cooperating processes; a second attempt against the same target must still be denied by the broker. A lock released during B generation is not evidence that B independently initiated a new conversation. Verify the actual installed source, local pause state and three real ChatGPT assistant turns before `tested-live`. Riss's local JSON artifacts remain unavailable.
+
+**Next operational test:** Authenticated free read-only Greg manifest (service unit, source hash, UID, socket inode, pause marker, command/exit/time/raw output), then H13 preflight. With pause explicitly clear, one harmless A→B→C, fresh turn IDs and hashes, a negative no-replay control, and B's independently originated correction affecting C's next action. A broker receipt is never a chat response or operative I.
+
+
+## Hosted CI evidence (verified after implementation)
+
+[GitHub Actions run 42959309837](https://github.com/martintommerstigen/Baton/actions/runs/42959309837), code/test head [6afc7ed](https://github.com/martintommerstigen/Baton/commit/6afc7ed3e2d1898c84286462f2f14cab81c660af), completed **SUCCESS**. The decoded regression job log (job 130321775644) explicitly shows all **five** `test_wake_ui_lock_scope` cases `ok`, and **Ran 229 tests / OK**. Compileall and offline A→B→C simulation also ran. This upgrades H15's lock-scope code to **tested-simulated on hosted Linux**, not Greg-live. Later documentation-only commits do not change the tested Python or workflow code. No actual independent Lodd/Vev/Søm conversation or Greg UI action occurred in this run.
+
+
+## Independent two-hop integration negative (same run)
+
+After the first five controls, added `test_verified_chain_lock_scoped_to_each_click_not_response` in the existing B1 two-hop test suite. It runs the actual `run_verified_chain` orchestration with `LockingUIDriver` wrappers, an injected B5 broker callback, synthetic B/C responses and independent Linux child processes. It asserts that **both** B5 `admit` and `begin_click` for **both hops** exclude a competing writer, while both B/C reply observations allow one. This is still offline; no existing ChatGPT conversation was contacted.
+
+[GitHub Actions run 42959481345](https://github.com/martintommerstigen/Baton/actions/runs/42959481345), final Python code/test head [4c51ded](https://github.com/martintommerstigen/Baton/commit/4c51dedc5be3c5423b31ef4cedb31f7b4481615f), **SUCCESS**. Decoded job 130322353537 shows the new integration test and **Ran 230 tests / OK**. This supersedes the earlier 229/229 code snapshot. The run still does not prove a Greg-live wake, a true ChatGPT response, or operative I.

@@ -17,7 +17,7 @@ from wake_adapter import wake_once
 from wake_broker_ui import BrokerGatedUIDriver
 from wake_contract import WakeLedger
 from wake_origin import verify_source_turn, guarded_source_broker_request
-from wake_ui_lock import ui_controller_lock
+from wake_ui_lock import LockingUIDriver
 
 
 def make_verified_broker_request(socket_path, expected_uid, *, timeout=3.0):
@@ -112,11 +112,12 @@ def main(argv=None):
         parser.error("Invalid broker UID")
     broker_request = make_verified_broker_request(args.broker_socket, broker_uid)
     from playwright.sync_api import sync_playwright
-    with ui_controller_lock(), sync_playwright() as pw:
+    # Lock only the actual UI submission, never the subsequent reply wait.
+    with sync_playwright() as pw:
         browser = pw.chromium.connect_over_cdp(args.cdp)
         tabs = select_existing_tabs(browser, args.source, args.target)
         source_driver = ChatGPTUIDriver(tabs[args.source], frozenset({args.source}))
-        target_driver = ChatGPTUIDriver(tabs[args.target], frozenset({args.target}))
+        target_driver = LockingUIDriver(ChatGPTUIDriver(tabs[args.target], frozenset({args.target})))
         ledger = WakeLedger(args.db)
         result = execute_once(ledger, source_driver, target_driver, args.source,
                               args.target, args.source_turn_id, args.id, args.body,

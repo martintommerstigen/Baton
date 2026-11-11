@@ -24,7 +24,7 @@ from wake_adapter import wake_once
 from wake_broker_ui import BrokerGatedUIDriver
 from wake_chain import next_target_from_reply
 from wake_contract import WakeLedger
-from wake_ui_lock import ui_controller_lock
+from wake_ui_lock import LockingUIDriver
 from wake_turn_snapshot import (
     CapturingTarget, SourceEvidenceChanged, TurnSnapshotStore,
     guarded_second_hop, verify_current_b_turn, verify_current_reply,
@@ -173,11 +173,13 @@ def main(argv=None):
 
     from playwright.sync_api import sync_playwright
 
-    with ui_controller_lock(), sync_playwright() as pw:
+    # Riss R20: do not monopolize the shared write lock while B/C generate.
+    # Each LockingUIDriver holds it across the full broker+Send critical section.
+    with sync_playwright() as pw:
         browser = pw.chromium.connect_over_cdp(args.cdp)
         pages = select_pages(browser, (args.a, args.b, args.c))
         drivers = {
-            cid: ChatGPTUIDriver(page, frozenset({cid}))
+            cid: LockingUIDriver(ChatGPTUIDriver(page, frozenset({cid})))
             for cid, page in pages.items()
         }
         ledger = WakeLedger(args.db)
