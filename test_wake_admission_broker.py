@@ -347,5 +347,89 @@ class AdmissionTests(unittest.TestCase):
 
 
 
+
+    def test_rebound_basename_before_dispatch_rejects_admission(self):
+        """Accepted connection is not authority after unlink/rebind."""
+        rogue = []
+        def swap_after_read(_conn):
+            self.sock.unlink()
+            other = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
+            other.bind(str(self.sock))
+            rogue.append(other)
+            return (json.dumps(self.envelope()) + "\n").encode("utf-8")
+        try:
+            with mock.patch("wake_admission_broker.read_bounded_frame",
+                            side_effect=swap_after_read):
+                with self.assertRaises((RuntimeError, OSError)):
+                    self.ask(self.envelope())
+            self.assertFalse(self.broker.endpoint_unchanged())
+            self.assertEqual(self.store.request({"op": "status"})["outstanding"], 0)
+            self.assertTrue(self.sock.exists())
+        finally:
+            for other in rogue:
+                other.close()
+
+    def test_rebound_basename_after_admit_cannot_return_success(self):
+        """Committed admission survives an uncertain reply and restart."""
+        real_request = self.store.request
+        rogue = []
+        def swap_after_commit(req):
+            result = real_request(req)
+            if req.get("op") == "admit":
+                self.sock.unlink()
+                other = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
+                other.bind(str(self.sock))
+                rogue.append(other)
+            return result
+        try:
+            with mock.patch.object(self.store, "request", side_effect=swap_after_commit):
+                with self.assertRaises((RuntimeError, OSError)):
+                    self.ask(self.envelope())
+            self.assertFalse(self.broker.endpoint_unchanged())
+            self.assertEqual(real_request({"op": "status"})["outstanding"], 1)
+            self.assertEqual(real_request(self.envelope())["reason"], "outstanding_attempt")
+        finally:
+            for other in rogue:
+                other.close()
+        self.stop()
+        self.broker = Broker(self.sock, self.store, [os.getuid()])
+        self.thread = threading.Thread(target=self.broker.serve_forever,
+                                       kwargs={"poll_interval": .01}, daemon=True)
+        self.thread.start()
+        self.assertEqual(self.ask(self.envelope())["reason"], "outstanding_attempt")
+
+    def test_rebound_basename_after_begin_click_keeps_uncertain(self):
+        """A lost click-start receipt must never authorize a second click."""
+        req = self.envelope()
+        self.assertEqual(self.ask(req)["state"], "admitted_not_delivered")
+        real_request = self.store.request
+        rogue = []
+        def swap_after_click(envelope):
+            result = real_request(envelope)
+            if envelope.get("op") == "begin_click":
+                self.sock.unlink()
+                other = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
+                other.bind(str(self.sock))
+                rogue.append(other)
+            return result
+        try:
+            with mock.patch.object(self.store, "request", side_effect=swap_after_click):
+                with self.assertRaises((RuntimeError, OSError)):
+                    self.ask(dict(req, op="begin_click"))
+            self.assertFalse(self.broker.endpoint_unchanged())
+            with self.store.connect() as db:
+                self.assertEqual(db.execute("SELECT state FROM admissions").fetchone()[0],
+                                 "uncertain")
+        finally:
+            for other in rogue:
+                other.close()
+        self.stop()
+        self.broker = Broker(self.sock, self.store, [os.getuid()])
+        self.thread = threading.Thread(target=self.broker.serve_forever,
+                                       kwargs={"poll_interval": .01}, daemon=True)
+        self.thread.start()
+        self.assertEqual(self.ask(dict(req, op="begin_click"))["reason"],
+                         "envelope_mismatch_or_attempt_closed")
+
 if __name__ == "__main__":
     unittest.main()
