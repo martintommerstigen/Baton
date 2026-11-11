@@ -2,7 +2,7 @@ import unittest
 from baton_model_protocol import (
     parse_assistant_tool_call,tool_result_message,observe_assistant_script
 )
-from baton_model_bridge import bootstrap_message, _json_result_script, _decode_js_result
+from baton_model_bridge import bootstrap_message, _json_result_script, _decode_js_result, _assistant_tool_turn
 
 NONCE="b"*32
 REQ="c"*32
@@ -48,6 +48,37 @@ class ModelToolTests(unittest.TestCase):
         script = _json_result_script("(() => ({ok:true}))()")
         self.assertIn("JSON.stringify", script)
         self.assertIn("js-exception:", script)
+
+    def test_bootstrap_prompts_real_work_and_fresh_first_call(self):
+        import re
+        import json
+        one = bootstrap_message(NONCE, "/home/olliver")
+        two = bootstrap_message(NONCE, "/home/olliver")
+        pattern = r"(?m)^BATON_TOOL_V1 ([0-9a-f]{32})\\n(\\{[^\\n]+\\})\\nEND_BATON_TOOL_V1$"
+        match_one = re.search(pattern, one)
+        match_two = re.search(pattern, two)
+        self.assertIsNotNone(match_one)
+        self.assertIsNotNone(match_two)
+        self.assertEqual(match_one.group(1), NONCE)
+        first = json.loads(match_one.group(2))
+        second = json.loads(match_two.group(2))
+        self.assertEqual(first["argv"], ["/usr/bin/hostname"])
+        self.assertEqual(first["cwd"], "/home/olliver")
+        self.assertNotEqual(first["request_id"], second["request_id"])
+        self.assertIn("NEXT necessary BATON_TOOL_V1", one)
+        self.assertIn("read-back verification", one)
+        self.assertIn("NOT perpetual background execution", one)
+
+    def test_tool_turn_without_dom_message_id(self):
+        valid = frame(self.payload())
+        turn_id, parsed = _assistant_tool_turn({"id":None,"text":valid}, NONCE)
+        self.assertEqual(turn_id, "request:"+REQ)
+        self.assertEqual(parsed, self.payload())
+        self.assertEqual(_assistant_tool_turn({"id":"turn42","text":valid},NONCE)[0], "turn42")
+        self.assertIsNone(_assistant_tool_turn({"id":None,"text":valid},"d"*32))
+        self.assertIsNone(_assistant_tool_turn({"id":None,"text":"Example:\\n"+valid},NONCE))
+        self.assertIsNone(_assistant_tool_turn({"id":None,"text":frame(self.payload(), "d"*32)},NONCE))
+        self.assertIsNone(_assistant_tool_turn({"id":None,"text":""},NONCE))
 
     def test_bootstrap_explicit_protocol(self):
         text=bootstrap_message(NONCE,"/home/olliver")
