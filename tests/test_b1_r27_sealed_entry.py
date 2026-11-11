@@ -47,7 +47,11 @@ class H26Entry(unittest.TestCase):
         self.guard = Mock(side_effect=lambda: self.log.append(("R25",)) or
                           "lifetime_guard_loaded_not_host_attestation")
         self.preflight = Mock(side_effect=lambda: self.log.append(("R24",)) or
-                              {"status": "scoped_preflight_pass_not_attestation"})
+                              {"status": "scoped_preflight_pass_not_attestation",
+                               "checks": ["distinct_uid", "no_inherited_sockets",
+                                          "profile_open_denied",
+                                          "declared_loopback_cdp_unreachable",
+                                          "snapshot_peer_uid", "tcp_socket_families_denied"]})
         self.endpoint = Mock(side_effect=lambda path, uid:
                              self.log.append(("endpoint", path, uid)))
         self.seal = Mock(side_effect=lambda *a, **kw:
