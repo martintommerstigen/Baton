@@ -101,7 +101,9 @@ class SnapshotKernelTests(unittest.TestCase):
                 if Path(path).exists() or proc.poll() is not None:
                     break
                 time.sleep(0.05)
-            self.assertIsNone(proc.poll(), 'collector failed to start')
+            if proc.poll() is not None:
+                stdout, stderr = proc.communicate(timeout=2)
+                self.fail('collector failed to start: stdout=' + stdout + ' stderr=' + stderr)
             self.assertTrue(Path(path).exists(), 'snapshot socket not created')
             args = [A, B, D, path, str(COLLECTOR_UID)]
             valid = self.run_as(self.users[1], CLIENT_CODE, args)
@@ -119,11 +121,13 @@ class SnapshotKernelTests(unittest.TestCase):
                 "{'op':'cdp','command':'Runtime.evaluate'}"), args)
             self.assertNotEqual(attack.returncode, 0)
         finally:
-            os.killpg(proc.pid, signal.SIGTERM)
+            if proc.poll() is None:
+                os.killpg(proc.pid, signal.SIGTERM)
             try:
                 proc.communicate(timeout=3)
             except subprocess.TimeoutExpired:
-                proc.kill()
+                if proc.poll() is None:
+                    os.killpg(proc.pid, signal.SIGKILL)
                 proc.communicate(timeout=3)
             # A stale socket must not be silently replaced after restart.
             restart = self.run_as(self.users[0], SERVER_CODE,
