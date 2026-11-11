@@ -28,10 +28,10 @@
   "unchanged_sha_metadata_reused": 302,
   "changed_or_new_ref_count": 1,
   "trees_refreshed": 1,
-  "content_read_branch_refs_this_run": 8,
-  "original_file_bodies_fetched_this_run": 10,
+  "content_read_branch_refs_this_run": 9,
+  "original_file_bodies_fetched_this_run": 11,
   "complete_branch_histories_read": 0,
-  "notes": "303 paginated tip names+SHA; 302 unchanged R20 metadata reused, one R39 commit/tree refreshed. Ten selected original file bodies directly read; no complete histories. Greg/Mac/private conversations unavailable. This index is not a comprehensive history audit.",
+  "notes": "303 paginated tip names+SHA; 302 unchanged R20 metadata reused, one R39 commit/tree refreshed. Eleven selected original file bodies directly read across nine refs, including older Andreas G28; no complete histories. Greg/Mac/private conversations unavailable. This index is not a comprehensive history audit.",
   "branches": [
     {
       "name": "GTRCM",
@@ -2516,8 +2516,12 @@
         "experiments/gaia_self_influence/andreas_2026_11_03/g18_error_budget_bound.py"
       ],
       "tree_truncated": false,
-      "content_paths_read_this_run": [],
-      "content_paths_fetched_this_run": []
+      "content_paths_read_this_run": [
+        "experiments/gaia_self_influence/andreas_2026_11_04/g28_multichannel_common_mode.py"
+      ],
+      "content_paths_fetched_this_run": [
+        "experiments/gaia_self_influence/andreas_2026_11_04/g28_multichannel_common_mode.py"
+      ]
     },
     {
       "name": "research/andreas-g29-channel-dependency-gauge-2026-11-04",
