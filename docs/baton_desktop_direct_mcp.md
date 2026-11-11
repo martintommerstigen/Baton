@@ -32,12 +32,17 @@ After updating this repository, run as `olliver` on Greg:
 
     bash run_baton_direct.sh
 
-This creates or verifies the local ChatGPT/Codex MCP registration and opens a
+This opens a
 small dedicated **Baton Core** window. Keep that window open while using the
 **official ChatGPT Linux desktop app**. This route does NOT open the hosted
 ChatGPT website inside QtWebEngine or inject BATON_TOOL_V2 messages.
 Closing the small Core window revokes the local MCP liveness lease. The
 ordinary-user Core listener is loopback-only.
+
+MCP registration is now an explicit option, NOT a prerequisite to running
+Baton. To configure the supported Codex-side local MCP host, run:
+
+    BATON_REGISTER_MCP=1 bash run_baton_direct.sh
 
 The first-time install of the official ChatGPT desktop application is a
 separate user action. Get the official package from
