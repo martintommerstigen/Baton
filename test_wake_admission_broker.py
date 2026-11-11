@@ -245,6 +245,22 @@ class AdmissionTests(unittest.TestCase):
                    shared_gid=os.getegid())
         self.assertFalse((parent / "broker.sock").exists())
 
+    def test_group_parent_mode_tamper_invalidates_endpoint(self):
+        self.stop()
+        parent = self.root / "shared"
+        parent.mkdir(mode=0o710)
+        parent.chmod(0o710)
+        path = parent / "broker.sock"
+        broker = Broker(path, self.store, [os.getuid()], shared_gid=os.getegid())
+        try:
+            self.assertTrue(broker.endpoint_unchanged())
+            # A previously private group-traversable directory becomes
+            # world-traversable without changing its inode or the socket inode.
+            parent.chmod(0o711)
+            self.assertFalse(broker.endpoint_unchanged())
+        finally:
+            broker.server_close()
+
     def test_group_socket_rejects_invalid_group(self):
         self.stop()
         parent = self.root / "shared"
