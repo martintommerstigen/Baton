@@ -186,7 +186,9 @@ class CrossUID(unittest.TestCase):
             with self.listener.accept()[0] as s:
                 with self.assertRaises(UntrustedFrame):
                     read_authenticated_frame(s,allowed_uids={21003})
-            self.wait(pid)
+                # Keep the accepted socket alive until the second writer exits:
+                # closing early can raise EPIPE in the child and flake CI.
+                self.wait(pid)
 
     def test_oversized_frame_denied(self):
         def sender():
