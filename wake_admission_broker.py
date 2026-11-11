@@ -281,7 +281,8 @@ class Broker(socketserver.ThreadingMixIn, socketserver.UnixStreamServer):
                     or not stat.S_ISSOCK(st.st_mode)
                     or stat.S_IMODE(st.st_mode) != self.socket_mode
                     or st.st_gid != self.socket_gid
-                    or not self.parent_unchanged()):
+                    or not self.parent_unchanged()
+                    or not self.shared_parent_unchanged()):
                 raise ValueError("broker endpoint changed during bind")
         except BaseException:
             if hasattr(self, "socket"):
@@ -305,6 +306,15 @@ class Broker(socketserver.ThreadingMixIn, socketserver.UnixStreamServer):
     def parent_unchanged(self):
         return self.parent_fd is not None and self._same_public_parent(self.parent_fd)
 
+    def shared_parent_unchanged(self):
+        if self.shared_gid is None:
+            return True
+        try:
+            checked_shared_socket_group(self.parent_fd, self.shared_gid)
+            return True
+        except (OSError, ValueError):
+            return False
+
     def endpoint_unchanged(self):
         """Verify that the *public* socket still names our bound inode.
 
@@ -313,7 +323,8 @@ class Broker(socketserver.ThreadingMixIn, socketserver.UnixStreamServer):
         check cannot defend against malicious same-UID code racing each
         individual syscall; use separate UIDs for that threat model.
         """
-        if self.bound_inode is None or not self.parent_unchanged():
+        if (self.bound_inode is None or not self.parent_unchanged()
+                or not self.shared_parent_unchanged()):
             return False
         try:
             st = os.stat(self.public_path.name, dir_fd=self.parent_fd,
