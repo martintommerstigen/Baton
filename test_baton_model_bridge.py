@@ -2,7 +2,7 @@ import unittest
 from baton_model_protocol import (
     parse_assistant_tool_call,tool_result_message,observe_assistant_script
 )
-from baton_model_bridge import bootstrap_message, _json_result_script, _decode_js_result, _assistant_tool_turn
+from baton_model_bridge import bootstrap_message, _json_result_script, _decode_js_result, _assistant_tool_turn, should_auto_arm
 
 NONCE="b"*32
 REQ="c"*32
@@ -79,6 +79,16 @@ class ModelToolTests(unittest.TestCase):
         self.assertIsNone(_assistant_tool_turn({"id":None,"text":"Example:\n"+valid},NONCE))
         self.assertIsNone(_assistant_tool_turn({"id":None,"text":frame(self.payload(), "d"*32)},NONCE))
         self.assertIsNone(_assistant_tool_turn({"id":None,"text":""},NONCE))
+
+    def test_auto_arms_once_per_chat_visit_only(self):
+        chat = "6aef828e-0150-83eb-bbac-061f79a8fd4a"
+        self.assertTrue(should_auto_arm(chat, None, False, False, False, False))
+        self.assertFalse(should_auto_arm(chat, chat, False, False, False, False))
+        self.assertFalse(should_auto_arm(chat, None, True, False, False, False))
+        self.assertFalse(should_auto_arm(chat, None, False, True, False, False))
+        self.assertFalse(should_auto_arm(chat, None, False, False, True, False))
+        self.assertFalse(should_auto_arm(chat, None, False, False, False, True))
+        self.assertFalse(should_auto_arm(None, None, False, False, False, False))
 
     def test_bootstrap_explicit_protocol(self):
         text=bootstrap_message(NONCE,"/home/olliver")
