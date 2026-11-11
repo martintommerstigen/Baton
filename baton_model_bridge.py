@@ -104,7 +104,7 @@ def attach_model_bridge(layout, view, page, parent):
             def clicked(result):
                 success=isinstance(result,dict) and bool(result.get("ok"))
                 if not success:
-                    report("ChatGPT-sendeknappen var ikke klar.")
+                    report("ChatGPT-sendeknappen var ikke klar: " + str(result.get("reason", "ukjent") if isinstance(result,dict) else "mangler JS-resultat"))
                 on_complete(success)
             def click_once():
                 if active() is None:
@@ -138,7 +138,7 @@ def attach_model_bridge(layout, view, page, parent):
         def booted(sent):
             pending[0]=False
             if not sent:
-                report("Oppstartsmeldingen ble ikke sendt. Økten er stoppet.")
+                report("Oppstart feilet. Kontroller composer/send-diagnostikk i Baton-terminalen.")
                 disable()
                 return
             report("Oppstartsmeldingen ble forsøkt sendt. Venter på modellens verktøyforespørsel ...")
