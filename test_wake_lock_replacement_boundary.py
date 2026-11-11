@@ -58,6 +58,21 @@ class PathnameReplacementBoundary(unittest.TestCase):
                 self.assertEqual(orphan.stat().st_ino, original_inode)
 
 
+    def test_transient_replacement_and_restore_can_escape_postcheck(self):
+        """NEG: postcheck is not a same-UID mutual-exclusion guarantee."""
+        with ui_controller_lock(self.lock):
+            original_inode = self.lock.stat().st_ino
+            orphan = self.root / 'private' / 'original-temporary'
+            self.lock.rename(orphan)
+            self.lock.touch(mode=0o600)
+            # A second writer can enter while the first holds the old inode.
+            self.assertEqual(self.child_result(), 'ACQUIRED')
+            self.lock.unlink()
+            orphan.rename(self.lock)
+            self.assertEqual(self.lock.stat().st_ino, original_inode)
+        # No postcheck error: restoration erased pathname evidence.
+        # Therefore this check cannot establish exclusive execution.
+
     def test_parent_directory_replacement_is_detected_on_exit(self):
         with self.assertRaisesRegex(PermissionError, 'delivery uncertain'):
             with ui_controller_lock(self.lock):
