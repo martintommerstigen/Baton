@@ -87,7 +87,7 @@ class SnapshotKernelTests(unittest.TestCase):
                               capture_output=True, text=True, timeout=timeout)
 
     def test_real_kernel_snapshot_and_wrong_uid_and_restart(self):
-        base = Path(tempfile.mkdtemp(prefix='b1snap-', dir='/tmp'))
+        # GitHub runner checkout ancestors may be non-traversable by test UIDs.\n        # Stage only trusted, non-secret source in a world-readable CI temp dir.\n        stage = Path(tempfile.mkdtemp(prefix='b1snap-src-', dir='/tmp'))\n        os.chmod(stage, 0o755)\n        for name in ('b1_snapshot_relay.py', 'chatgpt_ui_driver.py',\n                     'wake_adapter.py', 'wake_contract.py'):\n            shutil.copy2(Path.cwd() / name, stage / name)\n        (stage / 'remote_security').mkdir(mode=0o755)\n        for name in ('broker_peer.py', 'frame_credentials.py', '__init__.py'):\n            source = Path.cwd() / '.b5-r23' / 'remote_security' / name\n            if source.exists():\n                shutil.copy2(source, stage / 'remote_security' / name)\n        base = Path(tempfile.mkdtemp(prefix='b1snap-', dir='/tmp'))
         os.chown(base, COLLECTOR_UID, SHARED_GID)
         os.chmod(base, 0o2750)
         path = str(base / 'snapshot.sock')
@@ -106,19 +106,19 @@ class SnapshotKernelTests(unittest.TestCase):
                 self.fail('collector failed to start: stdout=' + stdout + ' stderr=' + stderr)
             self.assertTrue(Path(path).exists(), 'snapshot socket not created')
             args = [A, B, D, path, str(COLLECTOR_UID)]
-            valid = self.run_as(self.users[1], CLIENT_CODE, args)
+            valid = self.run_as(self.users[1], CLIENT_CODE, args, source_path=stage)
             self.assertEqual(valid.returncode, 0, valid.stderr)
             data = json.loads(valid.stdout)
             self.assertEqual(data['state'], 'source_snapshot_not_authorship')
             self.assertEqual(data['origin_turn_id'], 'turn-A')
             self.assertNotIn('BATON_WAKE', valid.stdout)  # no raw turn text leaked
             # Third UID shares the Unix group but is NOT the observer.
-            wrong = self.run_as(self.users[2], CLIENT_CODE, args)
+            wrong = self.run_as(self.users[2], CLIENT_CODE, args, source_path=stage)
             self.assertNotEqual(wrong.returncode, 0)
             # No command-execution or arbitrary CDP operations.
             attack = self.run_as(self.users[1], CLIENT_CODE.replace(
                 "snapshot_request(A, 'turn-A', B, 'm-1', D)",
-                "{'op':'cdp','command':'Runtime.evaluate'}"), args)
+                "{'op':'cdp','command':'Runtime.evaluate'}"), args, source_path=stage)
             self.assertNotEqual(attack.returncode, 0)
         finally:
             if proc.poll() is None:
@@ -131,10 +131,10 @@ class SnapshotKernelTests(unittest.TestCase):
                 proc.communicate(timeout=3)
             # A stale socket must not be silently replaced after restart.
             restart = self.run_as(self.users[0], SERVER_CODE,
-                                  [A, B, D, path, str(OBSERVER_UID)])
+                                  [A, B, D, path, str(OBSERVER_UID)], source_path=stage)
             self.assertNotEqual(restart.returncode, 0)
             Path(path).unlink(missing_ok=True)
-            base.rmdir()
+            base.rmdir()\n            shutil.rmtree(stage)
 
 
 if __name__ == '__main__':
