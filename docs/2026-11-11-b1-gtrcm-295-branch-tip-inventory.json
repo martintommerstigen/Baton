@@ -30,7 +30,9 @@
     "research/rolf-gaia-memory-continuity-2026-11-10",
     "research/rolf-operative-memory-rustworld-2026-11-10",
     "audit/cross-branch-claim-ledger-2026-11-10",
-    "RustWorld"
+    "RustWorld",
+    "kaja/historie-endrer-genererbarhet-2026-10-18",
+    "kaja/operativ-ting-minne-retur-2026-10-18"
   ],
   "full_histories_read": 0,
   "branches": [
@@ -519,7 +521,9 @@
       "sha": "a9bd3978826a9f08b8f2e71a6a2e5c5ce9deab9d",
       "commit_date": null,
       "topic_hint": "kaja",
-      "verified_documents_read_this_run": null,
+      "verified_documents_read_this_run": [
+        "research/kaja_historie_genererbarhet/README.md"
+      ],
       "branch_url": "https://github.com/martintommerstigen/GTRCM/tree/kaja%2Fhistorie-endrer-genererbarhet-2026-10-18"
     },
     {
@@ -633,7 +637,9 @@
       "sha": "6deb3cc0c44e7a913ebefeffcc9facc6fe02f029",
       "commit_date": null,
       "topic_hint": "kaja",
-      "verified_documents_read_this_run": null,
+      "verified_documents_read_this_run": [
+        "research/kaja_operativ_ting_minne/README.md"
+      ],
       "branch_url": "https://github.com/martintommerstigen/GTRCM/tree/kaja%2Foperativ-ting-minne-retur-2026-10-18"
     },
     {
