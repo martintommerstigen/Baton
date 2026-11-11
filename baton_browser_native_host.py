@@ -59,7 +59,7 @@ class NativeHostSession:
             self.expires = self.clock() + MAX_SESSION_SECONDS
             self.used.clear()
             return {"ok":True,"op":"armed","chat_id":chat,"nonce":self.nonce,
-                    "expires_in":MAX_SESSION_SECONDS}
+                    "cwd":str(Path.home()),"expires_in":MAX_SESSION_SECONDS}
         if op == "stop":
             self.chat_id = None
             self.nonce = None
