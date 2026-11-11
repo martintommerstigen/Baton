@@ -1,6 +1,6 @@
 {
   "schema": "ronja-gtrcm-branch-coverage-v3",
-  "captured_utc": "2026-11-11T04:17:00Z",
+  "captured_utc": "2026-11-11T04:21:51Z",
   "source": "https://api.github.com/repos/martintommerstigen/GTRCM/branches?per_page=100&page=N",
   "pages": [
     {
@@ -7064,5 +7064,6 @@
       "tree_truncated": false,
       "content_paths_read_this_run": []
     }
-  ]
+  ],
+  "timestamp_note": "Time of the initial inventory GitHub commit; individual paginated API calls preceded it."
 }
