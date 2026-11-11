@@ -1,0 +1,51 @@
+name: B1 H26 R27 preconnected source observer
+on:
+  push:
+    branches:
+      - feature/b1-h26-r27-preconnect-entry-2026-11-11
+    paths:
+      - 'run_b1_r27_sealed_observer.py'
+      - 'tests/test_b1_r27_sealed_entry.py'
+      - 'tests/test_b1_r27_kernel_integration.py'
+      - '.github/workflows/b1-h26-r27-sealed-entry.yml'
+  pull_request:
+    paths:
+      - 'run_b1_r27_sealed_observer.py'
+      - 'tests/test_b1_r27_sealed_entry.py'
+      - 'tests/test_b1_r27_kernel_integration.py'
+      - '.github/workflows/b1-h26-r27-sealed-entry.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  source-only-integration:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Fetch pinned Ronja R27 without modifying B1-owned source
+        uses: actions/checkout@v4
+        with:
+          ref: 0f6935461e8a40e143f9497ce792dcc18bc10f9c
+          path: pinned-r27
+          persist-credentials: false
+      - name: Stage exact pinned R24-R27 dependencies for isolated tests
+        run: |
+          mkdir -p remote_security
+          cp pinned-r27/remote_security/observer_boundary.py remote_security/
+          cp pinned-r27/remote_security/observer_lifetime_guard.py remote_security/
+          cp pinned-r27/remote_security/sealed_unix_channel.py remote_security/
+          cp pinned-r27/remote_security/sealed_observer_sessions.py remote_security/
+          cp pinned-r27/tests/test_sealed_observer_sessions.py tests/
+      - name: Compile exact B1 entry and tests
+        run: python3 -m compileall -q run_b1_r27_sealed_observer.py tests/test_b1_r27_sealed_entry.py tests/test_b1_r27_kernel_integration.py
+      - name: Nine fail-closed B1 ordering and uncertainty controls
+        run: python3 -m unittest discover -s tests -p 'test_b1_r27_sealed_entry.py' -v
+      - name: Two real four-UID Linux kernel B1-R27 integration controls
+        run: sudo python3 -m unittest discover -s tests -p 'test_b1_r27_kernel_integration.py' -v
+      - name: Eleven pinned Ronja R27 kernel negatives
+        run: sudo python3 -m unittest discover -s tests -p 'test_sealed_observer_sessions.py' -v
