@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Start direct native MCP Baton Core; no embedded ChatGPT browser or text frames.
+# Start one Baton app; register a user-local browser bridge for existing chats.
 set -euo pipefail
 ROOT="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
 PYTHON="${BATON_PYTHON:-python3}"
@@ -12,6 +12,15 @@ if [[ -z "${DISPLAY:-}" && -z "${WAYLAND_DISPLAY:-}" ]]; then
     echo "Start Baton from the graphical desktop session" >&2
     exit 1
 fi
+# Register the bounded Native Messaging entry for Brave/Chrome/Chromium.
+# The browser extension itself still requires the human's one-time approval in
+# the browser. Do not silently modify installed extension lists or cookies.
+if [[ -f "$ROOT/install_baton_browser_bridge.py" ]]; then
+    if ! "$PYTHON" "$ROOT/install_baton_browser_bridge.py"; then
+        echo "Warning: Brave/Chrome bridge registration failed; Baton Core can still start." >&2
+    fi
+fi
+
 # The native Baton app is independent of any specific model client.
 # Register Codex/ChatGPT MCP only with explicit opt-in; registration errors
 # must not prevent users from opening Baton.
