@@ -36,19 +36,23 @@ class CrossUIDObservedSource(unittest.TestCase):
             server_pid = os.fork()
             if server_pid == 0:
                 os.close(read_fd)
+                stage='drop_uid'
                 try:
                     os.setgroups([])
                     os.setgid(21001)
                     os.setuid(21001)
                     os.umask(0o077)
+                    stage='load_pinned_b1'
                     spec = importlib.util.spec_from_file_location("b1_h20_uid",b1_path)
                     b1 = importlib.util.module_from_spec(spec)
                     spec.loader.exec_module(b1)
                     from remote_security.observed_source_handoff import ObservedSourceHandoff
+                    stage='create_b1_store'
                     inner = b1.AdmissionStore(db,pause,{"chat-B"})
                     proxy = ObservedSourceHandoff(inner,broker_uid=21001,
                         observer_uid=21003,controller_uid=21002,
                         source_routes={"chat-A":{"chat-B"}})
+                    stage='bind_listener'
                     with socket.socket(socket.AF_UNIX,socket.SOCK_STREAM) as listener:
                         listener.bind(str(sock_path))
                         os.chmod(sock_path,0o777)
@@ -71,7 +75,7 @@ class CrossUIDObservedSource(unittest.TestCase):
                     os._exit(0)
                 except BaseException as exc:
                     try:
-                        os.write(write_fd,("ERR:"+repr(exc)).encode())
+                        os.write(write_fd,("ERR:"+stage+":"+repr(exc)).encode())
                     except OSError:
                         pass
                     os._exit(2)
