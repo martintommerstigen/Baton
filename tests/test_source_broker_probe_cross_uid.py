@@ -96,3 +96,48 @@ class RealUidProbe(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
+
+# A privileged negative fixture can forge socket inode ownership, but not the
+# kernel SO_PEERCRED of the actual listening process. No request bytes leave.
+@unittest.skipUnless(os.name == 'posix' and os.geteuid() == 0
+                     and hasattr(os, 'fork') and hasattr(socket, 'SO_PEERCRED'),
+                     'trusted root-only kernel test')
+class ForgedOwnerProbe(unittest.TestCase):
+    def test_forged_socket_owner_not_peer_uid(self):
+        with tempfile.TemporaryDirectory() as temp:
+            base = Path(temp)
+            base.chmod(0o755)
+            parent = base / 'socketdir'
+            parent.mkdir()
+            os.chown(parent, SERVICE_UID, SHARED_GID)
+            parent.chmod(0o710)
+            path = parent / 'source.sock'
+            with socket.socket(socket.AF_UNIX, socket.SOCK_STREAM) as forged:
+                forged.bind(str(path))  # listener is root, not SERVICE_UID
+                os.chown(path, SERVICE_UID, SHARED_GID)  # forged inode metadata
+                path.chmod(0o660)
+                forged.listen(1)
+                child_r, child_w = os.pipe()
+                pid = os.fork()
+                if pid == 0:
+                    try:
+                        os.close(child_r)
+                        os.setgid(SHARED_GID)
+                        os.setuid(CLIENT_UID)
+                        try:
+                            probe(str(path), SERVICE_UID, connect=True)
+                        except Exception as exc:
+                            os.write(child_w, type(exc).__name__.encode())
+                            os._exit(0)
+                        os._exit(3)  # false success
+                    except BaseException:
+                        os._exit(4)
+                os.close(child_w)
+                forged.settimeout(4)
+                with forged.accept()[0] as conn:
+                    conn.settimeout(2)
+                    self.assertEqual(conn.recv(4096), b'')
+                self.assertEqual(os.read(child_r, 64), b'UntrustedBroker')
+                os.close(child_r)
+                _, status = os.waitpid(pid, 0)
+                self.assertEqual(os.waitstatus_to_exitcode(status), 0)
