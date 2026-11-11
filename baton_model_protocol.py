@@ -6,6 +6,7 @@ user turns, markdown examples, or assistant prose as executable commands.
 """
 import json
 import re
+import shlex
 
 NONCE=re.compile(r"^[0-9a-f]{32}$")
 CALL=re.compile(r"\ABATON_TOOL_V1 ([0-9a-f]{32})\n(\{[^\n]*\})\nEND_BATON_TOOL_V1\Z",re.S)
@@ -14,13 +15,33 @@ REQUEST=re.compile(r"^[0-9a-f]{32}$")
 def parse_assistant_tool_call(text, expected_nonce):
     if not isinstance(text,str) or len(text)>7000 or not NONCE.fullmatch(expected_nonce):
         return None
-    match=CALL.fullmatch(text.strip())
-    if not match or match.group(1)!=expected_nonce:
-        return None
-    try:
-        value=json.loads(match.group(2))
-    except ValueError:
-        return None
+    cleaned = text.strip()
+    if cleaned.startswith("BATON_TOOL_V2 "):
+        # A single rendered text line survives hosted ChatGPT markdown/DIL
+        # handling that can discard bare multiline JSON in assistant replies.
+        # Parse argv only; shlex is NOT a shell and never executes commands.
+        if "\n" in cleaned or "\r" in cleaned:
+            return None
+        try:
+            fields = shlex.split(cleaned, posix=True)
+        except ValueError:
+            return None
+        if (len(fields) < 7 or fields[0] != "BATON_TOOL_V2"
+                or fields[1] != expected_nonce or fields[5] != "--"
+                or not re.fullmatch(r"[0-9]{1,2}", fields[3])):
+            return None
+        value = {"request_id": fields[2], "tool": "greg_exec",
+                 "argv": fields[6:], "cwd": fields[4],
+                 "timeout": int(fields[3])}
+    else:
+        # Legacy V1 is retained for already-issued in-flight requests.
+        match = CALL.fullmatch(cleaned)
+        if not match or match.group(1) != expected_nonce:
+            return None
+        try:
+            value = json.loads(match.group(2))
+        except ValueError:
+            return None
     if not isinstance(value,dict) or set(value)!={"request_id","tool","argv","cwd","timeout"}:
         return None
     if not isinstance(value["request_id"],str) or not REQUEST.fullmatch(value["request_id"]):
@@ -36,6 +57,26 @@ def parse_assistant_tool_call(text, expected_nonce):
     if type(value["timeout"]) is not int or not 1<=value["timeout"]<=90:
         return None
     return value
+
+def render_tool_call_v2(nonce, request):
+    """One-line, shell-quoted transport. Never execute through a shell."""
+    if not isinstance(request, dict) or set(request) != {
+            "request_id", "tool", "argv", "cwd", "timeout"}:
+        raise ValueError("invalid request")
+    if request.get("tool") != "greg_exec":
+        raise ValueError("unsupported tool")
+    try:
+        frame = " ".join([
+            "BATON_TOOL_V2", nonce, request["request_id"],
+            str(request["timeout"]), shlex.quote(request["cwd"]), "--",
+            *(shlex.quote(arg) for arg in request["argv"])
+        ])
+    except (TypeError, KeyError) as exc:
+        raise ValueError("invalid request") from exc
+    if parse_assistant_tool_call(frame, nonce) != request:
+        raise ValueError("invalid framed command")
+    return frame
+
 
 def tool_result_message(nonce, request_id, result):
     if not NONCE.fullmatch(nonce) or not REQUEST.fullmatch(request_id):
