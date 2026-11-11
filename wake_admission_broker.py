@@ -33,6 +33,14 @@ CREATE TABLE IF NOT EXISTS admissions (
  state TEXT NOT NULL CHECK(state IN ('admitted','uncertain')),
  created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
+-- A source assistant turn contains one exact BATON_WAKE/BATON_NEXT command.
+-- Prevent cooperating clients from spending the same asserted source turn twice
+-- across different target conversations. This is NOT source authentication:
+-- sender_id remains a caller claim; verified UI source evidence is required.
+CREATE UNIQUE INDEX IF NOT EXISTS admission_unique_message_id
+ ON admissions(message_id);
+CREATE UNIQUE INDEX IF NOT EXISTS admission_unique_asserted_source_turn
+ ON admissions(sender_id, origin_turn_id);
 CREATE TABLE IF NOT EXISTS settings (key TEXT PRIMARY KEY, value TEXT NOT NULL);
 """
 
