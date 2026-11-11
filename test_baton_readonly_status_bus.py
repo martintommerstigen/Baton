@@ -1,5 +1,7 @@
 """Negative controls for read-only Baton host status over the existing bus."""
 import json
+from contextlib import redirect_stdout
+from io import StringIO
 import subprocess
 import tempfile
 from datetime import datetime, timezone
@@ -7,7 +9,7 @@ from pathlib import Path
 from unittest import TestCase
 from unittest.mock import patch
 
-from baton_local_terminal import execute
+from baton_local_terminal import execute, main
 from baton_github_bus import make_response
 
 
@@ -75,3 +77,15 @@ class ReadOnlyInstallStatusBusTests(TestCase):
         self.assertNotIn("token_value", output)
         self.assertNotIn("process_argv", output)
         self.assertNotIn("message_body", output)
+
+    def test_local_cli_exposes_only_the_fixed_status_operation(self):
+        output = StringIO()
+        with patch("baton_install_status.inspect_installation",
+                   return_value=self.report), redirect_stdout(output):
+            rc = main(["install-status", "--workspace", str(self.root)])
+        self.assertEqual(rc, 0)
+        self.assertEqual(json.loads(json.loads(output.getvalue())["output"]), self.report)
+        # A CLI convenience path must not turn into general-purpose execution.
+        with self.assertRaises(SystemExit):
+            with redirect_stdout(StringIO()):
+                main(["exec", "--workspace", str(self.root)])
