@@ -43,3 +43,9 @@ jobs:
           python-version: '3.12'
       - run: python -m compileall -q remote_security tests
       - run: python -W error::ResourceWarning -m unittest discover -s tests -p 'test_*.py' -v
+      # Only on trusted branch pushes: the fork-based SO_PEERCRED regression
+      # needs root to create two *different* real Linux UIDs. Never run PR
+      # supplied code as root, and never use production secrets.
+      - name: Isolated two-UID kernel credential regression
+        if: github.event_name == 'push' && github.repository == 'martintommerstigen/Baton'
+        run: sudo "$(command -v python)" -W error::ResourceWarning -m unittest discover -s tests -p 'test_source_broker.py' -v

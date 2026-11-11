@@ -90,6 +90,11 @@ class SourceBroker:
         if type(source_ids) not in (set, frozenset) or not source_ids:
             raise Rejected("fixed source IDs required")
         self.path = _checked_parent(socket_path)
+        # A checked pathname is not a stable directory capability: it can be
+        # renamed or replaced between validation and AF_UNIX bind().
+        parent = self.path.parent.lstat()
+        self.parent_identity = (parent.st_dev, parent.st_ino)
+        self.parent_fd = None
         self.allowed_uids = frozenset(allowed_uids)
         self.source_ids = frozenset(source_ids)
         self.capture = capture
@@ -97,46 +102,76 @@ class SourceBroker:
         self.sock = None
         self.inode = None
 
+    def _parent_unchanged(self):
+        """Verify that the public pathname still reaches the pinned directory."""
+        try:
+            _checked_parent(str(self.path))
+            current = self.path.parent.lstat()
+        except (OSError, Rejected):
+            return False
+        return (current.st_dev, current.st_ino) == self.parent_identity
+
+    def _stat_pinned(self, directory_fd):
+        return os.stat(self.path.name, dir_fd=directory_fd, follow_symlinks=False)
+
     def start(self):
-        if self.path.exists() or self.path.is_symlink():
-            raise Rejected("socket exists; never unlink or replace an uncertain endpoint")
-        sock = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
+        if self.sock is not None or self.parent_fd is not None:
+            raise Rejected("broker already started")
+        if not self._parent_unchanged():
+            raise Rejected("socket directory replaced before start")
+        # The kernel resolves the socket basename relative to this pinned fd.
+        # /proc/self/fd is Linux-specific, as is SO_PEERCRED above.
+        flags = os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW | getattr(os, "O_CLOEXEC", 0)
+        directory_fd = os.open(self.path.parent, flags)
+        sock = None
         bound_inode = None
         try:
+            directory = os.fstat(directory_fd)
+            if ((directory.st_dev, directory.st_ino) != self.parent_identity
+                    or not self._parent_unchanged()):
+                raise Rejected("socket directory changed during open")
+            try:
+                self._stat_pinned(directory_fd)
+            except FileNotFoundError:
+                pass
+            else:
+                raise Rejected("socket exists; never unlink an uncertain endpoint")
+            sock = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
             old_umask = os.umask(0o117)
             try:
-                sock.bind(str(self.path))
+                sock.bind(f"/proc/self/fd/{directory_fd}/{self.path.name}")
             finally:
                 os.umask(old_umask)
-            # Capture the inode created by THIS bind before any later operation
-            # can fail. A failed chmod/listen must not strand a dead endpoint,
-            # but must never remove an unrelated replacement or stale socket.
-            bound = self.path.lstat()
+            bound = self._stat_pinned(directory_fd)
             if not stat.S_ISSOCK(bound.st_mode) or bound.st_uid != os.geteuid():
                 raise Rejected("unsafe bound socket")
             bound_inode = (bound.st_dev, bound.st_ino)
-            os.chmod(self.path, 0o660)
-            st = self.path.lstat()
+            os.chmod(self.path.name, 0o660, dir_fd=directory_fd, follow_symlinks=False)
+            st = self._stat_pinned(directory_fd)
             if (not stat.S_ISSOCK(st.st_mode) or st.st_uid != os.geteuid()
                     or (st.st_dev, st.st_ino) != bound_inode
                     or st.st_mode & 0o007):
                 raise Rejected("unsafe bound socket")
             sock.listen(4)
             sock.settimeout(1.0)
+            if not self._parent_unchanged():
+                raise Rejected("socket directory moved during startup")
             self.inode = bound_inode
+            self.parent_fd = directory_fd
             self.sock = sock
         except BaseException:
-            sock.close()
+            if sock is not None:
+                sock.close()
             if bound_inode is not None:
                 try:
-                    current = self.path.lstat()
+                    current = self._stat_pinned(directory_fd)
                     if (stat.S_ISSOCK(current.st_mode)
                             and (current.st_dev, current.st_ino) == bound_inode):
-                        self.path.unlink()
+                        os.unlink(self.path.name, dir_fd=directory_fd)
                 except OSError:
-                    # Failure to clean up is fail-closed: the next start()
-                    # refuses an existing/uncertain endpoint, never replaces it.
+                    # An uncertain endpoint is never blindly replaced.
                     pass
+            os.close(directory_fd)
             raise
 
     def _peer_uid(self, conn):
@@ -167,6 +202,10 @@ class SourceBroker:
             raw.extend(part)
         try:
             request = parse_request(bytes(raw), self.source_ids)
+            # A directory can be renamed while an accepted client trickles
+            # bytes. Do not enter a source backend after losing the endpoint.
+            if not self._parent_unchanged():
+                raise Rejected("socket directory moved before backend execution")
             if request["action"] == "capture":
                 result = self.capture(request["source_id"], request["job_id"])
             else:
@@ -183,8 +222,14 @@ class SourceBroker:
         conn.sendall(encoded)
 
     def accept_once(self):
+        if not self._parent_unchanged():
+            raise Rejected("socket directory moved; stop serving")
         conn, _ = self.sock.accept()
         with conn:
+            # The directory may have moved *during* the blocking accept.
+            # Check before reading even a permitted peer's request bytes.
+            if not self._parent_unchanged():
+                return
             try:
                 self._handle(conn)
             except (OSError, TimeoutError, Rejected):
@@ -194,12 +239,18 @@ class SourceBroker:
         if self.sock is not None:
             self.sock.close()
             self.sock = None
-        try:
-            st = self.path.lstat()
-            if stat.S_ISSOCK(st.st_mode) and (st.st_dev, st.st_ino) == self.inode:
-                self.path.unlink()
-        except FileNotFoundError:
-            pass
+        if self.parent_fd is not None:
+            try:
+                st = self._stat_pinned(self.parent_fd)
+                if (self.inode is not None and stat.S_ISSOCK(st.st_mode)
+                        and (st.st_dev, st.st_ino) == self.inode):
+                    os.unlink(self.path.name, dir_fd=self.parent_fd)
+            except FileNotFoundError:
+                pass
+            finally:
+                os.close(self.parent_fd)
+                self.parent_fd = None
+                self.inode = None
 
 
 def main(argv=None):
