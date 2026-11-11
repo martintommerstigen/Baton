@@ -1,0 +1,24 @@
+name: Ronja R24 observer boundary preflight
+on:
+  push:
+    branches:
+      - research/ronja-r24-observer-boundary-2026-11-11
+  pull_request:
+    paths:
+      - remote_security/observer_boundary.py
+      - tests/test_observer_boundary.py
+      - tests/test_observer_boundary_cross_uid.py
+      - .github/workflows/ronja-r24-observer-boundary.yml
+jobs:
+  scoped-negative-controls:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Non-root Linux profile, socket, CDP and namespace negatives
+        run: python3 -m unittest discover -s tests -p 'test_observer_boundary*.py' -v
+      - name: Root must not be treated as a valid observer
+        run: sudo python3 -m unittest discover -s tests -p 'test_observer_boundary*.py' -v
