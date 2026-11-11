@@ -28,3 +28,14 @@ A point-in-time preflight cannot stop a future descriptor transfer. R25 denies t
 **Do not deploy to Greg solely from these tests.** First combine R25 with B1 H23 in a version-pinned authorized tree, under distinct observer/collector/broker UIDs. Check libseccomp and R24 on Greg, deny browser-profile and undeclared CDP Unix access, test live CDP denial and authenticated snapshot success, remove one isolation rule deliberately and require denial. Preserve PAUSE_UI_WRITES and no blind retry. Actual A→B→C must be separately verified.
 
 **Next falsifier:** Can the guarded observer still obtain an AF_INET-connected descriptor through a permitted syscall, or reach CDP through an undeclared AF_UNIX endpoint? If so, retain BLOCKED. No Desktop Commander, credential extraction, UI Send or external contact was used.
+
+
+## Actual test receipts (post-implementation correction)
+
+The first non-root suite passed (4/4), but the **first privileged cross-UID CI failed** because the GitHub checkout is not readable after changing to an unrelated UID. The test was corrected to preload the actual R24 module *before* dropping privileges; no policy bypass was added. A second local control used a test-only R24 stub for isolated prototyping and is **not** counted as an independent repository integration.
+
+- [Exact-head GitHub Actions run 43019534431](https://github.com/martintommerstigen/Baton/actions/runs/43019534431) **SUCCESS** at commit eedc26e: six non-root tests PASS, one privileged-only test SKIP; the separate root runner's **one actual two-UID AF_UNIX test PASS**, plus root-observer rejection PASS. The server and client used real Linux UIDs 29111 and 29112, with synthetic response bytes; this is not Greg.
+- The subsequent [cross-UID test change](../../tests/test_observer_lifetime_guard_cross_uid.py) injects an actual SCM_RIGHTS descriptor from the unconfined broker while the guarded observer uses the real broker_peer recv() path. It requires no extra FD remain in the observer. The kernel test was exercised in an isolated local Linux environment, but its GitHub exact-head CI must be checked separately.
+- [Persistence negatives](../../tests/test_observer_lifetime_guard_persistence.py) confirm the kernel denies pidfd_getfd and preserves socket restrictions after exec, not merely before a simulated restart.
+
+**Status boundaries:** syscall filter and synthetic AF_UNIX query = tested-simulated with real Linux kernel; integration into B1 H23 observer runner = implemented-unverified; Greg/CDP/525/live ChatGPT = blocked. A successful source snapshot is O, not K or I.
