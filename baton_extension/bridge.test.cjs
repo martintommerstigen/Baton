@@ -5,6 +5,7 @@ const vm=require("node:vm");
 const assert=require("node:assert/strict");
 const test=require("node:test");
 const crypto=require("node:crypto").webcrypto;
+const {spawnSync}=require("node:child_process");
 
 const CHAT="6aef828e-0150-83eb-bbac-061f79a8fd4a";
 const NONCE="a".repeat(32);
@@ -99,6 +100,12 @@ test("one explicit activation creates one message in the original chat",async()=
   assert.equal(h.sent.length,1);
   assert.match(h.sent[0],/BATON_TOOL_V2 a{32} [0-9a-f]{32} 15/);
   assert.match(h.sent[0],/bridge-proof-/);
+  const frame=h.sent[0].split("\\n").find(s=>s.startsWith("BATON_TOOL_V2 "));
+  assert.ok(frame, "bootstrap contains exactly one tool line");
+  const verify=spawnSync("python3",["-c",
+    "import shlex,sys; f=shlex.split(sys.argv[1]); assert f[0]=='BATON_TOOL_V2'; assert f[6]=='/usr/bin/python3'; assert f[7]=='-c'; compile(f[8], '<baton-bootstrap>', 'exec')",
+    frame],{encoding:"utf8"});
+  assert.equal(verify.status,0,verify.stderr);
   assert.equal(h.stop.disabled,false);
 });
 
