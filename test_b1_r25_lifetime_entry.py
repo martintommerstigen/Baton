@@ -108,6 +108,30 @@ class LifetimeEntryContract(unittest.TestCase):
 class ActualKernelGate(unittest.TestCase):
     @unittest.skipUnless(sys.platform.startswith("linux") and os.geteuid() != 0,
                          "requires non-root Linux and pinned Ronja R25")
+    def test_ronja_launcher_then_direct_b1_guard_is_safe(self):
+        # Ronja's launcher loads R25 before importing B1 main; H24 main
+        # installs R25 again. Verify this composition on the actual kernel.
+        code = textwrap.dedent("""
+            import errno
+            import socket
+            from run_b1_snapshot_observer import require_lifetime_guard
+            assert require_lifetime_guard() == "lifetime_guard_loaded_not_host_attestation"
+            assert require_lifetime_guard() == "lifetime_guard_loaded_not_host_attestation"
+            try:
+                socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            except OSError as exc:
+                assert exc.errno == errno.EPERM
+            else:
+                raise AssertionError("double guard lost restriction")
+            print("B1_R25_DOUBLE_INSTALL_PASS")
+        """)
+        result = subprocess.run([sys.executable, "-c", code], capture_output=True,
+                                text=True, timeout=20, check=False)
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertIn("B1_R25_DOUBLE_INSTALL_PASS", result.stdout)
+
+    @unittest.skipUnless(sys.platform.startswith("linux") and os.geteuid() != 0,
+                         "requires non-root Linux and pinned Ronja R25")
     def test_b1_entry_installs_persistent_r25_kernel_policy(self):
         code = textwrap.dedent("""
             import errno
