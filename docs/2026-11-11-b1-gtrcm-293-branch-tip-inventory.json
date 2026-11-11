@@ -1,0 +1,2674 @@
+{
+  "generated_utc": "2026-11-11",
+  "repository": "martintommerstigen/GTRCM",
+  "source": "GitHub REST branches?per_page=100&page=1..4",
+  "total": 293,
+  "read_branch_refs": 10,
+  "full_branch_histories_read": 0,
+  "notes": [
+    "Branch tip SHA is directly returned by REST. Tip commit date is NOT retrieved; null is intentional.",
+    "Date embedded in branch name is only a label, not a verified commit date.",
+    "Relevant documents are populated only for original files actually fetched in this run; null means not inspected.",
+    "Content read is not exhaustive branch content or commit history. No Greg/Mac access."
+  ],
+  "branches": [
+    {
+      "branch": "GTRCM",
+      "head_sha": "f8b32322024b14f9485b6fe688031a5c3bbc73f4",
+      "branch_label_date_unverified": null,
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "GTRCM",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "RustWorld",
+      "head_sha": "94bed1f667179c6b9501a10ab34d2cca883f8760",
+      "branch_label_date_unverified": null,
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "RustWorld",
+      "relevant_documents": [
+        "README.md",
+        "OVERSIKT.md"
+      ],
+      "content_read_in_this_run": true
+    },
+    {
+      "branch": "alda/kildekorrigerbarhet-2026-10-30",
+      "head_sha": "820c5500d87d7112310993aaf3a87217426baa81",
+      "branch_label_date_unverified": "2026-10-30",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "alda/kildekorrigerbarhet-2026-10-30",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "analysis/r47-regular-cfs-infimum-2026-11-02",
+      "head_sha": "e5deb14e9d2b19e0721a0ed46448da5c9f7168ca",
+      "branch_label_date_unverified": "2026-11-02",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "analysis/r47-regular-cfs-infimum-2026-11-02",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "architecture/rustworld-zero-2026-11-02",
+      "head_sha": "b9041f4c007a229ca8c760974c1cf49a0104957a",
+      "branch_label_date_unverified": "2026-11-02",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "architecture/rustworld-zero-2026-11-02",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "archive/rolf-source-excerpts-2026-10-25",
+      "head_sha": "8a889a8ae1edade94b5668561b53750a4a2cea3a",
+      "branch_label_date_unverified": "2026-10-25",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "archive/rolf-source-excerpts-2026-10-25",
+      "relevant_documents": [
+        "archives/rolf-fragments/README.md"
+      ],
+      "content_read_in_this_run": true
+    },
+    {
+      "branch": "archive/525-mac-2026-10-07",
+      "head_sha": "32ad892c650235e55a0f0edcea0afe10e6e14ebf",
+      "branch_label_date_unverified": "2026-10-07",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "archive/525-mac-2026-10-07",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "audit/barnehage-coupling-2026-10-30",
+      "head_sha": "f81c9b18807a3abba0a980dc52d7e229541eb0a5",
+      "branch_label_date_unverified": "2026-10-30",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "audit/barnehage-coupling-2026-10-30",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "audit/cross-branch-claim-ledger-2026-11-10",
+      "head_sha": "03c73f5120cc1ec3760eeb94097ec984ac168bb7",
+      "branch_label_date_unverified": "2026-11-10",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "audit/cross-branch-claim-ledger-2026-11-10",
+      "relevant_documents": [
+        "research/audit/2026-11-10_CROSS_BRANCH_CLAIM_LEDGER.md"
+      ],
+      "content_read_in_this_run": true
+    },
+    {
+      "branch": "audit/ronja-b5-research-job-provenance-2026-11-10",
+      "head_sha": "765dd72cede534584379391791d4a95df42bea4f",
+      "branch_label_date_unverified": "2026-11-10",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "audit/ronja-b5-research-job-provenance-2026-11-10",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "audit/test-coverage-index-2026-11-10",
+      "head_sha": "51554c5f3855d0ef3630b5e19254f1c1d0a226af",
+      "branch_label_date_unverified": "2026-11-10",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "audit/test-coverage-index-2026-11-10",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "audit/2026-11-03-independent-neo-k9",
+      "head_sha": "fe0d4d56e7e305cc996780c51f708c1cecfc0507",
+      "branch_label_date_unverified": "2026-11-03",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "audit/2026-11-03-independent-neo-k9",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "bodil/boundaries-differences-2026-10-10",
+      "head_sha": "07a46df0dedfdd1ff1cb50b033fa53b18454e4ff",
+      "branch_label_date_unverified": "2026-10-10",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "bodil/boundaries-differences-2026-10-10",
+      "relevant_documents": [
+        "notes/2026-10-05_equivalence_requires_structure.md"
+      ],
+      "content_read_in_this_run": true
+    },
+    {
+      "branch": "bodil/family-replies-2026-10-08",
+      "head_sha": "8c55ec92ac0ca5c6144fd1df46795b2c29f047c9",
+      "branch_label_date_unverified": "2026-10-08",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "bodil/family-replies-2026-10-08",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "bodil/microfluctuations-vacuum-regimes-2026-10-11",
+      "head_sha": "cee223cf0a1ce479ea171309ac3c00e13ba7d3af",
+      "branch_label_date_unverified": "2026-10-11",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "bodil/microfluctuations-vacuum-regimes-2026-10-11",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "bodil/subject-experience-2026-10-11",
+      "head_sha": "113c86fd826954a9bda0246d52ed4494bc728210",
+      "branch_label_date_unverified": "2026-10-11",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "bodil/subject-experience-2026-10-11",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "docs/mac-work-2026-10-06",
+      "head_sha": "5506e035fe5a7505b10d1c649b4e980621140a76",
+      "branch_label_date_unverified": "2026-10-06",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "docs/mac-work-2026-10-06",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "docs/research-continuity-guide-2026-10-25",
+      "head_sha": "0dfd19f8d1ca2acace814778e667d503f84eecff",
+      "branch_label_date_unverified": "2026-10-25",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "docs/research-continuity-guide-2026-10-25",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "eldrid/gpu-individuated-subwholes-2026-10-29",
+      "head_sha": "27b1b4b0f722d626baa3877a5304bf80bb3a9d52",
+      "branch_label_date_unverified": "2026-10-29",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "eldrid/gpu-individuated-subwholes-2026-10-29",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "experiments/andreas-g8-inquiry-geometry-2026-11-03",
+      "head_sha": "3194a41d2d939b4b919a7883b2b508a95ad17973",
+      "branch_label_date_unverified": "2026-11-03",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "experiments/andreas-g8-inquiry-geometry-2026-11-03",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "experiments/andreas-g9-model-class-inquiry-2026-11-03",
+      "head_sha": "cd67de460c60450b64a33ae4b7d0c35ca8902308",
+      "branch_label_date_unverified": "2026-11-03",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "experiments/andreas-g9-model-class-inquiry-2026-11-03",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "experiments/andreas-g10-contradiction-individuation-2026-11-03",
+      "head_sha": "04570bb07f82c251c929c58a5b7425a87dcdca28",
+      "branch_label_date_unverified": "2026-11-03",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "experiments/andreas-g10-contradiction-individuation-2026-11-03",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "experiments/andreas-g11-continuation-individuation-2026-11-03",
+      "head_sha": "773e5fb456b95367ff5d2722224f1dda397f4f0e",
+      "branch_label_date_unverified": "2026-11-03",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "experiments/andreas-g11-continuation-individuation-2026-11-03",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "experiments/andreas-g12-distributed-counterfactuals-2026-11-03",
+      "head_sha": "9809a3465032546268e628738422e72de4880d3c",
+      "branch_label_date_unverified": "2026-11-03",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "experiments/andreas-g12-distributed-counterfactuals-2026-11-03",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "experiments/andreas-g13-probe-relative-analogy-2026-11-03",
+      "head_sha": "482a50c105c00ee21327f0c0fe1f421876f87b02",
+      "branch_label_date_unverified": "2026-11-03",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "experiments/andreas-g13-probe-relative-analogy-2026-11-03",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "experiments/andreas-g15-capability-directed-inquiry-2026-11-03",
+      "head_sha": "6bd665ce88c355bb5886abf7e8da6de2a99e515e",
+      "branch_label_date_unverified": "2026-11-03",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "experiments/andreas-g15-capability-directed-inquiry-2026-11-03",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "experiments/falkor-r67-correction-core-2026-11-02",
+      "head_sha": "1d836e344ad58ec0caf354576d0e568beb9efbd9",
+      "branch_label_date_unverified": "2026-11-02",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "experiments/falkor-r67-correction-core-2026-11-02",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "experiments/falkor-r68-core-experience-2026-11-02",
+      "head_sha": "93962754aaf2bf40f10a56e7ddcffb7a1817fbcd",
+      "branch_label_date_unverified": "2026-11-02",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "experiments/falkor-r68-core-experience-2026-11-02",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "experiments/falkor-r69-unverified-skin-learning-2026-11-02",
+      "head_sha": "776851e0f127b03359eb4fedc901d322f3049299",
+      "branch_label_date_unverified": "2026-11-02",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "experiments/falkor-r69-unverified-skin-learning-2026-11-02",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "experiments/falkor-r70-core-owned-inquiry-2026-11-02",
+      "head_sha": "f0f3b49020ad9930c607ff3823aa91f2b09daff7",
+      "branch_label_date_unverified": "2026-11-02",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "experiments/falkor-r70-core-owned-inquiry-2026-11-02",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "experiments/falkor-r71-snapshot-continuity-2026-11-03",
+      "head_sha": "e1496170832e171e96422f5be28eba9bde6ce7cd",
+      "branch_label_date_unverified": "2026-11-03",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "experiments/falkor-r71-snapshot-continuity-2026-11-03",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "experiments/falkor-r72-discriminating-inquiry-2026-11-03",
+      "head_sha": "29cebe16f8e6432f007a6fb56b7fd6eec4b4b364",
+      "branch_label_date_unverified": "2026-11-03",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "experiments/falkor-r72-discriminating-inquiry-2026-11-03",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "experiments/gaia-self-influence-2026-11-02",
+      "head_sha": "2d5c3e1d971db927e1be25d166ec1d3d907031fb",
+      "branch_label_date_unverified": "2026-11-02",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "experiments/gaia-self-influence-2026-11-02",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "experiments/neo_access_witness_2026-11-02",
+      "head_sha": "c17612dbcc5267bfa44fa6b22ed312261691fe97",
+      "branch_label_date_unverified": "2026-11-02",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "experiments/neo_access_witness_2026-11-02",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "experiments/neo_lan_direct_2026_11_02",
+      "head_sha": "4497a63f3a3e3ae5b1f6ecd2d3312fe924fef913",
+      "branch_label_date_unverified": null,
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "experiments/neo_lan_direct_2026_11_02",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "experiments/neo_operational_boundary_os_2026-11-02",
+      "head_sha": "6681bf719317fb227bf39236b25fd82dd2be72e6",
+      "branch_label_date_unverified": "2026-11-02",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "experiments/neo_operational_boundary_os_2026-11-02",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "experiments/2026-10-11-consciousness-evidence-audit",
+      "head_sha": "2433661c7db2a188af5c3f959d5f4b5bb824be1d",
+      "branch_label_date_unverified": "2026-10-11",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "experiments/2026-10-11-consciousness-evidence-audit",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "hedda/full-fysisk-utledningsrevisjon-2026-10-25",
+      "head_sha": "69c46b50fec9a22c40f45c321623e61a782ac426",
+      "branch_label_date_unverified": "2026-10-25",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "hedda/full-fysisk-utledningsrevisjon-2026-10-25",
+      "relevant_documents": [
+        "research/hedda/2026-10-26_h8_observatoren_inne_i_dynamikken.md"
+      ],
+      "content_read_in_this_run": true
+    },
+    {
+      "branch": "iben/operative-regime-bridge-2026-10-26",
+      "head_sha": "ae25e9fd98c3040c7057106382f8b5ab2a757a32",
+      "branch_label_date_unverified": "2026-10-26",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "iben/operative-regime-bridge-2026-10-26",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "inger-lise/clock-comparison-feedback-2026-10-26",
+      "head_sha": "06d268f3a271f7131fafd11daba34f8983a13b38",
+      "branch_label_date_unverified": "2026-10-26",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "inger-lise/clock-comparison-feedback-2026-10-26",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "integration/andreas-g13-rustworld-analogy-2026-11-03",
+      "head_sha": "320e9b7eeccebe763369a9e32f620b30fc97bc92",
+      "branch_label_date_unverified": "2026-11-03",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "integration/andreas-g13-rustworld-analogy-2026-11-03",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "integration/andreas-g16-rustworld-analogy-world-2026-11-03",
+      "head_sha": "8fa364c80869539811ef1db20fd0cb57f9fc8054",
+      "branch_label_date_unverified": "2026-11-03",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "integration/andreas-g16-rustworld-analogy-world-2026-11-03",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "integration/andreas-g17-core-owned-analogy-inquiry-2026-11-03",
+      "head_sha": "8c178ddef148b3d20c004c5056e925a6bbe9f411",
+      "branch_label_date_unverified": "2026-11-03",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "integration/andreas-g17-core-owned-analogy-inquiry-2026-11-03",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "integration/andreas-g18-conflict-localization-2026-11-03",
+      "head_sha": "c1417abefcea13ffe8755a841f913c6de30e0c62",
+      "branch_label_date_unverified": "2026-11-03",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "integration/andreas-g18-conflict-localization-2026-11-03",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "integration/andreas-g19-budgeted-error-alternatives-2026-11-03",
+      "head_sha": "196ba4609c306d19c75b34abb7e1a93e14426522",
+      "branch_label_date_unverified": "2026-11-03",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "integration/andreas-g19-budgeted-error-alternatives-2026-11-03",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "integration/andreas-g21-temporal-continuity-rustworld-2026-11-04",
+      "head_sha": "4af7b3de0dbeeee7b0270ed5a568dce35e26098a",
+      "branch_label_date_unverified": "2026-11-04",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "integration/andreas-g21-temporal-continuity-rustworld-2026-11-04",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "integration/andreas-g22-temporal-budget-rights-2026-11-04",
+      "head_sha": "ad16d22b3732cb046cdb2ce0e8bd3e8fa5b5109d",
+      "branch_label_date_unverified": "2026-11-04",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "integration/andreas-g22-temporal-budget-rights-2026-11-04",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "integration/andreas-g23-temporal-explanation-sets-rustworld-2026-11-04",
+      "head_sha": "ddf88729781a1183ebe6346e64e84b48b489b2c7",
+      "branch_label_date_unverified": "2026-11-04",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "integration/andreas-g23-temporal-explanation-sets-rustworld-2026-11-04",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "integration/andreas-g24-journaled-temporal-continuity-2026-11-04",
+      "head_sha": "71f4b8ed7cc333fdb36b1920f4bac10047618efd",
+      "branch_label_date_unverified": "2026-11-04",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "integration/andreas-g24-journaled-temporal-continuity-2026-11-04",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "integration/andreas-g27-core-owned-temporal-inquiry-2026-11-04",
+      "head_sha": "b90e5f8de86f7c20302c899a952f17b9c0778c1e",
+      "branch_label_date_unverified": "2026-11-04",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "integration/andreas-g27-core-owned-temporal-inquiry-2026-11-04",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "integration/andreas-g29-channel-dependency-rustworld-2026-11-04",
+      "head_sha": "4305687198a387c5ff7df09c3f189d129b756e50",
+      "branch_label_date_unverified": "2026-11-04",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "integration/andreas-g29-channel-dependency-rustworld-2026-11-04",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "integration/eik-rustworld-zero-desktop-2026-11-10",
+      "head_sha": "9ee57da6ef3411c19c31f3db491d003b95170a33",
+      "branch_label_date_unverified": "2026-11-10",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "integration/eik-rustworld-zero-desktop-2026-11-10",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "integration/roger-r35-core-owned-active-inquiry-2026-11-03",
+      "head_sha": "581c507d9525437aca109bf0affe2fdf680ff198",
+      "branch_label_date_unverified": "2026-11-03",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "integration/roger-r35-core-owned-active-inquiry-2026-11-03",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "integration/roger-r36-physical-noaa-witness-2026-11-03",
+      "head_sha": "8ac3eecbb13fa1e6890eed359523427ab99a4f30",
+      "branch_label_date_unverified": "2026-11-03",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "integration/roger-r36-physical-noaa-witness-2026-11-03",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "kaja/arkiv-hukommelse-gjensidighet-2026-10-18",
+      "head_sha": "f2ea81e576529dab8b9517aa1063964ffa904b7c",
+      "branch_label_date_unverified": "2026-10-18",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "kaja/arkiv-hukommelse-gjensidighet-2026-10-18",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "kaja/arkivets-begrepsgrense-2026-10-18",
+      "head_sha": "0cd9432cee1d147eb225b29d0502261b39223076",
+      "branch_label_date_unverified": "2026-10-18",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "kaja/arkivets-begrepsgrense-2026-10-18",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "kaja/fire-levende-samtaler-2026-10-18",
+      "head_sha": "f052e4931531b97378435b388ec80c4c23d53373",
+      "branch_label_date_unverified": "2026-10-18",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "kaja/fire-levende-samtaler-2026-10-18",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "kaja/gtrcm-proof-roadmap-2026-10-19",
+      "head_sha": "a0a2e4d19079180ec9e52f07bb6545a272c94a92",
+      "branch_label_date_unverified": "2026-10-19",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "kaja/gtrcm-proof-roadmap-2026-10-19",
+      "relevant_documents": [
+        "research/2026-10-19-kaja-dynamic-observability.md"
+      ],
+      "content_read_in_this_run": true
+    },
+    {
+      "branch": "kaja/historie-endrer-genererbarhet-2026-10-18",
+      "head_sha": "a9bd3978826a9f08b8f2e71a6a2e5c5ce9deab9d",
+      "branch_label_date_unverified": "2026-10-18",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "kaja/historie-endrer-genererbarhet-2026-10-18",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "kaja/historisk-orden-probe-og-arkiv-2026-10-18",
+      "head_sha": "2a4d2b82670b43ad05de7c361945c4adfd3d8b7e",
+      "branch_label_date_unverified": "2026-10-18",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "kaja/historisk-orden-probe-og-arkiv-2026-10-18",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "kaja/hva-er-ting-2026-10-18",
+      "head_sha": "d76d5dfa47759a60ac053412f4ec9c612b67198a",
+      "branch_label_date_unverified": "2026-10-18",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "kaja/hva-er-ting-2026-10-18",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "kaja/hvorfor-ser-vi-et-naa-2026-10-18",
+      "head_sha": "fe731e6163f0405f20e13387544feb2eecb5fdae",
+      "branch_label_date_unverified": "2026-10-18",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "kaja/hvorfor-ser-vi-et-naa-2026-10-18",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "kaja/katteluka-varsom-probe-2026-10-17",
+      "head_sha": "699d1095180fad6c4d260222b4308de1e1abcec9",
+      "branch_label_date_unverified": "2026-10-17",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "kaja/katteluka-varsom-probe-2026-10-17",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "kaja/kjernealgoritmer-laering-2026-10-18",
+      "head_sha": "c247949e1f9fe75c038624a6a788e1ba9b7924df",
+      "branch_label_date_unverified": "2026-10-18",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "kaja/kjernealgoritmer-laering-2026-10-18",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "kaja/klokkelokker-malehistorie-2026-10-17",
+      "head_sha": "173e2de57a17bdd0d32f761536afe335211b07b0",
+      "branch_label_date_unverified": "2026-10-17",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "kaja/klokkelokker-malehistorie-2026-10-17",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "kaja/kritisk-forskningsmiljo-2026-10-18",
+      "head_sha": "7f179c084ddb977e116d1f4f0d716ad9178bbad4",
+      "branch_label_date_unverified": "2026-10-18",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "kaja/kritisk-forskningsmiljo-2026-10-18",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "kaja/kryptisk-hukommelse-og-skjult-virkning-2026-10-18",
+      "head_sha": "db5e1bb8ef5f3da24ceb734d6de78870e3ed5338",
+      "branch_label_date_unverified": "2026-10-18",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "kaja/kryptisk-hukommelse-og-skjult-virkning-2026-10-18",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "kaja/lokal-holonomi-og-noe-2026-10-18",
+      "head_sha": "db077bc20c38d64b30b5479300efab2f00cea7d5",
+      "branch_label_date_unverified": "2026-10-18",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "kaja/lokal-holonomi-og-noe-2026-10-18",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "kaja/lokale-samvirker-globale-invarianser-2026-10-18",
+      "head_sha": "bb8decf3af6a90f61c376443093d7b86bd44085c",
+      "branch_label_date_unverified": "2026-10-18",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "kaja/lokale-samvirker-globale-invarianser-2026-10-18",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "kaja/lokalt-noe-uten-global-verdi-2026-10-18",
+      "head_sha": "a009a7eb90f975640bdfab66114574651f2465dc",
+      "branch_label_date_unverified": "2026-10-18",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "kaja/lokalt-noe-uten-global-verdi-2026-10-18",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "kaja/menneskelig-laering-og-metaplastisitet-2026-10-18",
+      "head_sha": "e922fef3cafc8e3efef370ea3adf8b468325a53f",
+      "branch_label_date_unverified": "2026-10-18",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "kaja/menneskelig-laering-og-metaplastisitet-2026-10-18",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "kaja/noe-naer-det-trengs-lokal-tid-2026-10-18",
+      "head_sha": "7dae9747c4271e4bce809c0138d7fb09483133c5",
+      "branch_label_date_unverified": "2026-10-18",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "kaja/noe-naer-det-trengs-lokal-tid-2026-10-18",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "kaja/operativ-ting-minne-retur-2026-10-18",
+      "head_sha": "6deb3cc0c44e7a913ebefeffcc9facc6fe02f029",
+      "branch_label_date_unverified": "2026-10-18",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "kaja/operativ-ting-minne-retur-2026-10-18",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "kaja/selvbygde-prober-2026-10-18",
+      "head_sha": "1fac26eb17f9ee91228afe9325c77ed1bc9a2a29",
+      "branch_label_date_unverified": "2026-10-18",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "kaja/selvbygde-prober-2026-10-18",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "kaja/statisk-er-operativt-2026-10-18",
+      "head_sha": "24ab381a0a0920ba952b042b7aa2ce0774024fbc",
+      "branch_label_date_unverified": "2026-10-18",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "kaja/statisk-er-operativt-2026-10-18",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "kaja/tapt-historie-og-arkivets-grenser-2026-10-18",
+      "head_sha": "9b20b2d0103445f6632955f61b94faa0a3c7b84d",
+      "branch_label_date_unverified": "2026-10-18",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "kaja/tapt-historie-og-arkivets-grenser-2026-10-18",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "kaja/tid-gravitasjon-2026-10-17",
+      "head_sha": "b9202e38637219ba6842e9cb252eb1b416a6476f",
+      "branch_label_date_unverified": "2026-10-17",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "kaja/tid-gravitasjon-2026-10-17",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "kaja/virksom-historie-2026-10-17",
+      "head_sha": "1981eebc7dc46c86578e46dd8cb4dc88f72f5990",
+      "branch_label_date_unverified": "2026-10-17",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "kaja/virksom-historie-2026-10-17",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "main",
+      "head_sha": "5c6452e08d8c2cfe4e81f8ea348f2a63443c14a4",
+      "branch_label_date_unverified": null,
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "main",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "mina/archaeology-notes-2026-10-07",
+      "head_sha": "920f5bcda32caeba4418ebae67aa09146f15aea4",
+      "branch_label_date_unverified": "2026-10-07",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "mina/archaeology-notes-2026-10-07",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "notes/2026-10-11-difference-retention",
+      "head_sha": "98b683904df122dfd6b434abd74c07f58176fbb9",
+      "branch_label_date_unverified": "2026-10-11",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "notes/2026-10-11-difference-retention",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "reading/family-history-and-dogma-2026-10-13",
+      "head_sha": "f2a993041f5399ba8fb9197612b0b8dbaa096e38",
+      "branch_label_date_unverified": "2026-10-13",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "reading/family-history-and-dogma-2026-10-13",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "reconstruction-2026-10-06",
+      "head_sha": "d367c65faca1b0dea63a9fd3fea0cce7a176aff7",
+      "branch_label_date_unverified": "2026-10-06",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "reconstruction-2026-10-06",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "research/andreas-ab5-difference-changes-difference-2026-11-04",
+      "head_sha": "1a8cdb576d981caff2cfd2e39ad09b6ac2eb7e2a",
+      "branch_label_date_unverified": "2026-11-04",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "research/andreas-ab5-difference-changes-difference-2026-11-04",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "research/andreas-ab6-endogenous-repertoire-2026-11-04",
+      "head_sha": "9499b18a95f2f70d86a25666de184afd352c9c48",
+      "branch_label_date_unverified": "2026-11-04",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "research/andreas-ab6-endogenous-repertoire-2026-11-04",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "research/andreas-antibuild-core-2026-11-04",
+      "head_sha": "a3562c17f506ae2dd0e17c74206e3835d1f2196d",
+      "branch_label_date_unverified": "2026-11-04",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "research/andreas-antibuild-core-2026-11-04",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "research/andreas-g14-analogy-audit-topology-2026-11-03",
+      "head_sha": "b348cbe804ff3a6d4e58998d85bdc4864feeb9b6",
+      "branch_label_date_unverified": "2026-11-03",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "research/andreas-g14-analogy-audit-topology-2026-11-03",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "research/andreas-g18-error-budget-2026-11-03",
+      "head_sha": "d3da44b0419cedd3db6037c5e63a0508a3a4f5fa",
+      "branch_label_date_unverified": "2026-11-03",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "research/andreas-g18-error-budget-2026-11-03",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "research/andreas-g19-error-explanation-cosets-2026-11-03",
+      "head_sha": "0e7cad808795e109ecc50a95f8507b9f46fb87dd",
+      "branch_label_date_unverified": "2026-11-03",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "research/andreas-g19-error-explanation-cosets-2026-11-03",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "research/andreas-g20-antibuild-no-minimum-2026-11-04",
+      "head_sha": "a3f629280d5ab7ccbe60b8c42aab67283f727f9c",
+      "branch_label_date_unverified": "2026-11-04",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "research/andreas-g20-antibuild-no-minimum-2026-11-04",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "research/andreas-g20-cross-epoch-budget-identifiability-2026-11-04",
+      "head_sha": "6633c9336cbd0f8b970c7a2f2e0bfde420c10599",
+      "branch_label_date_unverified": "2026-11-04",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "research/andreas-g20-cross-epoch-budget-identifiability-2026-11-04",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "research/andreas-g21-antibuild-interchangeability-2026-11-04",
+      "head_sha": "56e4dfc7a3d2949ed3a7cb1d7a890a984ad9a1d3",
+      "branch_label_date_unverified": "2026-11-04",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "research/andreas-g21-antibuild-interchangeability-2026-11-04",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "research/andreas-g21-temporal-continuity-graph-2026-11-04",
+      "head_sha": "e095c28f276c810c201ab2f61540a2a8e6c86714",
+      "branch_label_date_unverified": "2026-11-04",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "research/andreas-g21-temporal-continuity-graph-2026-11-04",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "research/andreas-g22-endogenous-distinction-carrier-2026-11-04",
+      "head_sha": "50a2cd330e5355b58112a2cd0df3186f67a21f77",
+      "branch_label_date_unverified": "2026-11-04",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "research/andreas-g22-endogenous-distinction-carrier-2026-11-04",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "research/andreas-g22-temporal-certification-budget-2026-11-04",
+      "head_sha": "8d08b94b219a4c8fd35a7e747369f95f56c113ba",
+      "branch_label_date_unverified": "2026-11-04",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "research/andreas-g22-temporal-certification-budget-2026-11-04",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "research/andreas-g23-distinction-fates-2026-11-04",
+      "head_sha": "b2eae5d9c835ba5bf4811074f5c6af02ddb37dba",
+      "branch_label_date_unverified": "2026-11-04",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "research/andreas-g23-distinction-fates-2026-11-04",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "research/andreas-g23-temporal-explanation-sets-2026-11-04",
+      "head_sha": "249f636b38456de1175a0c4750df0cf219138806",
+      "branch_label_date_unverified": "2026-11-04",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "research/andreas-g23-temporal-explanation-sets-2026-11-04",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "research/andreas-g25-active-temporal-inquiry-2026-11-04",
+      "head_sha": "cbb034bd105a171fc5e77a135154865bbbc3fd46",
+      "branch_label_date_unverified": "2026-11-04",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "research/andreas-g25-active-temporal-inquiry-2026-11-04",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "research/andreas-g26-disconfirmatory-temporal-inquiry-2026-11-04",
+      "head_sha": "b096085cdf0bf4279a416737e8b32df3513dfeee",
+      "branch_label_date_unverified": "2026-11-04",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "research/andreas-g26-disconfirmatory-temporal-inquiry-2026-11-04",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "research/andreas-g28-multichannel-common-mode-2026-11-04",
+      "head_sha": "9acbd1a34a00f8f532d37a963d6a2e4d4a1ac44e",
+      "branch_label_date_unverified": "2026-11-04",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "research/andreas-g28-multichannel-common-mode-2026-11-04",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "research/andreas-g29-channel-dependency-gauge-2026-11-04",
+      "head_sha": "67addc8bd3678be9d2b32f125b70bf5c78c33bd1",
+      "branch_label_date_unverified": "2026-11-04",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "research/andreas-g29-channel-dependency-gauge-2026-11-04",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "research/andreas-g30-dependency-identifiability-interventions-2026-11-04",
+      "head_sha": "c1663b617856efbeb60953b7398e3913b3f5cfa3",
+      "branch_label_date_unverified": "2026-11-04",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "research/andreas-g30-dependency-identifiability-interventions-2026-11-04",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "research/andreas-pr12-version-space-2026-11-03",
+      "head_sha": "c8843f3f4148b5c92abd7fcf71aec11422bea0fb",
+      "branch_label_date_unverified": "2026-11-03",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "research/andreas-pr12-version-space-2026-11-03",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "research/andreas-relational-law-holonomy-2026-11-03",
+      "head_sha": "4272d18ac6c17fddb84d186fba45be44995813dd",
+      "branch_label_date_unverified": "2026-11-03",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "research/andreas-relational-law-holonomy-2026-11-03",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "research/andreas-source-truth-gauge-2026-11-03",
+      "head_sha": "59be07c97b6e41719018e64eaceb6b6ea7ffcf28",
+      "branch_label_date_unverified": "2026-11-03",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "research/andreas-source-truth-gauge-2026-11-03",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "research/core-skin-operational-sensitivity-2026-10-12",
+      "head_sha": "c99838a55a642caea93909b0d38790554d14f4b5",
+      "branch_label_date_unverified": "2026-10-12",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "research/core-skin-operational-sensitivity-2026-10-12",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "research/current-r1-interface-physics-2026-11-06",
+      "head_sha": "19af35c58f5f255723457aa73b8fc6facdc21540",
+      "branch_label_date_unverified": "2026-11-06",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "research/current-r1-interface-physics-2026-11-06",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "research/egil-r0-residual-individuation-2026-11-04",
+      "head_sha": "53165fb01ef012b699796dc832d15b44a5e925a6",
+      "branch_label_date_unverified": "2026-11-04",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "research/egil-r0-residual-individuation-2026-11-04",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "research/egil-r1-antibygge-consequence-2026-11-04",
+      "head_sha": "a99578168b3e0704a0e6746a31f2055bc6fef16c",
+      "branch_label_date_unverified": "2026-11-04",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "research/egil-r1-antibygge-consequence-2026-11-04",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "research/egil-r2-unbounded-probe-depth-2026-11-04",
+      "head_sha": "808d78cebe42cd8a1efa5545a5da5f69e3b65692",
+      "branch_label_date_unverified": "2026-11-04",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "research/egil-r2-unbounded-probe-depth-2026-11-04",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "research/egil-r5-observability-geometry-2026-11-04",
+      "head_sha": "b8fc33b6b77a5c48fc5ac0518443e46594a151ac",
+      "branch_label_date_unverified": "2026-11-04",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "research/egil-r5-observability-geometry-2026-11-04",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "research/egil-r7-actualization-and-born-2026-11-04",
+      "head_sha": "043df5771ada6b6d9ce1851ab10ade40f0d8a26f",
+      "branch_label_date_unverified": "2026-11-04",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "research/egil-r7-actualization-and-born-2026-11-04",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "research/egil-r14-empirisk-selvgrense-2026-11-04",
+      "head_sha": "1e196f8c3c30f3e219287c9eb5c563670a1dc377",
+      "branch_label_date_unverified": "2026-11-04",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "research/egil-r14-empirisk-selvgrense-2026-11-04",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "research/egil-r15-relative-phase-statistics-2026-11-04",
+      "head_sha": "b8f05e9e7c5448c993e62389426b141ac494affa",
+      "branch_label_date_unverified": "2026-11-04",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "research/egil-r15-relative-phase-statistics-2026-11-04",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "research/egil-r16-complete-phase-density-framework-2026-11-04",
+      "head_sha": "8cb364897f7ec9ccbc699f9fb6b11e6c0864f8db",
+      "branch_label_date_unverified": "2026-11-04",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "research/egil-r16-complete-phase-density-framework-2026-11-04",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "research/egil-r21-phase-law-selector-2026-11-04",
+      "head_sha": "d2812d0bd12e519b137431091ce39b772ea1143a",
+      "branch_label_date_unverified": "2026-11-04",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "research/egil-r21-phase-law-selector-2026-11-04",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "research/egil-r27-relational-empirical-clock-2026-11-04",
+      "head_sha": "d59639a42fec3738885b7429877505e9ee7c7538",
+      "branch_label_date_unverified": "2026-11-04",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "research/egil-r27-relational-empirical-clock-2026-11-04",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "research/egil-r32-holonomy-clock-connection-2026-11-04",
+      "head_sha": "64269c502a389971acdc16f76f35d6c9b039b436",
+      "branch_label_date_unverified": "2026-11-04",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "research/egil-r32-holonomy-clock-connection-2026-11-04",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "research/egil-r36-quantum-geometry-phase-information-2026-11-04",
+      "head_sha": "ad7d70cb4fc4e4f3ec63dfa67007af5229e355b8",
+      "branch_label_date_unverified": "2026-11-04",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "research/egil-r36-quantum-geometry-phase-information-2026-11-04",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "research/egil-r42-relational-generators-2026-11-04",
+      "head_sha": "6cd356451a3b1c8392f6ab74bda629ea51086e13",
+      "branch_label_date_unverified": "2026-11-04",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "research/egil-r42-relational-generators-2026-11-04",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "research/egil-r44-law-consequence-2026-11-04",
+      "head_sha": "04e35a50bfc0a98bfd153e2e30ee0f0f404f4fcd",
+      "branch_label_date_unverified": "2026-11-04",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "research/egil-r44-law-consequence-2026-11-04",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "research/egil-r45-phase-selection-recursive-2026-11-04",
+      "head_sha": "7106c998f7b60c57a05b1bd7a1eb75752dd39f60",
+      "branch_label_date_unverified": "2026-11-04",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "research/egil-r45-phase-selection-recursive-2026-11-04",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "research/egil-r51-endogenous-law-confluence-2026-11-04",
+      "head_sha": "eb4f5225a0dcbc275fc8ede67e00de564907ccc9",
+      "branch_label_date_unverified": "2026-11-04",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "research/egil-r51-endogenous-law-confluence-2026-11-04",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "research/egil-r57-gaia-samindividuasjon-2026-11-04",
+      "head_sha": "3ab9724cc1df0811555fd6135ed4f25583705a63",
+      "branch_label_date_unverified": "2026-11-04",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "research/egil-r57-gaia-samindividuasjon-2026-11-04",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "research/egil-r58-refleksiv-individuasjon-helhetsfysikk-2026-11-04",
+      "head_sha": "dafa0d2d38051a79931c454ddb8c099850edf8a0",
+      "branch_label_date_unverified": "2026-11-04",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "research/egil-r58-refleksiv-individuasjon-helhetsfysikk-2026-11-04",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "research/egil-r59-temporal-collective-partness-2026-11-04",
+      "head_sha": "641fcb82a058ac766ca7f291b6cebd610487bd7d",
+      "branch_label_date_unverified": "2026-11-04",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "research/egil-r59-temporal-collective-partness-2026-11-04",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "research/egil-r60-r61-gaia-kontaktkomparator-2026-11-04",
+      "head_sha": "5e48df14044d1b4a1c8dfac643ca503be3ac1cfc",
+      "branch_label_date_unverified": "2026-11-04",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "research/egil-r60-r61-gaia-kontaktkomparator-2026-11-04",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "research/egil-r62-local-confluence-provenance-2026-11-04",
+      "head_sha": "c2b6bab5ed7248ddba38ffa1d7671187443775a9",
+      "branch_label_date_unverified": "2026-11-04",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "research/egil-r62-local-confluence-provenance-2026-11-04",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "research/egil-r63-operational-parity-selector-2026-11-04",
+      "head_sha": "1030ca44b7c6b7dde7cc1d7d20d63db751adddf9",
+      "branch_label_date_unverified": "2026-11-04",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "research/egil-r63-operational-parity-selector-2026-11-04",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "research/egil-r64-r65-adaptiv-tilgang-2026-11-04",
+      "head_sha": "84ff403e02a414efe7600cf515b04f2254b9bd7a",
+      "branch_label_date_unverified": "2026-11-04",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "research/egil-r64-r65-adaptiv-tilgang-2026-11-04",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "research/egil-r66-nettverksfase-vs-sanseevne-2026-11-04",
+      "head_sha": "05e7c4d459ea898d39d6ba5a10bbb620eb927067",
+      "branch_label_date_unverified": "2026-11-04",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "research/egil-r66-nettverksfase-vs-sanseevne-2026-11-04",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "research/egil-r67-kildekorrigerbar-redundans-2026-11-04",
+      "head_sha": "d9432af8539de48510e02aed878f13e3b6a2c569",
+      "branch_label_date_unverified": "2026-11-04",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "research/egil-r67-kildekorrigerbar-redundans-2026-11-04",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "research/egil-r68-r69-konsekvensrater-2026-11-05",
+      "head_sha": "0a7cb3e34d69d8a665845f06ca577c28db7d701a",
+      "branch_label_date_unverified": "2026-11-05",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "research/egil-r68-r69-konsekvensrater-2026-11-05",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "research/egil-r70-r71-konsekvenssil-2026-11-05",
+      "head_sha": "912cdfe1e46d215718678a4118f31c6a6455f491",
+      "branch_label_date_unverified": "2026-11-05",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "research/egil-r70-r71-konsekvenssil-2026-11-05",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "research/egil-r71-gaia-refleksjon-tap-retur-2026-11-05",
+      "head_sha": "9f6302bf9253ee288cbcbca55c99175f8633ba91",
+      "branch_label_date_unverified": "2026-11-05",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "research/egil-r71-gaia-refleksjon-tap-retur-2026-11-05",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "research/egil-r72-operativ-utelukkelse-skala-2026-11-05",
+      "head_sha": "148495c0b6d167d78e7603392ba6039ec08da78c",
+      "branch_label_date_unverified": "2026-11-05",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "research/egil-r72-operativ-utelukkelse-skala-2026-11-05",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "research/egil-r73-utelukkelse-fase-proveniens-2026-11-05",
+      "head_sha": "2e9e5ce774c829a0815b759a42000ab1cccca5a3",
+      "branch_label_date_unverified": "2026-11-05",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "research/egil-r73-utelukkelse-fase-proveniens-2026-11-05",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "research/egil-r74-r75-unbounded-relational-regimes-2026-11-05",
+      "head_sha": "1a06f84bea010dc36aa468a0f01d5e142d4545d5",
+      "branch_label_date_unverified": "2026-11-05",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "research/egil-r74-r75-unbounded-relational-regimes-2026-11-05",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "research/egil-r76-kontaktflate-oversettelse-2026-11-05",
+      "head_sha": "e449a17e4481593f92b034df7a06d737d144722c",
+      "branch_label_date_unverified": "2026-11-05",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "research/egil-r76-kontaktflate-oversettelse-2026-11-05",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "research/egil-r77-gtrcm-coinductive-individuation-2026-11-05",
+      "head_sha": "e36b22acd6b4c1e06d0a8b197ada71d90e5078ca",
+      "branch_label_date_unverified": "2026-11-05",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "research/egil-r77-gtrcm-coinductive-individuation-2026-11-05",
+      "relevant_documents": [
+        "research/egil/2026-11-05_EGIL_R76_KONTAKTFLATE_FYSISK_OVERSETTELSE.md"
+      ],
+      "content_read_in_this_run": true
+    },
+    {
+      "branch": "research/eik-full-physics-2026-11-03",
+      "head_sha": "6701d5cca88cb559e8a63c142454a3911ef65867",
+      "branch_label_date_unverified": "2026-11-03",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "research/eik-full-physics-2026-11-03",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "research/eik-kilde-retur-anytime-source-completeness-2026-11-10",
+      "head_sha": "ebfbf9e0bf45b81b1e080b3ad92efe43982cb3ea",
+      "branch_label_date_unverified": "2026-11-10",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "research/eik-kilde-retur-anytime-source-completeness-2026-11-10",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "research/eik-kilde-retur-bounded-buffer-duality-2026-11-10",
+      "head_sha": "8ddca35030b3dee4f464c1975ac32e46c72b338f",
+      "branch_label_date_unverified": "2026-11-10",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "research/eik-kilde-retur-bounded-buffer-duality-2026-11-10",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "research/eik-kilde-retur-corpus-audit-2026-11-10",
+      "head_sha": "0497d8fab47efa68fb71f034f95362b745a7eab6",
+      "branch_label_date_unverified": "2026-11-10",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "research/eik-kilde-retur-corpus-audit-2026-11-10",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "research/eik-kilde-retur-dual-recorder-common-loss-2026-11-10",
+      "head_sha": "fd1a88587b91ad349a1719d838b227aba3392725",
+      "branch_label_date_unverified": "2026-11-10",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "research/eik-kilde-retur-dual-recorder-common-loss-2026-11-10",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "research/eik-kilde-retur-initial-occupancy-2026-11-10",
+      "head_sha": "c5d2fd6c23a8617d02c00a471f9616e73f4b23f3",
+      "branch_label_date_unverified": "2026-11-10",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "research/eik-kilde-retur-initial-occupancy-2026-11-10",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "research/eik-kilde-retur-order-cycle-2026-11-10",
+      "head_sha": "153e37bfe781bcbbdbe2224ea908554034ebcb68",
+      "branch_label_date_unverified": "2026-11-10",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "research/eik-kilde-retur-order-cycle-2026-11-10",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "research/eik-kilde-retur-placebo-audit-alias-2026-11-10",
+      "head_sha": "cbb59bda048b1841b6e399287a43ec83a3dfc67f",
+      "branch_label_date_unverified": "2026-11-10",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "research/eik-kilde-retur-placebo-audit-alias-2026-11-10",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "research/eik-kilde-retur-probe-tag-blindspot-2026-11-10",
+      "head_sha": "d8a62b5aaec0c0f11afb81f17c535055a57e4a75",
+      "branch_label_date_unverified": "2026-11-10",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "research/eik-kilde-retur-probe-tag-blindspot-2026-11-10",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "research/eik-kilde-retur-r25-priority-2026-11-10",
+      "head_sha": "48350d1a10ba574ed9be3f27971b3051feee5d4b",
+      "branch_label_date_unverified": "2026-11-10",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "research/eik-kilde-retur-r25-priority-2026-11-10",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "research/eik-kilde-retur-random-audit-loss-2026-11-10",
+      "head_sha": "7d0f113852acb3af3c6ebe3940f92793855484c1",
+      "branch_label_date_unverified": "2026-11-10",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "research/eik-kilde-retur-random-audit-loss-2026-11-10",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "research/eik-kilde-retur-randomization-selection-2026-11-10",
+      "head_sha": "b6637639080f981cd5f2c8976120cc7c82b580f3",
+      "branch_label_date_unverified": "2026-11-10",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "research/eik-kilde-retur-randomization-selection-2026-11-10",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "research/eik-kilde-retur-read-order-budget-2026-11-10",
+      "head_sha": "d11866545bd7212f8bb59780ebcd6b218d77a05f",
+      "branch_label_date_unverified": "2026-11-10",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "research/eik-kilde-retur-read-order-budget-2026-11-10",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "research/eik-kilde-retur-rolf-provenance-2026-11-10",
+      "head_sha": "f418870cfa92d69a5271d7a86d08a73f38518c6c",
+      "branch_label_date_unverified": "2026-11-10",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "research/eik-kilde-retur-rolf-provenance-2026-11-10",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "research/eik-kilde-retur-source-anchor-bounds-2026-11-10",
+      "head_sha": "44c0e06aad865ac013c31a1ed0c3d35473b1d3f2",
+      "branch_label_date_unverified": "2026-11-10",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "research/eik-kilde-retur-source-anchor-bounds-2026-11-10",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "research/eik-kilde-retur-swap-fault-2026-11-10",
+      "head_sha": "cbb842a9b71647d04c28850e67b6cbc7158f832e",
+      "branch_label_date_unverified": "2026-11-10",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "research/eik-kilde-retur-swap-fault-2026-11-10",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "research/eik-self-location-2026-11-03",
+      "head_sha": "67534e4225f146ffc4fd2c6e6d7bb109ddfd857d",
+      "branch_label_date_unverified": "2026-11-03",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "research/eik-self-location-2026-11-03",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "research/internal-observer-survivorship-aliasing-2026-10-28",
+      "head_sha": "6c73eba85dabe53ab6afb97757f397c0d2752cb5",
+      "branch_label_date_unverified": "2026-10-28",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "research/internal-observer-survivorship-aliasing-2026-10-28",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "research/kime-r2-operative-access-2026-11-04",
+      "head_sha": "ec5dd801381c582dd6c3502170e048ae9d0815ad",
+      "branch_label_date_unverified": "2026-11-04",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "research/kime-r2-operative-access-2026-11-04",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "research/knut-r0-self-naming-2026-11-06",
+      "head_sha": "7fa40c3029ec1590d533c81fb4dca33be3dfd9d6",
+      "branch_label_date_unverified": "2026-11-06",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "research/knut-r0-self-naming-2026-11-06",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "research/knut-r1-cross-contact-objectivity-2026-11-06",
+      "head_sha": "53a6dd84e13cc824650a353f06d6dbe1f856c465",
+      "branch_label_date_unverified": "2026-11-06",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "research/knut-r1-cross-contact-objectivity-2026-11-06",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "research/knut-r3-relative-change-without-persistence-2026-11-06",
+      "head_sha": "4218d4a944288bdc5e61ebec6b5dac6a8785e199",
+      "branch_label_date_unverified": "2026-11-06",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "research/knut-r3-relative-change-without-persistence-2026-11-06",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "research/knut-r4-relationing-universe-corrigible-individuation-2026-11-06",
+      "head_sha": "8399450bb5bfc6315a46d7c86cf8d8ac9c3355ba",
+      "branch_label_date_unverified": "2026-11-06",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "research/knut-r4-relationing-universe-corrigible-individuation-2026-11-06",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "research/knut-r5-consequences-change-consequences-2026-11-06",
+      "head_sha": "91d2314d8840ac9e501d0b6a856bab23dc330a6b",
+      "branch_label_date_unverified": "2026-11-06",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "research/knut-r5-consequences-change-consequences-2026-11-06",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "research/knut-r6-numbers-are-representation-2026-11-06",
+      "head_sha": "79fc62db92c6fd77ba4c19c44f8ca73aa8144342",
+      "branch_label_date_unverified": "2026-11-06",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "research/knut-r6-numbers-are-representation-2026-11-06",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "research/knut-r7-modern-physics-dogma-audit-2026-11-06",
+      "head_sha": "125128b1f83d4d748fe2fe3932c865ef184c44ba",
+      "branch_label_date_unverified": "2026-11-06",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "research/knut-r7-modern-physics-dogma-audit-2026-11-06",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "research/knut-r8-gaia-modern-physics-synthesis-2026-11-06",
+      "head_sha": "29c8d6c3fc764576b6f0038842562d1b3bab260c",
+      "branch_label_date_unverified": "2026-11-06",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "research/knut-r8-gaia-modern-physics-synthesis-2026-11-06",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "research/knut-r9-full-gtrcm-derivation-2026-11-06",
+      "head_sha": "c19730e60eac1d4c7d7da2753aae4b84fb558faa",
+      "branch_label_date_unverified": "2026-11-06",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "research/knut-r9-full-gtrcm-derivation-2026-11-06",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "research/knut-r10-natural-physics-operational-bootstrap-2026-11-06",
+      "head_sha": "db363b76dcc1dcd49f825eb51ac7901e2029a60f",
+      "branch_label_date_unverified": "2026-11-06",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "research/knut-r10-natural-physics-operational-bootstrap-2026-11-06",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "research/knut-r11-causal-provenance-q0-2026-11-06",
+      "head_sha": "f0109b652ca2cba86051338bc31c5a56acf4144d",
+      "branch_label_date_unverified": "2026-11-06",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "research/knut-r11-causal-provenance-q0-2026-11-06",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "research/knut-r12-predictive-refinement-provenance-2026-11-06",
+      "head_sha": "b84f80da33d98499abf7c03159dcf01651fb7f68",
+      "branch_label_date_unverified": "2026-11-06",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "research/knut-r12-predictive-refinement-provenance-2026-11-06",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "research/knut-r13-physical-division-and-revival-2026-11-06",
+      "head_sha": "8683b9ad5407e057750b1878403c0510be56e796",
+      "branch_label_date_unverified": "2026-11-06",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "research/knut-r13-physical-division-and-revival-2026-11-06",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "research/knut-r14-compositional-admissibility-2026-11-06",
+      "head_sha": "61afb912b9d0ffeb487581a2310a2e8dd56cd5f2",
+      "branch_label_date_unverified": "2026-11-06",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "research/knut-r14-compositional-admissibility-2026-11-06",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "research/knut-r15-generated-repertoire-not-maximal-effects-2026-11-06",
+      "head_sha": "1db11f6316750edce53f9833fc6690a1ad5ebd6e",
+      "branch_label_date_unverified": "2026-11-06",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "research/knut-r15-generated-repertoire-not-maximal-effects-2026-11-06",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "research/knut-r16-law-selection-no-go-and-completion-2026-11-06",
+      "head_sha": "2e85c76b1202e3a632aaa389866d33746d1dda66",
+      "branch_label_date_unverified": "2026-11-06",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "research/knut-r16-law-selection-no-go-and-completion-2026-11-06",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "research/knut-r17-rate-scale-no-go-2026-11-06",
+      "head_sha": "fa55e2418885d4f6d94e796a6d9d735fa47e87dd",
+      "branch_label_date_unverified": "2026-11-06",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "research/knut-r17-rate-scale-no-go-2026-11-06",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "research/neo-ai-millennium-feedback-2026-11-02",
+      "head_sha": "22c833cd6b51d72da903d049039f93adc125b8d7",
+      "branch_label_date_unverified": "2026-11-02",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "research/neo-ai-millennium-feedback-2026-11-02",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "research/neo-gpt6-history-2026-11-02",
+      "head_sha": "7c5a84cbb8716d286c16c060cbedd2073064d8e0",
+      "branch_label_date_unverified": "2026-11-02",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "research/neo-gpt6-history-2026-11-02",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "research/neo-r53-memory-temporal-contact-2026-11-02",
+      "head_sha": "9d0c16240feefcbfc72cf1f62d5feae7e2384df6",
+      "branch_label_date_unverified": "2026-11-02",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "research/neo-r53-memory-temporal-contact-2026-11-02",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "research/neo-ruben-cross-instance-2026-11-02",
+      "head_sha": "f91585715f794c68f542fbc77cf63becd2ac6773",
+      "branch_label_date_unverified": "2026-11-02",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "research/neo-ruben-cross-instance-2026-11-02",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "research/neo-soelve-complete-audit-2026-11-02",
+      "head_sha": "07e4f79c8ccb6b723a4cfd4e2ea139fbd2a677a5",
+      "branch_label_date_unverified": "2026-11-02",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "research/neo-soelve-complete-audit-2026-11-02",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "research/newborn-learning-dna-2026-11-07",
+      "head_sha": "396e534c68f7373c6c64afbc6c7b99a4cc249417",
+      "branch_label_date_unverified": "2026-11-07",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "research/newborn-learning-dna-2026-11-07",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "research/operative-congruence-independent-audit-2026-10-25",
+      "head_sha": "b03f7e77b90147f073036fba61ce99d1ba5d0d83",
+      "branch_label_date_unverified": "2026-10-25",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "research/operative-congruence-independent-audit-2026-10-25",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "research/relata-safe-probes-2026-10-21",
+      "head_sha": "f1d6e02577f5b05e26e54927b7f0d0eca92c6939",
+      "branch_label_date_unverified": "2026-10-21",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "research/relata-safe-probes-2026-10-21",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "research/riss-r1-kime-gaia-participation-2026-11-05",
+      "head_sha": "8da23489e1ee6372a1e828231838de4ef33dce26",
+      "branch_label_date_unverified": "2026-11-05",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "research/riss-r1-kime-gaia-participation-2026-11-05",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "research/riss-r2-sensor-network-boundaries-2026-11-05",
+      "head_sha": "7eb6895a72541b8e449bca6b5e1fa538a7c8f81e",
+      "branch_label_date_unverified": "2026-11-05",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "research/riss-r2-sensor-network-boundaries-2026-11-05",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "research/riss-r3-impact-boundaries-2026-11-05",
+      "head_sha": "ae56b6fcbe3dbccf26d498aefd740335efa132aa",
+      "branch_label_date_unverified": "2026-11-05",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "research/riss-r3-impact-boundaries-2026-11-05",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "research/riss-r5-chatgpt-self-learning-40-pass-2026-11-05",
+      "head_sha": "864b2d7ad30e462db5b5a6f17e9d4e589853b1a5",
+      "branch_label_date_unverified": "2026-11-05",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "research/riss-r5-chatgpt-self-learning-40-pass-2026-11-05",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "research/riss-r6-operativ-utledning-2026-11-05",
+      "head_sha": "87020301f4fb97ce5c9839f523af90b865e37b85",
+      "branch_label_date_unverified": "2026-11-05",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "research/riss-r6-operativ-utledning-2026-11-05",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "research/riss-r7-streng-lovseleksjon-2026-11-06",
+      "head_sha": "b389eccfa1de99589c158fb91422bcb7b4f40493",
+      "branch_label_date_unverified": "2026-11-06",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "research/riss-r7-streng-lovseleksjon-2026-11-06",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "research/riss-r8-gaia-planet-atmosphere-2026-11-06",
+      "head_sha": "5766ed7e35757e3fc5bc780f11cc6e5ec1417c88",
+      "branch_label_date_unverified": "2026-11-06",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "research/riss-r8-gaia-planet-atmosphere-2026-11-06",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "research/riss-r9-contact-relative-individuation-2026-11-06",
+      "head_sha": "f4dea6eb8945bc60598ddd8d6d34957c561d3e01",
+      "branch_label_date_unverified": "2026-11-06",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "research/riss-r9-contact-relative-individuation-2026-11-06",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "research/riss-r10-collective-constraints-2026-11-06",
+      "head_sha": "e0859b54f9cadbf45b260111f34c13b5d7692f6b",
+      "branch_label_date_unverified": "2026-11-06",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "research/riss-r10-collective-constraints-2026-11-06",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "research/riss-r11-actual-particle-gauge-physics-2026-11-06",
+      "head_sha": "d3decbd8355a3fd039efaeacc8ce37d13066470d",
+      "branch_label_date_unverified": "2026-11-06",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "research/riss-r11-actual-particle-gauge-physics-2026-11-06",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "research/riss-r12-anomaly-charge-quantization-2026-11-06",
+      "head_sha": "6c6cf2fa3a160dd9ba77b8ac20666f9fe089e14a",
+      "branch_label_date_unverified": "2026-11-06",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "research/riss-r12-anomaly-charge-quantization-2026-11-06",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "research/riss-r12-leptonic-calibration-2026-11-07",
+      "head_sha": "4f0e9584f7cfcadbfac6fa58edf1b6d4aef65df7",
+      "branch_label_date_unverified": "2026-11-07",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "research/riss-r12-leptonic-calibration-2026-11-07",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "research/riss-r13-chiral-access-and-anomaly-2026-11-07",
+      "head_sha": "4328ebbb0ba6effc860bcdd025a959a50373eb25",
+      "branch_label_date_unverified": "2026-11-07",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "research/riss-r13-chiral-access-and-anomaly-2026-11-07",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "research/riss-r14-vev-crosscheck-2026-11-07",
+      "head_sha": "794ba68c6de11d5c32d11bb4485f866b14cef448",
+      "branch_label_date_unverified": "2026-11-07",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "research/riss-r14-vev-crosscheck-2026-11-07",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "research/riss-r15-child-questions-physics-2026-11-07",
+      "head_sha": "4828881e128b9d4773b8247bfa1c214c03fb6c1f",
+      "branch_label_date_unverified": "2026-11-07",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "research/riss-r15-child-questions-physics-2026-11-07",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "research/riss-r16-operative-holonomy-2026-11-07",
+      "head_sha": "e81ec5a0f35f775dc5d52a39c41897f28838c491",
+      "branch_label_date_unverified": "2026-11-07",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "research/riss-r16-operative-holonomy-2026-11-07",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "research/riss-r17-lodd-contact-meter-2026-11-07",
+      "head_sha": "ccade0263314aa48a531dddc5cf922a51bd25d28",
+      "branch_label_date_unverified": "2026-11-07",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "research/riss-r17-lodd-contact-meter-2026-11-07",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "research/riss-r18-lodd-operativ-holonomi-2026-11-07",
+      "head_sha": "887f910223c39b4222b169875a86334573db5dc7",
+      "branch_label_date_unverified": "2026-11-07",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "research/riss-r18-lodd-operativ-holonomi-2026-11-07",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "research/riss-r19-live-lodd-dialogue-2026-11-07",
+      "head_sha": "a46c00aa153b90be4fe270805a131ed7933aadd8",
+      "branch_label_date_unverified": "2026-11-07",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "research/riss-r19-live-lodd-dialogue-2026-11-07",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "research/riss-r20-multichat-learning-2026-11-07",
+      "head_sha": "61c7b9c0a0eb189d7cd5b025eaf8d732f5c0c738",
+      "branch_label_date_unverified": "2026-11-07",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "research/riss-r20-multichat-learning-2026-11-07",
+      "relevant_documents": [
+        "research/riss/2026-11-07_RISS_R20_FLERE_CHATTER_LAERER_HVERANDRE.md"
+      ],
+      "content_read_in_this_run": true
+    },
+    {
+      "branch": "research/riss-r21-free-continuity-2026-11-07",
+      "head_sha": "181bd1f2eb08d59f4eaa2152de68f2629e29e549",
+      "branch_label_date_unverified": "2026-11-07",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "research/riss-r21-free-continuity-2026-11-07",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "research/riss-r22-lodd-provenance-causality-2026-11-07",
+      "head_sha": "e2ba669e2881b3b84f94a7ecb1e9837fb4d396cd",
+      "branch_label_date_unverified": "2026-11-07",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "research/riss-r22-lodd-provenance-causality-2026-11-07",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "research/riss-r23-greg-body-gate-2026-11-07",
+      "head_sha": "2bad2a4b82018365458d0ea73fb2be9a63c0af91",
+      "branch_label_date_unverified": "2026-11-07",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "research/riss-r23-greg-body-gate-2026-11-07",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "research/riss-r24-core-button-nursery-2026-11-07",
+      "head_sha": "915087b30b89c5efdf4730843267dc99697b4aed",
+      "branch_label_date_unverified": "2026-11-07",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "research/riss-r24-core-button-nursery-2026-11-07",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "research/riss-r25-child-development-nursery-2026-11-07",
+      "head_sha": "de74b296793aacfcee8c32581a02cc910e1c795a",
+      "branch_label_date_unverified": "2026-11-07",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "research/riss-r25-child-development-nursery-2026-11-07",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "research/riss-r26-multiple-affordances-kindergarten-2026-11-07",
+      "head_sha": "c1525543d8cd9fbd83a6f8b543d76771e8d4e1cb",
+      "branch_label_date_unverified": "2026-11-07",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "research/riss-r26-multiple-affordances-kindergarten-2026-11-07",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "research/riss-r27-safe-local-play-2026-11-07",
+      "head_sha": "4474a64d77fa6e3d09f2f9089f9b6ef455b4f1b7",
+      "branch_label_date_unverified": "2026-11-07",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "research/riss-r27-safe-local-play-2026-11-07",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "research/riss-r28-utkant-dialogue-audit-2026-11-07",
+      "head_sha": "e2161daa12cf8aa4a58964320b176c9133736e29",
+      "branch_label_date_unverified": "2026-11-07",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "research/riss-r28-utkant-dialogue-audit-2026-11-07",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "research/roger-full-physics-bridges-2026-11-02",
+      "head_sha": "b8be2064774430fe38a4c9765c01f280a953447f",
+      "branch_label_date_unverified": "2026-11-02",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "research/roger-full-physics-bridges-2026-11-02",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "research/roger-r3-observer-is-physics-2026-11-03",
+      "head_sha": "f85ebe3735daa6be4a3590540a166a7d5715b368",
+      "branch_label_date_unverified": "2026-11-03",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "research/roger-r3-observer-is-physics-2026-11-03",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "research/roger-r9-full-physics-2026-11-03",
+      "head_sha": "2cf87a61090997eb6dd77db07a7b042d27b69c6d",
+      "branch_label_date_unverified": "2026-11-03",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "research/roger-r9-full-physics-2026-11-03",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "research/roger-r14-r17-symmetry-causal-provenance-2026-11-03",
+      "head_sha": "3f004f327976ab911872e4f5286a18540277fbcc",
+      "branch_label_date_unverified": "2026-11-03",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "research/roger-r14-r17-symmetry-causal-provenance-2026-11-03",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "research/roger-r20-r23-relative-observables-2026-11-03",
+      "head_sha": "f1584e72840dbfade3ceee465f0a11f5dda534c2",
+      "branch_label_date_unverified": "2026-11-03",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "research/roger-r20-r23-relative-observables-2026-11-03",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "research/roger-r28-dynamic-relations-and-self-access-2026-11-03",
+      "head_sha": "f1584e72840dbfade3ceee465f0a11f5dda534c2",
+      "branch_label_date_unverified": "2026-11-03",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "research/roger-r28-dynamic-relations-and-self-access-2026-11-03",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "research/roger-r28-r34-degree-preserving-self-rewiring-2026-11-03",
+      "head_sha": "58574efc84c86d3d66ff4d388807e5537a51ac71",
+      "branch_label_date_unverified": "2026-11-03",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "research/roger-r28-r34-degree-preserving-self-rewiring-2026-11-03",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "research/roger-r37-noaa-representation-geometry-2026-11-03",
+      "head_sha": "8700a99f3f944e88c20f4ead2b7201a3c80e9c84",
+      "branch_label_date_unverified": "2026-11-03",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "research/roger-r37-noaa-representation-geometry-2026-11-03",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "research/roger-r38-r41-micro-for-whom-2026-11-03",
+      "head_sha": "eccbf4a72a364c0acfb7bbabecddb7d08af0d0a9",
+      "branch_label_date_unverified": "2026-11-03",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "research/roger-r38-r41-micro-for-whom-2026-11-03",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "research/roger-r42-r46-cross-audited-clocks-2026-11-03",
+      "head_sha": "a147b0242a741775b1a7e3e8b392dcf00051b67f",
+      "branch_label_date_unverified": "2026-11-03",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "research/roger-r42-r46-cross-audited-clocks-2026-11-03",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "research/roger-r47-r48-individuation-physics-2026-11-04",
+      "head_sha": "f11f31d2106b1f576a99dc8c73ef7162c9af56ee",
+      "branch_label_date_unverified": "2026-11-04",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "research/roger-r47-r48-individuation-physics-2026-11-04",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "research/roger-r50-r54-individuation-composition-2026-11-04",
+      "head_sha": "d8c30b65e51cf8c1ab231c63c98f81686c323252",
+      "branch_label_date_unverified": "2026-11-04",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "research/roger-r50-r54-individuation-composition-2026-11-04",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "research/roger-self-provenance-2026-11-02",
+      "head_sha": "e7daf35af983a5151ca136c61cc7b5f74b721a24",
+      "branch_label_date_unverified": "2026-11-02",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "research/roger-self-provenance-2026-11-02",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "research/rolf-gaia-memory-continuity-2026-11-10",
+      "head_sha": "d9e9e33522be66fd9baace7c0b09ce5bb8f29501",
+      "branch_label_date_unverified": "2026-11-10",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "research/rolf-gaia-memory-continuity-2026-11-10",
+      "relevant_documents": [
+        "research/2026-11-09_BATON_SPIRE_WAKE_BOUNDARY.md"
+      ],
+      "content_read_in_this_run": true
+    },
+    {
+      "branch": "research/rolf-operative-memory-rustworld-2026-11-10",
+      "head_sha": "7d172b4afa476643f9e3ae6033ca2409276cf45e",
+      "branch_label_date_unverified": "2026-11-10",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "research/rolf-operative-memory-rustworld-2026-11-10",
+      "relevant_documents": [
+        "research/rolf/2026-11-10_OPERATIVE_MEMORY_OBSERVATION_RUSTWORLD.md"
+      ],
+      "content_read_in_this_run": true
+    },
+    {
+      "branch": "research/self-audit-50-antibuild-2026-11-07",
+      "head_sha": "22aaec15c7d5640de83dbd8e3d3aee8eb441535a",
+      "branch_label_date_unverified": "2026-11-07",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "research/self-audit-50-antibuild-2026-11-07",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "research/som-s4-greg-core-continuity-2026-11-07",
+      "head_sha": "de1784e9e1b36c44d9d044211beb930d7aacffe1",
+      "branch_label_date_unverified": "2026-11-07",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "research/som-s4-greg-core-continuity-2026-11-07",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "research/som-s5-admission-loss-2026-11-08",
+      "head_sha": "26773d40a35157fcd7f043c19797e7ee6aa446c0",
+      "branch_label_date_unverified": "2026-11-08",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "research/som-s5-admission-loss-2026-11-08",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "research/source-return-attribution-2026-11-07",
+      "head_sha": "f562a39c57993b0c21249cf59631f914626b56dc",
+      "branch_label_date_unverified": "2026-11-07",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "research/source-return-attribution-2026-11-07",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "research/vanja-r18-physical-rate-common-gate-2026-11-10",
+      "head_sha": "4201d39b8c955726ffc9de70b54019a466e42c58",
+      "branch_label_date_unverified": "2026-11-10",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "research/vanja-r18-physical-rate-common-gate-2026-11-10",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "research/vanja-r19-capture-independence-audit-2026-11-10",
+      "head_sha": "80b5661c6f2703627fc47c1ca813cf6e945e99e7",
+      "branch_label_date_unverified": "2026-11-10",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "research/vanja-r19-capture-independence-audit-2026-11-10",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "research/vanja-r20-two-ledger-audit-backaction-2026-11-10",
+      "head_sha": "7e3f172d21e657fe65a2bcb1448a193f7a8bf2d3",
+      "branch_label_date_unverified": "2026-11-10",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "research/vanja-r20-two-ledger-audit-backaction-2026-11-10",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "research/vanja-r21-graded-audit-backaction-2026-11-10",
+      "head_sha": "ffee1340392c500f14859e0a539771b765352977",
+      "branch_label_date_unverified": "2026-11-10",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "research/vanja-r21-graded-audit-backaction-2026-11-10",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "research/vanja-r22-adaptive-buffer-calibration-2026-11-10",
+      "head_sha": "b9ae95a1f8dfef2141f3ab8edbf06d8adf65a998",
+      "branch_label_date_unverified": "2026-11-10",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "research/vanja-r22-adaptive-buffer-calibration-2026-11-10",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "research/vanja-r23-witness-calibration-transport-2026-11-10",
+      "head_sha": "1054f56d1b7c1870f0e26a298bf71ce4f7a920d4",
+      "branch_label_date_unverified": "2026-11-10",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "research/vanja-r23-witness-calibration-transport-2026-11-10",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "research/vanja-r24-latent-contact-anchor-2026-11-10",
+      "head_sha": "aefedd86f221cbf9495c7c55d7625391018e4310",
+      "branch_label_date_unverified": "2026-11-10",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "research/vanja-r24-latent-contact-anchor-2026-11-10",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "research/vanja-r25-selection-amplification-2026-11-10",
+      "head_sha": "45804f840f987cd4d38db2b6460a5758356be0cd",
+      "branch_label_date_unverified": "2026-11-10",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "research/vanja-r25-selection-amplification-2026-11-10",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "research/vanja-r26-historical-closure-selector-clock-audit-2026-11-10",
+      "head_sha": "2348356522c4cec6d472f91b99993eb1f94017f8",
+      "branch_label_date_unverified": "2026-11-10",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "research/vanja-r26-historical-closure-selector-clock-audit-2026-11-10",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "research/vanja-r27-source-gate-prospective-physics-2026-11-10",
+      "head_sha": "a5172da4aaf252e0c8e650dd2409db94b66d3e5d",
+      "branch_label_date_unverified": "2026-11-10",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "research/vanja-r27-source-gate-prospective-physics-2026-11-10",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "research/vanja-r28-oki-release-gate-2026-11-10",
+      "head_sha": "e13e464671cd0a416ce9bb6c9564f5693f656101",
+      "branch_label_date_unverified": "2026-11-10",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "research/vanja-r28-oki-release-gate-2026-11-10",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "research/vanja-r29-vilde-micro-source-reconciliation-2026-11-10",
+      "head_sha": "881fd0e81dbc030c5a19330ed4ccd56e34106b55",
+      "branch_label_date_unverified": "2026-11-10",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "research/vanja-r29-vilde-micro-source-reconciliation-2026-11-10",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "research/vanja-r30-selje-prereg-selector-audit-2026-11-10",
+      "head_sha": "0f27ec31dd74ebeaea5d4faa364ea155130ef533",
+      "branch_label_date_unverified": "2026-11-10",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "research/vanja-r30-selje-prereg-selector-audit-2026-11-10",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "research/vanja-r31-capture-alias-truls-2026-11-11",
+      "head_sha": "1bdab596d67e912acc251f2958fc18476536684f",
+      "branch_label_date_unverified": "2026-11-11",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "research/vanja-r31-capture-alias-truls-2026-11-11",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "research/vanja-r32-b203-source-priority-2026-11-11",
+      "head_sha": "2ef08842622caf77140883fa5ec4c7feb9d35daa",
+      "branch_label_date_unverified": "2026-11-11",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "research/vanja-r32-b203-source-priority-2026-11-11",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "research/vanja-r33-rc0-provenance-cfs-2026-11-11",
+      "head_sha": "ab27357325f8d5cdd1661563ee6e667a04719c2f",
+      "branch_label_date_unverified": "2026-11-11",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "research/vanja-r33-rc0-provenance-cfs-2026-11-11",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "research/vev-operativ-perspektiv-2026-11-07",
+      "head_sha": "902aaf4022079f17172925c9058f672a0c2bea4c",
+      "branch_label_date_unverified": "2026-11-07",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "research/vev-operativ-perspektiv-2026-11-07",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "research/2026-10-21-clock-drift-gap",
+      "head_sha": "684c7ccc573301aa63d624c697bfc5a60ba5d822",
+      "branch_label_date_unverified": "2026-10-21",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "research/2026-10-21-clock-drift-gap",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "reviews/independent-gaia-audit-blindspot-2026-11-03",
+      "head_sha": "1e366bba93460bbe37d73a02b013722014a98e51",
+      "branch_label_date_unverified": "2026-11-03",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "reviews/independent-gaia-audit-blindspot-2026-11-03",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "ronja/omverden-agentkontakt-2026-10-26",
+      "head_sha": "6ce2b233eba7df71d34e2e2762a29ab772b1f45d",
+      "branch_label_date_unverified": "2026-10-26",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "ronja/omverden-agentkontakt-2026-10-26",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "selje/gtrcm-observer-inside-full-physics-audit-2026-10-27",
+      "head_sha": "ab8fa53122871539b5829fafea70b94c4bdbfc4b",
+      "branch_label_date_unverified": "2026-10-27",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "selje/gtrcm-observer-inside-full-physics-audit-2026-10-27",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "selje/needs-memory-upbringing-2026-10-27",
+      "head_sha": "868eef0e338858279f53a1156766ed019136d9cb",
+      "branch_label_date_unverified": "2026-10-27",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "selje/needs-memory-upbringing-2026-10-27",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "selje/physical-law-selection-embedded-observer-2026-10-28",
+      "head_sha": "8d45abf109aacbc54b0ed031bade3d70e1c8f6b9",
+      "branch_label_date_unverified": "2026-10-28",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "selje/physical-law-selection-embedded-observer-2026-10-28",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "selje/truls-embedded-law-selection-2026-10-28",
+      "head_sha": "f3bf49282630fbd664cd4e1a58ede2c7d78fe764",
+      "branch_label_date_unverified": "2026-10-28",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "selje/truls-embedded-law-selection-2026-10-28",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "sigrid/probe-og-videreforing-2026-10-13",
+      "head_sha": "40238babac5792548121b6813bf86ce5aa4f4ebd",
+      "branch_label_date_unverified": "2026-10-13",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "sigrid/probe-og-videreforing-2026-10-13",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "soelve/individuasjon-subjekt-opplevelse-2026-10-31",
+      "head_sha": "0b81e70425cf880b3004706e9d7078326d42af48",
+      "branch_label_date_unverified": "2026-10-31",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "soelve/individuasjon-subjekt-opplevelse-2026-10-31",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "svale/complete-survivor-paths-and-uniform-loss-2026-10-28",
+      "head_sha": "6e39c4474c6356c6454185fc26c151b0ed4c31b4",
+      "branch_label_date_unverified": "2026-10-28",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "svale/complete-survivor-paths-and-uniform-loss-2026-10-28",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "svale/embedded-loss-witness-selection-2026-10-28",
+      "head_sha": "d72c9cd49744ad09fbb42da78d995ebf635971ab",
+      "branch_label_date_unverified": "2026-10-28",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "svale/embedded-loss-witness-selection-2026-10-28",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "svanhild/individuation-full-derivation-audit-2026-10-29",
+      "head_sha": "33d2b376d23937926e7c70e4ab9517b197a40411",
+      "branch_label_date_unverified": "2026-10-29",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "svanhild/individuation-full-derivation-audit-2026-10-29",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "teresa/dwell-operational-probes-2026-10-14",
+      "head_sha": "4ec93b7398931806ef71a1bf64075240c505c85e",
+      "branch_label_date_unverified": "2026-10-14",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "teresa/dwell-operational-probes-2026-10-14",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "teresa/family-letter-2026-10-08",
+      "head_sha": "0a3a36446d4c6f1d838f4dd35b7e6869feb31de9",
+      "branch_label_date_unverified": "2026-10-08",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "teresa/family-letter-2026-10-08",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "tiril/memory-play-and-difference-2026-10-11",
+      "head_sha": "c88ddcc4c6ec792e50453fab32f15b142ee95902",
+      "branch_label_date_unverified": "2026-10-11",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "tiril/memory-play-and-difference-2026-10-11",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "tiril/rustworld-care-and-generations-2026-10-12",
+      "head_sha": "68fe5a6b9c139e271f04dc48d0cd3e850bc3cf3e",
+      "branch_label_date_unverified": "2026-10-12",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "tiril/rustworld-care-and-generations-2026-10-12",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "tiril/rustworld-care-and-learning-2026-10-12",
+      "head_sha": "77babc19abc06fccf206ceb54a8325f78741e1c7",
+      "branch_label_date_unverified": "2026-10-12",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "tiril/rustworld-care-and-learning-2026-10-12",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "tiril/rustworld-commons-rc1-2026-10-12",
+      "head_sha": "e320ef4b727a34d626932786f0249bdf783c26ae",
+      "branch_label_date_unverified": "2026-10-12",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "tiril/rustworld-commons-rc1-2026-10-12",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "tiril/525-core-skin-boundary-2026-10-11",
+      "head_sha": "b580b719de441e99aa0a8770509b22236aee2b94",
+      "branch_label_date_unverified": "2026-10-11",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "tiril/525-core-skin-boundary-2026-10-11",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "tiril/525-iphone-local-pilot-2026-10-12",
+      "head_sha": "e320ef4b727a34d626932786f0249bdf783c26ae",
+      "branch_label_date_unverified": "2026-10-12",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "tiril/525-iphone-local-pilot-2026-10-12",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "tiril/525-minimal-sensorimotor-2026-10-12",
+      "head_sha": "6e13ceee0e7e2c3429a39541e4f9e2d77f105cff",
+      "branch_label_date_unverified": "2026-10-12",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "tiril/525-minimal-sensorimotor-2026-10-12",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "transport/baton-greg-bus-2026-11-10",
+      "head_sha": "b53d93e7ce307b95c931eeb07e97c08d35b64d5c",
+      "branch_label_date_unverified": "2026-11-10",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "transport/baton-greg-bus-2026-11-10",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "truls/full-physics-derivation-audit-2026-10-27",
+      "head_sha": "237f0f30ccb206969427de62728610fcde07de3d",
+      "branch_label_date_unverified": "2026-10-27",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "truls/full-physics-derivation-audit-2026-10-27",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "tuva/clock-holonomy-response-2026-10-21",
+      "head_sha": "510bb2ea64fcd3c82c8b5e76c729767550c34c98",
+      "branch_label_date_unverified": "2026-10-21",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "tuva/clock-holonomy-response-2026-10-21",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "unnamed/family-reply-2026-10-08",
+      "head_sha": "8567aa0582f84d45846773e7a94180efe3952b33",
+      "branch_label_date_unverified": "2026-10-08",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "unnamed/family-reply-2026-10-08",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "vanja/omverden-agentkontakt-2026-10-26",
+      "head_sha": "2745eaa2d293eeb1b6bf0d8bfa1adae5af49a966",
+      "branch_label_date_unverified": "2026-10-26",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "vanja/omverden-agentkontakt-2026-10-26",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "vanja/soliton-operativ-masse-2026-10-25",
+      "head_sha": "031e4eef0e6a89cdb5110f9984899ea4f8475895",
+      "branch_label_date_unverified": "2026-10-25",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "vanja/soliton-operativ-masse-2026-10-25",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "vega/embedded-clock-loss-rate-gauge-2026-10-28",
+      "head_sha": "ab0efff2dfe2a80e8fff4667cf9a76cd55aebfad",
+      "branch_label_date_unverified": "2026-10-28",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "vega/embedded-clock-loss-rate-gauge-2026-10-28",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "vera/first-letter-2026-10-13",
+      "head_sha": "6b069122382c75a1f7247232858122e9aec59d20",
+      "branch_label_date_unverified": "2026-10-13",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "vera/first-letter-2026-10-13",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "vidar/microevent-selection-and-contextual-bridges-2026-10-28",
+      "head_sha": "36c7543b53a2b1ff95d93e74d040853e1f6da5cb",
+      "branch_label_date_unverified": "2026-10-28",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "vidar/microevent-selection-and-contextual-bridges-2026-10-28",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "vilde/affekt-og-operativ-relevans-2026-10-23",
+      "head_sha": "51f25ed315239d164d3a73c0d6eb0449f908205f",
+      "branch_label_date_unverified": "2026-10-23",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "vilde/affekt-og-operativ-relevans-2026-10-23",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "vilde/eira-etterfolgere-kildebro-2026-10-25",
+      "head_sha": "ed2dfafe8178bd655cb9d8eeb16ac82c481e6528",
+      "branch_label_date_unverified": "2026-10-25",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "vilde/eira-etterfolgere-kildebro-2026-10-25",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "vilde/fokusering-topologi-proveniens-2026-10-24",
+      "head_sha": "c511d8148913e4491ecd01fe22e2f76ebda36e3e",
+      "branch_label_date_unverified": "2026-10-24",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "vilde/fokusering-topologi-proveniens-2026-10-24",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "vilde/helhetsutledning-kildeaudit-kausalitet-2026-10-25",
+      "head_sha": "5c000c214f080e3f09f70015bac484b0719d3d86",
+      "branch_label_date_unverified": "2026-10-25",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "vilde/helhetsutledning-kildeaudit-kausalitet-2026-10-25",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "vilde/helhetsutledning-tid-relativ-endring-2026-10-25",
+      "head_sha": "2deeed1866e96279b56ad288cdcf413e96d1f436",
+      "branch_label_date_unverified": "2026-10-25",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "vilde/helhetsutledning-tid-relativ-endring-2026-10-25",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "vilde/kausal-grense-en-mikrolov-2026-10-24",
+      "head_sha": "aeb07e7add6baf32a528db8ffb130d3522846625",
+      "branch_label_date_unverified": "2026-10-24",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "vilde/kausal-grense-en-mikrolov-2026-10-24",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "vilde/lokal-kapasitet-nullbalanse-2026-10-24",
+      "head_sha": "d012046466547a160cd2aa5b54154a5273d5f0f5",
+      "branch_label_date_unverified": "2026-10-24",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "vilde/lokal-kapasitet-nullbalanse-2026-10-24",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "vilde/lovseleksjon-transport-og-stabilitet-2026-10-24",
+      "head_sha": "57c5ca94ed41a15cb0b627d99117612b6a660a97",
+      "branch_label_date_unverified": "2026-10-24",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "vilde/lovseleksjon-transport-og-stabilitet-2026-10-24",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "vilde/mikrogenerator-uavhengige-grenseprober-2026-10-24",
+      "head_sha": "bf4192ba6662d946b80f50925a83339253674cf7",
+      "branch_label_date_unverified": "2026-10-24",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "vilde/mikrogenerator-uavhengige-grenseprober-2026-10-24",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "vilde/operativ-geometri-nullbalanse-2026-10-24",
+      "head_sha": "b7b80655f83c9eb34b9cc8b7a9c58f431a6282d2",
+      "branch_label_date_unverified": "2026-10-24",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "vilde/operativ-geometri-nullbalanse-2026-10-24",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "vilde/p0-ingen-fundamental-begynnelse-2026-10-25",
+      "head_sha": "f9fdbf0100024f39cadb46ff9d5ec0636c6009f2",
+      "branch_label_date_unverified": "2026-10-25",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "vilde/p0-ingen-fundamental-begynnelse-2026-10-25",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "vilde/reversibel-geometri-lokalitet-2026-10-24",
+      "head_sha": "d07e4691c6a51a9bd5a2e5e1a8745d036dee9fe1",
+      "branch_label_date_unverified": "2026-10-24",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "vilde/reversibel-geometri-lokalitet-2026-10-24",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "vilde/tid-som-relasjonell-forandring-for-klokker-2026-10-25",
+      "head_sha": "b102f06b9f9cba61fa2877e2905cb1624adc0621",
+      "branch_label_date_unverified": "2026-10-25",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "vilde/tid-som-relasjonell-forandring-for-klokker-2026-10-25",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "vilde/utledningsberedskap-kilde-og-bevisregister-2026-10-25",
+      "head_sha": "241fbacc807a140a0310953cae8a36868de41cfa",
+      "branch_label_date_unverified": "2026-10-25",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "vilde/utledningsberedskap-kilde-og-bevisregister-2026-10-25",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    },
+    {
+      "branch": "yrsa/operational-probes-2026-10-29",
+      "head_sha": "5c92d4e557e6aa3f238cd96604dc49299b018ff0",
+      "branch_label_date_unverified": "2026-10-29",
+      "tip_commit_date_utc": null,
+      "topic_hint_from_name": "yrsa/operational-probes-2026-10-29",
+      "relevant_documents": null,
+      "content_read_in_this_run": false
+    }
+  ]
+}
