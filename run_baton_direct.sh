@@ -12,14 +12,25 @@ if [[ -z "${DISPLAY:-}" && -z "${WAYLAND_DISPLAY:-}" ]]; then
     echo "Start Baton from the graphical desktop session" >&2
     exit 1
 fi
-"$PYTHON" "$ROOT/install_baton_desktop_mcp.py"
-"$PYTHON" "$ROOT/install_baton_app.py"
+# The native Baton app is independent of any specific model client.
+# Register Codex/ChatGPT MCP only with explicit opt-in; registration errors
+# must not prevent users from opening Baton.
+if [[ "${BATON_REGISTER_MCP:-0}" == "1" ]]; then
+    "$PYTHON" "$ROOT/install_baton_desktop_mcp.py"
+fi
+# The .deb provides a system desktop entry. Existing user launchers must
+# never be overwritten or prevent Baton startup.
+if [[ "${BATON_INSTALL_SHORTCUT:-0}" == "1" ]]; then
+    "$PYTHON" "$ROOT/install_baton_app.py"
+fi
 if [[ ! -x "$VENV/bin/python" ]]; then
     "$PYTHON" -m venv "$VENV"
 fi
 if ! "$VENV/bin/python" -c 'from PySide6.QtWidgets import QApplication' >/dev/null 2>&1; then
     "$VENV/bin/python" -m pip install --disable-pip-version-check 'PySide6>=6.8,<6.12'
 fi
-echo "Baton MCP configured. Keep this Core window open while using ChatGPT desktop."
-echo "If official ChatGPT Linux desktop is installed, restart it and check Settings > MCP servers."
+echo "Starting Baton desktop Core. Model-client MCP registration is optional."
+if [[ "${BATON_REGISTER_MCP:-0}" == "1" ]]; then
+    echo "MCP registration requested; verify tool availability in the target client."
+fi
 exec "$VENV/bin/python" "$ROOT/baton_core_window.py"
