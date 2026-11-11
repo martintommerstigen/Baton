@@ -3,6 +3,7 @@
 Test certificates and keys are generated ephemerally by OpenSSL; never
 committed to Git. A trusted handshake precedes HTTP bearer disclosure.
 """
+import errno
 import hashlib
 import http.client
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
@@ -217,7 +218,13 @@ class TLSEndpointTests(unittest.TestCase):
             raw = socket.create_connection(server.server_address, timeout=2)
             try:
                 raw.sendall(b'NOT A TLS HANDSHAKE\\r\\n')
-                raw.shutdown(socket.SHUT_WR)
+                # A correct TLS reject may close before client shutdown.
+                # ENOTCONN/EPIPE is not a failed worker-slot release.
+                try:
+                    raw.shutdown(socket.SHUT_WR)
+                except OSError as exc:
+                    if exc.errno not in (errno.ENOTCONN, errno.EPIPE):
+                        raise
                 self.assertTrue(server.entered.wait(timeout=3))
                 self.assertTrue(server.exited.wait(timeout=3))
             finally:
