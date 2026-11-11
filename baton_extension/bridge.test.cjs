@@ -100,7 +100,7 @@ test("one explicit activation creates one message in the original chat",async()=
   assert.equal(h.sent.length,1);
   assert.match(h.sent[0],/BATON_TOOL_V2 a{32} [0-9a-f]{32} 15/);
   assert.match(h.sent[0],/bridge-proof-/);
-  const frame=h.sent[0].split("\\n").find(s=>s.startsWith("BATON_TOOL_V2 "));
+  const frame=h.sent[0].split("\n").find(s=>s.startsWith("BATON_TOOL_V2 "));
   assert.ok(frame, "bootstrap contains exactly one tool line");
   const verify=spawnSync("python3",["-c",
     "import shlex,sys; f=shlex.split(sys.argv[1]); assert f[0]=='BATON_TOOL_V2'; assert f[6]=='/usr/bin/python3'; assert f[7]=='-c'; compile(f[8], '<baton-bootstrap>', 'exec')",
