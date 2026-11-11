@@ -1,6 +1,6 @@
 # Baton direct Brave → existing ChatGPT conversation → Greg Core
 
-**Version:** Baton Kubuntu 0.1.6, pinned source `885f9a67aa47a90568edc4e7bfc552ef0df193d5`
+**Version:** Baton Kubuntu 0.1.6, pinned source `dcc84a87de80fed3bcc7f2c1b022e751d0e54566`
 **Status:** Implementation and CI verified. Real Greg browser-to-host handshake and live
 ChatGPT write/readback **not yet observed** as of 2026-11-11.
 
@@ -22,8 +22,11 @@ connector or a bypassed MCP permission.
 2. The app registers a `com.baton.greg` Native Messaging host for
    Brave/Chrome/Chromium at the ordinary user's config path, restricted
    to extension ID `fdjgdjbdnoaidogmglbaaaffgodgaekk`.
-3. The human loads the **unpacked local extension** once via browser's
-   Extensions page (explicit human action, never silent installation).
+3. Baton copies the unpacked extension into the stable location
+   `~/.local/share/baton/browser-extension`. The human loads it
+   **once** via Brave's Extensions page (explicit human action,
+   never silent installation). A future Baton upgrade can refresh the
+   files in that same directory without another unpacked install.
 4. In an already authenticated `https://chatgpt.com/c/<id>` tab, the
    human clicks **Koble denne chatten**. The extension asks the native host
    for a nonce bound to that chat ID and a one-hour maximum session.
