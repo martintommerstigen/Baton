@@ -29,6 +29,16 @@ fi
 if ! "$VENV/bin/python" -c 'from PySide6.QtWidgets import QApplication' >/dev/null 2>&1; then
     "$VENV/bin/python" -m pip install --disable-pip-version-check 'PySide6>=6.8,<6.12'
 fi
+# Existing ChatGPT conversations run inside Baton's QtWebEngine view, without
+# GitHub transport or a second model session. WebEngine is a separate Qt
+# wheel on some PySide6 releases, so attempt its optional install only when
+# missing. Failure must not stop Core or other Baton functions.
+if ! "$VENV/bin/python" -c 'from PySide6.QtWebEngineWidgets import QWebEngineView' >/dev/null 2>&1; then
+    echo "Installing optional Baton existing-conversation browser component ..."
+    if ! "$VENV/bin/python" -m pip install --disable-pip-version-check 'PySide6-Addons[webengine]>=6.8,<6.12'; then
+        echo "Warning: QtWebEngine could not be installed; existing ChatGPT tab is unavailable." >&2
+    fi
+fi
 # ChatGPT OAuth validates signed OpenID tokens using PyJWT + cryptography.
 # Installing the pinned-major authentication dependency is separate from the
 # user's protected account credentials and cannot authorize any account.
