@@ -3,6 +3,7 @@ import json
 import os
 import signal
 import socket
+import struct
 import sys
 import tempfile
 import unittest
@@ -40,7 +41,10 @@ class CrossUidTests(unittest.TestCase):
                             payload = conn.recv(4096)
                             if json.loads(payload) != {'op':'probe'}:
                                 os._exit(5)
-                            conn.sendall(b'{"state":"synthetic_snapshot"}\n')
+                            with open('/dev/null', 'rb') as probe_fd:
+                                conn.sendmsg([b'{"state":"synthetic_snapshot"}\n'],
+                                             [(socket.SOL_SOCKET, socket.SCM_RIGHTS,
+                                               struct.pack('i', probe_fd.fileno()))])
                 except BaseException:
                     os._exit(6)
                 os._exit(0)
@@ -53,7 +57,11 @@ class CrossUidTests(unittest.TestCase):
                         os.setgid(shared_gid)
                         os.setuid(observer_uid)
                         install_observer_lifetime_guard()
+                        before = len(os.listdir('/proc/self/fd'))
                         result = query_verified_broker(path, broker_uid, {'op':'probe'})
+                        after = len(os.listdir('/proc/self/fd'))
+                        if before != after:
+                            os._exit(9)
                         os._exit(0 if result == {'state':'synthetic_snapshot'} else 7)
                     except BaseException:
                         os._exit(8)
