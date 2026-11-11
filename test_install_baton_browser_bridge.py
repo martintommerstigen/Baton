@@ -15,10 +15,11 @@ class NativeInstallerTests(unittest.TestCase):
         self.root=Path(self.temp.name)/"checkout"
         self.home=Path(self.temp.name)/"home"
         (self.root/"baton_extension").mkdir(parents=True)
-        shutil.copyfile(
-            Path(__file__).with_name("baton_extension")/"manifest.json",
-            self.root/"baton_extension"/"manifest.json"
-        )
+        for name in ("manifest.json","background.js","content.js"):
+            shutil.copyfile(
+                Path(__file__).with_name("baton_extension")/name,
+                self.root/"baton_extension"/name
+            )
         (self.root/"baton_browser_native_host.py").write_text("# test\n")
         self.home.mkdir()
 
