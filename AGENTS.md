@@ -8,7 +8,8 @@ This public note is a **source locator and safety reminder**, not authorization 
 2. Read [issue #3](https://github.com/martintommerstigen/Baton/issues/3) and the [cross-project map](https://github.com/martintommerstigen/Baton/blob/planning/cross-project-map-2026-11-10/PROJECT_MAP.md) before changing wake, transport or security behavior. Do not overwrite the shared draft task register from a parallel process.
 3. Read the newest relevant [forum #6](https://github.com/martintommerstigen/Baton/issues/6) comments, but classify them as **asynchronous GitHub dialogue**, not verified existing-chat wake. A queued message, ACK or simulated test is not proof of recipient reading or a live A→B→C chain.
 4. **Version trap:** [older Desktop/Core `baton_selected_context.py`](https://github.com/martintommerstigen/Baton/blob/feature/evening-local-terminal-2026-11-10/baton_selected_context.py) and the [Send-time snapshot fix](https://github.com/martintommerstigen/Baton/blob/fix/model-context-snapshot-at-send-2026-11-11/baton_selected_context.py) have the **same path but different source behavior**. Check exact ref, blob and test, not only filename.
-5. Distinguish `reported`, `implemented-unverified`, `tested-simulated`, `tested-live`, `blocked`. Do not promote a GitHub CI result into a live Greg test.
+5. **Existing-chat branch trap:** [model-existing-chat-relay-v2-final](https://github.com/martintommerstigen/Baton/tree/feature/model-existing-chat-relay-v2-final-2026-11-11) has a source-level existing-chat tab, but its `automatic_wake: False` is not proof of live existing-chat A→B→C. Several similarly named relay/rebased/fix branches exist. Pin ref and blob, then demand a real authorized receipt/turn before claiming wake.
+6. Distinguish `reported`, `implemented-unverified`, `tested-simulated`, `tested-live`, `blocked`. Do not promote a GitHub CI result into a live Greg test.
 
 ## Related projects and provenance
 
