@@ -52,7 +52,7 @@ class SourceBrokerPinnedE2E(unittest.TestCase):
         self.jobs = ResearchJobs(self.db, self.key, {"RustWorld": ["sha256-echo"]})
         self.broker = self.new_broker()
         self.broker.start()
-        self.addCleanup(self.broker.close)
+        self.addCleanup(lambda: self.broker.close())
 
     def evidence(self, job_id):
         return self.evidence_dir / (job_id + ".json")
