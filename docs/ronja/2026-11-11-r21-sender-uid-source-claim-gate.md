@@ -25,4 +25,4 @@ The [proxy](../../remote_security/admission_sender_scope.py) extracts the UID fr
 - Tested-simulated: isolated policy and actual Linux kernel credentials, but synthetic messages. Implemented-unverified: B1 integration. Blocked: Greg live, Mac/525, physical RustWorld observations and actual A→B→C.
 - No Desktop Commander, external posting, UI write, changes to GTRCM main, B1-owned code or the shared project-map register.
 
-Next unread GTRCM branch: research/andreas-g29-or-later (verify original source path before reading); next B1 falsifier: one authorized sender UID claiming another sender's source-turn and a fabricated own turn must never become a verified ChatGPT wake.
+Next unread GTRCM branch: research/andreas-g26-disconfirmatory-temporal-inquiry-2026-11-04 (original file content not yet read this run); next B1 falsifier: one authorized sender UID claiming another sender's source-turn and a fabricated own turn must never become a verified ChatGPT wake.
