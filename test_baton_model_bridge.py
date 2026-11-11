@@ -1,6 +1,6 @@
 import unittest
 from baton_model_protocol import (
-    parse_assistant_tool_call,tool_result_message,observe_assistant_script
+    parse_assistant_tool_call,render_tool_call_v2,tool_result_message,observe_assistant_script
 )
 from baton_model_bridge import bootstrap_message, _json_result_script, _decode_js_result, _assistant_tool_turn, should_auto_arm
 
@@ -50,24 +50,45 @@ class ModelToolTests(unittest.TestCase):
         self.assertIn("js-exception:", script)
 
     def test_bootstrap_prompts_real_work_and_fresh_first_call(self):
-        import re
-        import json
         one = bootstrap_message(NONCE, "/home/olliver")
         two = bootstrap_message(NONCE, "/home/olliver")
-        pattern = r"(?m)^BATON_TOOL_V1 ([0-9a-f]{32})\n(\{[^\n]+\})\nEND_BATON_TOOL_V1$"
-        match_one = re.search(pattern, one)
-        match_two = re.search(pattern, two)
-        self.assertIsNotNone(match_one)
-        self.assertIsNotNone(match_two)
-        self.assertEqual(match_one.group(1), NONCE)
-        first = json.loads(match_one.group(2))
-        second = json.loads(match_two.group(2))
+        def first_call(text):
+            lines = [line for line in text.splitlines()
+                     if line.startswith("BATON_TOOL_V2 ")]
+            self.assertEqual(len(lines), 1)
+            self.assertEqual(lines[0].count("\\n"), 0)
+            return parse_assistant_tool_call(lines[0], NONCE)
+        first = first_call(one)
+        second = first_call(two)
+        self.assertIsNotNone(first)
+        self.assertIsNotNone(second)
         self.assertEqual(first["argv"], ["/usr/bin/hostname"])
         self.assertEqual(first["cwd"], "/home/olliver")
         self.assertNotEqual(first["request_id"], second["request_id"])
-        self.assertIn("NEXT necessary BATON_TOOL_V1", one)
-        self.assertIn("read-back verification", one)
-        self.assertIn("NOT perpetual background execution", one)
+        self.assertIn("NEXT necessary BATON_TOOL_V2", one)
+        self.assertIn("independent read-back", one)
+        self.assertIn("not autonomous background thinking", one)
+
+    def test_v2_roundtrip_with_quoted_arguments(self):
+        request = self.payload()
+        request["argv"] = ["/usr/bin/python3", "-c",
+                           "from pathlib import Path; Path('x y').write_text('ok')"]
+        request["cwd"] = "/home/olliver/my folder"
+        line = render_tool_call_v2(NONCE, request)
+        self.assertEqual(line.count("\\n"), 0)
+        self.assertEqual(parse_assistant_tool_call(line, NONCE), request)
+        self.assertEqual(_assistant_tool_turn({"id":None, "text":line}, NONCE),
+                         ("request:" + REQ, request))
+
+    def test_v2_reject_invalid_frames(self):
+        request = self.payload()
+        line = render_tool_call_v2(NONCE, request)
+        self.assertIsNone(parse_assistant_tool_call("Example: " + line, NONCE))
+        self.assertIsNone(parse_assistant_tool_call(line + "\\ntext", NONCE))
+        self.assertIsNone(parse_assistant_tool_call(line, "d" * 32))
+        self.assertIsNone(parse_assistant_tool_call(line.replace(" -- ", " : "), NONCE))
+        self.assertIsNone(parse_assistant_tool_call(line.replace(" 15 ", " 91 "), NONCE))
+        self.assertIsNone(parse_assistant_tool_call(line + " '", NONCE))
 
     def test_tool_turn_without_dom_message_id(self):
         valid = frame(self.payload())
@@ -107,7 +128,7 @@ class ModelToolTests(unittest.TestCase):
 
     def test_bootstrap_explicit_protocol(self):
         text=bootstrap_message(NONCE,"/home/olliver")
-        self.assertIn("BATON_TOOL_V1 "+NONCE,text)
+        self.assertIn("BATON_TOOL_V2 "+NONCE,text)
         self.assertIn("/usr/bin/hostname",text)
 
 if __name__=="__main__":
