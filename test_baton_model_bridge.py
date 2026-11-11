@@ -90,6 +90,21 @@ class ModelToolTests(unittest.TestCase):
         self.assertFalse(should_auto_arm(chat, None, False, False, False, True))
         self.assertFalse(should_auto_arm(None, None, False, False, False, False))
 
+    def test_spa_navigation_schedules_auto_arm(self):
+        # Regression: ChatGPT client-side navigation can change the URL
+        # without QtWebEngine emitting a full page loadFinished signal.
+        import inspect
+        from baton_model_bridge import attach_model_bridge
+        source = inspect.getsource(attach_model_bridge)
+        navigation = source.split("def on_chat_navigation(url):", 1)[1]
+        navigation = navigation.split("def manual_begin():", 1)[0]
+        self.assertIn("QTimer.singleShot(1000, auto_arm)", navigation)
+        self.assertIn("view.urlChanged.connect(on_chat_navigation)", source)
+        self.assertIn("page.loadFinished.connect", source)
+        chat = "6aef828e-0150-83eb-bbac-061f79a8fd4a"
+        self.assertTrue(should_auto_arm(chat, None, False, False, False, False))
+        self.assertFalse(should_auto_arm(chat, chat, False, False, False, False))
+
     def test_bootstrap_explicit_protocol(self):
         text=bootstrap_message(NONCE,"/home/olliver")
         self.assertIn("BATON_TOOL_V1 "+NONCE,text)
