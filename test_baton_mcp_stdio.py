@@ -56,6 +56,29 @@ class MCPTests(unittest.TestCase):
     def test_unknown_tool(self):
         r=handle({"jsonrpc":"2.0","id":5,"method":"tools/call","params":{"name":"other","arguments":{}}})
         self.assertEqual(r["error"]["code"],-32602)
+    def test_malformed_tool_params_fail_closed(self):
+        for malformed in (None, [], "not-an-object", 7, True):
+            with self.subTest(malformed=malformed):
+                with patch("baton_mcp_stdio.execute_on_greg") as executed:
+                    r=handle({"jsonrpc":"2.0","id":91,"method":"tools/call",
+                              "params":malformed})
+                self.assertEqual(r["error"]["code"],-32602)
+                executed.assert_not_called()
+
+    def test_bad_frame_does_not_kill_following_stdio_request(self):
+        frames=[
+            {"jsonrpc":"2.0","id":10,"method":"tools/call","params":None},
+            {"jsonrpc":"2.0","id":11,"method":"tools/list"}
+        ]
+        proc=subprocess.run([sys.executable,"baton_mcp_stdio.py"],
+                            input="".join(json.dumps(frame)+"\\n" for frame in frames),
+                            text=True,capture_output=True,timeout=5)
+        self.assertEqual(proc.returncode,0,proc.stderr)
+        replies=[json.loads(line) for line in proc.stdout.splitlines()]
+        self.assertEqual(len(replies),2)
+        self.assertEqual(replies[0]["error"]["code"],-32602)
+        self.assertEqual(replies[1]["result"]["tools"][0]["name"],"greg_exec")
+
     def test_stdio_protocol(self):
         data='{"jsonrpc":"2.0","id":1,"method":"tools/list"}\n'
         proc=subprocess.run([sys.executable,"baton_mcp_stdio.py"],input=data,text=True,capture_output=True,timeout=5)
