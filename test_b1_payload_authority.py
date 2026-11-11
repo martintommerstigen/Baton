@@ -47,7 +47,7 @@ class DigestBoundSourceTests(unittest.TestCase):
         return {"admit": {"state": "admitted_not_delivered"},
                 "begin_click": {"state": "click_started_uncertain"}}[envelope["op"]]
 
-    def run(self):
+    def attempt(self):
         return run_verified_chain(
             self.ledger, self.a, self.b, self.c,
             a=A, b=B, c=C, source_turn_id="turn-a",
@@ -58,7 +58,7 @@ class DigestBoundSourceTests(unittest.TestCase):
         )
 
     def test_both_exact_commitments_authorize_two_hops(self):
-        result = self.run()
+        result = self.attempt()
         self.assertEqual((result["a_to_b"], result["b_to_c"]),
                          ("verified", "verified"))
         self.assertEqual((self.b.clicks, self.c.clicks), (1, 1))
@@ -69,26 +69,26 @@ class DigestBoundSourceTests(unittest.TestCase):
     def test_legacy_a_command_does_not_authorize_any_send(self):
         self.a.text = "BATON_WAKE " + B + " m1"
         with self.assertRaises(PermissionError):
-            self.run()
+            self.attempt()
         self.assertEqual((self.b.clicks, self.c.clicks, len(self.ops)), (0, 0, 0))
         self.assertIsNone(self.ledger.state("m1"))
 
     def test_same_a_command_with_different_body_is_rejected(self):
         self.first_body = "different body, same A source turn"
         with self.assertRaises(PermissionError):
-            self.run()
+            self.attempt()
         self.assertEqual((self.b.clicks, len(self.ops)), (0, 0))
 
     def test_legacy_b_command_cannot_authorize_c(self):
         self.b.next_text = "BATON_NEXT " + C
-        result = self.run()
+        result = self.attempt()
         self.assertEqual((result["a_to_b"], result["b_to_c"]),
                          ("verified", "not_authorized"))
         self.assertEqual((self.b.clicks, self.c.clicks, len(self.ops)), (1, 0, 2))
 
     def test_wrong_b_digest_cannot_authorize_c(self):
         self.b.next_text = self.b_command("substituted body")
-        result = self.run()
+        result = self.attempt()
         self.assertEqual(result["b_to_c"], "not_authorized")
         self.assertEqual(self.c.clicks, 0)
 
@@ -103,12 +103,12 @@ class DigestBoundSourceTests(unittest.TestCase):
             return result
         self.broker = safe_broker
         with self.assertRaises(Exception):
-            self.run()
+            self.attempt()
         self.assertEqual(self.c.clicks, 0)
         self.assertEqual(self.ledger.state("m2")[1], "uncertain")
         self.ledger = WakeLedger(self.db)
         before = len(self.ops)
-        self.assertEqual(self.run()["b_to_c"], "not_authorized")
+        self.assertEqual(self.attempt()["b_to_c"], "not_authorized")
         self.assertEqual(self.c.clicks, 0)
         self.assertEqual(len(self.ops), before)
 
