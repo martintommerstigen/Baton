@@ -16,6 +16,8 @@ import socket
 import tempfile
 import unittest
 
+import remote_security.pinned_source as pinned_source_module
+import remote_security.research_jobs as research_jobs_module
 from remote_security.pinned_source import capture_pinned_source
 from remote_security.pinned_source_bundle import save_pinned_bundle, load_pinned_bundle
 from remote_security.research_jobs import ResearchJobs
@@ -112,6 +114,15 @@ class CrossUidPinnedSourceE2E(unittest.TestCase):
             db = private / "receipts.db"
             evidence = private / "source0001.json"
             key = b"R16-LOCAL-TEST-KEY-NOT-A-SECRET!!"  # 33 synthetic bytes
+            # GitHub runner checkout can be inaccessible to the dropped UID.
+            # Model a root-installed, world-readable *code* deployment with
+            # byte-identical copies; no production key or source is copied.
+            code_dir = base / "installed-code"
+            code_dir.mkdir(mode=0o755)
+            for module in (research_jobs_module, pinned_source_module):
+                target = code_dir / Path(module.__file__).name
+                target.write_bytes(Path(module.__file__).read_bytes())
+                target.chmod(0o644)
             ready_r, ready_w = os.pipe()
             pid = os.fork()
             if pid == 0:
@@ -120,6 +131,10 @@ class CrossUidPinnedSourceE2E(unittest.TestCase):
                     os.close(ready_r)
                     os.setgid(SHARED_GID)
                     os.setuid(SERVICE_UID)
+                    # The installed copies are byte-identical to the imported
+                    # reviewed modules, and readable by the service UID.
+                    research_jobs_module.__file__ = str(code_dir / "research_jobs.py")
+                    pinned_source_module.__file__ = str(code_dir / "pinned_source.py")
                     phase = "jobs"
                     jobs = ResearchJobs(db, key, {"RustWorld": ["sha256-echo"]})
 
