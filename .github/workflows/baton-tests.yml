@@ -62,3 +62,14 @@ jobs:
         run: python3 -m unittest -v test_baton.py test_security.py test_client.py test_wake_contract.py test_wake_adapter.py test_chatgpt_ui_driver.py test_chatgpt_ui_driver_marker.py test_chatgpt_ui_observation.py test_chatgpt_ui_submission.py test_run_chatgpt_wake.py test_wake_chain.py test_wake_origin.py test_run_chatgpt_wake_chain.py test_receipt_commit_order.py test_inspect_chatgpt_wake_ui.py test_wake_browser_integration.py test_wake_digest.py test_wake_collision.py test_wake_presend_abort.py test_wake_ui_lock.py test_wake_ui_lock_scope.py test_wake_pause_writer.py test_wake_lock_path.py test_wake_lock_replacement_boundary.py test_wake_admission_broker.py test_wake_broker_ui.py test_verified_broker_wake.py test_verified_broker_wake_integration.py test_verified_broker_chain.py test_wake_turn_snapshot.py test_inspect_b1_readiness.py test_b1_payload_authority.py
       - name: B1 isolated real two-UID kernel broker test (no UI/network)
         run: sudo "$(command -v python3)" -m unittest discover -s tests -p 'test_b1_broker_cross_uid.py' -v
+      - name: Checkout pinned Ronja R21 policy source (no vendoring)
+        uses: actions/checkout@v4
+        with:
+          ref: 7fb167b8dd5aee0450ee0adb9125e80697050301
+          path: .b5-r21
+          persist-credentials: false
+      - name: B1-B5 R21 scoped dispatch integration (synthetic peer UIDs; no UI)
+        env:
+          PYTHONPATH: ".b5-r21:."
+          B1_REQUIRE_R21: "1"
+        run: python3 -m unittest -v test_b1_r21_scoped_dispatch.py
