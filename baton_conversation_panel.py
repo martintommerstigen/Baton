@@ -58,7 +58,7 @@ def attach_baton_panel(window, view, page, *, initial_chat=None, initial_message
     # Martin's Baton contract: opening an existing conversation while Baton is
     # running grants that exact conversation the local Core bridge for the
     # lifetime of the visit. No per-command or per-chat activation click.
-    attach_model_bridge(layout, view, page, dock, auto_enable=True)
+    attach_model_bridge(layout, view, page, dock, auto_enable=False)
 
     layout.addWidget(QLabel("Melding fra Baton"))
     message = QPlainTextEdit()
