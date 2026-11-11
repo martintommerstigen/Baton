@@ -13,7 +13,8 @@ import socket
 
 from b1_snapshot_relay import observe_via_snapshots, snapshot_request
 from chatgpt_ui_driver import PAUSE_FILE, pause_active
-from run_b1_snapshot_observer import (\n    enforce_scoped_boundary, REQUIRED_CHECKS, NETWORK_CHECKS)
+from run_b1_snapshot_observer import (
+    enforce_scoped_boundary, REQUIRED_CHECKS, NETWORK_CHECKS)
 
 EXPECTED_GUARD = "lifetime_guard_loaded_not_host_attestation"
 EXPECTED_SEAL = "four_role_pinned_sessions_sealed_not_host_attestation"
