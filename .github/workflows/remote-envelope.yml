@@ -49,3 +49,6 @@ jobs:
       - name: Isolated two-UID kernel credential regression
         if: github.event_name == 'push' && github.repository == 'martintommerstigen/Baton'
         run: sudo "$(command -v python)" -W error::ResourceWarning -m unittest discover -s tests -p 'test_source_broker.py' -v
+      - name: Real cross-UID pinned-source capture and restart audit
+        if: github.event_name == 'push' && github.repository == 'martintommerstigen/Baton'
+        run: sudo "$(command -v python)" -W error::ResourceWarning -m unittest discover -s tests -p 'test_source_broker_cross_uid_e2e.py' -v

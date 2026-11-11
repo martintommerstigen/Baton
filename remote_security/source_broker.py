@@ -114,6 +114,23 @@ class SourceBroker:
     def _stat_pinned(self, directory_fd):
         return os.stat(self.path.name, dir_fd=directory_fd, follow_symlinks=False)
 
+    def _endpoint_unchanged(self):
+        """A stable parent inode does not guarantee the bound socket survived.
+
+        Fail closed if the public socket basename is unlinked, replaced or
+        permission-changed. This detects faults; it is not a same-UID sandbox.
+        """
+        if self.parent_fd is None or self.inode is None or not self._parent_unchanged():
+            return False
+        try:
+            current = self._stat_pinned(self.parent_fd)
+        except OSError:
+            return False
+        return (stat.S_ISSOCK(current.st_mode)
+                and current.st_uid == os.geteuid()
+                and (current.st_dev, current.st_ino) == self.inode
+                and current.st_mode & 0o777 == 0o660)
+
     def start(self):
         if self.sock is not None or self.parent_fd is not None:
             raise Rejected("broker already started")
@@ -204,14 +221,18 @@ class SourceBroker:
             request = parse_request(bytes(raw), self.source_ids)
             # A directory can be renamed while an accepted client trickles
             # bytes. Do not enter a source backend after losing the endpoint.
-            if not self._parent_unchanged():
-                raise Rejected("socket directory moved before backend execution")
+            if not self._endpoint_unchanged():
+                raise Rejected("socket endpoint changed before backend execution")
             if request["action"] == "capture":
                 result = self.capture(request["source_id"], request["job_id"])
             else:
                 result = self.audit(request["source_id"], request["job_id"])
             if type(result) is not dict or type(result.get("state")) is not str:
                 raise Rejected("backend contract failure")
+            # A callback may have committed its receipt while the public
+            # endpoint disappeared. Do not report success or retry blindly.
+            if not self._endpoint_unchanged():
+                raise Rejected("socket endpoint changed during backend execution")
             reply = result
         except Exception:
             # Even a post-reservation failure may have executed. Never retry.
@@ -222,13 +243,13 @@ class SourceBroker:
         conn.sendall(encoded)
 
     def accept_once(self):
-        if not self._parent_unchanged():
-            raise Rejected("socket directory moved; stop serving")
+        if not self._endpoint_unchanged():
+            raise Rejected("socket endpoint changed; stop serving")
         conn, _ = self.sock.accept()
         with conn:
             # The directory may have moved *during* the blocking accept.
             # Check before reading even a permitted peer's request bytes.
-            if not self._parent_unchanged():
+            if not self._endpoint_unchanged():
                 return
             try:
                 self._handle(conn)
