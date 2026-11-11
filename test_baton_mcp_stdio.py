@@ -6,6 +6,21 @@ from unittest.mock import patch
 from baton_mcp_stdio import handle
 
 class MCPTests(unittest.TestCase):
+    def setUp(self):
+        lease = patch("baton_mcp_stdio.ui_lease_active", return_value=True)
+        lease.start()
+        self.addCleanup(lease.stop)
+
+    def test_tools_blocked_when_baton_closed(self):
+        with patch("baton_mcp_stdio.ui_lease_active", return_value=False):
+            with patch("baton_mcp_stdio.execute_on_greg") as executed:
+                r=handle({"jsonrpc":"2.0","id":88,"method":"tools/call",
+                          "params":{"name":"greg_exec","arguments":{
+                              "argv":["/usr/bin/true"],"cwd":"/tmp","timeout":5}}})
+        self.assertTrue(r["result"]["isError"])
+        self.assertIn("Baton UI is closed",r["result"]["content"][0]["text"])
+        executed.assert_not_called()
+
     def test_initialize(self):
         r=handle({"jsonrpc":"2.0","id":1,"method":"initialize","params":{}})
         self.assertEqual(r["result"]["serverInfo"]["name"],"baton-greg")
