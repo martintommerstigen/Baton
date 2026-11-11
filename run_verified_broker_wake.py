@@ -1,6 +1,8 @@
 """B1 opt-in, fail-closed single-hop existing-chat wake using Ronja's B5 peer gate.
 
-Requires the B5 remote_security.broker_peer module on PYTHONPATH, a broker
+The existing A assistant turn must be exactly:
+BATON_WAKE <target-UUID> <message-id> sha256:<approved-body-UTF8-SHA256>.
+The verified live CLI refuses legacy target-only commands.\n\nRequires the B5 remote_security.broker_peer module on PYTHONPATH, a broker
 running under a different unprivileged Linux UID, and two already-open
 authorized ChatGPT tabs. No browser launch, cookie access or blind retry.
 """
@@ -76,7 +78,8 @@ class WaitForReply:
 
 
 def execute_once(ledger, source_driver, target_driver, source, target,
-                 source_turn_id, message_id, body, broker_request, wait_seconds):
+                 source_turn_id, message_id, body, broker_request, wait_seconds,
+                 *, require_payload_authority=False):
     """Verify source assistant turn before any durable admission or UI write."""
     if source == target:
         raise ValueError("Distinct source/target conversations required")
@@ -84,11 +87,14 @@ def execute_once(ledger, source_driver, target_driver, source, target,
         raise ValueError("Nonempty approved body required")
     if not 0 <= wait_seconds <= 600:
         raise ValueError("Invalid observation window")
-    verify_source_turn(source_driver, source, source_turn_id, target, message_id)
-    guarded_request = guarded_source_broker_request(
-        source_driver, source, source_turn_id, target, message_id, broker_request)
-    gated = BrokerGatedUIDriver(target_driver, guarded_request, source, source_turn_id)
     digest = hashlib.sha256(body.encode('utf-8')).hexdigest()
+    commitment = digest if require_payload_authority else None
+    verify_source_turn(source_driver, source, source_turn_id, target, message_id,
+                       commitment)
+    guarded_request = guarded_source_broker_request(
+        source_driver, source, source_turn_id, target, message_id,
+        broker_request, expected_digest=commitment)
+    gated = BrokerGatedUIDriver(target_driver, guarded_request, source, source_turn_id)
     return wake_once(ledger, WaitForReply(gated, wait_seconds), message_id,
                      source, target, digest, body, source_turn_id)
 
@@ -121,7 +127,8 @@ def main(argv=None):
         ledger = WakeLedger(args.db)
         result = execute_once(ledger, source_driver, target_driver, args.source,
                               args.target, args.source_turn_id, args.id, args.body,
-                              broker_request, args.wait_seconds)
+                              broker_request, args.wait_seconds,
+                              require_payload_authority=True)
         print(json.dumps({'source': args.source, 'target': args.target,
                           'message_id': args.id, 'source_turn_id': args.source_turn_id,
                           'state': result, 'status': 'not_a_chain_completion'}))

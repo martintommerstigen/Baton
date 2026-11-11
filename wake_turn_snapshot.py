@@ -163,7 +163,8 @@ def verify_current_reply(ledger, store, driver, message_id, chat):
     return snap
 
 
-def verify_current_b_turn(ledger, store, driver, first_id, chat, target):
+def verify_current_b_turn(ledger, store, driver, first_id, chat, target,
+                          expected_digest=None):
     """Check the immutable first observation against the current B DOM turn."""
     snap = store.get(first_id)
     row = ledger.provenance(first_id)
@@ -177,20 +178,23 @@ def verify_current_b_turn(ledger, store, driver, first_id, chat, target):
     text = driver.read_assistant_turn(chat, snap.turn_id)
     if hashlib.sha256(text.encode("utf-8")).hexdigest() != snap.text_sha256:
         raise SourceEvidenceChanged("B source text changed at same turn ID")
-    if next_target_from_reply(text, target) is None:
+    if next_target_from_reply(text, target, expected_digest) is None:
         raise SourceEvidenceChanged("B did not authorize exact C target")
     return snap
 
 
-def guarded_second_hop(broker_request, ledger, store, driver_b, first_id, b, c):
+def guarded_second_hop(broker_request, ledger, store, driver_b, first_id, b, c,
+                       expected_digest=None):
     """Read B before AND after each broker operation, including begin_click.
 
     After a committed begin_click, failure is uncertain; the outer wake
     adapter will never automatically retry the C message.
     """
     def request(envelope):
-        verify_current_b_turn(ledger, store, driver_b, first_id, b, c)
+        verify_current_b_turn(ledger, store, driver_b, first_id, b, c,
+                              expected_digest)
         result = broker_request(envelope)
-        verify_current_b_turn(ledger, store, driver_b, first_id, b, c)
+        verify_current_b_turn(ledger, store, driver_b, first_id, b, c,
+                              expected_digest)
         return result
     return request

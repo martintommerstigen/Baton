@@ -1,8 +1,10 @@
 """Opt-in B1/B5 A->B->C runner for three *existing* ChatGPT tabs.
 
 No browser creation/login, no implicit retry, no arbitrary model-authored payload.
-A must emit BATON_WAKE B FIRST_ID. The observed assistant turn in B must
-be the *exact* BATON_NEXT C. B's source turn is the durable receipt for A->B.
+A must emit BATON_WAKE B FIRST_ID sha256:<B-body-digest>.
+B must emit BATON_NEXT C sha256:<C-body-digest>.
+The live CLI refuses target-only commands; B's exact digest-bound assistant
+turn is the source for the second hop. B's source turn is the durable receipt for A->B.
 Every UI click requires Ronja's connected-peer-verified B5 admission.
 Not a live-verification claim: only a real Greg/browser run can establish that.
 """
@@ -51,7 +53,7 @@ def _receipt(ledger, message_id):
 def run_verified_chain(ledger, driver_a, driver_b, driver_c, *,
                        a, b, c, source_turn_id, first_id, second_id,
                        first_body, second_body, broker_request,
-                       wait_seconds=120):
+                       wait_seconds=120, require_payload_authority=False):
     """Two-hop chain; a verified first-hop B turn is required before C.
 
     The broker client is an injected *authenticated* callback. Callers must
@@ -82,6 +84,7 @@ def run_verified_chain(ledger, driver_a, driver_b, driver_c, *,
     first = execute_once(
         ledger, driver_a, CapturingTarget(driver_b, snapshots, first_id), a, b, source_turn_id,
         first_id, first_body, broker_request, wait_seconds,
+        require_payload_authority=require_payload_authority,
     )
     outcome = {
         "a_to_b": first,
@@ -98,10 +101,13 @@ def run_verified_chain(ledger, driver_a, driver_b, driver_c, *,
     b_turn_id = ledger.state(first_id)[2]
     if not b_turn_id:
         raise RuntimeError("Verified B assistant turn ID missing")
+    digest_c = hashlib.sha256(second_body.encode("utf-8")).hexdigest()
+    c_commitment = digest_c if require_payload_authority else None
     # B's first observed text must survive unchanged at the same DOM turn ID.
     # A later command inserted into the same ID is not source authorization.
     try:
-        snap = verify_current_b_turn(ledger, snapshots, driver_b, first_id, b, c)
+        snap = verify_current_b_turn(ledger, snapshots, driver_b, first_id, b, c,
+                                     c_commitment)
     except (SourceEvidenceChanged, ValueError, RuntimeError):
         outcome["b_to_c"] = "not_authorized"
         return outcome
@@ -115,11 +121,11 @@ def run_verified_chain(ledger, driver_a, driver_b, driver_c, *,
     # broker operations. After begin_click, failure stays uncertain.
     guarded_request = guarded_second_hop(
         broker_request, ledger, snapshots, driver_b, first_id, b, c,
+        expected_digest=c_commitment,
     )
     gated_c = BrokerGatedUIDriver(
         CapturingTarget(driver_c, snapshots, second_id), guarded_request, b, b_turn_id
     )
-    digest_c = hashlib.sha256(second_body.encode("utf-8")).hexdigest()
     second = wake_once(
         ledger, WaitForReply(gated_c, wait_seconds),
         second_id, b, c, digest_c, second_body, b_turn_id,
@@ -133,9 +139,11 @@ def run_verified_chain(ledger, driver_a, driver_b, driver_c, *,
         # A contradiction is persisted separately: the delivery receipt may
         # remain verified, but must never be promoted into chain proof.
         try:
-            verify_current_b_turn(ledger, snapshots, driver_b, first_id, b, c)
+            verify_current_b_turn(ledger, snapshots, driver_b, first_id, b, c,
+                                  c_commitment)
             snap_c = verify_current_reply(ledger, snapshots, driver_c, second_id, c)
-            verify_current_b_turn(ledger, snapshots, driver_b, first_id, b, c)
+            verify_current_b_turn(ledger, snapshots, driver_b, first_id, b, c,
+                                  c_commitment)
         except Exception:
             snapshots.invalidate_chain(second_id)
             raise
@@ -190,6 +198,7 @@ def main(argv=None):
             first_id=args.first_id, second_id=args.second_id,
             first_body=args.first_body, second_body=args.second_body,
             broker_request=broker_request, wait_seconds=args.wait_seconds,
+            require_payload_authority=True,
         )
         print(json.dumps(result, sort_keys=True))
 

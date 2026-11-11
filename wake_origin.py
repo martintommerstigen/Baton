@@ -4,24 +4,31 @@ This is *UI provenance*, not cryptographic identity or Baton forum authorship.
 The operator still supplies an allowlisted source tab and authorizes the action.
 """
 from chatgpt_ui_driver import marker_for
+import re
 
-def source_requested_wake(reply_text, target_chat, message_id):
+_DIGEST = re.compile(r'^[0-9a-f]{64}$')
+
+def source_requested_wake(reply_text, target_chat, message_id, expected_digest=None):
     """Accept exactly one standalone command in a verified assistant turn."""
     if not isinstance(reply_text, str) or not reply_text.strip():
         return False
     marker_for(message_id)
     expected=f"BATON_WAKE {target_chat} {message_id}"
+    if expected_digest is not None:
+        if type(expected_digest) is not str or not _DIGEST.fullmatch(expected_digest):
+            raise ValueError('Expected SHA-256 must be lowercase 64 hex characters')
+        expected += f' sha256:{expected_digest}'
     # An example or quoted command inside a longer answer is NOT consent.
     return reply_text.strip()==expected
 
-def verify_source_turn(driver, source_chat, source_turn_id, target_chat, message_id):
+def verify_source_turn(driver, source_chat, source_turn_id, target_chat, message_id, expected_digest=None):
     """Fail closed if the source assistant turn is missing or not an exact request."""
     if not source_turn_id:
         raise ValueError("Source assistant turn ID required")
     if hasattr(driver, 'is_generating') and driver.is_generating(source_chat):
         raise RuntimeError('Source assistant response is still generating')
     text=driver.read_assistant_turn(source_chat,source_turn_id)
-    if not source_requested_wake(text,target_chat,message_id):
+    if not source_requested_wake(text,target_chat,message_id,expected_digest):
         raise PermissionError("Source assistant turn did not request this exact wake")
     return True
 
@@ -42,7 +49,8 @@ def discover_source_turn(driver, source_chat, target_chat, message_id):
     return matches[0] if matches else None
 
 def guarded_source_broker_request(driver, source_chat, source_turn_id,
-                                  target_chat, message_id, broker_request):
+                                  target_chat, message_id, broker_request,
+                                  expected_digest=None):
     """Revalidate A's *current* assistant command around each B5 operation.
 
     The initial check in execute_once is not sufficient: A can change while
@@ -61,11 +69,13 @@ def guarded_source_broker_request(driver, source_chat, source_turn_id,
                 or envelope.get("conversation_id") != target_chat
                 or envelope.get("message_id") != message_id):
             raise PermissionError("Broker envelope disagrees with A source-turn authority")
-        verify_source_turn(driver, source_chat, source_turn_id, target_chat, message_id)
+        verify_source_turn(driver, source_chat, source_turn_id, target_chat, message_id,
+                           expected_digest)
         result = broker_request(envelope)
         # If this raises after a broker COMMIT, wake_once preserves uncertainty;
         # never reissue the same message ID as an automatic retry.
-        verify_source_turn(driver, source_chat, source_turn_id, target_chat, message_id)
+        verify_source_turn(driver, source_chat, source_turn_id, target_chat, message_id,
+                           expected_digest)
         return result
 
     return request
