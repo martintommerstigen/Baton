@@ -61,6 +61,10 @@ delivery, impersonate the sender, or dispatch messages itself.
   a replay may be admitted again; adapters still require their own replay
   protection and provenance checks.
 
+Baton checks expirations at app startup, when the local inbox is opened,
+and periodically while the window remains active. If Baton is shut down at
+the expiry time, physical deletion takes place on its next launch.
+
 These periods are initial defaults, not ontological truths. A future policy
 UI should let individual recipients change them within safe bounds and clear
 their local inbox or derived metadata.
@@ -68,12 +72,16 @@ their local inbox or derived metadata.
 ## What is NOT implemented yet
 
 No external platform has been granted permission to read the filter rules,
-nor does a block send an explicit rejection back to the origin. There is
-**no currently integrated external message ingestion** through this module.
-The Baton UI includes a local rule editor, local simulated decision testing
-and local test messages. Email, social media and cross-instance model transport
-must call `receive()` only after separate provider authentication and transport
-validation are implemented.
+nor does a block send an explicit rejection back to the origin. The Baton
+UI includes a local rule editor, simulated decision testing, and local test
+messages. **Real replies from the in-app OpenAI-compatible/Ollama model chat
+also go through `receive()` before being shown to the user.** These replies
+are treated as **unverified instance identities** until a provider-specific
+identity proof is available, so they cannot self-allowlist by claiming a name.
+
+Email, social media and cross-instance model transport have **no connected
+external receiving adapters yet**. Future adapters must call `receive()`
+only after separate provider authentication and transport validation.
 
 Automatic natural-language topic classification is not yet available.
 An API/model classifier will be treated as a potentially unreliable source,
