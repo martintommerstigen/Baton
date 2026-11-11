@@ -224,7 +224,12 @@
     if (session.pending) return;
     const turns=[...document.querySelectorAll('[data-message-author-role="assistant"]')].slice(-12);
     for (const turn of turns) {
-      const text=(turn.innerText||"").trim();
+      // Inspect the assistant's message BODY, not toolbars and Copy buttons.
+      // The body must be exactly one standalone command line.
+      const body=turn.querySelector('[data-message-content]') ||
+        turn.querySelector('.markdown') ||
+        turn.querySelector('[class*="markdown"]') || turn;
+      const text=(body.innerText||body.textContent||"").trim();
       if (!text.startsWith("BATON_TOOL_V2 "+session.nonce+" ") ||
           text.includes("\n") || text.length>7000) continue;
       const match=/^BATON_TOOL_V2 ([0-9a-f]{32}) ([0-9a-f]{32}) /i.exec(text);
