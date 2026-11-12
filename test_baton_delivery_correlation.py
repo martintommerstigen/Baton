@@ -139,13 +139,13 @@ class BatonDeliveryCorrelationTests(unittest.TestCase):
     @unittest.skipUnless(which("node"),"Node is required")
     def test_native_duplicate_exact_payload_is_ambiguous(self):
         value=observe([user(),assistant("one","id-1"),user("Different content","id-2"),
-                       user(),assistant("two","id-3")])
+                       user(turn_id="second-target-user"),assistant("two","id-3")])
         self.assertEqual(value["reason"],"duplicate-exact-user-turn")
         self.assertFalse(verified_reply_observation(value))
 
     @unittest.skipUnless(which("node"),"Node is required")
     def test_later_unrelated_reply_is_not_a_receipt(self):
-        value=observe([user(),user("Unrelated request"),assistant()])
+        value=observe([user(),user("Unrelated request","unrelated-user-id"),assistant()])
         self.assertEqual(value["reason"],"no-adjacent-assistant-turn")
         self.assertFalse(verified_reply_observation(value))
 
