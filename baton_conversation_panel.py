@@ -7,6 +7,8 @@ import re
 from urllib.parse import urlparse
 from baton_chatgpt_view import conversation_url, is_chatgpt_conversation_url
 from baton_embedded_send import prepare_send_script, send_click_script
+from baton_ui_pause import ui_writes_paused
+from baton_chat_observe import verified_reply_observation
 
 CHAT_PATH = re.compile(r"^/c/([0-9a-f]{8}-[0-9a-f-]{20,64})$", re.I)
 
@@ -126,6 +128,7 @@ def attach_baton_panel(window, view, page, *, initial_chat=None, initial_message
             not in_flight[0] and bool(message.toPlainText().strip())
             and is_chatgpt_conversation_url(view.url().toString(), chat_id)
             and (chat_id, message.toPlainText()) not in attempted
+            and not ui_writes_paused()
         )
         send.setEnabled(can_send)
 
@@ -136,6 +139,10 @@ def attach_baton_panel(window, view, page, *, initial_chat=None, initial_message
         refresh_send()
 
     def send_message():
+        if ui_writes_paused():
+            set_status("PAUSE_UI_WRITES aktiv: ingen ChatGPT-sending.")
+            refresh_send()
+            return
         chat_id = recipient.text().strip()
         text = message.toPlainText()
         if not is_chatgpt_conversation_url(view.url().toString(), chat_id):
@@ -190,13 +197,19 @@ def attach_baton_panel(window, view, page, *, initial_chat=None, initial_message
                     set_status("Sendeknappen var ikke klar. Levering IKKE verifisert.")
                 refresh_send()
             def click_once():
+                if ui_writes_paused():
+                    in_flight[0] = False
+                    log_event(request_id, chat_id, "paused_before_send")
+                    set_status("PAUSE_UI_WRITES aktiv: ingen klikk. Utkast ikke sendt.")
+                    refresh_send()
+                    return
                 if not is_chatgpt_conversation_url(view.url().toString(), chat_id):
                     in_flight[0] = False
                     log_event(request_id, chat_id, "target_changed")
                     set_status("STOPP: Samtalen ble endret før sendeknappen var klar.")
                     refresh_send()
                     return
-                page.runJavaScript(send_click_script(), clicked)
+                page.runJavaScript(send_click_script(wrapped), clicked)
             QTimer.singleShot(350, click_once)
         page.runJavaScript(script, prepared)
 
@@ -227,7 +240,7 @@ def attach_baton_panel(window, view, page, *, initial_chat=None, initial_message
                 user_seen[0] = True
                 log_event(request_id, chat_id, "user_visible_ui")
                 set_status("Baton-meldingen er synlig i riktig ChatGPT-samtale. Venter på svar ...")
-            if result.get("replyVisible") and result.get("replyComplete"):
+            if verified_reply_observation(result):
                 watcher.stop()
                 active_check[0] = None
                 log_event(request_id, chat_id, "assistant_reply_visible_ui",
