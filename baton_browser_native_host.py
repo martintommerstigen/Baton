@@ -19,17 +19,20 @@ import time
 from baton_core_client import execute_on_greg
 from baton_desktop_lease import ui_lease_active
 from baton_model_protocol import parse_assistant_tool_call, tool_result_message
+from baton_ui_pause import ui_writes_paused
 
 CHAT_ID = re.compile(r"[0-9a-f]{8}-[0-9a-f-]{20,64}\Z", re.I)
 MAX_NATIVE_MESSAGE = 64 * 1024
 MAX_SESSION_SECONDS = 3600
+WRITE_CHECK_ID = re.compile(r"[0-9a-f]{32}\\Z", re.I)
 
 
 class NativeHostSession:
-    def __init__(self, *, client=None, lease=None, clock=None):
+    def __init__(self, *, client=None, lease=None, clock=None, pause=None):
         self.client = client or execute_on_greg
         self.lease = lease or ui_lease_active
         self.clock = clock or time.monotonic
+        self.pause = pause if pause is not None else ui_writes_paused
         self.chat_id = None
         self.nonce = None
         self.expires = 0
@@ -39,6 +42,13 @@ class NativeHostSession:
         return (self.nonce is not None and self.chat_id is not None
                 and self.clock() < self.expires and self.lease()
                 and (chat_id is None or self.chat_id == chat_id))
+
+    def _paused(self):
+        # A failed safety check cannot be permission to send or execute.
+        try:
+            return bool(self.pause())
+        except Exception:
+            return True
 
     def handle(self, request):
         if not isinstance(request, dict):
@@ -52,6 +62,8 @@ class NativeHostSession:
                 return {"ok":False,"error":"invalid-chat-id"}
             if not self.lease():
                 return {"ok":False,"error":"baton-ui-not-running"}
+            if self._paused():
+                return {"ok":False,"error":"ui-writes-paused"}
             # One live tab per process. A second selection replaces prior
             # authority, and old nonces cannot be reused.
             self.chat_id = chat
@@ -67,13 +79,29 @@ class NativeHostSession:
             self.used.clear()
             return {"ok":True,"op":"stopped"}
         if op == "status":
-            return {"ok":True,"op":"status","active":self._active()}
+            return {"ok":True,"op":"status","active":self._active() and not self._paused()}
+        if op == "ui_write_check":
+            # Browser content asks for a fresh host-side safety check just
+            # before each composer write and immediately before Send.click().
+            if set(request) != {"op","chat_id","check_id"}:
+                return {"ok":False,"error":"invalid-write-check"}
+            chat, check_id = request["chat_id"], request["check_id"]
+            if (not isinstance(check_id,str) or not WRITE_CHECK_ID.fullmatch(check_id)
+                    or not self._active(chat)):
+                return {"ok":False,"error":"write-check-inactive-or-mismatch",
+                        "check_id":check_id if isinstance(check_id,str) else None}
+            if self._paused():
+                return {"ok":False,"error":"ui-writes-paused","check_id":check_id}
+            return {"ok":True,"op":"ui_write_allowed","chat_id":chat,
+                    "check_id":check_id}
         if op != "execute_frame" or set(request) != {"op","chat_id","frame"}:
             return {"ok":False,"error":"unsupported-command"}
         chat = request.get("chat_id")
         frame = request.get("frame")
         if not self._active(chat):
             return {"ok":False,"error":"session-inactive-or-chat-mismatch"}
+        if self._paused():
+            return {"ok":False,"error":"ui-writes-paused"}
         parsed = parse_assistant_tool_call(frame, self.nonce)
         if parsed is None:
             return {"ok":False,"error":"invalid-or-unauthorized-tool-frame"}
@@ -91,6 +119,10 @@ class NativeHostSession:
         except (OSError, PermissionError, ValueError, TypeError, RuntimeError):
             response = tool_result_message(self.nonce, request_id,
                 {"exit_code":None,"output":"Baton Core command failed; delivery uncertain"})
+        if self._paused():
+            # The Core action may already have happened. Never claim it did
+            # not, and never send an automatic result message while paused.
+            return {"ok":False,"error":"ui-writes-paused-after-execution"}
         return {"ok":True,"op":"tool_result","chat_id":chat,
                 "request_id":request_id,"frame":response}
 
