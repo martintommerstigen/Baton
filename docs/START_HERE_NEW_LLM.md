@@ -1,6 +1,9 @@
 # Start here: Baton, GTRCM and RustWorld (new LLM orientation)
 **Verified GitHub snapshot:** 2026-11-11. **Purpose:** locate the correct source before acting. This is a public navigation guide, not an installation claim or authorization to send messages.
 
+
+**Latest source check, 2026-11-12:** **330 GTRCM + 81 Baton = 411** non-atomic branch tips. Two new private GTRCM research branches (R56/R57) refine conditional inertia versus independent source/probe identification; they do **not** establish a physical gravity law or a Baton wake capability. Begin with [Baton AGENTS.md](../AGENTS.md), then the [private question-first router](https://github.com/martintommerstigen/GTRCM/blob/docs/eik-g2-g4-repo-navigation-2026-11-11/research/navigation/2026-11-12_QUESTION_FIRST_ROUTER.md) if authorized. **All 407–409 counts below are historical snapshots**; do not treat their associated past test counts as freshly rerun. The complete 411-tip snapshot and 23-case QA fixture are on the private GTRCM draft navigation branch. No complete branch histories or independent fresh-LLM test are claimed.
+
 **2026-11-12 delta:** A fresh owner-affiliated GitHub enumeration found **327 GTRCM + 81 Baton = 408 branch tips**. The previous 326+81/407 figures below are explicitly historical snapshots, not the current count. The [private question-first router](https://github.com/martintommerstigen/GTRCM/blob/docs/eik-g2-g4-repo-navigation-2026-11-11/research/navigation/2026-11-12_QUESTION_FIRST_ROUTER.md) now asks a new LLM to check whether an answer already exists, read the original and negative control, and state what changed. R54 adds source-grounded physical-bootstrap limits, not a live Baton or natural-physics proof.
 
 ## Project map (do not conflate)
