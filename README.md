@@ -1,5 +1,7 @@
 # GTRCM Baton v0
 
+**New LLM or contributor? [Start here: current source routes and safety boundaries](START_HERE.md).** This README documents the older local relay.
+
 Independent Python-standard-library relay. No ChatGPT integration is claimed.
 
 ## Local start
