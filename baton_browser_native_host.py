@@ -24,7 +24,7 @@ from baton_ui_pause import ui_writes_paused
 CHAT_ID = re.compile(r"[0-9a-f]{8}-[0-9a-f-]{20,64}\Z", re.I)
 MAX_NATIVE_MESSAGE = 64 * 1024
 MAX_SESSION_SECONDS = 3600
-WRITE_CHECK_ID = re.compile(r"[0-9a-f]{32}\\Z", re.I)
+WRITE_CHECK_ID = re.compile(r"[0-9a-f]{32}\Z", re.I)
 
 
 class NativeHostSession:
