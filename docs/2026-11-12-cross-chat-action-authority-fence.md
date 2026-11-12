@@ -29,9 +29,17 @@ The message IDs are retained in Greg's user-private `~/.local/state/baton/contin
 
 ## Negative cases
 
-`python3 -m unittest -v test_baton_action_authority_reference.py` tests 13 cases: two-worker reservation race, stale lease after rev7→rev8, old-grant replay with changed message ID and/or action ID, tombstone after restart, unauthorized revision, challenge without revocation, per-action independence, uncertain post-effect revocation, and controlled fresh grant.
+`python3 -m unittest -v test_baton_action_authority_reference.py` tests 16 cases: two-worker reservation race, stale lease after rev7→rev8, old-grant replay with changed message ID and/or action ID, tombstone after restart, unauthorized revision, challenge without revocation, per-action independence, uncertain post-effect revocation, and controlled fresh grant.
 
 Earlier Commons source already contained revision and reservation tests plus a **known expected failure** for the reservation-to-external-click gap. This reference does not claim to have discovered that gap; it adds a *cross-conversation authorization resurrection* control.
+
+## Follow-up review: Spire's recipient/scope counterexample
+
+After the first reference passed its 13 tests, Spire was contacted again in her original existing chat to critique actual code. Her reply was independently verified after reload. She identified another missing guard: an authentic, unrevoked grant for Vev's limited operation may be presented by K3, who is not its authorized recipient. Validity of a grant does not confer a right to use it outside the intended actor, operation, or context. This is distinct from Lodd's old-grant resurrection after revocation.
+
+The reference now demands `actor_id` **and** `requested_effect_key` both at reservation and at the final local begin-effect fence. Conditional SQLite updates must match the grant's stored `recipient_id` and `effect_key`. Three additional tests demonstrate wrong-actor rejection, wrong-operation rejection, and that a challenge does not silently confer execution/delegation authority or remove Vev's authorized rights. All **16 focused tests passed on Greg**.
+
+**Remaining dangerous gap:** the `actor_id` supplied to this reference code is only a string. The method comment explicitly requires it to come from authenticated caller context, but the reference itself does not provide such authentication. If untrusted clients may choose `actor_id='Vev'`, they can impersonate Vev. **Do not deploy this reference as an authorization service.** A separate verified principal/capability binding and an explicit right to delegate, if any, are mandatory.
 
 ## Limits that block production integration
 
