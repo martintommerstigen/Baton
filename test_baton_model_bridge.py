@@ -3,7 +3,7 @@ from baton_model_protocol import (
     parse_assistant_tool_call,render_tool_call_v2,render_chat_call_v1,
     tool_result_message,chat_result_message,observe_assistant_script
 )
-from baton_model_bridge import bootstrap_message, _json_result_script, _decode_js_result, _assistant_tool_turn, should_auto_arm
+from baton_model_bridge import bootstrap_message, _json_result_script, _decode_js_result, _assistant_tool_turn, should_auto_arm, result_is_current_generation
 
 NONCE="b"*32
 REQ="c"*32
@@ -184,6 +184,31 @@ class ModelToolTests(unittest.TestCase):
         self.assertIn('"status":"uncertain"',source)
         self.assertIn("no retry",source)
         self.assertIn('call["tool"]=="chat_send"',source)
+
+    def test_som_delayed_a_receipt_cannot_authorize_replacement_b(self):
+        cid="6aef341a-d850-83ed-a3b2-c735a215bce3"
+        first={"chat_id":cid,"nonce":"1"*32,"generation":"a"*32}
+        replacement={"chat_id":cid,"nonce":"2"*32,"generation":"b"*32}
+        self.assertTrue(result_is_current_generation(first,first,"1"*32,cid))
+        self.assertFalse(result_is_current_generation(replacement,first,"1"*32,cid))
+        self.assertFalse(result_is_current_generation(replacement,replacement,"1"*32,cid))
+        self.assertTrue(result_is_current_generation(replacement,replacement,"2"*32,cid))
+
+    def test_same_chat_and_same_nonce_cannot_make_distinct_generation_current(self):
+        cid="6aef341a-d850-83ed-a3b2-c735a215bce3"
+        a={"chat_id":cid,"nonce":"c"*32,"generation":"a"*32}
+        b={"chat_id":cid,"nonce":"c"*32,"generation":"b"*32}
+        self.assertFalse(result_is_current_generation(b,a,"c"*32,cid))
+        self.assertFalse(result_is_current_generation(None,a,"c"*32,cid))
+
+    def test_outgoing_bridge_has_stale_callback_guard(self):
+        import inspect
+        from baton_model_bridge import attach_model_bridge
+        s=inspect.getsource(attach_model_bridge)
+        self.assertIn('result_is_current_generation(session[0],data,result_nonce,chat_id)',s)
+        self.assertIn('result_is_current_generation(session[0],originating,nonce,chat_id)',s)
+        self.assertIn('generation',s)
+
 
 if __name__=="__main__":
     unittest.main()
