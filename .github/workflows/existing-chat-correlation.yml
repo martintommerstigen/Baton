@@ -7,12 +7,18 @@ on:
     paths:
       - 'baton_chat_observe.py'
       - 'baton_model_bridge.py'
+      - 'baton_conversation_panel.py'
+      - 'baton_ui_pause.py'
+      - 'test_baton_ui_pause.py'
       - 'test_baton_delivery_correlation.py'
       - '.github/workflows/existing-chat-correlation.yml'
   pull_request:
     paths:
       - 'baton_chat_observe.py'
       - 'baton_model_bridge.py'
+      - 'baton_conversation_panel.py'
+      - 'baton_ui_pause.py'
+      - 'test_baton_ui_pause.py'
       - 'test_baton_delivery_correlation.py'
       - '.github/workflows/existing-chat-correlation.yml'
   workflow_dispatch:
@@ -32,6 +38,6 @@ jobs:
         with:
           node-version: '22'
       - name: Compile
-        run: python3 -m py_compile baton_chat_observe.py baton_model_bridge.py test_baton_delivery_correlation.py
+        run: python3 -m py_compile baton_chat_observe.py baton_model_bridge.py baton_conversation_panel.py baton_ui_pause.py test_baton_delivery_correlation.py test_baton_ui_pause.py
       - name: Existing-chat negative controls
-        run: python3 -m unittest -v test_baton_delivery_correlation.py test_baton_chat_observe.py test_baton_model_bridge.py
+        run: python3 -m unittest -v test_baton_delivery_correlation.py test_baton_ui_pause.py test_baton_chat_observe.py test_baton_model_bridge.py test_baton_conversation_panel.py
