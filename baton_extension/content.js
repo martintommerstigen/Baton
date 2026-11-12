@@ -78,7 +78,39 @@
     }
     return null;
   }
-  const norm = value => String(value||"").replace(/\s+/g," ").trim();
+  const norm = value => String(value||"").replace(/\\s+/g," ").trim();
+
+  async function freshWritePermission() {
+    // Ask native Greg host immediately before touching the composer and
+    // again just before Send.click(). No host response means NO UI write.
+    const originalChat=session.chat;
+    const originalNonce=session.nonce;
+    if (!originalNonce || !originalChat || chatId()!==originalChat)
+      throw Error("Baton-økt eller samtale er ikke aktiv");
+    const check_id=randomId();
+    return new Promise((resolve,reject)=>{
+      let settled=false;
+      const timeout=setTimeout(()=>{
+        if (settled) return;
+        settled=true;
+        reject(Error("Baton sikkerhetssjekk fikk ikke svar; ingen sending"));
+      },3500);
+      chrome.runtime.sendMessage({
+        op:"ui_write_check",chat_id:originalChat,check_id
+      }, reply=>{
+        if (settled) return;
+        settled=true;
+        clearTimeout(timeout);
+        if (chrome.runtime.lastError || !reply || reply.ok!==true ||
+            reply.op!=="ui_write_allowed" ||
+            reply.chat_id!==originalChat || reply.check_id!==check_id ||
+            session.chat!==originalChat || session.nonce!==originalNonce ||
+            chatId()!==originalChat) {
+          reject(Error("Baton-sperre aktiv eller usikkert resultat; ingen sending"));
+        } else resolve();
+      });
+    });
+  }
 
   async function sendViaComposer(text) {
     if (!session.nonce || !session.chat || chatId()!==session.chat) {
@@ -87,6 +119,7 @@
     if (typeof text!=="string" || !text.trim() || text.length>3900) {
       throw Error("Melding er for lang");
     }
+    await freshWritePermission();
     const editor = findEditor();
     if (!editor) throw Error("Fant ikke ChatGPT-meldingsfeltet");
     const isArea = editor.tagName==="TEXTAREA";
@@ -132,6 +165,10 @@
         }
       }
       if (choices.length!==1) continue;
+      await freshWritePermission();
+      if (!session.nonce || chatId()!==session.chat ||
+          norm(read())!==norm(text) || !visible(choices[0]) || choices[0].disabled)
+        throw Error("Endret status etter sikkerhetssjekk; ingen sending");
       choices[0].click(); // EXACTLY ONE click; transport receipt is uncertain.
       return;
     }

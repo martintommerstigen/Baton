@@ -32,7 +32,8 @@ class BridgeCoreLiveLocalTests(unittest.TestCase):
                 url=f"http://127.0.0.1:{server.server_port}/v1/exec"
                 def core(argv,cwd,timeout):
                     return execute_on_greg(argv,cwd,timeout,token_file=token_file)
-                session=NativeHostSession(client=core,lease=lambda:True)
+                session=NativeHostSession(client=core,lease=lambda:True,
+                                          pause=lambda:False)  # isolated positive-control state
                 arm=session.handle({"op":"arm","chat_id":CHAT})
                 nonce=arm["nonce"]
                 self.assertEqual(arm["chat_id"],CHAT)

@@ -1,0 +1,53 @@
+name: Baton existing-chat reply correlation controls
+
+on:
+  push:
+    branches:
+      - fix/strict-existing-chat-reply-correlation-2026-11-12
+    paths:
+      - 'baton_chat_observe.py'
+      - 'baton_model_bridge.py'
+      - 'baton_conversation_panel.py'
+      - 'baton_ui_pause.py'
+      - 'baton_browser_native_host.py'
+      - 'test_baton_browser_native_host.py'
+      - 'baton_extension/**'
+      - 'test_baton_ui_pause.py'
+      - 'test_baton_delivery_correlation.py'
+      - '.github/workflows/existing-chat-correlation.yml'
+  pull_request:
+    paths:
+      - 'baton_chat_observe.py'
+      - 'baton_model_bridge.py'
+      - 'baton_conversation_panel.py'
+      - 'baton_ui_pause.py'
+      - 'baton_browser_native_host.py'
+      - 'test_baton_browser_native_host.py'
+      - 'baton_extension/**'
+      - 'test_baton_ui_pause.py'
+      - 'test_baton_delivery_correlation.py'
+      - '.github/workflows/existing-chat-correlation.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  correlation:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Compile
+        run: python3 -m py_compile baton_chat_observe.py baton_model_bridge.py baton_conversation_panel.py baton_ui_pause.py test_baton_delivery_correlation.py test_baton_ui_pause.py
+      - name: Existing-chat negative controls
+        run: python3 -m unittest -v test_baton_delivery_correlation.py test_baton_ui_pause.py test_baton_chat_observe.py test_baton_model_bridge.py test_baton_conversation_panel.py
+      - name: Native Messaging pause controls
+        run: python3 -m unittest -v test_baton_browser_native_host.py
+      - name: Brave content/background pause controls
+        run: node --check baton_extension/content.js && node --check baton_extension/background.js && node --test baton_extension/bridge.test.cjs
