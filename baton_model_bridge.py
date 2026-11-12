@@ -10,7 +10,7 @@ import threading
 from uuid import uuid4
 from pathlib import Path
 from baton_chatgpt_view import is_chatgpt_conversation_url, conversation_url
-from baton_chat_observe import inspect_delivery_script
+from baton_chat_observe import inspect_delivery_script, verified_reply_observation
 from baton_conversation_panel import chat_id_from_url
 from baton_embedded_send import prepare_send_script, send_click_script, clear_prepared_script
 from baton_model_protocol import (
@@ -201,7 +201,7 @@ def attach_model_bridge(layout, view, page, parent, *, auto_enable=False):
             finish_relay({
                 "status":"sent-visible-no-complete-reply" if state.get("user_seen") else "uncertain",
                 "target_chat_id":state["target_chat"],
-                "detail":"reply observation timeout; no retry"
+                "detail":"reply not unambiguously correlated before timeout; no retry"
             })
             return
         def observed(raw):
@@ -211,9 +211,14 @@ def attach_model_bridge(layout, view, page, parent, *, auto_enable=False):
             result=_decode_js_result(raw)
             if not isinstance(result,dict):
                 return
+            if not is_chatgpt_conversation_url(
+                    relay_view.url().toString(),state["target_chat"]):
+                finish_relay({"status":"uncertain","target_chat_id":state["target_chat"],
+                              "detail":"target changed during response observation; no retry"})
+                return
             if result.get("userVisible"):
                 state["user_seen"]=True
-            if result.get("replyVisible") and result.get("replyComplete"):
+            if verified_reply_observation(result):
                 finish_relay({
                     "status":"reply_observed",
                     "target_chat_id":state["target_chat"],
