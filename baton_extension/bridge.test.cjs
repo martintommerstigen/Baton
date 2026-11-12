@@ -43,6 +43,7 @@ function harness(){
   let poll;
   let assistant="";
   const messages=[];
+  const writeResults=[];
   const document={
     getElementById:()=>null,
     createElement:()=>({id:"",style:{},attachShadow:()=>root}),
@@ -59,7 +60,12 @@ function harness(){
       lastError:null,
       sendMessage:(payload,callback)=>{
         messages.push(payload);
-        callback?.({queued:true});
+        if (payload.op==="ui_write_check") {
+          const allowed=writeResults.length ? writeResults.shift() : true;
+          callback?.(allowed
+            ? {ok:true,op:"ui_write_allowed",chat_id:payload.chat_id,check_id:payload.check_id}
+            : {ok:false,error:"ui-writes-paused",check_id:payload.check_id});
+        } else callback?.({queued:true});
       },
       onMessage:{addListener:fn=>listener=fn}
     }
@@ -70,7 +76,8 @@ function harness(){
     HTMLTextAreaElement:Textarea,
     Event:class{},InputEvent:class{},
     setInterval:fn=>poll=fn,
-    setTimeout:(fn)=>{fn();}
+    setTimeout:(fn,delay)=>{if(delay >= 3500) return 42; fn(); return 1;},
+    clearTimeout:()=>{}
   };
   const source=readFileSync(path.join(__dirname,"content.js"),"utf8");
   vm.runInNewContext(source,ctx,{timeout:1000});
@@ -78,7 +85,9 @@ function harness(){
     ctx,controls,chrome,status,start,stop,messages,sent,
     receive:reply=>listener({type:"baton-native",reply}),
     poll:()=>poll(),
-    setAssistant:x=>{assistant=x;}
+    setAssistant:x=>{assistant=x;},
+    setWriteResults:(...states)=>writeResults.push(...states),
+    writeChecks:()=>messages.filter(x=>x.op==="ui_write_check")
   };
 }
 
@@ -148,5 +157,51 @@ test("explicit Stop disconnects even when no command has been run",async()=>{
   await flush();
   h.controls.get("stop")();
   assert.equal(h.messages.at(-1).op,"stop");
+  assert.equal(h.start.disabled,false);
+});
+
+test("one Bootstrap send requires two distinct host safety checks",async()=>{
+  const h=harness();
+  h.controls.get("start")();
+  h.receive({ok:true,op:"armed",chat_id:CHAT,nonce:NONCE,cwd:"/home/olliver"});
+  await flush();
+  assert.equal(h.sent.length,1);
+  const checks=h.writeChecks();
+  assert.equal(checks.length,2);
+  assert.equal(checks[0].chat_id,CHAT);
+  assert.notEqual(checks[0].check_id,checks[1].check_id);
+});
+
+test("host pause before drafting blocks Brave Bootstrap without UI send",async()=>{
+  const h=harness();
+  h.controls.get("start")();
+  h.setWriteResults(false);
+  h.receive({ok:true,op:"armed",chat_id:CHAT,nonce:NONCE,cwd:"/home/olliver"});
+  await flush();
+  assert.equal(h.sent.length,0);
+  assert.equal(editor.value,"");
+  assert.equal(h.writeChecks().length,1);
+  assert.match(h.status.textContent,/sperre|usikkert/);
+});
+
+test("host pause arriving at final click prevents Brave send",async()=>{
+  const h=harness();
+  h.controls.get("start")();
+  h.setWriteResults(true,false);
+  h.receive({ok:true,op:"armed",chat_id:CHAT,nonce:NONCE,cwd:"/home/olliver"});
+  await flush();
+  assert.equal(h.writeChecks().length,2);
+  assert.equal(h.sent.length,0);
+  assert.ok(editor.value.trim(),"unsent exact draft is preserved, not retried");
+  assert.match(h.status.textContent,/sperre|usikkert/);
+});
+
+test("native arm rejection never writes into ChatGPT",async()=>{
+  const h=harness();
+  h.controls.get("start")();
+  h.receive({ok:false,error:"ui-writes-paused"});
+  await flush();
+  assert.equal(h.sent.length,0);
+  assert.equal(h.writeChecks().length,0);
   assert.equal(h.start.disabled,false);
 });
