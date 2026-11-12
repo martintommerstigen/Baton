@@ -1,6 +1,6 @@
 # GTRCM Baton v0
 
-> **New LLM or contributor?** [Start with the cross-project source and safety map](docs/START_HERE_NEW_LLM.md). It distinguishes the relay prototype, Desktop/Core, private GTRCM and RustWorld's archived branch.
+**New LLM or contributor? [Start here: current source routes and safety boundaries](START_HERE.md).** This README documents the older local relay.
 
 Independent Python-standard-library relay. No ChatGPT integration is claimed.
 
