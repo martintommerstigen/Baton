@@ -16,6 +16,22 @@ class ObservationTests(unittest.TestCase):
         self.assertIn("assistantText",script)
         self.assertIn(".slice(0,6000)",script)
 
+    def test_markdown_rendering_fallback_is_tagged_and_not_substring(self):
+        source=inspect_delivery_script("BATON-FRESH-"+"E"*32+" `attach_model_bridge(...)`")
+        self.assertIn("renderedNeedle",source)
+        self.assertIn("BATON-FRESH-[A-F0-9]{32}",source)
+        self.assertIn("normalized(turn.text) === renderedNeedle",source)
+        self.assertIn("duplicate-exact-user-turn",source)
+        self.assertIn("source-conversation-not-bound",source)
+        self.assertIn("no-adjacent-assistant-turn",source)
+
+    def test_no_fuzzy_correlation_for_unmarked_text(self):
+        s=inspect_delivery_script("ordinary content with `inline-code`")
+        self.assertIn("tagged",s)
+        self.assertIn("? normalized(expected.replace(",s)
+        self.assertIn(": null;",s)
+        self.assertNotIn("includes(needle)",s)
+
     def test_invalid_empty_message(self):
         with self.assertRaises(ValueError):
             inspect_delivery_script(" ")
