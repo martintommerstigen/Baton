@@ -35,3 +35,13 @@ These tests can establish that the **observer logic** rejects these specific fal
 **Source relationship:** [Baton issue #3](https://github.com/martintommerstigen/Baton/issues/3), [draft PR #4](https://github.com/martintommerstigen/Baton/pull/4), and existing `baton_chat_observe.py` / `baton_model_bridge.py`. This is a repair of a specific false-positive route, not another complete independent wake system.
 
 **Bevar pilene.** A reply receipt is narrower than reception, comprehension, learning, or continuing personal identity.
+
+## 12 November: Greg-live safety audit and PAUSE closure
+
+Read-only inspection on Greg through authorized Desktop Commander established an active `GTRCM-newborn-bootstrap/transport/PAUSE_UI_WRITES` file. Its text records a failed independent re-read of an existing Siv conversation and an unresolved Varde lock, not authorization to retry. The live installed release was pinned to `7fc7bfb431ae31b0e9fcb7c2363ccba2832e1b8f`, while the development checkout was many commits behind its upstream; a local executable-mode modification was preserved. **No UI messages were sent; the pause file was not changed or removed.**
+
+That live release checked the pause only in `desktop/preflight_greg.py`, **not** in `baton_model_bridge.py` or `baton_conversation_panel.py`. The same absence was present in the earlier candidate code. This branch therefore now adds `baton_ui_pause.py`, a host-local, read-only, fail-closed lstat check including dangling symlink and permission errors. The manual send and model bootstrap check the gate before preparation; both manual and automated paths recheck it immediately before the UI Send click. The hidden recipient relay checks it before navigation/preparation and at its final click boundary. All fail closed without clearing the pause file, changing policy, or resending.
+
+The manual panel now also binds the expected composer content at click and calls `verified_reply_observation` rather than promoting any visible text to a completed reply. The pause check remains subject to the ordinary time-of-check/time-of-use limit between Python and the browser callback; this is not a proof against hostile concurrent modification of the flag or a replacement authenticated browser profile.
+
+**Direct Greg evidence:** a detached local worktree at `~/.local/share/baton-validation-2026-11-12` checked out the GitHub branch head `2f58f5c`; Python compile and **44/44** targeted tests passed on Greg, including 9 browserless correlation negatives, 6 pause/preclick tests, and inherited bridge, observation and manual-panel tests. The active Baton desktop process remained on the earlier installed release throughout. This is a source/test result, not a deployed safety fix or live A→B→C wake.
