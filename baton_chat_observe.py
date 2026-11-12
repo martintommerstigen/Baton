@@ -24,6 +24,12 @@ def inspect_delivery_script(message):
       };
       const normalized = text => (text || '').replace(/\s+/g, ' ').trim();
       const needle = normalized(expected);
+      // Native ChatGPT renders Markdown inline-code without literal backticks.
+      // Only allow this narrow presentation-equivalence for an envelope with a
+      // unique Baton request marker; never accept arbitrary substring matches.
+      const tagged = /BATON-FRESH-[A-F0-9]{32}|Baton (?:request|relay) [a-f0-9]{32}/i.test(expected);
+      const renderedNeedle = tagged
+        ? normalized(expected.replace(/`(.{1,256}?)`/g, '$1')) : null;
       const units = Array.from(document.querySelectorAll('[data-chatgpt-search-unit-key]'));
       const legacy = Array.from(document.querySelectorAll('[data-message-author-role]'));
       const native = units.length > 0;
@@ -83,7 +89,8 @@ def inspect_delivery_script(message):
       }
       const matches = [];
       turns.forEach((turn, index) => {
-        if (turn.role === 'user' && normalized(turn.text) === needle)
+        if (turn.role === 'user' && (normalized(turn.text) === needle ||
+              (renderedNeedle !== null && normalized(turn.text) === renderedNeedle)))
           matches.push(index);
       });
       if (matches.length === 0)

@@ -690,6 +690,9 @@ def main():
     device_layout.addWidget(stop)
     device_layout.addStretch(1)
     tabs.addTab(device, "Enhet og tilgang")
+    # The same live local revisioned HOWTO/FAQ also appears in the ChatGPT dock.
+    from baton_help_ui import build_help_widget
+    tabs.addTab(build_help_widget(tabs), "HOWTO / FAQ")
     panel.show()
 
     return app.exec()

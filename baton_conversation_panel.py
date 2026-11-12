@@ -57,10 +57,27 @@ def attach_baton_panel(window, view, page, *, initial_chat=None, initial_message
     recipient_actions.addWidget(open_target)
     layout.addLayout(recipient_actions)
     from baton_model_bridge import attach_model_bridge
-    # Martin's Baton contract: opening an existing conversation while Baton is
-    # running grants that exact conversation the local Core bridge for the
-    # lifetime of the visit. No per-command or per-chat activation click.
-    attach_model_bridge(layout, view, page, dock, auto_enable=False)
+    # The current shipped view requires an explicit activation click for the
+    # exact conversation. A received invitation does not arm an outbound bridge.
+    bridge_group = attach_model_bridge(layout, view, page, dock, auto_enable=False)
+    from baton_onboarding import connection_state, STATE_EXPLANATIONS
+    access = QLabel("Kontakttilgang: kontrollerer …")
+    access.setObjectName("baton-peer-access-state")
+    access.setWordWrap(True)
+    layout.addWidget(access)
+    delivery = QLabel("Leveringsstatus: ingen uavklart sending observert i denne broen.")
+    delivery.setObjectName("baton-peer-delivery-state")
+    delivery.setWordWrap(True)
+    layout.addWidget(delivery)
+    # Native revisioned help is independent of ChatGPT DOM and local Core tools.
+    help_button = QPushButton("HOWTO / FAQ · dynamisk hjelp")
+    help_button.setObjectName("baton-open-dynamic-help")
+    from baton_help_ui import show_help_dialog
+    help_button.clicked.connect(lambda: show_help_dialog(window))
+    layout.addWidget(help_button)
+    onboarding_button = QPushButton("Kopier startkort til ny chat")
+    onboarding_button.setObjectName("baton-copy-chat-onboarding")
+    layout.addWidget(onboarding_button)
 
     layout.addWidget(QLabel("Melding fra Baton"))
     message = QPlainTextEdit()
@@ -121,6 +138,32 @@ def attach_baton_panel(window, view, page, *, initial_chat=None, initial_message
     def copy_message():
         QApplication.clipboard().setText(message.toPlainText())
         set_status("Meldingen kopiert. Ingen melding er sendt.")
+
+    def current_access_state():
+        cid = current_id()
+        flags = bridge_group.baton_bridge
+        return connection_state(
+            exact_chat=bool(cid),
+            bridge_enabled=bool(cid and flags["session_chat"]() == cid),
+            handshake_observed=flags["handshake_observed"](),
+            paused=ui_writes_paused(), uncertain=False
+        )
+
+    def refresh_access():
+        code = current_access_state()
+        access.setText("Baton-kanal: " + code + " — " + STATE_EXPLANATIONS[code])
+        uncertain = bridge_group.baton_bridge["uncertain_effect"]()
+        delivery.setText("Siste Baton-effekt: UNCERTAIN — undersøk, aldri send blindt på nytt."
+                         if uncertain else "Baton-levering: ingen uavklart effekt flagget i denne visningen; levering ikke garantert.")
+
+    def copy_onboarding():
+        from baton_onboarding import peer_quickstart
+        # A /c/ address alone never authenticates tool availability or a nonce.
+        card = peer_quickstart(current_chat_id=current_id(),
+                               observed_state=current_access_state(),
+                               paused=ui_writes_paused())
+        QApplication.clipboard().setText(card)
+        set_status("Startkort kopiert med gjeldende kanalstatus. Ingen melding sendt.")
 
     def refresh_send():
         chat_id = recipient.text().strip()
@@ -254,14 +297,22 @@ def attach_baton_panel(window, view, page, *, initial_chat=None, initial_message
     use_current.clicked.connect(use_current_chat)
     open_target.clicked.connect(open_recipient)
     copy.clicked.connect(copy_message)
+    onboarding_button.clicked.connect(copy_onboarding)
     send.clicked.connect(send_message)
     view.urlChanged.connect(on_url_change)
     recipient.textChanged.connect(lambda _: refresh_send())
     message.textChanged.connect(refresh_send)
+    access_timer = QTimer(dock)
+    access_timer.setInterval(1500)
+    access_timer.timeout.connect(refresh_access)
+    access_timer.start()
+    refresh_access()
     refresh_send()
     # Keep Qt objects attached to dock for lifetime of the app.
     dock.baton_controls = {
         "recipient": recipient, "message": message, "send": send,
-        "status": status, "use_current": use_current, "open_target": open_target
+        "status": status, "use_current": use_current, "open_target": open_target,
+        "help": help_button, "onboarding": onboarding_button,
+        "access_state": access, "delivery_state": delivery, "access_timer": access_timer
     }
     return dock

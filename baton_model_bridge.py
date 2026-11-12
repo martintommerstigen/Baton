@@ -101,6 +101,17 @@ def _assistant_tool_turn(turn, expected_nonce):
     return turn_id, call
 
 
+def result_is_current_generation(current, originating, expected_nonce, expected_chat):
+    """An old callback/receipt cannot confirm or alter a replacement bridge.
+
+    Dict identity distinguishes new generations even for the SAME /c/ ID;
+    never infer current authorization from the ChatGPT conversation address.
+    """
+    return (isinstance(current, dict) and current is originating
+            and current.get("nonce") == expected_nonce
+            and current.get("chat_id") == expected_chat)
+
+
 def should_auto_arm(chat_id, attempted_chat, suspended, active_session,
                     pending, manual_draft):
     """Only one automatic bootstrap per visit to an existing chat."""
@@ -137,6 +148,8 @@ def attach_model_bridge(layout, view, page, parent, *, auto_enable=False):
     auto_suspended=[False]
     last_chat=[None]
     last_send_error=[""]
+    handshake_verified=[False]
+    unknown_effect=[False]
     processed=set()
     observed_turns=set()
     results=queue.Queue()
@@ -167,6 +180,7 @@ def attach_model_bridge(layout, view, page, parent, *, auto_enable=False):
 
     def disable():
         session[0]=None
+        handshake_verified[0]=False
         observer.stop()
         output_poller.stop()
         relay_timer.stop()
@@ -180,6 +194,8 @@ def attach_model_bridge(layout, view, page, parent, *, auto_enable=False):
         state=relay_state[0]
         if state is None:
             return
+        if result.get("status") in ("uncertain", "sent-visible-no-complete-reply"):
+            unknown_effect[0]=True
         relay_timer.stop()
         results.put({
             "kind":"chat", "nonce":state["nonce"], "chat_id":state["source_chat"],
@@ -458,8 +474,11 @@ def attach_model_bridge(layout, view, page, parent, *, auto_enable=False):
             report("Velg en eksisterende samtale fra ChatGPT-listen først.")
             return
         last_send_error[0] = ""
+        handshake_verified[0] = False
+        # Uncertain external results from earlier attempts must not be silently cleared.
         nonce=uuid4().hex
-        session[0]={"chat_id":chat_id,"nonce":nonce}
+        session[0]={"chat_id":chat_id,"nonce":nonce,"generation":uuid4().hex}
+        originating=session[0]
         processed.clear()
         observed_turns.clear()
         pending[0]=True
@@ -468,6 +487,8 @@ def attach_model_bridge(layout, view, page, parent, *, auto_enable=False):
         report("Starter økt i "+chat_id+" ...")
         cwd=str(Path.home())
         def booted(sent):
+            if not result_is_current_generation(session[0],originating,nonce,chat_id):
+                return  # Older generation cannot disable a newly started bridge.
             pending[0]=False
             if not sent:
                 report("Oppstart feilet: " + (last_send_error[0] or "send/økt avbrutt"))
@@ -485,7 +506,7 @@ def attach_model_bridge(layout, view, page, parent, *, auto_enable=False):
         nonce=data["nonce"]
         def inspected(turns):
             turns = _decode_js_result(turns)
-            if active() is None or pending[0]:
+            if not result_is_current_generation(active(),data,nonce,data["chat_id"]) or pending[0]:
                 return
             if not isinstance(turns,list):
                 report("Baton kan ikke lese assistentsvar: " +
@@ -538,8 +559,7 @@ def attach_model_bridge(layout, view, page, parent, *, auto_enable=False):
         outcome=item["outcome"]
         data=active()
         if data is None or data["nonce"]!=result_nonce or data["chat_id"]!=chat_id:
-            pending[0]=False
-            report("Handlingen er fullført, men kildesamtalen ble endret: resultatet ble ikke sendt.")
+            # Crucial: a delayed A result cannot alter B's busy flag or READY status.
             return
         if item["kind"]=="chat":
             report("Meldingsresultat klart; returnerer det til kildesamtalen ...")
@@ -548,8 +568,14 @@ def attach_model_bridge(layout, view, page, parent, *, auto_enable=False):
             report("Kommando fullført; returnerer resultat til ChatGPT ...")
             result_text=tool_result_message(result_nonce,request_id,outcome)
         def result_sent(sent):
+            if not result_is_current_generation(session[0],data,result_nonce,chat_id):
+                return  # Late A result must not mark new B as READY.
             pending[0]=False
             if sent:
+                if ((item["kind"] == "greg" and outcome.get("exit_code") == 0)
+                        or (item["kind"] == "chat" and
+                            outcome.get("status") == "reply_observed")):
+                    handshake_verified[0]=True
                 report("Resultat forsøkt sendt til ChatGPT. Venter på neste Baton-kall.")
             else:
                 report("Resultat kunne ikke sendes. Ingen automatisk gjensending.")
@@ -596,6 +622,11 @@ def attach_model_bridge(layout, view, page, parent, *, auto_enable=False):
     output_poller.timeout.connect(flush)
     view.urlChanged.connect(on_chat_navigation)
     page.loadFinished.connect(lambda ok: QTimer.singleShot(800, auto_arm) if ok and auto_enable else None)
+    # Read-only status observation for the Skin's onboarding indicator.
+    # This never exports a nonce and never grants a permission.
     group.baton_bridge={"start":start,"stop":stop,"state":state,"observer":observer,
-                        "relay_view":relay_view,"relay_timer":relay_timer}
+                        "relay_view":relay_view,"relay_timer":relay_timer,
+                        "session_chat":lambda: (session[0] or {}).get("chat_id"),
+                        "handshake_observed":lambda: handshake_verified[0],
+                        "uncertain_effect":lambda: unknown_effect[0]}
     return group

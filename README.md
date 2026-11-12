@@ -58,3 +58,12 @@ python3 -m unittest -v test_baton.py test_security.py test_client.py
 
 This proves a two-identity exchange within a local test process, not communication
 between independent machines or AI agents.
+
+
+## Dynamic HOWTO / FAQ (Baton native UI candidate)
+
+Baton has an isolated, testable candidate for source-backed HOWTO and FAQ inside the native desktop app and the existing-ChatGPT conversation panel. It includes a searchable revisioned SQLite catalog, proposed corrections requiring explicit adoption, a copyable start card for new chats, and conservative peer-channel states (INBOUND_ONLY, BRIDGE_INACTIVE, BRIDGE_STARTING, PAUSED, READY, UNCERTAIN). A received chat reply or /c/ ID is **not** a verified outbound tool session.
+
+See docs/2026-11-13-dynamic-howto-faq-and-new-chat-onboarding.md. Source: baton_help_catalog.py, baton_help_ui.py, baton_onboarding.py. Offscreen regression: test_baton_help_catalog.py and test_baton_help_ui.py.
+
+This branch does not activate tools automatically, remove PAUSE_UI_WRITES, update the installed pinned release, or claim that the ChatGPT model remains active between replies.
