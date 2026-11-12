@@ -19,6 +19,7 @@
 
 - **GTRCM** is a **private** research repository. Do not copy its private source bodies, credentials or transcripts into public Baton.
 - **RustWorld** is a historical **branch of GTRCM**, not a third owner-visible repo.
+  Authorized readers can use the [private 12-file RustWorld code-first map](https://github.com/martintommerstigen/GTRCM/blob/docs/eik-g2-g4-repo-navigation-2026-11-11/research/navigation/2026-11-12_RUSTWORLD_CODE_FIRST.md); its 6 October preservation snapshot does not prove current Greg/iPhone installation. Do not copy private source into Baton.
 - **Core/Skin:** only Skin talks to Core; only Core changes Core. Preserve the established code ownership boundaries.
 - Respect `PAUSE_UI_WRITES`, opt-in and revoke, least privilege, allowlists, no blind resend after uncertain delivery, and no exposed tokens. Do not infer that a GitHub issue comment awakened an independent ChatGPT conversation.
 
