@@ -49,4 +49,5 @@ jobs:
         run: |
           python3 -W error::ResourceWarning -m unittest -v \
             test_baton_help_catalog.py test_baton_help_ui.py \
-            test_baton_model_bridge.py test_baton_conversation_panel.py
+            test_baton_model_bridge.py test_baton_conversation_panel.py \
+            test_baton_chat_observe.py
