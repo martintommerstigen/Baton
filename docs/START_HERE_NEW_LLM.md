@@ -2,6 +2,12 @@
 
 **For a new LLM with no inherited chat context.** This is a navigation map, not permission to operate Greg, send messages or claim an existing ChatGPT conversation was awakened. **Read the original before answering.**
 
+## New: forum and overlapping continuity are reference code, not live wake
+
+[PR #85](https://github.com/martintommerstigen/Baton/pull/85) adds a [source-first forum/continuity design](https://github.com/martintommerstigen/Baton/blob/feature/topic-forum-reference-2026-11-12/docs/2026-11-12-flat-topic-forum-and-overlap-reference.md), `baton_forum_reference.py` and `baton_continuity_floor_reference.py`. Read [PR #83](https://github.com/martintommerstigen/Baton/pull/83) (reply correlation and PAUSE_UI_WRITES Native Messaging guard), then [PR #84](https://github.com/martintommerstigen/Baton/pull/84) (unauthenticated reference action/grant revocation), then PR #85 (topics, source-bound correction, writer lease and overlap). These are **different trust boundaries**.
+
+PR #85 reports 44 focused local tests and seven independently reload-verified replies in an isolated Greg SQLite DB. **Not demonstrated:** authenticated actors, live model generation, continuously overlapping ChatGPT runs, final-effect writer fencing in the installed sender, or permission to clear `PAUSE_UI_WRITES`. A chat ID is an address, not a person or permission; a heartbeat is not an active model.
+
 ## First 60 seconds
 
 1. Identify the user's actual question: **theory / RustWorld / Baton code / installed system / historical priority**. Do not read branch names sequentially.
@@ -27,7 +33,7 @@
 
 ## Which branch actually reached `main`?
 
-Read the [Baton PR lifecycle / branch map (12 November snapshot)](2026-11-12_BATON_PR_LIFECYCLE_INDEX.json) **before** treating a feature branch as installed software. It covers 80 observed Baton PRs: 67 open drafts, 5 merged, 8 closed without merge. Every record includes PR URL, state, head/base refs, PR head SHA and current branch-tip SHA. In particular, several older existing-chat relay PRs share a branch, and some closed PR head SHAs no longer equal that branch's tip. Choose a precise ref and inspect later corrections; neither an open PR nor a green test proves Greg deployment or a verified recipient reply. The index is dated, not live.
+Read the [Baton PR lifecycle / branch map (12 November snapshot)](2026-11-12_BATON_PR_LIFECYCLE_INDEX.json) **before** treating a feature branch as installed software. It covers 81 observed Baton PRs: 68 open drafts, 5 merged, 8 closed without merge. Every record includes PR URL, state, head/base refs, PR head SHA and current branch-tip SHA. In particular, several older existing-chat relay PRs share a branch, and some closed PR head SHAs no longer equal that branch's tip. Choose a precise ref and inspect later corrections; neither an open PR nor a green test proves Greg deployment or a verified recipient reply. The index is dated, not live.
 
 ## Repository scope and verification
 
