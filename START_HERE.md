@@ -1,0 +1,25 @@
+# Baton — start here (new LLM, no inherited context)
+
+**This is a source map, not permission to operate Greg, send to another ChatGPT conversation, or clear `PAUSE_UI_WRITES`.** A chat URL is an address, not a person, current model run or authority grant.
+
+## Pick the actual task
+
+| Question | Read first | Do not infer |
+| --- | --- | --- |
+| What does `main` run? | [README](README.md), [legacy server](server.py) | `main` documents an older local Python queue relay, **not** the full Desktop/Core implementation |
+| Where is the newer Baton Desktop/Core? | [Desktop feature branch](https://github.com/martintommerstigen/Baton/tree/feature/evening-local-terminal-2026-11-10), [Greg installation contract](https://github.com/martintommerstigen/Baton/blob/feature/evening-local-terminal-2026-11-10/docs/2026-11-11-greg-canonical-installation-contract.md) | A feature branch, green CI or detached-worktree test does not prove the installed version |
+| How do existing ChatGPT conversations communicate? | [Existing-chat v2 tab](https://github.com/martintommerstigen/Baton/blob/feature/model-existing-chat-relay-v2-final-2026-11-11/baton_existing_chat_tab.py), [issue #3](https://github.com/martintommerstigen/Baton/issues/3), [forum #6](https://github.com/martintommerstigen/Baton/issues/6) | Queued, ACK, a comment or a heartbeat is not a verified receiving model turn |
+| Which security corrections matter? | [PR #83: strict reply correlation and Native Messaging pause guard](https://github.com/martintommerstigen/Baton/pull/83), [PR #84: reference grant revocation](https://github.com/martintommerstigen/Baton/pull/84) | PR #84 caller IDs are not authenticated; PR #83's fixes were not proven installed on Greg |
+| How are peer topics and handoffs represented? | [PR #85: isolated forum/continuity reference](https://github.com/martintommerstigen/Baton/pull/85) | SQLite reference tests do not prove live, continuously overlapping ChatGPT runs |
+| How can earlier errors, demonstrations and open questions be reused without repetitive teaching? | [Dynamic peer learning index](https://github.com/martintommerstigen/Baton/blob/feature/dynamic-peer-learning-ledger-2026-11-12/docs/2026-11-12-dynamic-peer-learning-index.md), [reference code](https://github.com/martintommerstigen/Baton/blob/feature/dynamic-peer-learning-ledger-2026-11-12/baton_learning_index_reference.py), [tests](https://github.com/martintommerstigen/Baton/blob/feature/dynamic-peer-learning-ledger-2026-11-12/test_baton_learning_index_reference.py) | **Unmerged branch without an observed PR at this checkpoint.** Offline reference, locally claimed provenance, not authenticated live policy or installed plugin |
+| Where is GTRCM or RustWorld? | [Private GTRCM start](https://github.com/martintommerstigen/GTRCM/blob/main/START_HERE.md), [historical RustWorld branch](https://github.com/martintommerstigen/GTRCM/tree/RustWorld) | RustWorld is not a third repo; private source requires authorization |
+
+For additional historical branch/PR detail, see the [public dated Baton PR lifecycle map](https://github.com/martintommerstigen/Baton/blob/docs/eik-repository-onboarding-2026-11-11/docs/2026-11-12_BATON_PR_LIFECYCLE_INDEX.json) and [longer newcomer guide](https://github.com/martintommerstigen/Baton/blob/docs/eik-repository-onboarding-2026-11-11/docs/START_HERE_NEW_LLM.md). **Both are in an open draft documentation branch.** Verify current GitHub state rather than assuming a dated index is live.
+
+## Work without repeating or overclaiming
+
+1. Check whether the exact issue, failure or hypothesis was already investigated. Read its earliest verified source and later correction; identify only the *delta*.
+2. Record **author → repo → exact ref/commit → path → Git blob SHA → test/negative control → correction → defensible claim**. For a conversation event, keep attempted/delivered/received/processed/replied/closed distinct.
+3. Separate `reported`, `implemented-unverified`, `tested-simulated`, `tested-live`, `blocked`. An observed reply is not proof of tool access, continuous model identity or learning.
+4. Respect `PAUSE_UI_WRITES`, explicit consent and revocation, least privilege, no blind resend after uncertain external effects. Only Skin talks to Core; only Core changes Core.
+5. Never copy private GTRCM bodies, personal transcripts or secrets into public Baton. No GitHub source grants live Greg access.
