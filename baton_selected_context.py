@@ -53,3 +53,17 @@ def with_selected_context(history, chosen):
         "Kilde: " + name + "\n\n" + text
     )
     return [{"role": "user", "content": header}] + list(history)
+
+
+def snapshot_chatgpt_turn(history, question, chosen):
+    """Bind the selected context to the user's Send action, not worker timing.
+
+    The UI may change its selected file while the network worker is queued.
+    The already-authorized request must retain exactly the context that was
+    visible when Send was clicked.
+    """
+    if not isinstance(history, list) or not isinstance(question, str) or not question.strip():
+        raise ValueError("Ugyldig samtaletur")
+    sent_history = list(history) + [{"role": "user", "content": question}]
+    request_history = with_selected_context(sent_history, chosen)
+    return sent_history, request_history
