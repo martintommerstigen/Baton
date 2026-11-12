@@ -31,9 +31,9 @@ def configured_server(script, executable="/usr/bin/python3"):
         "cwd = " + json.dumps(str(script.parent)),
         "enabled = true",
         "tool_timeout_sec = 100",
-        "# User authorized full ordinary-user execution while Baton is open.",
-        "# Change auto to prompt to require consent for every tool call.",
-        "default_tools_approval_mode = \"auto\"",
+        "# Full ordinary-user execution requires explicit per-tool approval by default.",
+        "# Change prompt to auto only after an explicit, separately reviewed opt-in.",
+        "default_tools_approval_mode = \"prompt\"",
         ""
     ])
 

@@ -35,8 +35,16 @@ class DesktopMcpInstallTests(unittest.TestCase):
         server = data["mcp_servers"]["baton_greg"]
         self.assertEqual(server["args"], [str(self.script.resolve())])
         self.assertEqual(server["command"], sys.executable)
-        self.assertEqual(server["default_tools_approval_mode"], "auto")
+        self.assertEqual(server["default_tools_approval_mode"], "prompt")
         self.assertEqual(stat.S_IMODE(self.config.stat().st_mode), 0o600)
+
+    def test_existing_auto_approval_is_not_silently_rewritten(self):
+        self.config.parent.mkdir()
+        original = '[mcp_servers.baton_greg]\ncommand = "/usr/bin/python3"\ndefault_tools_approval_mode = "auto"\n'
+        self.config.write_text(original)
+        with self.assertRaisesRegex(ValueError, "differs"):
+            install(self.config, self.script, sys.executable)
+        self.assertEqual(self.config.read_text(), original)
 
     def test_refuses_overwrite_existing_server(self):
         self.config.parent.mkdir()

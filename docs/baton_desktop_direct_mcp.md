@@ -94,10 +94,14 @@ If GitHub created the launcher without an executable bit, use
 When the verified client exposes `greg_exec`, its tool UI handles
 invocation and results. There is no need to type BATON_TOOL_V2 in that
 client. Until a live result is observed on Greg this is not verified
-end-to-end. With the user's explicit one-time authorization, the generated
-config uses `default_tools_approval_mode = "auto"`, which is powerful.
-If per-tool confirmation is preferred, change this to `"prompt"`.
-OpenAI client policy can still require its own approvals.
+end-to-end. New registrations default to `default_tools_approval_mode = "prompt"`:
+request approval for each `greg_exec` call because it can write or delete any
+file owned by the ordinary user. The installer does **not** rewrite an existing
+`baton_greg` entry. If an older installation still says `"auto"`, review and
+change that setting manually before allowing untrusted model input. Set `"auto"`
+only as a separate, explicit opt-in after reviewing the risks. Client policy
+may impose additional approvals; the setting does not make this MCP tool
+available in ordinary ChatGPT web conversations.
 
 ## Real tests
 
