@@ -1,7 +1,7 @@
 {
   "schema": "eik-github-pr-lifecycle-index/v1",
   "snapshot_date_utc": "2026-11-12",
-  "collection": "GitHub REST /pulls?state=all sorted updated desc, 100 per page; /branches?per_page=100; paginated, non-atomic",
+  "collection": "GitHub REST /pulls?state=all sorted updated desc, 100 per page; /branches?per_page=100; paginated, non-atomic; PR #83 head incrementally rechecked 2026-11-12 20:45 CET, older PR entries remain snapshot",
   "scope": "Public Baton only; private GTRCM PR metadata intentionally omitted",
   "interpretation": [
     "This is PR lifecycle metadata, not a full code review or complete commit history.",
@@ -10,7 +10,8 @@
     "Open draft PR means not merged into default branch; no CI or deployment claim follows from state.",
     "Branch count and PR state can change immediately after snapshot; fetch live GitHub before action.",
     "GTRCM is private. Do not copy its source, PR bodies, secrets, or transcripts into public Baton.",
-    "Never infer authorization to operate Greg or wake another ChatGPT conversation from this index."
+    "Never infer authorization to operate Greg or wake another ChatGPT conversation from this index.",
+    "PR #83 now includes Greg read-only safety audit, on-Greg detached worktree tests and PAUSE_UI_WRITES native-extension source repairs; old installed release not replaced, no verified live ChatGPT wake."
   ],
   "repositories": [
     {
@@ -54,13 +55,13 @@
           "draft": true,
           "merged": false,
           "created_at": "2026-11-12T17:23:42Z",
-          "updated_at": "2026-11-12T17:23:42Z",
+          "updated_at": "2026-11-12T19:18:18Z",
           "closed_at": null,
           "merged_at": null,
           "base_ref": "feature/evening-local-terminal-2026-11-10",
           "head_ref": "fix/strict-existing-chat-reply-correlation-2026-11-12",
-          "pr_head_sha": "61a35f68050d62d3433f1a4e969f660e9f40838e",
-          "branch_tip_sha": "61a35f68050d62d3433f1a4e969f660e9f40838e",
+          "pr_head_sha": "a2ef65076f51dbc04f8062320fc38f75269becc9",
+          "branch_tip_sha": "a2ef65076f51dbc04f8062320fc38f75269becc9",
           "pr_head_matches_branch_tip": true
         },
         {
