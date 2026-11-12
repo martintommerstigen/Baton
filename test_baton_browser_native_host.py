@@ -17,6 +17,7 @@ class NativeBridgeTests(unittest.TestCase):
     def setUp(self):
         self.now = [100.0]
         self.live = [True]
+        self.paused = [False]
         self.runs = []
         def client(argv,cwd,timeout):
             self.runs.append((argv,cwd,timeout))
@@ -24,7 +25,8 @@ class NativeBridgeTests(unittest.TestCase):
         self.host = NativeHostSession(
             client=client,
             lease=lambda: self.live[0],
-            clock=lambda: self.now[0]
+            clock=lambda: self.now[0],
+            pause=lambda: self.paused[0]
         )
 
     def arm(self,chat=CHAT):
@@ -115,6 +117,55 @@ class NativeBridgeTests(unittest.TestCase):
             "not an object",
         ):
             self.assertFalse(self.host.handle(bad)["ok"])
+        self.assertEqual(self.runs,[])
+
+    def test_pause_blocks_native_arm(self):
+        self.paused[0]=True
+        result=self.arm()
+        self.assertFalse(result["ok"])
+        self.assertEqual(result["error"],"ui-writes-paused")
+        self.assertIsNone(self.host.nonce)
+        self.assertEqual(self.runs,[])
+
+    def test_fresh_write_checks_reject_pause_and_wrong_target(self):
+        arm=self.arm()
+        self.assertTrue(arm["ok"])
+        check="f"*32
+        allowed=self.host.handle({"op":"ui_write_check","chat_id":CHAT,"check_id":check})
+        self.assertEqual((allowed["ok"],allowed["op"],allowed["check_id"]),
+                         (True,"ui_write_allowed",check))
+        self.assertFalse(self.host.handle({"op":"ui_write_check","chat_id":OTHER,
+                                           "check_id":check})["ok"])
+        self.assertFalse(self.host.handle({"op":"ui_write_check","chat_id":CHAT,
+                                           "check_id":"bad"})["ok"])
+        self.paused[0]=True
+        denied=self.host.handle({"op":"ui_write_check","chat_id":CHAT,"check_id":check})
+        self.assertEqual(denied["error"],"ui-writes-paused")
+        self.assertEqual(denied["check_id"],check)
+        self.assertFalse(self.host.handle({"op":"execute_frame","chat_id":CHAT,
+                                           "frame":self.frame(arm["nonce"])})["ok"])
+        self.assertEqual(self.runs,[])
+        self.assertFalse(self.host.handle({"op":"status"})["active"])
+        self.assertEqual(self.host.handle({"op":"stop"})["op"],"stopped")
+
+    def test_pause_during_core_execution_withholds_result_without_replay(self):
+        def client(argv,cwd,timeout):
+            self.runs.append((argv,cwd,timeout))
+            self.paused[0]=True
+            return {"exit_code":0,"output":"ran"}
+        self.host.client=client
+        arm=self.arm()
+        request={"op":"execute_frame","chat_id":CHAT,"frame":self.frame(arm["nonce"])}
+        first=self.host.handle(request)
+        self.assertEqual(first["error"],"ui-writes-paused-after-execution")
+        self.assertEqual(len(self.runs),1)
+        again=self.host.handle(request)
+        self.assertFalse(again["ok"])
+        self.assertEqual(len(self.runs),1)
+
+    def test_pause_check_failure_is_denial_not_permission(self):
+        self.host.pause=lambda: (_ for _ in ()).throw(OSError("unreadable hold"))
+        self.assertEqual(self.arm()["error"],"ui-writes-paused")
         self.assertEqual(self.runs,[])
 
     def test_native_packet_roundtrip_and_length_limit(self):
