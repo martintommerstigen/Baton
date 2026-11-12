@@ -30,6 +30,10 @@ function stopPort(tabId, reason) {
   const session = sessions.get(tabId);
   if (!session) return;
   sessions.delete(tabId);
+  for (const respond of (session.checks || new Map()).values()) {
+    try { respond({ok:false,error:"session-stopped"}); } catch (_) {}
+  }
+  if (session.checks) session.checks.clear();
   try { session.port.postMessage({op:"stop"}); } catch (_) {}
   try { session.port.disconnect(); } catch (_) {}
   tellTab(tabId, {ok:false,error:reason || "bridge-closed"});
@@ -51,10 +55,20 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     stopPort(tabId, "replaced-session");
     try {
       const port = chrome.runtime.connectNative(HOST);
-      const session = {port, chat_id:current};
+      const session = {port, chat_id:current, checks:new Map()};
       sessions.set(tabId, session);
       port.onMessage.addListener(reply => {
         if (sessions.get(tabId) !== session) return;
+        if (reply && typeof reply.check_id === "string") {
+          const pending=session.checks.get(reply.check_id);
+          if (pending) {
+            session.checks.delete(reply.check_id);
+            pending(reply);
+          }
+          // No generic tab event for a write-check: it authorizes one
+          // pending composer operation only, not an assistant turn.
+          return;
+        }
         if (reply && reply.op === "armed" && reply.chat_id !== current) {
           stopPort(tabId, "native-chat-id-mismatch");
           return;
@@ -78,6 +92,25 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     stopPort(tabId, "stopped-by-user");
     sendResponse({queued:true});
     return false;
+  }
+  if (message.op === "ui_write_check") {
+    const session = sessions.get(tabId);
+    const checkId = message.check_id;
+    if (!session || session.chat_id !== current || message.chat_id !== current ||
+        typeof checkId !== "string" || !/^[0-9a-f]{32}$/i.test(checkId) ||
+        session.checks.has(checkId)) {
+      sendResponse({ok:false,error:"write-check-not-authorized"});
+      return false;
+    }
+    session.checks.set(checkId,sendResponse);
+    try {
+      session.port.postMessage({op:"ui_write_check",chat_id:current,check_id:checkId});
+    } catch (_) {
+      stopPort(tabId,"native-host-disconnected");
+    }
+    // Native Messaging returns asynchronously, while this reply channel
+    // remains open. Failed or missing reply must never authorize a click.
+    return true;
   }
   if (message.op === "execute_frame") {
     const session = sessions.get(tabId);
