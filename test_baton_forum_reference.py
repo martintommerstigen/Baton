@@ -186,14 +186,18 @@ class ForumTests(unittest.TestCase):
         source = self.f.ingest("parenting",self.receipt())['id']
         use = self.f.ingest("safety",self.receipt(C2,M2,"I apply A","Søm","use.json"))['id']
         self.f.add_dependency(use,source)
-        self.assertFalse(self.f.show("safety")["observations"][0]['needs_human_review'])
+        self.assertFalse(self.f.show("safety")["observations"][0]['dependency_impact_unassessed'])
         correct = self.f.ingest("parenting",self.receipt(C1,M3,"A was over-generalized","Spire","fix.json"),
                                 kind="correction",reply_to=source)['id']
         downstream = self.f.show("safety")["observations"][0]
         self.assertEqual(downstream["body"],"I apply A")  # immutable
         self.assertEqual(downstream["depends_on"],[source])
         self.assertEqual(downstream["source_correction_ids"],[correct])
-        self.assertTrue(downstream["needs_human_review"])
+        self.assertTrue(downstream["dependency_impact_unassessed"])
+        self.f.record_impact(correct,"unspecified","conflicts")
+        downstream = self.f.show("safety")["observations"][0]
+        self.assertTrue(downstream["dependency_review_required"])
+        self.assertFalse(downstream["dependency_impact_unassessed"])
 
     def test_unrelated_topic_not_paused_by_correction(self):
         source = self.f.ingest("parenting",self.receipt())['id']
@@ -201,12 +205,76 @@ class ForumTests(unittest.TestCase):
                       kind="correction",reply_to=source)
         other=self.f.ingest("safety",self.receipt(C2,M2,"Independent B","Søm","other.json"))
         self.assertTrue(other["new"])
-        self.assertFalse(self.f.show("safety")["observations"][0]['needs_human_review'])
+        self.assertFalse(self.f.show("safety")["observations"][0]['dependency_review_required'])
 
     def test_invalid_dependency_is_rejected(self):
         a=self.f.ingest("parenting",self.receipt())['id']
         for upstream in (a,99999):
             with self.assertRaises(ValueError):self.f.add_dependency(a,upstream)
+
+    def test_vev_three_threads_distinguish_evidence_from_fixture(self):
+        # Vev's genuine counterexample: A -> B is evidence, A -> C is a fixture.
+        # A correction denies transfer to production but preserves isolated fixture.
+        self.f.create_topic("fixtures", "Isolated regression fixtures")
+        origin=self.f.ingest("parenting",self.receipt())['id']
+        claim=self.f.ingest("safety",self.receipt(C2,M2,"This is true in production","Søm","claim.json"))['id']
+        fixture=self.f.ingest("fixtures",self.receipt("6aee69e6-21ec-83eb-8b0e-ab43497695b0",M3,
+                                             "Negative case without lock","Vev","fixture.json"))['id']
+        self.f.add_dependency(claim,origin,use_mode="supports_claim",premise_key="production-lock-absent")
+        self.f.add_dependency(fixture,origin,use_mode="test_fixture",premise_key="isolated-no-lock")
+        correction=self.f.ingest("parenting",self.receipt(C1,"11111111-2222-3333-4444-555555555555",
+                                   "Production did have the lock","Spire","correct.json"),
+                                   kind="correction",reply_to=origin)['id']
+        self.f.record_impact(correction,"production-lock-absent","conflicts")
+        self.f.record_impact(correction,"isolated-no-lock","unaffected")
+        b=self.f.show("safety")['observations'][0]
+        c=self.f.show("fixtures")['observations'][0]
+        self.assertTrue(b['dependency_review_required'])
+        self.assertFalse(b['dependency_impact_unassessed'])
+        self.assertFalse(c['dependency_review_required'])
+        self.assertFalse(c['dependency_impact_unassessed'])
+        self.assertEqual(c['body'],"Negative case without lock")
+
+    def test_missing_impact_classification_is_not_declared_safe(self):
+        source=self.f.ingest("parenting",self.receipt())['id']
+        use=self.f.ingest("safety",self.receipt(C2,M2,"Apply source","Søm","use.json"))['id']
+        self.f.add_dependency(use,source,use_mode="supports_claim",premise_key="scope-unknown")
+        self.f.ingest("parenting",self.receipt(C1,M3,"Correction","Spire","corr.json"),
+                      kind="correction",reply_to=source)
+        status=self.f.show("safety")['observations'][0]
+        self.assertTrue(status['dependency_impact_unassessed'])
+        self.assertFalse(status['dependency_review_required'])
+
+    def test_reinterpretation_of_dependency_rejected(self):
+        a=self.f.ingest("parenting",self.receipt())['id']
+        b=self.f.ingest("safety",self.receipt(C2,M2,"Use A","Søm","use.json"))['id']
+        self.f.add_dependency(b,a,use_mode="supports_claim",premise_key="premise-one")
+        with self.assertRaises(ValueError):
+            self.f.add_dependency(b,a,use_mode="test_fixture",premise_key="premise-two")
+        with self.assertRaises(ValueError):
+            self.f.add_dependency(b,a,use_mode="supports_claim",premise_key="premise-two")
+
+    def test_impact_assertion_cannot_silently_change(self):
+        source=self.f.ingest("parenting",self.receipt())['id']
+        correction=self.f.ingest("parenting",self.receipt(C1,M3,"Fix","Spire","corr.json"),
+                                 kind="correction",reply_to=source)['id']
+        self.f.record_impact(correction,"premise-one","unaffected")
+        with self.assertRaises(ValueError):self.f.record_impact(correction,"premise-one","conflicts")
+        with self.assertRaises(ValueError):self.f.record_impact(source,"premise-one","conflicts")
+
+    def test_existing_forum_dependency_schema_migrates(self):
+        from contextlib import closing
+        from sqlite3 import connect
+        path=self.root/'prior.sqlite3'
+        with closing(connect(path)) as db:
+            db.execute('CREATE TABLE dependencies(downstream_id INTEGER,upstream_id INTEGER,PRIMARY KEY(downstream_id,upstream_id))')
+            db.commit()
+        legacy=Forum(path,self.receipts);legacy.init()
+        with legacy.connect() as db:
+            cols={x[1] for x in db.execute('PRAGMA table_info(dependencies)')}
+            self.assertIn('use_mode',cols)
+            self.assertIn('premise_key',cols)
+            self.assertEqual(db.execute('SELECT count(*) FROM correction_impacts').fetchone()[0],0)
 
 
 if __name__ == "__main__":
