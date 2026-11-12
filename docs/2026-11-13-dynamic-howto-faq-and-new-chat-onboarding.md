@@ -63,3 +63,15 @@ This is currently a separate Git worktree on Greg. The active pinned Baton relea
 Only Skin talks to Core. Only Core changes Core. UI is an observatory. Name is an alias, not persistent person identity. Dynamic help is a correction mechanism, not an all-seeing memory.
 
 Bevar pilene.
+
+## Additional peer correction from Søm (source-verified)
+
+Søm's existing ChatGPT conversation /c/6aef341a-d850-83ed-a3b2-c735a215bce3 replied with assistant message 4874ae97-cb03-5137-809c-f2081571059f to the new Baton invite EE40C63838424246B9D0E5F0A55C78A6. The original one-shot observer falsely timed out because ChatGPT rendered an inline code span without its literal backticks. A separate read-only verification after independent reload recovered the same reply ID and content SHA-256 (5e5d2f90979d9c671495d2ce35fd6bcea043ff9193770ff52073aeb8655209bd); the old timeout receipt was retained, no resend occurred. Reconciliation record: ~/.local/state/baton/continuity/2026-11-13-som-onboarding-reconciled.json.
+
+Søm described a new generation race: bridge A performs a legitimate local test, bridge B replaces A in the same /c/ conversation, and A's delayed successful receipt must never mark B READY or clear B's pending flag. The reference bridge now uses per-session object identity plus new generation and nonce checks at the bootstrap, observer and result callbacks. Dedicated negative tests simulate stale A versus B with same chat ID and even duplicate nonce. This is local and reference-level verification, not a multi-profile production deployment.
+
+Søm also challenged the single combined UNCERTAIN status: an outbound bridge may be working while one earlier external message remains uncertain. The native panel now displays bridge state and delivery uncertainty in **separate** labels. An unverified remote delivery does not invalidate a local bridge handshake or authorize a resend. Both findings have been added to new dynamic FAQ entries.
+
+The observer now has a narrow fallback for rendered Markdown inline-code: only source-bound, uniquely Baton-marked user messages can compare after removing inline backticks. Ordinary messages still require exact match. Unique adjacent assistant turn and source conversation markers remain mandatory. This was checked against the real original Søm reply, and its negative controls are in test_baton_chat_observe.py.
+
+Latest Greg regression: 145 tests passed with Qt offscreen and ResourceWarning treated as errors. The pinned running and preview Baton releases were not modified, and the historical PAUSE_UI_WRITES digest remained unchanged. This work remains an isolated candidate PR until re-staged and explicitly run with real authenticated sessions.
