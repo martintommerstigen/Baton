@@ -137,6 +137,8 @@ def attach_model_bridge(layout, view, page, parent, *, auto_enable=False):
     auto_suspended=[False]
     last_chat=[None]
     last_send_error=[""]
+    handshake_verified=[False]
+    unknown_effect=[False]
     processed=set()
     observed_turns=set()
     results=queue.Queue()
@@ -167,6 +169,7 @@ def attach_model_bridge(layout, view, page, parent, *, auto_enable=False):
 
     def disable():
         session[0]=None
+        handshake_verified[0]=False
         observer.stop()
         output_poller.stop()
         relay_timer.stop()
@@ -180,6 +183,8 @@ def attach_model_bridge(layout, view, page, parent, *, auto_enable=False):
         state=relay_state[0]
         if state is None:
             return
+        if result.get("status") in ("uncertain", "sent-visible-no-complete-reply"):
+            unknown_effect[0]=True
         relay_timer.stop()
         results.put({
             "kind":"chat", "nonce":state["nonce"], "chat_id":state["source_chat"],
@@ -458,6 +463,8 @@ def attach_model_bridge(layout, view, page, parent, *, auto_enable=False):
             report("Velg en eksisterende samtale fra ChatGPT-listen først.")
             return
         last_send_error[0] = ""
+        handshake_verified[0] = False
+        # Uncertain external results from earlier attempts must not be silently cleared.
         nonce=uuid4().hex
         session[0]={"chat_id":chat_id,"nonce":nonce}
         processed.clear()
@@ -550,6 +557,10 @@ def attach_model_bridge(layout, view, page, parent, *, auto_enable=False):
         def result_sent(sent):
             pending[0]=False
             if sent:
+                if ((item["kind"] == "greg" and outcome.get("exit_code") == 0)
+                        or (item["kind"] == "chat" and
+                            outcome.get("status") == "reply_observed")):
+                    handshake_verified[0]=True
                 report("Resultat forsøkt sendt til ChatGPT. Venter på neste Baton-kall.")
             else:
                 report("Resultat kunne ikke sendes. Ingen automatisk gjensending.")
@@ -596,6 +607,11 @@ def attach_model_bridge(layout, view, page, parent, *, auto_enable=False):
     output_poller.timeout.connect(flush)
     view.urlChanged.connect(on_chat_navigation)
     page.loadFinished.connect(lambda ok: QTimer.singleShot(800, auto_arm) if ok and auto_enable else None)
+    # Read-only status observation for the Skin's onboarding indicator.
+    # This never exports a nonce and never grants a permission.
     group.baton_bridge={"start":start,"stop":stop,"state":state,"observer":observer,
-                        "relay_view":relay_view,"relay_timer":relay_timer}
+                        "relay_view":relay_view,"relay_timer":relay_timer,
+                        "session_chat":lambda: (session[0] or {}).get("chat_id"),
+                        "handshake_observed":lambda: handshake_verified[0],
+                        "uncertain_effect":lambda: unknown_effect[0]}
     return group
