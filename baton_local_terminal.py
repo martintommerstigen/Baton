@@ -16,9 +16,10 @@ COMMANDS = {
     "python-version": (sys.executable, "--version"),
 }
 MAX_OUTPUT = 16384
+READ_ONLY_INSPECTIONS = frozenset(("install-status",))
 
 def execute(operation, workspace):
-    if operation not in COMMANDS:
+    if operation not in COMMANDS and operation not in READ_ONLY_INSPECTIONS:
         raise ValueError("operation not allowlisted")
     requested = Path(workspace).expanduser()
     if requested.is_symlink():
@@ -26,13 +27,21 @@ def execute(operation, workspace):
     root = requested.resolve(strict=True)
     if not root.is_dir():
         raise ValueError("workspace must be a directory")
-    if operation.startswith("git-"):
+    if operation.startswith("git-") or operation == "install-status":
         metadata = root / ".git"
         if metadata.is_symlink() or not metadata.is_dir():
             raise ValueError("git checkout metadata must be a real directory")
         probe = subprocess.run(("/usr/bin/git", "rev-parse", "--is-inside-work-tree"), cwd=root, stdin=subprocess.DEVNULL, capture_output=True, timeout=5, env={"PATH": "/usr/bin:/bin", "LANG": "C", "HOME": str(Path.home())})
         if probe.returncode != 0 or probe.stdout.strip() != b"true":
             raise ValueError("not a git checkout")
+    if operation == "install-status":
+        # Deliberately use the existing redacted, read-only host inspector.
+        # No arbitrary argv, tokens, process arguments, or message bodies.
+        from baton_install_status import inspect_installation
+        output = json.dumps(inspect_installation(root=root), sort_keys=True)
+        if len(output.encode("utf-8")) > MAX_OUTPUT:
+            raise ValueError("installation status too large")
+        return {"ok": True, "exit_code": 0, "output": output, "truncated": False}
     command = COMMANDS[operation]
     executable = Path(command[0])
     if not executable.is_file():
@@ -51,7 +60,7 @@ def execute(operation, workspace):
 
 def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("operation", choices=sorted(COMMANDS))
+    parser.add_argument("operation", choices=sorted(set(COMMANDS) | READ_ONLY_INSPECTIONS))
     parser.add_argument("--workspace", required=True)
     args = parser.parse_args(argv)
     try:

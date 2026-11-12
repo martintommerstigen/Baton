@@ -1,0 +1,31 @@
+name: Baton read-only Greg status bus
+
+on:
+  push:
+    branches:
+      - feature/baton-readonly-install-status-bus-2026-11-11
+  pull_request:
+    paths:
+      - baton_local_terminal.py
+      - baton_github_bus.py
+      - baton_install_status.py
+      - test_baton_readonly_status_bus.py
+      - test_baton_local_terminal.py
+      - test_baton_github_bus.py
+      - test_baton_install_status.py
+      - .github/workflows/baton-readonly-status-bus.yml
+
+permissions:
+  contents: read
+
+jobs:
+  status-bus:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - run: python3 --version
+      - name: Read-only status and negative security regression
+        run: python3 -m unittest -v test_baton_local_terminal.py test_baton_github_bus.py test_baton_install_status.py test_baton_readonly_status_bus.py
