@@ -1,7 +1,7 @@
 {
   "schema": "eik-github-pr-lifecycle-index/v1",
   "snapshot_date_utc": "2026-11-12",
-  "collection": "GitHub REST /pulls?state=all sorted updated desc, 100 per page; /branches?per_page=100; paginated, non-atomic; PR #83 head incrementally rechecked 2026-11-12 20:45 CET, older PR entries remain snapshot",
+  "collection": "GitHub REST /pulls?state=all sorted updated desc, 100 per page; /branches?per_page=100; paginated, non-atomic; PR #83 head incrementally rechecked 2026-11-12 20:45 CET, older PR entries remain snapshot; late 12 Nov PR #84 added, previous PR metadata retained as dated snapshot.",
   "scope": "Public Baton only; private GTRCM PR metadata intentionally omitted",
   "interpretation": [
     "This is PR lifecycle metadata, not a full code review or complete commit history.",
@@ -17,10 +17,10 @@
     {
       "summary": {
         "repository": "martintommerstigen/Baton",
-        "branch_count": 82,
-        "pr_count": 79,
-        "open": 66,
-        "open_draft": 66,
+        "branch_count": 83,
+        "pr_count": 80,
+        "open": 67,
+        "open_draft": 67,
         "open_ready": 0,
         "merged": 5,
         "closed_unmerged": 8,
@@ -30,6 +30,23 @@
         ]
       },
       "pull_requests": [
+        {
+          "number": 84,
+          "title": "Baton: cross-conversation action/grant fencing and anti-resurrection tests (reference only)",
+          "url": "https://github.com/martintommerstigen/Baton/pull/84",
+          "state": "open",
+          "draft": true,
+          "merged": false,
+          "created_at": "2026-11-12T20:32:19Z",
+          "updated_at": "2026-11-12T21:20:00Z",
+          "closed_at": null,
+          "merged_at": null,
+          "base_ref": "fix/strict-existing-chat-reply-correlation-2026-11-12",
+          "head_ref": "feature/action-authorization-fence-2026-11-12",
+          "pr_head_sha": "0f53501166cd686721084113dc4bd811fa5b96f7",
+          "branch_tip_sha": "0f53501166cd686721084113dc4bd811fa5b96f7",
+          "pr_head_matches_branch_tip": true
+        },
         {
           "number": 65,
           "title": "docs: public start-here navigation and source-verification boundaries",
