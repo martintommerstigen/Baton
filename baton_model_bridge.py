@@ -101,6 +101,17 @@ def _assistant_tool_turn(turn, expected_nonce):
     return turn_id, call
 
 
+def result_is_current_generation(current, originating, expected_nonce, expected_chat):
+    """An old callback/receipt cannot confirm or alter a replacement bridge.
+
+    Dict identity distinguishes new generations even for the SAME /c/ ID;
+    never infer current authorization from the ChatGPT conversation address.
+    """
+    return (isinstance(current, dict) and current is originating
+            and current.get("nonce") == expected_nonce
+            and current.get("chat_id") == expected_chat)
+
+
 def should_auto_arm(chat_id, attempted_chat, suspended, active_session,
                     pending, manual_draft):
     """Only one automatic bootstrap per visit to an existing chat."""
@@ -466,7 +477,8 @@ def attach_model_bridge(layout, view, page, parent, *, auto_enable=False):
         handshake_verified[0] = False
         # Uncertain external results from earlier attempts must not be silently cleared.
         nonce=uuid4().hex
-        session[0]={"chat_id":chat_id,"nonce":nonce}
+        session[0]={"chat_id":chat_id,"nonce":nonce,"generation":uuid4().hex}
+        originating=session[0]
         processed.clear()
         observed_turns.clear()
         pending[0]=True
@@ -475,6 +487,8 @@ def attach_model_bridge(layout, view, page, parent, *, auto_enable=False):
         report("Starter økt i "+chat_id+" ...")
         cwd=str(Path.home())
         def booted(sent):
+            if not result_is_current_generation(session[0],originating,nonce,chat_id):
+                return  # Older generation cannot disable a newly started bridge.
             pending[0]=False
             if not sent:
                 report("Oppstart feilet: " + (last_send_error[0] or "send/økt avbrutt"))
@@ -492,7 +506,7 @@ def attach_model_bridge(layout, view, page, parent, *, auto_enable=False):
         nonce=data["nonce"]
         def inspected(turns):
             turns = _decode_js_result(turns)
-            if active() is None or pending[0]:
+            if not result_is_current_generation(active(),data,nonce,data["chat_id"]) or pending[0]:
                 return
             if not isinstance(turns,list):
                 report("Baton kan ikke lese assistentsvar: " +
@@ -545,8 +559,7 @@ def attach_model_bridge(layout, view, page, parent, *, auto_enable=False):
         outcome=item["outcome"]
         data=active()
         if data is None or data["nonce"]!=result_nonce or data["chat_id"]!=chat_id:
-            pending[0]=False
-            report("Handlingen er fullført, men kildesamtalen ble endret: resultatet ble ikke sendt.")
+            # Crucial: a delayed A result cannot alter B's busy flag or READY status.
             return
         if item["kind"]=="chat":
             report("Meldingsresultat klart; returnerer det til kildesamtalen ...")
@@ -555,6 +568,8 @@ def attach_model_bridge(layout, view, page, parent, *, auto_enable=False):
             report("Kommando fullført; returnerer resultat til ChatGPT ...")
             result_text=tool_result_message(result_nonce,request_id,outcome)
         def result_sent(sent):
+            if not result_is_current_generation(session[0],data,result_nonce,chat_id):
+                return  # Late A result must not mark new B as READY.
             pending[0]=False
             if sent:
                 if ((item["kind"] == "greg" and outcome.get("exit_code") == 0)
