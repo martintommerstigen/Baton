@@ -11,6 +11,7 @@ from uuid import uuid4
 from pathlib import Path
 from baton_chatgpt_view import is_chatgpt_conversation_url, conversation_url
 from baton_chat_observe import inspect_delivery_script, verified_reply_observation
+from baton_ui_pause import ui_writes_paused
 from baton_conversation_panel import chat_id_from_url
 from baton_embedded_send import prepare_send_script, send_click_script, clear_prepared_script
 from baton_model_protocol import (
@@ -233,6 +234,10 @@ def attach_model_bridge(layout, view, page, parent, *, auto_enable=False):
         state=relay_state[0]
         if state is None or state.get("stage")!="loading":
             return
+        if ui_writes_paused():
+            finish_relay({"status":"not_sent","target_chat_id":state["target_chat"],
+                          "detail":"PAUSE_UI_WRITES active; no UI send"})
+            return
         if not ok or not is_chatgpt_conversation_url(
                 relay_view.url().toString(),state["target_chat"]):
             finish_relay({"status":"not_sent","target_chat_id":state["target_chat"],
@@ -266,6 +271,10 @@ def attach_model_bridge(layout, view, page, parent, *, auto_enable=False):
             def click_once():
                 current=relay_state[0]
                 if current is not state:
+                    return
+                if ui_writes_paused():
+                    finish_relay({"status":"not_sent","target_chat_id":state["target_chat"],
+                                  "detail":"PAUSE_UI_WRITES active before click; no UI send"})
                     return
                 if not is_chatgpt_conversation_url(
                         relay_view.url().toString(),state["target_chat"]):
@@ -312,6 +321,12 @@ def attach_model_bridge(layout, view, page, parent, *, auto_enable=False):
         relay_page.runJavaScript(_json_result_script(script),prepared)
 
     def start_chat_relay(request, request_nonce, source_chat):
+        if ui_writes_paused():
+            results.put({"kind":"chat","nonce":request_nonce,"chat_id":source_chat,
+                         "request_id":request["request_id"],
+                         "outcome":{"status":"not_sent","target_chat_id":request["chat_id"],
+                                    "detail":"PAUSE_UI_WRITES active; no UI send"}})
+            return
         if relay_state[0] is not None:
             results.put({"kind":"chat","nonce":request_nonce,"chat_id":source_chat,
                          "request_id":request["request_id"],
@@ -344,6 +359,10 @@ def attach_model_bridge(layout, view, page, parent, *, auto_enable=False):
     relay_view.loadFinished.connect(relay_loaded)
 
     def transmit(text, on_complete):
+        if ui_writes_paused():
+            report("PAUSE_UI_WRITES aktiv: Baton sender ikke ChatGPT-meldinger.")
+            on_complete(False)
+            return
         try:
             script=prepare_send_script(text)
         except ValueError:
@@ -396,6 +415,10 @@ def attach_model_bridge(layout, view, page, parent, *, auto_enable=False):
                     on_complete(False)
             def click_once():
                 if active() is None:
+                    on_complete(False)
+                    return
+                if ui_writes_paused():
+                    report("PAUSE_UI_WRITES aktiv før send: ingen klikk.")
                     on_complete(False)
                     return
                 click_checks[0] += 1
