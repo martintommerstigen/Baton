@@ -27,7 +27,7 @@
 
 ## Which branch actually reached `main`?
 
-Read the [Baton PR lifecycle / branch map (12 November snapshot)](2026-11-12_BATON_PR_LIFECYCLE_INDEX.json) **before** treating a feature branch as installed software. It covers 79 observed Baton PRs: 66 open drafts, 5 merged, 8 closed without merge. Every record includes PR URL, state, head/base refs, PR head SHA and current branch-tip SHA. In particular, several older existing-chat relay PRs share a branch, and some closed PR head SHAs no longer equal that branch's tip. Choose a precise ref and inspect later corrections; neither an open PR nor a green test proves Greg deployment or a verified recipient reply. The index is dated, not live.
+Read the [Baton PR lifecycle / branch map (12 November snapshot)](2026-11-12_BATON_PR_LIFECYCLE_INDEX.json) **before** treating a feature branch as installed software. It covers 80 observed Baton PRs: 67 open drafts, 5 merged, 8 closed without merge. Every record includes PR URL, state, head/base refs, PR head SHA and current branch-tip SHA. In particular, several older existing-chat relay PRs share a branch, and some closed PR head SHAs no longer equal that branch's tip. Choose a precise ref and inspect later corrections; neither an open PR nor a green test proves Greg deployment or a verified recipient reply. The index is dated, not live.
 
 ## Repository scope and verification
 
@@ -36,6 +36,10 @@ An authenticated owner-affiliation listing on **12 November 2026** found **two r
 The [private source-routing fixture (consult `grading.denominator`; S35/S36, S43 and S46 cover the Baton distinctions above)](https://github.com/martintommerstigen/GTRCM/blob/docs/eik-g2-g4-repo-navigation-2026-11-11/research/navigation/2026-11-11_LLM_ROUTING_QA_FIXTURE.json) checks selected original-versus-correction traps, including the R60→R61→R62 correction. **R60 correction:** R61 shows that the R60 holdout cannot certify independent profiles; R62's cross-witness recovery requires additional same-shot independent references. This is a private GTRCM source route, not evidence of nature or a Baton deployment.
 
 **No independent blind fresh-LLM A/B trial or verified existing-chat A→B→C write/readback** is established. A **read-only Greg safety audit** and detached-worktree tests did occur, per PR #83, but the installed release was not updated. Do not copy private GTRCM source bodies, transcripts, tokens or secrets into this public repo.
+
+## New action-authority boundary — PR #84
+
+[Exact public original: cross-chat action authority fence](https://github.com/martintommerstigen/Baton/blob/feature/action-authorization-fence-2026-11-12/docs/2026-11-12-cross-chat-action-authority-fence.md) and [PR #84](https://github.com/martintommerstigen/Baton/pull/84) add a reference SQLite action/grant model with persistent revocation tombstones, replay prevention and effect-time checks. **This does not authenticate an actor**: a caller-supplied `actor_id` or fresh `grant_id` is not an identity proof. The reference is not evidence of installed Core/UI integration, live multi-chat execution, or authorization to clear `PAUSE_UI_WRITES`. Read it **after** PR #83's reply-correlation and Native Messaging pause-path correction; the two address different trust boundaries.
 
 ## Operating boundaries
 
