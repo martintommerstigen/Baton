@@ -2,6 +2,8 @@
 
 **Read before changing or operating anything.** This note routes to sources; it does not authorize Greg access, message sending, installation, or an existing ChatGPT conversation wake.
 
+**Branch ≠ merged or installed implementation.** Check the [dated public Baton PR lifecycle / branch map](https://github.com/martintommerstigen/Baton/blob/docs/eik-repository-onboarding-2026-11-11/docs/2026-11-12_BATON_PR_LIFECYCLE_INDEX.json) before choosing a branch. It distinguishes draft, merged and closed-unmerged PRs and PR-head-versus-branch-tip mismatches. Verify live GitHub state; source and CI do not establish Greg deployment.
+
 ## First route the question
 
 1. [Baton `main` README](README.md) documents an **older local Python relay**. Native Desktop/Core work is on [the Desktop feature branch](https://github.com/martintommerstigen/Baton/tree/feature/evening-local-terminal-2026-11-10); read its [installation contract](https://github.com/martintommerstigen/Baton/blob/feature/evening-local-terminal-2026-11-10/docs/2026-11-11-greg-canonical-installation-contract.md). A source branch or CI PASS does not establish a running Greg installation.
