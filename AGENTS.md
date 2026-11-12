@@ -2,7 +2,7 @@
 
 This public note is a **source locator and safety reminder**, not authorization to access a machine, send messages, merge branches or claim an existing ChatGPT conversation has awakened.
 
-**2026-11-12 routing update:** The owner-affiliated GitHub branch inventory now observes **328 private GTRCM + 81 public Baton = 409 non-atomic branch tips**. Authorized readers should start from GTRCM's [question-first router](https://github.com/martintommerstigen/GTRCM/blob/docs/eik-g2-g4-repo-navigation-2026-11-11/research/navigation/2026-11-12_QUESTION_FIRST_ROUTER.md), not from a raw branch list. R55 is the newest observed GTRCM research branch; its source-priority corrections do not imply new Baton wake or Greg-live capability.
+**2026-11-12 routing update:** The owner-affiliated GitHub branch inventory now observes **330 private GTRCM + 81 public Baton = 411 non-atomic branch tips**. Authorized readers should start from GTRCM's [question-first router](https://github.com/martintommerstigen/GTRCM/blob/docs/eik-g2-g4-repo-navigation-2026-11-11/research/navigation/2026-11-12_QUESTION_FIRST_ROUTER.md), not from a raw branch list. R56 and R57 are the newest observed GTRCM research branches (source-only, conditional inertia/probe models); neither implies new Baton wake, verified natural gravitation or Greg-live capability.
 
 ## Start here
 
