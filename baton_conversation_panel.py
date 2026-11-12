@@ -65,6 +65,10 @@ def attach_baton_panel(window, view, page, *, initial_chat=None, initial_message
     access.setObjectName("baton-peer-access-state")
     access.setWordWrap(True)
     layout.addWidget(access)
+    delivery = QLabel("Leveringsstatus: ingen uavklart sending observert i denne broen.")
+    delivery.setObjectName("baton-peer-delivery-state")
+    delivery.setWordWrap(True)
+    layout.addWidget(delivery)
     # Native revisioned help is independent of ChatGPT DOM and local Core tools.
     help_button = QPushButton("HOWTO / FAQ · dynamisk hjelp")
     help_button.setObjectName("baton-open-dynamic-help")
@@ -142,12 +146,15 @@ def attach_baton_panel(window, view, page, *, initial_chat=None, initial_message
             exact_chat=bool(cid),
             bridge_enabled=bool(cid and flags["session_chat"]() == cid),
             handshake_observed=flags["handshake_observed"](),
-            paused=ui_writes_paused(), uncertain=flags["uncertain_effect"]()
+            paused=ui_writes_paused(), uncertain=False
         )
 
     def refresh_access():
         code = current_access_state()
         access.setText("Baton-kanal: " + code + " — " + STATE_EXPLANATIONS[code])
+        uncertain = bridge_group.baton_bridge["uncertain_effect"]()
+        delivery.setText("Siste Baton-effekt: UNCERTAIN — undersøk, aldri send blindt på nytt."
+                         if uncertain else "Baton-levering: ingen uavklart effekt flagget i denne visningen; levering ikke garantert.")
 
     def copy_onboarding():
         from baton_onboarding import peer_quickstart
@@ -306,6 +313,6 @@ def attach_baton_panel(window, view, page, *, initial_chat=None, initial_message
         "recipient": recipient, "message": message, "send": send,
         "status": status, "use_current": use_current, "open_target": open_target,
         "help": help_button, "onboarding": onboarding_button,
-        "access_state": access, "access_timer": access_timer
+        "access_state": access, "delivery_state": delivery, "access_timer": access_timer
     }
     return dock
