@@ -1,0 +1,32 @@
+name: Baton action authorization fence reference
+
+on:
+  push:
+    branches:
+      - feature/action-authorization-fence-2026-11-12
+    paths:
+      - 'baton_action_authority_reference.py'
+      - 'test_baton_action_authority_reference.py'
+      - '.github/workflows/baton-action-authority-reference.yml'
+  pull_request:
+    paths:
+      - 'baton_action_authority_reference.py'
+      - 'test_baton_action_authority_reference.py'
+      - '.github/workflows/baton-action-authority-reference.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  sqlite-counterexamples:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Compile, no browser or network send
+        run: python3 -m py_compile baton_action_authority_reference.py test_baton_action_authority_reference.py
+      - name: Concurrent negative controls
+        run: python3 -m unittest -v test_baton_action_authority_reference.py
