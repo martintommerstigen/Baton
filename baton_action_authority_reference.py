@@ -106,16 +106,26 @@ class ActionFence:
             c.commit()
             return True
 
-    def reserve(self, *, action_id, grant_id, lease_token):
-        _id(action_id); _id(grant_id); _id(lease_token)
+    def reserve(self, *, action_id, grant_id, lease_token,
+                actor_id, requested_effect_key):
+        """Scope actor and operation before a worker can reserve.
+
+        actor_id must be supplied by VERIFIED transport identity, not copied
+        from the user's message. This reference does not perform authn.
+        """
+        for value in (action_id, grant_id, lease_token, actor_id,
+                      requested_effect_key):
+            _id(value)
         with self._connection() as c:
             c.execute("BEGIN IMMEDIATE")
             changed = c.execute("""UPDATE actions
                 SET state='reserved', lease_token=?
                 WHERE action_id=? AND grant_id=? AND state='pending'
+                  AND recipient_id=? AND effect_key=?
                   AND NOT EXISTS(
                     SELECT 1 FROM tombstones WHERE grant_id=?
-                  )""", (lease_token, action_id, grant_id, grant_id)).rowcount
+                  )""", (lease_token, action_id, grant_id,
+                         actor_id, requested_effect_key, grant_id)).rowcount
             c.commit()
             return changed == 1
 
@@ -195,13 +205,16 @@ class ActionFence:
             return True
 
     def begin_effect(self, *, action_id, grant_id,
-                     reserved_revision, lease_token):
+                     reserved_revision, lease_token, actor_id,
+                     requested_effect_key):
         """Atomic last *local* fence, not an atomic remote send.
 
         A true result MUST be treated as effect outcome UNKNOWN until an
         independently correlated receipt arrives. Never blind-retry it.
         """
-        _id(action_id); _id(grant_id); _id(lease_token)
+        for value in (action_id, grant_id, lease_token, actor_id,
+                      requested_effect_key):
+            _id(value)
         if not isinstance(reserved_revision, int) or reserved_revision < 1:
             raise ValueError("invalid revision")
         with self._connection() as c:
@@ -210,10 +223,11 @@ class ActionFence:
                 SET state='effect_unknown', lease_token=NULL
                 WHERE action_id=? AND grant_id=? AND revision=?
                   AND lease_token=? AND state='reserved'
+                  AND recipient_id=? AND effect_key=?
                   AND NOT EXISTS(
                     SELECT 1 FROM tombstones WHERE grant_id=?
-                  )""", (action_id,grant_id,reserved_revision,
-                         lease_token,grant_id)).rowcount
+                  )""", (action_id,grant_id,reserved_revision,lease_token,
+                         actor_id,requested_effect_key,grant_id)).rowcount
             c.commit()
             return changed == 1
 
