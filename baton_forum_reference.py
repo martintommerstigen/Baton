@@ -20,6 +20,9 @@ MESSAGE_ID = CHAT_ID
 SHA = re.compile(r"^[0-9a-f]{64}$")
 STATES = ("available", "muted", "left")
 KINDS = ("reply", "correction", "counterexample")
+USES = ("unspecified", "supports_claim", "counterexample_to", "test_fixture", "historical_reference", "authorizes_action")
+IMPACTS = ("conflicts", "unaffected", "unknown")
+PREMISE = re.compile(r"^[a-z0-9][a-z0-9.:-]{2,120}$")
 
 
 def check_chat_id(value):
@@ -148,8 +151,16 @@ class Forum:
                 CREATE TABLE IF NOT EXISTS dependencies(
                     downstream_id INTEGER NOT NULL REFERENCES observations(observation_id),
                     upstream_id INTEGER NOT NULL REFERENCES observations(observation_id),
+                    use_mode TEXT NOT NULL DEFAULT 'unspecified',
+                    premise_key TEXT NOT NULL DEFAULT 'unspecified',
                     PRIMARY KEY (downstream_id, upstream_id),
                     CHECK (downstream_id != upstream_id)
+                );
+                CREATE TABLE IF NOT EXISTS correction_impacts(
+                    correction_id INTEGER NOT NULL REFERENCES observations(observation_id),
+                    premise_key TEXT NOT NULL,
+                    verdict TEXT NOT NULL CHECK(verdict IN ('conflicts','unaffected','unknown')),
+                    PRIMARY KEY(correction_id,premise_key)
                 );
                 CREATE TABLE IF NOT EXISTS proposals(
                     proposal_id TEXT PRIMARY KEY,
@@ -160,6 +171,12 @@ class Forum:
                     created_utc TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ','now'))
                 );
             """)
+            # Retain older isolated discussion data; migrate missing descriptors in place.
+            columns = {r[1] for r in c.execute("PRAGMA table_info(dependencies)")}
+            if "use_mode" not in columns:
+                c.execute("ALTER TABLE dependencies ADD COLUMN use_mode TEXT NOT NULL DEFAULT 'unspecified'")
+            if "premise_key" not in columns:
+                c.execute("ALTER TABLE dependencies ADD COLUMN premise_key TEXT NOT NULL DEFAULT 'unspecified'")
         try:
             os.chmod(self.path, 0o600)
         except OSError:
@@ -226,23 +243,51 @@ class Forum:
                  d["sha256"],d["receipt_sha256"],d["receipt_path"],kind,reply_to))
             return {"id": cur.lastrowid, "new": True}
 
-    def add_dependency(self, downstream_id, upstream_id):
-        """Explicit claim that the later post USES an earlier observation.
+    def add_dependency(self, downstream_id, upstream_id, *, use_mode="unspecified", premise_key="unspecified"):
+        """Explicit use of a source and the operative assumption behind that use.
 
-        This records dependence; it does not establish semantic validity.
-        If the source is corrected, derived uses become visible for review,
-        without automatically erasing or cancelling an independent action.
+        Tags are supplied by the participant/reviewer; transport cannot infer
+        why a claim was used or declare the premise true.
         """
         if (not isinstance(downstream_id, int) or not isinstance(upstream_id, int)
                 or downstream_id <= 0 or upstream_id <= 0 or downstream_id == upstream_id):
             raise ValueError("invalid dependency")
+        if use_mode not in USES or not isinstance(premise_key, str) or not PREMISE.fullmatch(premise_key):
+            raise ValueError("invalid use or premise descriptor")
         with self.connect() as c:
+            c.execute("BEGIN IMMEDIATE")
             for post_id in (downstream_id, upstream_id):
                 if not c.execute("SELECT 1 FROM observations WHERE observation_id=?",
                                  (post_id,)).fetchone():
                     raise ValueError("dependency refers to nonexistent observation")
-            c.execute("INSERT OR IGNORE INTO dependencies(downstream_id,upstream_id) VALUES(?,?)",
-                      (downstream_id, upstream_id))
+            prev = c.execute("SELECT use_mode,premise_key FROM dependencies WHERE downstream_id=? AND upstream_id=?",
+                             (downstream_id, upstream_id)).fetchone()
+            if prev and prev != (use_mode, premise_key):
+                raise ValueError("cannot silently reinterpret an existing dependency")
+            c.execute("INSERT OR IGNORE INTO dependencies(downstream_id,upstream_id,use_mode,premise_key) VALUES(?,?,?,?)",
+                      (downstream_id, upstream_id, use_mode, premise_key))
+
+    def record_impact(self, correction_id, premise_key, verdict):
+        """Append an explicit reviewer assertion about ONE operative premise.
+
+        An absent classification remains unknown, never automatically safe.
+        This is not adjudicated, authenticated authorization or a stop action.
+        """
+        if not isinstance(correction_id, int) or correction_id < 1:
+            raise ValueError("invalid correction ID")
+        if not isinstance(premise_key, str) or not PREMISE.fullmatch(premise_key) or verdict not in IMPACTS:
+            raise ValueError("invalid premise verdict")
+        with self.connect() as c:
+            c.execute("BEGIN IMMEDIATE")
+            row = c.execute("SELECT kind,reply_to FROM observations WHERE observation_id=?",(correction_id,)).fetchone()
+            if not row or row[0] != "correction" or row[1] is None:
+                raise ValueError("only a source-linked correction may classify an impact")
+            existing = c.execute("SELECT verdict FROM correction_impacts WHERE correction_id=? AND premise_key=?",
+                                 (correction_id,premise_key)).fetchone()
+            if existing and existing[0] != verdict:
+                raise ValueError("cannot silently revise an impact; add a new correction")
+            c.execute("INSERT OR IGNORE INTO correction_impacts VALUES(?,?,?)",
+                      (correction_id,premise_key,verdict))
 
     def show(self, topic_id):
         topic_id = check_topic_id(topic_id)
@@ -255,17 +300,29 @@ class Forum:
                 WHERE topic_id=? ORDER BY observation_id""", (topic_id,)).fetchall()
             seen = []
             for m in messages:
-                deps = [r[0] for r in c.execute(
-                    "SELECT upstream_id FROM dependencies WHERE downstream_id=? ORDER BY upstream_id",(m[0],))]
-                changes = [r[0] for r in c.execute("""
-                    SELECT correction.observation_id FROM observations correction
-                    JOIN dependencies dep ON dep.upstream_id=correction.reply_to
-                    WHERE dep.downstream_id=? AND correction.kind='correction'
-                    ORDER BY correction.observation_id""",(m[0],))]
+                links = list(c.execute("""SELECT upstream_id,use_mode,premise_key
+                    FROM dependencies WHERE downstream_id=? ORDER BY upstream_id""",(m[0],)))
+                uses=[];corrections=set();review_required=False;unassessed=False
+                for upstream,use_mode,premise_key in links:
+                    evaluations=[]
+                    for (correction_id,) in c.execute("""SELECT observation_id FROM observations
+                            WHERE reply_to=? AND kind='correction' ORDER BY observation_id""",(upstream,)):
+                        corrections.add(correction_id)
+                        impact=c.execute("""SELECT verdict FROM correction_impacts
+                            WHERE correction_id=? AND premise_key=?""",(correction_id,premise_key)).fetchone()
+                        verdict=impact[0] if impact else "unassessed"
+                        evaluations.append({"correction_id":correction_id,"verdict":verdict})
+                        if verdict=="conflicts":review_required=True
+                        if verdict in ("unassessed","unknown"):unassessed=True
+                    uses.append({"source_id":upstream,"use_mode":use_mode,
+                                 "premise_key":premise_key,"correction_evaluations":evaluations})
                 seen.append({"id":m[0],"chat_id":m[1],"message_id":m[2],
                              "alias":m[3],"body":m[4],"kind":m[5],"reply_to":m[6],
-                             "depends_on":deps,"source_correction_ids":changes,
-                             "needs_human_review":bool(changes)})
+                             "depends_on":[l[0] for l in links],
+                             "dependency_uses":uses,
+                             "source_correction_ids":sorted(corrections),
+                             "dependency_review_required":review_required,
+                             "dependency_impact_unassessed":unassessed})
             return {"id": topic_id, "title": topic[0], "state": topic[1],
                     "observations": seen}
 
@@ -308,6 +365,9 @@ def main(argv=None):
     t = sub.add_parser("participant"); t.add_argument("topic"); t.add_argument("chat_id")
     t.add_argument("alias"); t.add_argument("preference",choices=STATES)
     t = sub.add_parser("cite"); t.add_argument("downstream",type=int); t.add_argument("upstream",type=int)
+    t.add_argument("--use",choices=USES,default="unspecified"); t.add_argument("--premise",default="unspecified")
+    t = sub.add_parser("impact"); t.add_argument("correction",type=int); t.add_argument("premise")
+    t.add_argument("verdict",choices=IMPACTS)
     t = sub.add_parser("draft"); t.add_argument("id"); t.add_argument("topic")
     t.add_argument("chat_id"); t.add_argument("message")
     t = sub.add_parser("close");t.add_argument("topic")
@@ -320,7 +380,12 @@ def main(argv=None):
     elif args.op=="show":result=f.show(args.id)
     elif args.op=="ingest":result=f.ingest(args.topic,args.receipt,kind=args.kind,reply_to=args.reply_to)
     elif args.op=="participant":f.set_participant(args.topic,args.chat_id,args.alias,args.preference);result={"preference":args.preference}
-    elif args.op=="cite":f.add_dependency(args.downstream,args.upstream);result={"downstream":args.downstream,"upstream":args.upstream}
+    elif args.op=="cite":
+        f.add_dependency(args.downstream,args.upstream,use_mode=args.use,premise_key=args.premise)
+        result={"downstream":args.downstream,"upstream":args.upstream,"use":args.use,"premise":args.premise}
+    elif args.op=="impact":
+        f.record_impact(args.correction,args.premise,args.verdict)
+        result={"correction":args.correction,"premise":args.premise,"verdict":args.verdict}
     elif args.op=="draft":result=f.propose(args.id,args.topic,args.chat_id,args.message)
     elif args.op=="close":f.close(args.topic);result={"closed":args.topic}
     print(json.dumps(result,ensure_ascii=False,indent=2))
