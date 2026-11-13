@@ -195,6 +195,12 @@ class ForumTests(unittest.TestCase):
         self.assertEqual(downstream["source_correction_ids"],[correct])
         self.assertTrue(downstream["dependency_impact_unassessed"])
         self.f.record_impact(correct,"unspecified","conflicts")
+        # The legacy premise annotation is visible but is NOT an edge verdict.
+        downstream = self.f.show("safety")["observations"][0]
+        self.assertTrue(downstream["dependency_impact_unassessed"])
+        self.assertEqual(downstream["dependency_uses"][0]["correction_evaluations"][0]
+                         ["legacy_unscoped_premise_assertion"], "conflicts")
+        self.f.record_dependency_assessment(correct,use,source,"conflicts",correct)
         downstream = self.f.show("safety")["observations"][0]
         self.assertTrue(downstream["dependency_review_required"])
         self.assertFalse(downstream["dependency_impact_unassessed"])
@@ -227,6 +233,8 @@ class ForumTests(unittest.TestCase):
                                    kind="correction",reply_to=origin)['id']
         self.f.record_impact(correction,"production-lock-absent","conflicts")
         self.f.record_impact(correction,"isolated-no-lock","unaffected")
+        self.f.record_dependency_assessment(correction,claim,origin,"conflicts",correction)
+        self.f.record_dependency_assessment(correction,fixture,origin,"unaffected",correction)
         b=self.f.show("safety")['observations'][0]
         c=self.f.show("fixtures")['observations'][0]
         self.assertTrue(b['dependency_review_required'])
