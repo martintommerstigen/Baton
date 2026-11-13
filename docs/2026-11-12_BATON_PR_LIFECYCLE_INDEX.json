@@ -1,7 +1,7 @@
 {
   "schema": "eik-github-pr-lifecycle-index/v1",
   "snapshot_date_utc": "2026-11-13",
-  "collection": "Complete fresh GitHub REST pagination /pulls?state=all (100/page) and /branches?per_page=100 on 13 Nov 2026; non-atomic. Docs branch tip moves after writes; recheck live state before action.",
+  "collection": "Prior full REST PR lifecycle snapshot plus three incremental live PR metadata checks (#151 GTRCM; #89 and #90 Baton), 13 November 2026; non-atomic, earlier PR entries not all re-fetched.",
   "scope": "Public Baton only; private GTRCM PR metadata intentionally omitted",
   "interpretation": [
     "This is PR lifecycle metadata, not a full code review or complete commit history.",
@@ -12,16 +12,17 @@
     "GTRCM is private. Do not copy its source, PR bodies, secrets, or transcripts into public Baton.",
     "Never infer authorization to operate Greg or wake another ChatGPT conversation from this index.",
     "PR #83 now includes Greg read-only safety audit, on-Greg detached worktree tests and PAUSE_UI_WRITES native-extension source repairs; old installed release not replaced, no verified live ChatGPT wake.",
-    "2026-11-13 source return: R81V PR #150 is stacked on R80V; Baton PR #88 is stacked on PR #83 and prevents empty role-bearing DOM turns from disappearing during reply correlation. Neither is merged or installed. 445 branch tips and 231 PRs were freshly enumerated; no full commit histories or independent new-LLM blind test."
+    "2026-11-13 source return: R81V PR #150 is stacked on R80V; Baton PR #88 is stacked on PR #83 and prevents empty role-bearing DOM turns from disappearing during reply correlation. Neither is merged or installed. 445 branch tips and 231 PRs were freshly enumerated; no full commit histories or independent new-LLM blind test.",
+    "2026-11-13 02:43 UTC incremental check: new PR head SHAs and states fetched live; older entries preserved from previous complete REST snapshot. Stacked draft bases must be read before a newer PR; neither CI nor draft PR is deployed code."
   ],
   "repositories": [
     {
       "summary": {
         "repository": "martintommerstigen/Baton",
-        "branch_count": 88,
-        "pr_count": 84,
-        "open": 71,
-        "open_draft": 71,
+        "branch_count": 90,
+        "pr_count": 86,
+        "open": 73,
+        "open_draft": 73,
         "open_ready": 0,
         "merged": 5,
         "closed_unmerged": 8,
@@ -31,6 +32,40 @@
         ]
       },
       "pull_requests": [
+        {
+          "number": 90,
+          "title": "Draft: reject nested SQLite ancestor aliases before reference DB open",
+          "url": "https://github.com/martintommerstigen/Baton/pull/90",
+          "state": "open",
+          "draft": true,
+          "merged": false,
+          "created_at": "2026-11-13T02:30:38Z",
+          "updated_at": "2026-11-13T02:31:52Z",
+          "closed_at": null,
+          "merged_at": null,
+          "base_ref": "fix/private-forum-sqlite-open-2026-11-13",
+          "head_ref": "fix/private-sqlite-ancestor-path-2026-11-13",
+          "pr_head_sha": "6e0401dc3bb750419d306d98b1d3be2349dae13d",
+          "branch_tip_sha": "6e0401dc3bb750419d306d98b1d3be2349dae13d",
+          "pr_head_matches_branch_tip": true
+        },
+        {
+          "number": 89,
+          "title": "Draft: protect Baton reference SQLite first-open and linked-path integrity",
+          "url": "https://github.com/martintommerstigen/Baton/pull/89",
+          "state": "open",
+          "draft": true,
+          "merged": false,
+          "created_at": "2026-11-13T01:47:59Z",
+          "updated_at": "2026-11-13T02:31:44Z",
+          "closed_at": null,
+          "merged_at": null,
+          "base_ref": "feature/topic-forum-reference-2026-11-12",
+          "head_ref": "fix/private-forum-sqlite-open-2026-11-13",
+          "pr_head_sha": "3df4e261e9d3c0ffed7c779be85ff6b93ffb74db",
+          "branch_tip_sha": "3df4e261e9d3c0ffed7c779be85ff6b93ffb74db",
+          "pr_head_matches_branch_tip": true
+        },
         {
           "number": 88,
           "title": "Fix false existing-chat reply receipt across blank DOM turns",
