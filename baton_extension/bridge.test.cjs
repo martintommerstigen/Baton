@@ -194,7 +194,8 @@ test("old tool result cannot resume under a newly armed same-chat session",async
   await flush();
   assert.equal(h.sent.length,2,"old tool result must not click Send");
   assert.match(h.sent[1],/BATON_TOOL_V2 d{32} /);
-  assert.doesNotMatch(h.sent[1],/BATON_TOOL_RESULT_V1/);
+  assert.equal(h.sent[1].startsWith("BATON_TOOL_RESULT_V1 "),false,
+    "new bootstrap may mention the result protocol in its instructions");
 });
 
 test("one Bootstrap send requires two distinct host safety checks",async()=>{
