@@ -10,6 +10,10 @@ import unittest
 
 ROOT = Path(__file__).resolve().parent
 ENTRYPOINTS = ("START_HERE.md", "docs/NEW_LLM_90_SECOND.md")
+NAVIGATION_DOCS = ENTRYPOINTS + (
+    "docs/NEW_LLM_BLIND_ROUTE_TEST.md",
+    "docs/NEW_LLM_BLIND_ROUTE_KEY.md",
+)
 MARKDOWN_LINK = re.compile(r"\[[^\]]+\]\(([^)\s]+)\)")
 REFERENCE_DEFINITION = re.compile(
     r"^[ \t]{0,3}\[[^\]\n]+\]:[ \t]*(?:<([^>\n]+)>|([^\s]+))", re.MULTILINE
@@ -58,8 +62,17 @@ class OnboardingDocsTest(unittest.TestCase):
             (ROOT / "START_HERE.md").read_text(encoding="utf-8"),
         )
 
+    def test_probe_is_separate_from_answer_key(self):
+        probe = (ROOT / "docs/NEW_LLM_BLIND_ROUTE_TEST.md").read_text(encoding="utf-8")
+        key = (ROOT / "docs/NEW_LLM_BLIND_ROUTE_KEY.md").read_text(encoding="utf-8")
+        self.assertIn("Three tasks", probe)
+        self.assertIn("## A", key)
+        self.assertIn("## B", key)
+        self.assertIn("## C", key)
+        self.assertIn("NEW_LLM_BLIND_ROUTE_TEST.md", (ROOT / "START_HERE.md").read_text(encoding="utf-8"))
+
     def test_relative_entrypoint_links_resolve(self):
-        for relpath in ENTRYPOINTS:
+        for relpath in NAVIGATION_DOCS:
             source = ROOT / relpath
             for link, target in local_file_links(source):
                 with self.subTest(source=relpath, link=link):
