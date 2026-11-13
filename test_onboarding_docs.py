@@ -56,6 +56,18 @@ class OnboardingDocsTest(unittest.TestCase):
             self.assertEqual(links[0][0], "missing-original.md")
             self.assertFalse(links[0][1].exists())
 
+    def test_branch_name_inventory_is_complete_as_snapshot(self):
+        import json
+
+        inventory = json.loads((ROOT / "docs/BRANCH_NAME_INVENTORY.json").read_text(encoding="utf-8"))
+        self.assertEqual(inventory["repository"], "martintommerstigen/Baton")
+        self.assertEqual(inventory["branch_count"], len(inventory["branches"]))
+        self.assertEqual(len(inventory["branches"]), len(set(inventory["branches"])))
+        for relpath in ENTRYPOINTS:
+            with self.subTest(path=relpath):
+                text = (ROOT / relpath).read_text(encoding="utf-8")
+                self.assertIn("BRANCH_NAME_INVENTORY.json", text)
+
     def test_start_links_to_newcomer_card(self):
         self.assertIn(
             "docs/NEW_LLM_90_SECOND.md",
