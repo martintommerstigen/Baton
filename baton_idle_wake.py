@@ -18,7 +18,7 @@ import sys
 import time
 import uuid
 
-from baton_forum_reference import check_chat_id
+from baton_forum_reference import check_chat_id, check_topic_id
 
 
 class Journal:
@@ -90,14 +90,26 @@ class Journal:
             return dict(row) if row else None
 
 
-def activity(db):
+def activity(db, topic):
+    """Measure activity only in the configured discussion topic.
+
+    Other Baton forums may be active without advancing this watchdog's
+    continuity episode or changing its recipient ordering. Revision rowid
+    provides arrival order; writer-supplied timestamps do not set idle age.
+    """
+    topic=check_topic_id(topic)
     path=Path(db)
     if not path.is_file() or path.is_symlink():raise ValueError('Baton activity database missing/unsafe')
     with closing(sqlite3.connect('file:'+str(path.resolve())+'?mode=ro',uri=True,timeout=5)) as c:
-        last=c.execute('SELECT rowid,post_id,revision,created FROM discussion_revisions ORDER BY rowid DESC LIMIT 1').fetchone()
-        if not last:raise ValueError('no real Baton activity to measure')
+        last=c.execute('''SELECT r.rowid,r.post_id,r.revision,r.created
+             FROM discussion_revisions AS r
+             JOIN discussion_posts AS p ON p.post_id=r.post_id
+             WHERE p.topic_id=?
+             ORDER BY r.rowid DESC LIMIT 1''',(topic,)).fetchone()
+        if not last:raise ValueError('no Baton activity in configured topic')
         recency={r[0]:r[1] for r in c.execute('''SELECT p.claimed_author,MAX(r.created)
-             FROM discussion_posts p JOIN discussion_revisions r USING(post_id) GROUP BY p.claimed_author''')}
+             FROM discussion_posts p JOIN discussion_revisions r USING(post_id)
+             WHERE p.topic_id=? GROUP BY p.claimed_author''',(topic,))}
         return {'episode':hashlib.sha256(json.dumps(list(last)).encode()).hexdigest(),
                 'last_at':last[3],'last_post':last[1],'last_revision':last[2],
                 'recency':recency}
@@ -252,7 +264,7 @@ class Watchdog:
         self.boot=clock() if boot is None else boot
         # Observe the current episode at startup. This preserves the original
         # startup grace without trusting a post author's timestamp.
-        self.journal.note_activity(activity(c['activity_db'])['episode'],self.boot)
+        self.journal.note_activity(activity(c['activity_db'],c['topic'])['episode'],self.boot)
 
     async def tick(self,manual_target=None,dry_run=False):
         now=self.clock();pending=self.journal.pending()
@@ -261,7 +273,7 @@ class Watchdog:
             with self.ui.lock():v=await self.ui.observe(pending)
             self.journal.update(pending['id'],v['state'],now,v.get('detail',''),reply_id=v.get('reply_id'))
             return {'event':'reconciled_read_only','id':pending['id'],**v}
-        a=activity(self.c['activity_db'])
+        a=activity(self.c['activity_db'],self.c['topic'])
         first_seen=self.journal.note_activity(a['episode'],now)
         age=now-max(first_seen,self.boot)
         last=self.journal.latest()
