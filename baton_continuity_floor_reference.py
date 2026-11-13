@@ -11,7 +11,7 @@ import hashlib
 from pathlib import Path
 import re
 import sqlite3
-from baton_private_sqlite_reference import prepare_private_sqlite
+from baton_private_sqlite_reference import check_private_sqlite_path, prepare_private_sqlite
 
 RUN_ID = re.compile(r"^[0-9a-f]{32}$", re.I)
 CHAT_ID = re.compile(r"^[0-9a-f]{8}(-[0-9a-f]{4}){3}-[0-9a-f]{12}$", re.I)
@@ -51,6 +51,9 @@ class Floor:
             con.close()
 
     def init(self):
+        # Refuse nested aliases before mkdir() can follow them and create
+        # directories outside the intended local state tree.
+        check_private_sqlite_path(self.path)
         self.path.parent.mkdir(parents=True, exist_ok=True, mode=0o700)
         with self._db() as c:
             c.executescript("""

@@ -12,10 +12,29 @@ from pathlib import Path
 import stat
 
 
-def prepare_private_sqlite(path):
+def check_private_sqlite_path(path):
+    """Static preflight, also before init() creates any parent directories.
+
+    Not an atomic defense against a same-UID process replacing path entries.
+    """
     path = Path(path)
+    # Reject traversal before absolute() or resolve() can obscure intent.
+    # In particular, resolving symlinks would hide the very alias we check.
+    if ".." in path.parts:
+        raise ValueError("SQLite path traversal forbidden")
+    path = path.absolute()
     parent = path.parent
-    if parent.is_symlink() or not parent.is_dir():
+    # An immediate-parent-only check misses /base/alias/child/db.sqlite3
+    # when alias is a symlink but child is an ordinary directory.
+    if any(ancestor.is_symlink() for ancestor in (parent, *parent.parents)):
+        raise ValueError("SQLite symlinked ancestor forbidden")
+    return path
+
+
+def prepare_private_sqlite(path):
+    path = check_private_sqlite_path(path)
+    parent = path.parent
+    if not parent.is_dir():
         raise ValueError("SQLite parent must be a real directory")
     pstat = parent.stat()
     if pstat.st_uid != os.geteuid() or pstat.st_mode & 0o022:
