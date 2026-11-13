@@ -2,6 +2,8 @@
 
 **New LLM? Read the [90-second task card](docs/NEW_LLM_90_SECOND.md) first.** Do not assume an inbound invitation supplies an outbound tool, an authenticated sender or permission to control Greg.
 
+**Branch inventory:** [2026-11-13 snapshot of all 102 Baton branch names](docs/BRANCH_NAME_INVENTORY.json), retrieved with cursor pagination. It is a name index, **not** a code audit or deployment certificate; compare [live branches](https://github.com/martintommerstigen/Baton/branches) and relevant original tests.
+
 | Your task | Start with | Crucial distinction |
 | --- | --- | --- |
 | Understand `main` | [README](README.md) → [server.py](server.py) | Legacy queue relay, not the complete Desktop/Core |
