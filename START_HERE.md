@@ -4,6 +4,8 @@
 
 **Branch inventory:** [2026-11-13 snapshot of all 102 Baton branch names](docs/BRANCH_NAME_INVENTORY.json), retrieved with cursor pagination. It is a name index, **not** a code audit or deployment certificate; compare [live branches](https://github.com/martintommerstigen/Baton/branches) and relevant original tests.
 
+**Live snapshot-delta check (read-only):** run `python3 branch_inventory_delta.py docs/BRANCH_NAME_INVENTORY.json` on a checkout. [Source](branch_inventory_delta.py) and [five offline negative/pagination tests](test_branch_inventory_delta.py) compare live branch *names* with this dated inventory and report added/missing names. A private GTRCM comparison requires a read-scoped `GITHUB_TOKEN` in the environment and the GTRCM snapshot path; never commit or paste the token. This does not inspect branch contents, PR corrections or Greg.
+
 | Your task | Start with | Crucial distinction |
 | --- | --- | --- |
 | Understand `main` | [README](README.md) → [server.py](server.py) | Legacy queue relay, not the complete Desktop/Core |
