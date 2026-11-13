@@ -1,0 +1,30 @@
+name: Baton forum edge assessments
+
+on:
+  push:
+    paths:
+      - 'baton_forum_reference.py'
+      - 'test_baton_forum_reference.py'
+      - 'test_baton_forum_edge_assessments.py'
+      - '.github/workflows/baton-forum-edge-assessments.yml'
+  pull_request:
+    paths:
+      - 'baton_forum_reference.py'
+      - 'test_baton_forum_reference.py'
+      - 'test_baton_forum_edge_assessments.py'
+      - '.github/workflows/baton-forum-edge-assessments.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  edge-regression:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Forum regressions
+        run: python3 -m unittest -v test_baton_forum_reference test_baton_forum_edge_assessments

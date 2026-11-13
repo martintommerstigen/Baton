@@ -162,6 +162,15 @@ class Forum:
                     verdict TEXT NOT NULL CHECK(verdict IN ('conflicts','unaffected','unknown')),
                     PRIMARY KEY(correction_id,premise_key)
                 );
+                CREATE TABLE IF NOT EXISTS dependency_assessments(
+                    correction_id INTEGER NOT NULL REFERENCES observations(observation_id),
+                    downstream_id INTEGER NOT NULL REFERENCES observations(observation_id),
+                    upstream_id INTEGER NOT NULL REFERENCES observations(observation_id),
+                    verdict TEXT NOT NULL CHECK(verdict IN ('conflicts','unaffected','unknown')),
+                    assessment_source_id INTEGER NOT NULL REFERENCES observations(observation_id),
+                    PRIMARY KEY(correction_id,downstream_id,upstream_id),
+                    CHECK(downstream_id != upstream_id)
+                );
                 CREATE TABLE IF NOT EXISTS proposals(
                     proposal_id TEXT PRIMARY KEY,
                     topic_id TEXT NOT NULL REFERENCES topics(topic_id),
@@ -268,10 +277,10 @@ class Forum:
                       (downstream_id, upstream_id, use_mode, premise_key))
 
     def record_impact(self, correction_id, premise_key, verdict):
-        """Append an explicit reviewer assertion about ONE operative premise.
+        """Retain a legacy, UN-SCOPED premise assertion; never apply it to an edge.
 
-        An absent classification remains unknown, never automatically safe.
-        This is not adjudicated, authenticated authorization or a stop action.
+        A premise label is not an authenticated identity for an inference/use.
+        These rows remain visible as historical annotations after migration.
         """
         if not isinstance(correction_id, int) or correction_id < 1:
             raise ValueError("invalid correction ID")
@@ -288,6 +297,43 @@ class Forum:
                 raise ValueError("cannot silently revise an impact; add a new correction")
             c.execute("INSERT OR IGNORE INTO correction_impacts VALUES(?,?,?)",
                       (correction_id,premise_key,verdict))
+
+    def record_dependency_assessment(self, correction_id, downstream_id, upstream_id,
+                                     verdict, assessment_source_id):
+        """Explicit reviewer attribution to ONE observed dependency edge.
+
+        The source is a separately source-bound observation, not proof that its
+        author endorses the verdict. This local prototype has no authorization
+        adapter; it does not grant authority or infer consent from the source.
+        A later change of verdict needs a new correction, not an overwrite.
+        """
+        for value in (correction_id, downstream_id, upstream_id, assessment_source_id):
+            if type(value) is not int or value < 1:
+                raise ValueError("invalid observation reference")
+        if downstream_id == upstream_id or verdict not in IMPACTS:
+            raise ValueError("invalid edge assessment")
+        with self.connect() as c:
+            c.execute("BEGIN IMMEDIATE")
+            row = c.execute("SELECT kind,reply_to FROM observations WHERE observation_id=?",
+                            (correction_id,)).fetchone()
+            if not row or row != ("correction", upstream_id):
+                raise ValueError("correction does not correct this edge's source")
+            if not c.execute("""SELECT 1 FROM dependencies
+                                WHERE downstream_id=? AND upstream_id=?""",
+                             (downstream_id, upstream_id)).fetchone():
+                raise ValueError("edge not found")
+            if not c.execute("SELECT 1 FROM observations WHERE observation_id=?",
+                             (assessment_source_id,)).fetchone():
+                raise ValueError("assessment source is not an observed reply")
+            previous = c.execute("""SELECT verdict,assessment_source_id
+                FROM dependency_assessments WHERE correction_id=? AND downstream_id=?
+                AND upstream_id=?""", (correction_id, downstream_id, upstream_id)).fetchone()
+            if previous and previous != (verdict, assessment_source_id):
+                raise ValueError("assessment already exists; use a new correction")
+            c.execute("""INSERT OR IGNORE INTO dependency_assessments
+                (correction_id,downstream_id,upstream_id,verdict,assessment_source_id)
+                VALUES(?,?,?,?,?)""",
+                (correction_id, downstream_id, upstream_id, verdict, assessment_source_id))
 
     def show(self, topic_id):
         topic_id = check_topic_id(topic_id)
@@ -308,10 +354,18 @@ class Forum:
                     for (correction_id,) in c.execute("""SELECT observation_id FROM observations
                             WHERE reply_to=? AND kind='correction' ORDER BY observation_id""",(upstream,)):
                         corrections.add(correction_id)
-                        impact=c.execute("""SELECT verdict FROM correction_impacts
-                            WHERE correction_id=? AND premise_key=?""",(correction_id,premise_key)).fetchone()
+                        impact=c.execute("""SELECT verdict,assessment_source_id
+                            FROM dependency_assessments
+                            WHERE correction_id=? AND downstream_id=? AND upstream_id=?""",
+                            (correction_id,m[0],upstream)).fetchone()
+                        legacy=c.execute("""SELECT verdict FROM correction_impacts
+                            WHERE correction_id=? AND premise_key=?""",
+                            (correction_id,premise_key)).fetchone()
                         verdict=impact[0] if impact else "unassessed"
-                        evaluations.append({"correction_id":correction_id,"verdict":verdict})
+                        evaluations.append({"correction_id":correction_id,"verdict":verdict,
+                                            "assessment_source_id":impact[1] if impact else None,
+                                            "legacy_unscoped_premise_assertion":
+                                                legacy[0] if legacy else None})
                         if verdict=="conflicts":review_required=True
                         if verdict in ("unassessed","unknown"):unassessed=True
                     uses.append({"source_id":upstream,"use_mode":use_mode,
