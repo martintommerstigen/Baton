@@ -1,0 +1,81 @@
+"""Transport-neutral controller adapter for an existing ChatGPT conversation.
+
+The adapter NEVER creates a new conversation and NEVER retries a potentially
+submitted UI message. The caller supplies an authorized UI driver.
+"""
+from dataclasses import dataclass
+import hashlib
+from typing import Protocol
+from wake_contract import WakeLedger
+
+class PreSubmissionRejected(RuntimeError):
+    """UI preflight proved Send was not clicked.
+
+    This exception MUST NOT be raised after clicking Send. Only a typed
+    pre-click failure may be recorded as terminal 'aborted'; every ambiguous
+    or post-click exception stays 'uncertain' and is never auto-retried.
+    """
+
+class PreexistingWakeMarker(RuntimeError):
+    """A marker was already in the target chat BEFORE this attempt clicked Send.
+
+    Only raise this before any UI submission; a collision is not an uncertain
+    delivery and must never be reconciled into a verified wake.
+    """
+
+@dataclass(frozen=True)
+class Observation:
+    conversation_id: str
+    assistant_turn_id: str
+
+class ExistingChatDriver(Protocol):
+    def submit_once(self, conversation_id: str, message_id: str, body: str) -> None: ...
+    def observe_reply(self, conversation_id: str, message_id: str, expected_digest: str) -> Observation | None: ...
+
+def wake_once(ledger: WakeLedger, driver: ExistingChatDriver,
+              message_id: str, source: str, target: str, digest: str, body: str,
+              source_turn_id: str | None = None) -> str:
+    """One authorized attempt. A crash leaves 'submitting', never auto-retries."""
+    # The approved digest must bind the actual UI payload, not just the ledger.
+    # Validate BEFORE reserving a target or performing any UI action. Otherwise
+    # a caller can send different content while claiming a preapproved digest.
+    if (not isinstance(body, str) or not body.strip()
+            or not isinstance(digest, str)
+            or hashlib.sha256(body.encode("utf-8")).hexdigest() != digest):
+        raise ValueError("wake body does not match approved SHA-256 digest")
+    ledger.request(message_id, source, target, digest, source_turn_id)
+    if not ledger.begin_submission(message_id):
+        return ledger.state(message_id)[1]
+    try:
+        driver.submit_once(target, message_id, body)
+        observation = driver.observe_reply(target, message_id, digest)
+        if observation is None:
+            ledger.mark_uncertain(message_id)
+            return "uncertain"
+        ledger.verify(message_id, observation.conversation_id, observation.assistant_turn_id)
+        return "verified"
+    except PreexistingWakeMarker:
+        # A preexisting marker is a terminal collision, never a delivered wake.
+        ledger.mark_collision(message_id)
+        raise
+    except PreSubmissionRejected:
+        # The UI driver guarantees that Send was not clicked. This must not
+        # permanently block unrelated future wakes to the same target.
+        ledger.mark_aborted(message_id)
+        raise
+    except Exception:
+        ledger.mark_uncertain(message_id)
+        raise
+
+def reconcile(ledger: WakeLedger, driver: ExistingChatDriver, message_id: str) -> str:
+    """Read-only reconciliation; never sends another message."""
+    row=ledger.state(message_id)
+    if row is None: raise ValueError("unknown message")
+    target,state,_=row
+    if state=="verified": return state
+    if state not in ("submitting","uncertain"): return state
+    digest=ledger.provenance(message_id)[3]
+    observation=driver.observe_reply(target,message_id,digest)
+    if observation is None: return state
+    ledger.verify(message_id,observation.conversation_id,observation.assistant_turn_id)
+    return "verified"

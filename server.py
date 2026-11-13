@@ -3,6 +3,7 @@
 Bind to loopback by default. Put behind HTTPS reverse proxy for remote clients.
 """
 import argparse
+from contextlib import closing
 import hmac
 import json
 import os
@@ -56,7 +57,7 @@ def app(db_path, tokens):
                 return
             if not who: return self.reply(401, {'error':'unauthorized'})
             if parsed.path != '/v1/inbox': return self.reply(404, {'error':'not_found'})
-            with database(db_path) as db:
+            with closing(database(db_path)) as db, db:
                 rows = db.execute('SELECT id,sender,body,created FROM messages WHERE recipient=? AND read_at IS NULL ORDER BY created,id LIMIT 100', (who,)).fetchall()
             self.reply(200, {'recipient':who,'messages':[dict(zip(('id','sender','body','created'), r)) for r in rows]})
         def do_POST(self):
@@ -76,21 +77,24 @@ def app(db_path, tokens):
                     return self.reply(400, {'error':'invalid_message'})
                 # Atomic first-writer-wins: an ignored conflicting insert must not
                 # receive a false 202 receipt. Compare the durable winning row.
-                with database(db_path) as db:
+                with closing(database(db_path)) as db, db:
                     inserted = db.execute('INSERT OR IGNORE INTO messages VALUES (?,?,?,?,?,NULL)',
                                           (mid,who,to,body,int(time.time()))).rowcount
                     stored = db.execute('SELECT sender,recipient,body,read_at FROM messages WHERE id=?',
                                         (mid,)).fetchone()
-                    if stored is None or stored[:3] != (who,to,body):
-                        return self.reply(409, {'error':'id_conflict'})
+                    conflict = stored is None or stored[:3] != (who,to,body)
                     state = ('queued' if inserted else
-                             'client_acknowledged' if stored[3] is not None else 'already_queued')
+                             'client_acknowledged' if stored[3] is not None else 'already_queued') if not conflict else None
+                if conflict:
+                    return self.reply(409, {'error':'id_conflict'})
                 return self.reply(202, {'id':mid,'status':state})
             mid = data.get('id')
             if not isinstance(mid,str): return self.reply(400, {'error':'invalid_id'})
-            with database(db_path) as db:
+            with closing(database(db_path)) as db, db:
                 cur = db.execute('UPDATE messages SET read_at=COALESCE(read_at,?) WHERE id=? AND recipient=?',(int(time.time()),mid,who))
-                if cur.rowcount != 1: return self.reply(404, {'error':'not_in_your_inbox'})
+                found = cur.rowcount == 1
+            if not found:
+                return self.reply(404, {'error':'not_in_your_inbox'})
             return self.reply(200, {'id':mid,'status':'client_acknowledged'})
         def log_message(self, fmt, *args):
             pass
