@@ -21,3 +21,5 @@
 **Non-negotiable operating boundary:** Only Skin talks to Core; only Core changes Core. Respect `PAUSE_UI_WRITES`, consent, revocation, least privilege, and no blind resend after uncertain delivery. Chat URLs are addresses, not persistent identities. Public Baton must not contain private GTRCM bodies, transcripts or secrets.
 
 [Longer dated PR inventory](https://github.com/martintommerstigen/Baton/blob/docs/eik-repository-onboarding-2026-11-11/docs/2026-11-12_BATON_PR_LIFECYCLE_INDEX.json) (draft branch; verify live).
+
+**Local newcomer link check:** `python3 -m unittest -v test_onboarding_docs.py` validates relative links and basic safety wording on a checkout; it does not verify external branch links, live peer contact or the installed Greg service.
