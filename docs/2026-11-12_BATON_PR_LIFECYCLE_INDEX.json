@@ -1,7 +1,7 @@
 {
   "schema": "eik-github-pr-lifecycle-index/v1",
   "snapshot_date_utc": "2026-11-13",
-  "collection": "Prior full REST PR lifecycle snapshot plus three incremental live PR metadata checks (#151 GTRCM; #89 and #90 Baton), 13 November 2026; non-atomic, earlier PR entries not all re-fetched.",
+  "collection": "13 Nov 2026 03:30 UTC: prior full PR lifecycle snapshot plus live PR #91 and Baton documentation PR #65 refresh; 87 Baton PRs, non-atomic; other old PR metadata not all rechecked.",
   "scope": "Public Baton only; private GTRCM PR metadata intentionally omitted",
   "interpretation": [
     "This is PR lifecycle metadata, not a full code review or complete commit history.",
@@ -19,10 +19,10 @@
     {
       "summary": {
         "repository": "martintommerstigen/Baton",
-        "branch_count": 90,
-        "pr_count": 86,
-        "open": 73,
-        "open_draft": 73,
+        "branch_count": 91,
+        "pr_count": 87,
+        "open": 74,
+        "open_draft": 74,
         "open_ready": 0,
         "merged": 5,
         "closed_unmerged": 8,
@@ -32,6 +32,23 @@
         ]
       },
       "pull_requests": [
+        {
+          "number": 91,
+          "title": "Draft: fence Brave composer sends across same-chat Stop/re-arm",
+          "url": "https://github.com/martintommerstigen/Baton/pull/91",
+          "state": "open",
+          "draft": true,
+          "merged": false,
+          "created_at": "2026-11-13T03:29:19Z",
+          "updated_at": "2026-11-13T03:30:17Z",
+          "closed_at": null,
+          "merged_at": null,
+          "base_ref": "fix/strict-existing-chat-reply-correlation-2026-11-12",
+          "head_ref": "fix/brave-session-epoch-stale-send-2026-11-13",
+          "pr_head_sha": "30a46d49c34a2d9378e8ce7b07e436b02a69c93f",
+          "branch_tip_sha": "30a46d49c34a2d9378e8ce7b07e436b02a69c93f",
+          "pr_head_matches_branch_tip": true
+        },
         {
           "number": 90,
           "title": "Draft: reject nested SQLite ancestor aliases before reference DB open",
@@ -470,8 +487,8 @@
           "merged_at": null,
           "base_ref": "main",
           "head_ref": "docs/eik-repository-onboarding-2026-11-11",
-          "pr_head_sha": "418e3cacce91d61366314151300b4e7791204620",
-          "branch_tip_sha": "418e3cacce91d61366314151300b4e7791204620",
+          "pr_head_sha": "72d9ef76c7ea30f4f1683c9f624f7d3b5137b47b",
+          "branch_tip_sha": "72d9ef76c7ea30f4f1683c9f624f7d3b5137b47b",
           "pr_head_matches_branch_tip": true
         },
         {
