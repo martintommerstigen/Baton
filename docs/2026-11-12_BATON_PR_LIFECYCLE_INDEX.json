@@ -1,7 +1,7 @@
 {
   "schema": "eik-github-pr-lifecycle-index/v1",
   "snapshot_date_utc": "2026-11-13",
-  "collection": "13 Nov 2026 full public Baton REST re-enumeration: 89 PRs, 93 branch names; no private GTRCM PR bodies included.",
+  "collection": "13 Nov 2026 06:28 UTC full public Baton PR refresh: 90 PRs, 94 branches; private GTRCM excluded.",
   "scope": "Public Baton only; private GTRCM PR metadata intentionally omitted",
   "interpretation": [
     "This is PR lifecycle metadata, not a full code review or complete commit history.",
@@ -21,19 +21,36 @@
     {
       "summary": {
         "repository": "martintommerstigen/Baton",
-        "branch_count": 93,
-        "pr_count": 89,
-        "open": 76,
-        "open_draft": 76,
+        "branch_count": 94,
+        "pr_count": 90,
+        "open": 77,
+        "open_draft": 77,
         "open_ready": 0,
         "merged": 5,
         "closed_unmerged": 8,
         "head_sha_differs_from_current_branch": [
-          76,
-          77
+          77,
+          76
         ]
       },
       "pull_requests": [
+        {
+          "number": 94,
+          "title": "Draft: distinguish repeated source-use occurrences before assigning correction verdicts",
+          "url": "https://github.com/martintommerstigen/Baton/pull/94",
+          "state": "open",
+          "draft": true,
+          "merged": false,
+          "created_at": "2026-11-13T06:05:26Z",
+          "updated_at": "2026-11-13T06:05:26Z",
+          "closed_at": null,
+          "merged_at": null,
+          "base_ref": "research/ashild-parallel-edge-assessments-2026-11-13",
+          "head_ref": "research/ashild-use-instance-assessments-2026-11-13",
+          "pr_head_sha": "c27472dfc3e6e84ad76e32dcca026ddf0eea0928",
+          "branch_tip_sha": "c27472dfc3e6e84ad76e32dcca026ddf0eea0928",
+          "pr_head_matches_branch_tip": true
+        },
         {
           "number": 93,
           "title": "Draft: preserve parallel edge assessments and expose disagreement without first-writer authority",
@@ -178,7 +195,7 @@
           "draft": true,
           "merged": false,
           "created_at": "2026-11-12T22:26:18Z",
-          "updated_at": "2026-11-13T05:26:02Z",
+          "updated_at": "2026-11-13T06:05:49Z",
           "closed_at": null,
           "merged_at": null,
           "base_ref": "feature/action-authorization-fence-2026-11-12",
@@ -518,13 +535,13 @@
           "draft": true,
           "merged": false,
           "created_at": "2026-11-11T15:31:00Z",
-          "updated_at": "2026-11-13T05:35:58Z",
+          "updated_at": "2026-11-13T05:39:02Z",
           "closed_at": null,
           "merged_at": null,
           "base_ref": "main",
           "head_ref": "docs/eik-repository-onboarding-2026-11-11",
-          "pr_head_sha": "72f4ef3c2b5689170fd19721a4ad0e1e9d2e61f1",
-          "branch_tip_sha": "72f4ef3c2b5689170fd19721a4ad0e1e9d2e61f1",
+          "pr_head_sha": "81efb3fdc8cff6f50501b61afc6a131548c57a28",
+          "branch_tip_sha": "81efb3fdc8cff6f50501b61afc6a131548c57a28",
           "pr_head_matches_branch_tip": true
         },
         {
