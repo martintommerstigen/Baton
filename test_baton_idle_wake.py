@@ -78,6 +78,36 @@ class IdleWakeTests(unittest.TestCase):
         self.assertEqual(self.tick()['event'],'activity_or_startup_grace')
         self.idle();self.tick();self.assertEqual(len(self.ui.sends),2)
 
+    def test_future_dated_revision_does_not_suppress_recovery(self):
+        # A local writer's future clock must not freeze a running watchdog.
+        self.d.clock=lambda:self.now+1000000
+        self.d.write('continuity-rhythm',C,'run-future','New post with future clock')
+        self.assertEqual(self.tick()['event'],'activity_or_startup_grace')
+        self.idle()
+        self.assertEqual(self.tick()['event'],'one_wake_attempt')
+        self.assertEqual(len(self.ui.sends),1)
+
+    def test_backdated_revision_does_not_wake_immediately(self):
+        # Watchdog has been up longer than the idle threshold. This is a
+        # genuinely new post, even though its writer timestamp is ancient.
+        self.now+=1000
+        self.d.clock=lambda:1
+        self.d.write('continuity-rhythm',C,'run-old-clock','Fresh post with old clock')
+        self.assertEqual(self.tick()['event'],'activity_or_startup_grace')
+        self.assertEqual(self.ui.sends,[])
+        self.idle()
+        self.assertEqual(self.tick()['event'],'one_wake_attempt')
+
+    def test_episode_first_observation_is_durable_across_restart(self):
+        self.d.clock=lambda:self.now+1000000
+        self.d.write('continuity-rhythm',C,'run-restart','Clock skew after boot')
+        self.assertEqual(self.tick()['event'],'activity_or_startup_grace')
+        self.now+=30
+        w=Watchdog(self.c,Journal(self.j.path),self.ui,clock=lambda:self.now,boot=0)
+        self.assertEqual(asyncio.run(w.tick())['event'],'activity_or_startup_grace')
+        self.now+=31
+        self.assertEqual(asyncio.run(w.tick())['event'],'one_wake_attempt')
+
     def test_muted_peer_is_not_a_wake_target(self):
         self.d.forum.set_participant('continuity-rhythm',B,'B','muted')
         self.idle();r=self.tick();self.assertNotEqual(r['target'],B)
