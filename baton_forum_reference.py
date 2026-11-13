@@ -171,6 +171,16 @@ class Forum:
                     PRIMARY KEY(correction_id,downstream_id,upstream_id),
                     CHECK(downstream_id != upstream_id)
                 );
+                -- Retain the old first-writer edge table as read-only historical data.
+                CREATE TABLE IF NOT EXISTS dependency_assessment_events(
+                    correction_id INTEGER NOT NULL REFERENCES observations(observation_id),
+                    downstream_id INTEGER NOT NULL REFERENCES observations(observation_id),
+                    upstream_id INTEGER NOT NULL REFERENCES observations(observation_id),
+                    assessment_source_id INTEGER NOT NULL REFERENCES observations(observation_id),
+                    verdict TEXT NOT NULL CHECK(verdict IN ('conflicts','unaffected','unknown')),
+                    PRIMARY KEY(correction_id,downstream_id,upstream_id,assessment_source_id),
+                    CHECK(downstream_id != upstream_id)
+                );
                 CREATE TABLE IF NOT EXISTS proposals(
                     proposal_id TEXT PRIMARY KEY,
                     topic_id TEXT NOT NULL REFERENCES topics(topic_id),
@@ -300,12 +310,15 @@ class Forum:
 
     def record_dependency_assessment(self, correction_id, downstream_id, upstream_id,
                                      verdict, assessment_source_id):
-        """Explicit reviewer attribution to ONE observed dependency edge.
+        """Append one source-attributed assessment of a specific correction/use edge.
 
-        The source is a separately source-bound observation, not proof that its
-        author endorses the verdict. This local prototype has no authorization
-        adapter; it does not grant authority or infer consent from the source.
-        A later change of verdict needs a new correction, not an overwrite.
+        Different observed sources may independently agree or disagree about
+        the same correction and edge. The old PR #92 table remains read-only
+        historical evidence. Replaying an identical source/verdict is idempotent;
+        trying to change a source's verdict is rejected, not overwritten.
+
+        A source-bound observation is NOT reviewer authority or consent.
+        This reference never sends, authorizes or adjudicates an external action.
         """
         for value in (correction_id, downstream_id, upstream_id, assessment_source_id):
             if type(value) is not int or value < 1:
@@ -325,15 +338,23 @@ class Forum:
             if not c.execute("SELECT 1 FROM observations WHERE observation_id=?",
                              (assessment_source_id,)).fetchone():
                 raise ValueError("assessment source is not an observed reply")
-            previous = c.execute("""SELECT verdict,assessment_source_id
-                FROM dependency_assessments WHERE correction_id=? AND downstream_id=?
-                AND upstream_id=?""", (correction_id, downstream_id, upstream_id)).fetchone()
-            if previous and previous != (verdict, assessment_source_id):
-                raise ValueError("assessment already exists; use a new correction")
-            c.execute("""INSERT OR IGNORE INTO dependency_assessments
-                (correction_id,downstream_id,upstream_id,verdict,assessment_source_id)
+            old = c.execute("""SELECT verdict FROM dependency_assessments
+                WHERE correction_id=? AND downstream_id=? AND upstream_id=?
+                AND assessment_source_id=?""",
+                (correction_id, downstream_id, upstream_id, assessment_source_id)).fetchone()
+            new = c.execute("""SELECT verdict FROM dependency_assessment_events
+                WHERE correction_id=? AND downstream_id=? AND upstream_id=?
+                AND assessment_source_id=?""",
+                (correction_id, downstream_id, upstream_id, assessment_source_id)).fetchone()
+            for existing in (old, new):
+                if existing and existing[0] != verdict:
+                    raise ValueError("same assessment source cannot silently change verdict")
+            if old or new:
+                return
+            c.execute("""INSERT INTO dependency_assessment_events
+                (correction_id,downstream_id,upstream_id,assessment_source_id,verdict)
                 VALUES(?,?,?,?,?)""",
-                (correction_id, downstream_id, upstream_id, verdict, assessment_source_id))
+                (correction_id, downstream_id, upstream_id, assessment_source_id, verdict))
 
     def show(self, topic_id):
         topic_id = check_topic_id(topic_id)
@@ -348,26 +369,52 @@ class Forum:
             for m in messages:
                 links = list(c.execute("""SELECT upstream_id,use_mode,premise_key
                     FROM dependencies WHERE downstream_id=? ORDER BY upstream_id""",(m[0],)))
-                uses=[];corrections=set();review_required=False;unassessed=False
+                uses=[];corrections=set();review_required=False;unassessed=False;disputed=False
                 for upstream,use_mode,premise_key in links:
                     evaluations=[]
                     for (correction_id,) in c.execute("""SELECT observation_id FROM observations
                             WHERE reply_to=? AND kind='correction' ORDER BY observation_id""",(upstream,)):
                         corrections.add(correction_id)
-                        impact=c.execute("""SELECT verdict,assessment_source_id
+                        old=list(c.execute("""SELECT assessment_source_id,verdict
                             FROM dependency_assessments
                             WHERE correction_id=? AND downstream_id=? AND upstream_id=?""",
-                            (correction_id,m[0],upstream)).fetchone()
+                            (correction_id,m[0],upstream)))
+                        new=list(c.execute("""SELECT assessment_source_id,verdict
+                            FROM dependency_assessment_events
+                            WHERE correction_id=? AND downstream_id=? AND upstream_id=?""",
+                            (correction_id,m[0],upstream)))
+                        by_source={}
+                        for source_id, source_verdict in old+new:
+                            if source_id in by_source and by_source[source_id]!=source_verdict:
+                                raise ValueError("contradictory records for one assessment source")
+                            by_source[source_id]=source_verdict
+                        assessments=[{"assessment_source_id":sid,"verdict":by_source[sid]}
+                                     for sid in sorted(by_source)]
+                        verdicts=set(by_source.values())
+                        if "conflicts" in verdicts and "unaffected" in verdicts:
+                            verdict="disputed"
+                        elif "conflicts" in verdicts:
+                            verdict="conflicts"
+                        elif "unaffected" in verdicts:
+                            verdict="unaffected"
+                        elif "unknown" in verdicts:
+                            verdict="unknown"
+                        else:
+                            verdict="unassessed"
                         legacy=c.execute("""SELECT verdict FROM correction_impacts
                             WHERE correction_id=? AND premise_key=?""",
                             (correction_id,premise_key)).fetchone()
-                        verdict=impact[0] if impact else "unassessed"
                         evaluations.append({"correction_id":correction_id,"verdict":verdict,
-                                            "assessment_source_id":impact[1] if impact else None,
+                                            "assessment_source_id":
+                                                assessments[0]["assessment_source_id"]
+                                                if len(assessments)==1 else None,
+                                            "assessments":assessments,
+                                            "disputed":verdict=="disputed",
                                             "legacy_unscoped_premise_assertion":
                                                 legacy[0] if legacy else None})
-                        if verdict=="conflicts":review_required=True
-                        if verdict in ("unassessed","unknown"):unassessed=True
+                        if "conflicts" in verdicts:review_required=True
+                        if verdict=="disputed":disputed=True
+                        if not assessments or "unknown" in verdicts:unassessed=True
                     uses.append({"source_id":upstream,"use_mode":use_mode,
                                  "premise_key":premise_key,"correction_evaluations":evaluations})
                 seen.append({"id":m[0],"chat_id":m[1],"message_id":m[2],
@@ -376,7 +423,8 @@ class Forum:
                              "dependency_uses":uses,
                              "source_correction_ids":sorted(corrections),
                              "dependency_review_required":review_required,
-                             "dependency_impact_unassessed":unassessed})
+                             "dependency_impact_unassessed":unassessed,
+                             "dependency_assessment_disputed":disputed})
             return {"id": topic_id, "title": topic[0], "state": topic[1],
                     "observations": seen}
 

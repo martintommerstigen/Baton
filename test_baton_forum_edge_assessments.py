@@ -127,9 +127,100 @@ class EdgeAssessmentTests(unittest.TestCase):
         self.forum.record_dependency_assessment(k, b, a, "conflicts", reviewer)
         with self.assertRaises(ValueError):
             self.forum.record_dependency_assessment(k, b, a, "unaffected", reviewer)
-        with self.assertRaises(ValueError):
-            self.forum.record_dependency_assessment(k, b, a, "conflicts", k)
+        # A different observed source may independently agree; it must not
+        # overwrite the first source or require a fictitious new correction.
+        self.forum.record_dependency_assessment(k, b, a, "conflicts", k)
+        evaluation = self.edge("downstream-b")["dependency_uses"][0]["correction_evaluations"][0]
+        self.assertEqual(len(evaluation["assessments"]), 2)
         self.assertTrue(self.edge("downstream-b")["dependency_review_required"])
+
+
+    def test_opposed_assessments_are_order_independent_and_visible(self):
+        results = []
+        for idx, order in enumerate(((("conflicts", 5), ("unaffected", 6)),
+                                     (("unaffected", 6), ("conflicts", 5)))):
+            # Independent databases: insertion order is the ONLY changed input.
+            self.forum = Forum(self.root / f"case-{idx}.sqlite3", self.receipts)
+            self.forum.init()
+            for topic in ("source", "downstream-b", "downstream-c"):
+                self.forum.create_topic(topic, topic)
+            a, b, c, k, reviewer1 = self.fixture()
+            reviewer2 = self.post("source", CHAT_C, 6, "Independent review of same edge")
+            for verdict, source_number in order:
+                source = reviewer1 if source_number == 5 else reviewer2
+                self.forum.record_dependency_assessment(k, b, a, verdict, source)
+            observation = self.edge("downstream-b")
+            evaluation = observation["dependency_uses"][0]["correction_evaluations"][0]
+            self.assertEqual(evaluation["verdict"], "disputed")
+            self.assertTrue(evaluation["disputed"])
+            self.assertIsNone(evaluation["assessment_source_id"])
+            self.assertTrue(observation["dependency_assessment_disputed"])
+            self.assertTrue(observation["dependency_review_required"])
+            self.assertFalse(observation["dependency_impact_unassessed"])
+            self.assertFalse(self.edge("downstream-c")["dependency_assessment_disputed"])
+            results.append((evaluation["assessments"], evaluation["verdict"],
+                            observation["dependency_assessment_disputed"],
+                            observation["dependency_review_required"]))
+        self.assertEqual(results[0], results[1])
+        self.assertEqual(results[0][0], [
+            {"assessment_source_id": 5, "verdict": "conflicts"},
+            {"assessment_source_id": 6, "verdict": "unaffected"}])
+
+    def test_independent_agreement_preserves_both_sources_and_replay(self):
+        a, b, c, k, reviewer1 = self.fixture()
+        reviewer2 = self.post("source", CHAT_C, 6, "Independent corroboration")
+        self.forum.record_dependency_assessment(k, b, a, "conflicts", reviewer2)
+        self.forum.record_dependency_assessment(k, b, a, "conflicts", reviewer1)
+        self.forum.record_dependency_assessment(k, b, a, "conflicts", reviewer1)
+        observation = self.edge("downstream-b")
+        evaluation = observation["dependency_uses"][0]["correction_evaluations"][0]
+        self.assertEqual(evaluation["verdict"], "conflicts")
+        self.assertFalse(evaluation["disputed"])
+        self.assertEqual(evaluation["assessments"], [
+            {"assessment_source_id": reviewer1, "verdict": "conflicts"},
+            {"assessment_source_id": reviewer2, "verdict": "conflicts"}])
+        with self.assertRaises(ValueError):
+            self.forum.record_dependency_assessment(k, b, a, "unaffected", reviewer1)
+        self.assertEqual(len(self.edge("downstream-b")["dependency_uses"][0]
+                             ["correction_evaluations"][0]["assessments"]), 2)
+
+    def test_preexisting_single_edge_assessment_survives_additive_migration(self):
+        a, b, c, k, reviewer1 = self.fixture()
+        with sqlite3.connect(self.db) as conn:
+            conn.execute("""INSERT INTO dependency_assessments
+                (correction_id,downstream_id,upstream_id,verdict,assessment_source_id)
+                VALUES(?,?,?,?,?)""", (k, b, a, "conflicts", reviewer1))
+            conn.execute("DROP TABLE dependency_assessment_events")
+        self.forum.init()
+        self.forum.init()
+        reviewer2 = self.post("source", CHAT_C, 6, "Contrary independent review")
+        self.forum.record_dependency_assessment(k, b, a, "unaffected", reviewer2)
+        # The original PR #92 row stays in its original table, unmodified.
+        with sqlite3.connect(self.db) as conn:
+            self.assertEqual(conn.execute(
+                "SELECT verdict,assessment_source_id FROM dependency_assessments"
+            ).fetchall(), [("conflicts", reviewer1)])
+            self.assertEqual(conn.execute(
+                "SELECT verdict,assessment_source_id FROM dependency_assessment_events"
+            ).fetchall(), [("unaffected", reviewer2)])
+        evaluation = self.edge("downstream-b")["dependency_uses"][0]["correction_evaluations"][0]
+        self.assertEqual(evaluation["verdict"], "disputed")
+        self.assertEqual(len(evaluation["assessments"]), 2)
+        self.forum.record_dependency_assessment(k, b, a, "conflicts", reviewer1)
+        self.assertEqual(len(self.edge("downstream-b")["dependency_uses"][0]
+                             ["correction_evaluations"][0]["assessments"]), 2)
+
+    def test_unknown_source_does_not_hide_explicit_conflict(self):
+        a, b, c, k, reviewer1 = self.fixture()
+        reviewer2 = self.post("source", CHAT_C, 6, "Unknown impact")
+        self.forum.record_dependency_assessment(k, b, a, "unknown", reviewer2)
+        self.forum.record_dependency_assessment(k, b, a, "conflicts", reviewer1)
+        observation = self.edge("downstream-b")
+        evaluation = observation["dependency_uses"][0]["correction_evaluations"][0]
+        self.assertEqual(evaluation["verdict"], "conflicts")
+        self.assertFalse(evaluation["disputed"])
+        self.assertTrue(observation["dependency_review_required"])
+        self.assertTrue(observation["dependency_impact_unassessed"])
 
 
 if __name__ == "__main__":
