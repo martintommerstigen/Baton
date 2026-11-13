@@ -693,6 +693,8 @@ def main():
     # The same live local revisioned HOWTO/FAQ also appears in the ChatGPT dock.
     from baton_help_ui import build_help_widget
     tabs.addTab(build_help_widget(tabs), "HOWTO / FAQ")
+    from baton_multiroom_ui import build_multiroom_widget
+    tabs.addTab(build_multiroom_widget(tabs), "Samtaler og kanaler")
     panel.show()
 
     return app.exec()
