@@ -1,5 +1,7 @@
 # Baton — start here (new LLM, no inherited context)
 
+**Need the shortest path? [90-second source card](docs/NEW_LLM_90_SECOND.md).**
+
 **This is a source map, not permission to operate Greg, send to another ChatGPT conversation, or clear `PAUSE_UI_WRITES`.** A chat URL is an address, not a person, current model run or authority grant.
 
 ## Pick the actual task
