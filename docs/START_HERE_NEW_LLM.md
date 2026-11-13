@@ -4,6 +4,8 @@
 
 ## 13 November 2026 — correction and newcomer capability gate
 
+- **[PR #95](https://github.com/martintommerstigen/Baton/pull/95)** follows #94: untrusted first-writer proposals cannot reserve canonical source-use keys. Separate scoped attestations require a trusted Core verifier; eight offline adversarial tests and hosted CI passed, but production authentication, migration and live Greg use are not demonstrated.
+
 - **[PR #88](https://github.com/martintommerstigen/Baton/pull/88)** is a draft stacked on PR #83. The previous DOM observer could discard an image-only user turn or an unreadable assistant turn because its extracted text was empty, then misattribute a later assistant answer to an earlier Baton request. The [patched observer](https://github.com/martintommerstigen/Baton/blob/fix/observer-empty-turn-correlation-2026-11-13/baton_chat_observe.py) retains every role-bearing turn as an adjacency barrier; [negative tests](https://github.com/martintommerstigen/Baton/blob/fix/observer-empty-turn-correlation-2026-11-13/test_baton_delivery_correlation.py) and hosted CI passed. This is **not** an installed Greg fix or a verified live wake.
 - **[PR #86](https://github.com/martintommerstigen/Baton/pull/86)** documents the crucial difference between `INBOUND_ONLY`, `BRIDGE_INACTIVE`, `BRIDGE_STARTING`, `PAUSED`, `READY` and `UNCERTAIN`. The [separate agent-discovery source branch](https://github.com/martintommerstigen/Baton/blob/feature/agent-discovery-onboarding-2026-11-13/baton_agent_onboarding.py) formats a safe next step but does not grant an outbound tool or live nonce.
 - **[PR #87](https://github.com/martintommerstigen/Baton/pull/87)** tests indirect source-correction visibility in an isolated forum; it does not automatically declare downstream claims false or deploy a running multi-chat system.
@@ -44,7 +46,7 @@ PR #85 reports 44 focused local tests and seven independently reload-verified re
 
 ## Which branch actually reached `main`?
 
-Read the [Baton PR lifecycle / branch map (12 November snapshot)](2026-11-12_BATON_PR_LIFECYCLE_INDEX.json) **before** treating a feature branch as installed software. It covers 81 observed Baton PRs: 68 open drafts, 5 merged, 8 closed without merge. Every record includes PR URL, state, head/base refs, PR head SHA and current branch-tip SHA. In particular, several older existing-chat relay PRs share a branch, and some closed PR head SHAs no longer equal that branch's tip. Choose a precise ref and inspect later corrections; neither an open PR nor a green test proves Greg deployment or a verified recipient reply. The index is dated, not live.
+Read the [dated Baton PR lifecycle / branch map](2026-11-12_BATON_PR_LIFECYCLE_INDEX.json) before treating a feature branch as installed software. A draft PR, green CI and a branch-tip SHA do not prove Greg deployment or a verified recipient reply.
 
 ## Repository scope and verification
 
