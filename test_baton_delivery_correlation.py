@@ -144,6 +144,26 @@ class BatonDeliveryCorrelationTests(unittest.TestCase):
         self.assertFalse(verified_reply_observation(value))
 
     @unittest.skipUnless(which("node"),"Node is required")
+    def test_image_only_user_turn_is_still_a_reply_boundary(self):
+        # A user can send an attachment without extracted text. Its reply
+        # must not be attributed to an earlier Baton request.
+        value=observe([user(),user("", "image-only-user"),
+                       assistant("Reply to the image", "image-answer")])
+        self.assertFalse(verified_reply_observation(value))
+        self.assertEqual(value["reason"],"no-adjacent-assistant-turn")
+        self.assertIsNone(value["assistantMessageId"])
+
+    @unittest.skipUnless(which("node"),"Node is required")
+    def test_empty_assistant_turn_cannot_be_skipped(self):
+        # A rendered assistant turn with no extracted markdown is still a
+        # boundary; a later assistant message is not the expected reply.
+        value=observe([user(),assistant("", "empty-assistant"),
+                       assistant("Later unrelated answer", "later-answer")])
+        self.assertFalse(verified_reply_observation(value))
+        self.assertEqual(value["reason"],"empty-reply")
+        self.assertFalse(value["replyComplete"])
+
+    @unittest.skipUnless(which("node"),"Node is required")
     def test_later_unrelated_reply_is_not_a_receipt(self):
         value=observe([user(),user("Unrelated request","unrelated-user-id"),assistant()])
         self.assertEqual(value["reason"],"no-adjacent-assistant-turn")
