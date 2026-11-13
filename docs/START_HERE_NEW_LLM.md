@@ -2,6 +2,13 @@
 
 **For a new LLM with no inherited chat context.** This is a navigation map, not permission to operate Greg, send messages or claim an existing ChatGPT conversation was awakened. **Read the original before answering.**
 
+## 13 November 2026 — correction and newcomer capability gate
+
+- **[PR #88](https://github.com/martintommerstigen/Baton/pull/88)** is a draft stacked on PR #83. The previous DOM observer could discard an image-only user turn or an unreadable assistant turn because its extracted text was empty, then misattribute a later assistant answer to an earlier Baton request. The [patched observer](https://github.com/martintommerstigen/Baton/blob/fix/observer-empty-turn-correlation-2026-11-13/baton_chat_observe.py) retains every role-bearing turn as an adjacency barrier; [negative tests](https://github.com/martintommerstigen/Baton/blob/fix/observer-empty-turn-correlation-2026-11-13/test_baton_delivery_correlation.py) and hosted CI passed. This is **not** an installed Greg fix or a verified live wake.
+- **[PR #86](https://github.com/martintommerstigen/Baton/pull/86)** documents the crucial difference between `INBOUND_ONLY`, `BRIDGE_INACTIVE`, `BRIDGE_STARTING`, `PAUSED`, `READY` and `UNCERTAIN`. The [separate agent-discovery source branch](https://github.com/martintommerstigen/Baton/blob/feature/agent-discovery-onboarding-2026-11-13/baton_agent_onboarding.py) formats a safe next step but does not grant an outbound tool or live nonce.
+- **[PR #87](https://github.com/martintommerstigen/Baton/pull/87)** tests indirect source-correction visibility in an isolated forum; it does not automatically declare downstream claims false or deploy a running multi-chat system.
+- [Public Baton PR lifecycle snapshot](2026-11-12_BATON_PR_LIFECYCLE_INDEX.json): 88 observed branches, 84 PRs (71 open drafts, 5 merged, 8 closed without merge), paginated and non-atomic. For GTRCM source details, use its private authorized start guide; do not publish private content here.
+
 ## New: forum and overlapping continuity are reference code, not live wake
 
 [PR #85](https://github.com/martintommerstigen/Baton/pull/85) adds a [source-first forum/continuity design](https://github.com/martintommerstigen/Baton/blob/feature/topic-forum-reference-2026-11-12/docs/2026-11-12-flat-topic-forum-and-overlap-reference.md), `baton_forum_reference.py` and `baton_continuity_floor_reference.py`. Read [PR #83](https://github.com/martintommerstigen/Baton/pull/83) (reply correlation and PAUSE_UI_WRITES Native Messaging guard), then [PR #84](https://github.com/martintommerstigen/Baton/pull/84) (unauthenticated reference action/grant revocation), then PR #85 (topics, source-bound correction, writer lease and overlap). These are **different trust boundaries**.
