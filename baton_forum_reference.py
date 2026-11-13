@@ -12,6 +12,7 @@ import os
 from pathlib import Path
 import re
 import sqlite3
+from baton_private_sqlite_reference import prepare_private_sqlite
 from urllib.parse import urlsplit
 
 CHAT_ID = re.compile(r"^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$", re.I)
@@ -106,6 +107,7 @@ class Forum:
 
     @contextmanager
     def connect(self):
+        prepare_private_sqlite(self.path)
         c = sqlite3.connect(str(self.path), timeout=10)
         try:
             c.execute("PRAGMA foreign_keys=ON")
@@ -116,7 +118,7 @@ class Forum:
             c.close()
 
     def init(self):
-        self.path.parent.mkdir(parents=True, exist_ok=True)
+        self.path.parent.mkdir(parents=True, exist_ok=True, mode=0o700)
         with self.connect() as c:
             c.executescript("""
                 CREATE TABLE IF NOT EXISTS topics(
@@ -177,10 +179,6 @@ class Forum:
                 c.execute("ALTER TABLE dependencies ADD COLUMN use_mode TEXT NOT NULL DEFAULT 'unspecified'")
             if "premise_key" not in columns:
                 c.execute("ALTER TABLE dependencies ADD COLUMN premise_key TEXT NOT NULL DEFAULT 'unspecified'")
-        try:
-            os.chmod(self.path, 0o600)
-        except OSError:
-            pass
 
     def create_topic(self, topic_id, title):
         topic_id = check_topic_id(topic_id)

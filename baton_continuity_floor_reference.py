@@ -11,6 +11,7 @@ import hashlib
 from pathlib import Path
 import re
 import sqlite3
+from baton_private_sqlite_reference import prepare_private_sqlite
 
 RUN_ID = re.compile(r"^[0-9a-f]{32}$", re.I)
 CHAT_ID = re.compile(r"^[0-9a-f]{8}(-[0-9a-f]{4}){3}-[0-9a-f]{12}$", re.I)
@@ -39,6 +40,7 @@ class Floor:
 
     @contextmanager
     def _db(self):
+        prepare_private_sqlite(self.path)
         con = sqlite3.connect(str(self.path), timeout=10)
         try:
             con.execute("PRAGMA busy_timeout=10000")
@@ -49,7 +51,7 @@ class Floor:
             con.close()
 
     def init(self):
-        self.path.parent.mkdir(parents=True, exist_ok=True)
+        self.path.parent.mkdir(parents=True, exist_ok=True, mode=0o700)
         with self._db() as c:
             c.executescript("""
                 CREATE TABLE IF NOT EXISTS runs(
@@ -78,7 +80,6 @@ class Floor:
                   run_id TEXT, subject TEXT NOT NULL
                 );
             """)
-        self.path.chmod(0o600)
 
     def _event(self, c, now, kind, run, subject):
         c.execute("INSERT INTO events(time_sec,kind,run_id,subject) VALUES(?,?,?,?)",
