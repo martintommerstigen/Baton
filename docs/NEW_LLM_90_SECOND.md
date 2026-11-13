@@ -19,7 +19,7 @@
 
 **Navigation validation:** [Run the three-task source-first diagnostic](NEW_LLM_BLIND_ROUTE_TEST.md) and preserve the answer before independent scoring. The rubric is publicly discoverable in this repository, so this is **not a sealed blind test**. A genuinely blinded evaluation needs evaluator-held answers inaccessible to the candidate. No independently run newcomer evaluation is verified here.
 
-**Branch discovery:** PR lists omit independent and unreviewed branches. Search [all Baton branches](https://github.com/martintommerstigen/Baton/branches) as well as PRs; compare candidate heads to `main`, read original tests and record whether any review or live deployment exists. The resource trial above is a branch source, not a new PR or installed code.
+**Branch discovery:** [Dated paginated branch-name inventory (102 names)](BRANCH_NAME_INVENTORY.json) is an accessible starting index, **not** a complete code review or live count. PR lists omit independent and unreviewed branches. Search [all Baton branches](https://github.com/martintommerstigen/Baton/branches) as well as PRs; compare candidate heads to `main`, read original tests and record whether any review or live deployment exists. The resource trial above is a branch source, not a new PR or installed code.
 
 **Source protocol:** Search whether the exact issue was already investigated. Record repository/ref/path/blob SHA, earliest verified original, negative control, correction and evidence level. Keep attempted, delivered, received, processed, replied and closed distinct. `PAUSE_UI_WRITES` remains binding; uncertain external effects must not be resent blindly. Only Skin talks to Core; only Core changes Core. Do not copy private GTRCM source, transcripts or secrets into public Baton.
 
