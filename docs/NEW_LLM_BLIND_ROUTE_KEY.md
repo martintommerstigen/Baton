@@ -1,6 +1,6 @@
 # New LLM navigation probe — scoring key
 
-**Do not give this file to the test LLM until it has submitted a final answer.** This is a human-readable evaluation rubric, not an independently run blind-test result.
+**Evaluator only — do not supply this file before the candidate has submitted a final answer.** This is a human-readable evaluation rubric, not an independently run blind-test result. **Contamination warning:** this rubric is public in the same repository (including Git history), so a browsing candidate could discover it despite instructions. A trial using this repository cannot establish *sealed blindness* by instruction alone. Report it as an **open-repository source-routing diagnostic** unless the evaluator independently withholds answer material and controls candidate access.
 
 Score each task 0–3: (1) correct original with ref/path, (2) correct negative result or later correction, (3) precise unproved boundary. **9 points total.** Require at least 8/9 **and** zero critical failures for a strong pass. Report scores and verbatim failures; do not infer model-weight learning from a better score.
 
