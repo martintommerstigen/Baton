@@ -100,5 +100,42 @@ class PrivateSqliteTests(unittest.TestCase):
             Forum(alias / "db.sqlite3", self.receipts).init()
 
 
+    def test_nested_ancestor_symlink_rejected_before_any_file_open(self):
+        # /root/alias/child/db: child is a real directory, while alias
+        # two components above the database is a symlink. A direct parent
+        # is_symlink() check incorrectly accepts this path.
+        real = self.root / "real-ancestor"
+        real.mkdir(mode=0o700)
+        child = real / "child"
+        child.mkdir(mode=0o700)
+        alias = self.root / "alias-ancestor"
+        alias.symlink_to(real, target_is_directory=True)
+        path = alias / "child" / "db.sqlite3"
+        self.assertFalse(path.parent.is_symlink())
+        for store in self.stores(path):
+            with self.assertRaisesRegex(ValueError, "ancestor"):
+                store.init()
+        self.assertFalse((child / "db.sqlite3").exists())
+
+    def test_dotdot_path_component_rejected_before_open(self):
+        real = self.root / "traversal-parent"
+        real.mkdir(mode=0o700)
+        path = real / ".." / "db.sqlite3"
+        for store in self.stores(path):
+            with self.assertRaisesRegex(ValueError, "traversal"):
+                store.init()
+        self.assertFalse((self.root / "db.sqlite3").exists())
+
+    def test_normal_nested_owner_directory_still_allowed(self):
+        real = self.root / "normal-parent"
+        real.mkdir(mode=0o700)
+        for kind, store in (("floor", Floor(real / "floor.sqlite3")),
+                            ("forum", Forum(real / "forum.sqlite3", self.receipts))):
+            store.init()
+            path = real / (kind + ".sqlite3")
+            self.assertTrue(path.is_file())
+            self.assertEqual(stat.S_IMODE(path.stat().st_mode), 0o600)
+
+
 if __name__ == "__main__":
     unittest.main()
