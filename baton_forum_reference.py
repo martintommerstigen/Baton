@@ -93,8 +93,20 @@ def _verified_receipt(path, root):
     alias = doc.get("name")
     if not isinstance(alias, str) or not 1 <= len(alias) <= 100:
         raise ValueError("invalid display alias")
+    # Optional reply-parent observation for task-scoped correlation. A chat
+    # match alone does not identify which invitation a reply answered.
+    parent = doc.get("reply_to_user_turn_id")
+    reload_parent = v.get("reply_to_user_turn_id")
+    if parent is not None or reload_parent is not None:
+        if (not isinstance(parent, str) or not MESSAGE_ID.fullmatch(parent)
+                or not isinstance(reload_parent, str)
+                or not MESSAGE_ID.fullmatch(reload_parent)
+                or parent.lower() != reload_parent.lower()):
+            raise ValueError("reply parent differs from independent reload")
+        parent = parent.lower()
     return {"source_chat_id": cid, "message_id": message_id.lower(),
             "body": body, "sha256": digest, "alias": alias,
+            "reply_to_user_turn_id": parent,
             "receipt_sha256": hashlib.sha256(raw).hexdigest(),
             "receipt_path": str(real)}
 

@@ -16,7 +16,7 @@ from pathlib import Path
 import re
 import sqlite3
 
-from baton_forum_reference import Forum, check_chat_id, check_topic_id
+from baton_forum_reference import Forum, MESSAGE_ID, check_chat_id, check_topic_id
 from baton_continuity_floor_reference import Floor, RUN_ID
 from baton_action_authority_reference import ActionFence
 
@@ -122,6 +122,7 @@ class Multiroom:
                     owner_run_id TEXT, writer_token_sha TEXT,
                     writer_generation INTEGER, lease_until INTEGER,
                     reply_message_id TEXT,
+                    send_action_id TEXT, sent_user_turn_id TEXT,
                     CHECK (state!='reply_verified' OR reply_message_id IS NOT NULL)
                 );
                 CREATE TABLE IF NOT EXISTS external_suggestions(
@@ -134,6 +135,22 @@ class Multiroom:
                         CHECK(state='proposal')
                 );
             """)
+            # Additive migration: legacy UNKNOWN tasks remain uncorrelated.
+            # Duplicate historical reply IDs fail the index build closed;
+            # never silently choose which old task deserved the reply.
+            cols = {row[1] for row in c.execute("PRAGMA table_info(tasks)")}
+            if "send_action_id" not in cols:
+                c.execute("ALTER TABLE tasks ADD COLUMN send_action_id TEXT")
+            if "sent_user_turn_id" not in cols:
+                c.execute("ALTER TABLE tasks ADD COLUMN sent_user_turn_id TEXT")
+            c.execute("""CREATE UNIQUE INDEX IF NOT EXISTS task_send_action_unique
+                         ON tasks(send_action_id) WHERE send_action_id IS NOT NULL""")
+            c.execute("""CREATE UNIQUE INDEX IF NOT EXISTS task_sent_turn_unique
+                         ON tasks(recipient_chat_id,sent_user_turn_id)
+                         WHERE sent_user_turn_id IS NOT NULL""")
+            c.execute("""CREATE UNIQUE INDEX IF NOT EXISTS task_reply_turn_unique
+                         ON tasks(recipient_chat_id,reply_message_id)
+                         WHERE reply_message_id IS NOT NULL""")
         self.path.chmod(0o600)
 
     def topic(self, topic_id, title):
@@ -254,23 +271,80 @@ class Multiroom:
                 (task_id,run_id,row[2],generation)).rowcount
         return changed==1
 
+    def bind_observed_send(self, task_id, action_id, sent_user_turn_id):
+        """Bind an independently observed outgoing user turn to one UNKNOWN task.
+
+        This offline ledger does NOT authenticate the caller or inspect ChatGPT.
+        Only a trusted, source-reloaded sender adapter may supply these values.
+        Calling this method is not proof of delivery or consent. Once bound,
+        neither the action nor the user-turn identity can be reinterpreted.
+        """
+        task_id = _id(task_id)
+        action_id = _id(action_id)
+        if not isinstance(sent_user_turn_id, str) or not MESSAGE_ID.fullmatch(sent_user_turn_id):
+            raise ValueError("invalid sent user turn ID")
+        sent_user_turn_id = sent_user_turn_id.lower()
+        with self._db() as c:
+            c.execute("BEGIN IMMEDIATE")
+            row = c.execute("""SELECT state,send_action_id,sent_user_turn_id
+                               FROM tasks WHERE task_id=?""", (task_id,)).fetchone()
+            if not row or row[0] != "effect_unknown":
+                raise ValueError("no uncertain send to correlate")
+            if row[1] is not None or row[2] is not None:
+                if row[1:] == (action_id, sent_user_turn_id):
+                    return {"task_id": task_id, "bound": True, "replay": True}
+                raise ValueError("send binding cannot be reinterpreted")
+            try:
+                changed = c.execute("""UPDATE tasks
+                    SET send_action_id=?,sent_user_turn_id=?
+                    WHERE task_id=? AND state='effect_unknown'
+                      AND send_action_id IS NULL AND sent_user_turn_id IS NULL""",
+                    (action_id,sent_user_turn_id,task_id)).rowcount
+            except sqlite3.IntegrityError as exc:
+                raise ValueError("send action or user turn already bound") from exc
+            if changed != 1:
+                raise RuntimeError("concurrent task state change")
+        return {"task_id": task_id, "bound": True, "replay": False}
+
     def verified_reply(self,task_id,receipt_file):
-        """Only independent source-correct receipt can turn UNKNOWN into verified."""
+        """Correlate exact sent user turn and reloaded assistant reply.
+
+        No parent-turn proof means UNKNOWN remains UNKNOWN. Same-chat/topic
+        evidence is insufficient, even when the assistant turn was reloaded.
+        This is a local reference; an actual adapter must authenticate both
+        the outbound send observation and the independent reload.
+        """
         task_id=_id(task_id)
         from baton_forum_reference import _verified_receipt
         proof=_verified_receipt(receipt_file,self.receipts)
-        with self._db() as c:
-            row=c.execute("SELECT topic_id,recipient_chat_id,state FROM tasks WHERE task_id=?",
-                          (task_id,)).fetchone()
-        if not row or row[2]!="effect_unknown" or proof["source_chat_id"]!=row[1]:
-            raise ValueError("wrong source or no outstanding uncertain send")
-        observation=self.forum.ingest(row[0],receipt_file)
+        parent=proof.get("reply_to_user_turn_id")
+        if parent is None:
+            raise ValueError("missing independently reloaded reply parent")
         with self._db() as c:
             c.execute("BEGIN IMMEDIATE")
-            changed=c.execute("""UPDATE tasks SET state='reply_verified',reply_message_id=?
-                 WHERE task_id=? AND state='effect_unknown'""",
-                 (proof["message_id"],task_id)).rowcount
-        if changed!=1:raise RuntimeError("concurrent state changed")
+            row=c.execute("""SELECT topic_id,recipient_chat_id,state,
+                                    sent_user_turn_id,send_action_id
+                             FROM tasks WHERE task_id=?""",(task_id,)).fetchone()
+            if (not row or row[2]!="effect_unknown"
+                    or proof["source_chat_id"]!=row[1]
+                    or row[3] is None or row[4] is None or parent!=row[3]):
+                raise ValueError("reply is not bound to this task's sent turn")
+            if c.execute("""SELECT 1 FROM tasks
+                            WHERE recipient_chat_id=? AND reply_message_id=?
+                            LIMIT 1""",(row[1],proof["message_id"])).fetchone():
+                raise ValueError("assistant reply already claimed by another task")
+            # The forum is a separate SQLite database: this reference cannot
+            # claim cross-database crash atomicity. Do not infer a sent effect.
+            observation=self.forum.ingest(row[0],receipt_file)
+            try:
+                changed=c.execute("""UPDATE tasks SET state='reply_verified',
+                    reply_message_id=? WHERE task_id=? AND state='effect_unknown'
+                    AND sent_user_turn_id=? AND reply_message_id IS NULL""",
+                    (proof["message_id"],task_id,parent)).rowcount
+            except sqlite3.IntegrityError as exc:
+                raise ValueError("assistant reply already claimed") from exc
+            if changed!=1:
+                raise RuntimeError("concurrent state changed")
         return {"status":"reply_verified","reply_message_id":proof["message_id"],
                 "forum_observation":observation["id"]}
 
