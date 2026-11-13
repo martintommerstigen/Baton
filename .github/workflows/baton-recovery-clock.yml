@@ -1,0 +1,35 @@
+name: Baton recovery clock and clean Forum checkout
+
+on:
+  push:
+    branches:
+      - fix/ashild-wake-activity-clock-2026-11-13
+  pull_request:
+    paths:
+      - 'baton_idle_wake.py'
+      - 'baton_discussion_links.py'
+      - 'baton_forum_reference.py'
+      - 'test_baton_idle_wake.py'
+      - 'test_baton_discussion_links.py'
+      - 'test_baton_forum_reference.py'
+      - '.github/workflows/baton-recovery-clock.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  recovery-regressions:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Clean checkout import and offline regressions
+        run: |
+          python3 -m unittest -v \
+            test_baton_forum_reference.py \
+            test_baton_discussion_links.py \
+            test_baton_idle_wake.py

@@ -35,6 +35,9 @@ class Journal:
                 created REAL NOT NULL, updated REAL NOT NULL,
                 user_id TEXT, reply_id TEXT, detail TEXT
               );
+              CREATE TABLE IF NOT EXISTS activity_seen(
+                episode TEXT PRIMARY KEY, first_observed REAL NOT NULL
+              );
             ''')
         self.path.chmod(0o600)
 
@@ -45,6 +48,19 @@ class Journal:
             c.execute('PRAGMA busy_timeout=10000')
             with c:yield c
         finally:c.close()
+
+    def note_activity(self, episode, now):
+        """Use the watchdog's first durable observation, not a writer's clock.
+
+        Local discussion timestamps can be backdated or future-dated. Neither
+        may force an immediate wake or suppress recovery indefinitely.
+        """
+        with self.db() as c:
+            c.execute('BEGIN IMMEDIATE')
+            c.execute('INSERT OR IGNORE INTO activity_seen VALUES(?,?)',(episode,now))
+            row=c.execute('SELECT first_observed FROM activity_seen WHERE episode=?',
+                          (episode,)).fetchone()
+            return row[0]
 
     def reserve(self, episode, target, title, message, now, request_id=None):
         rid=request_id or 'GREG-WAKE-'+uuid.uuid4().hex.upper()
@@ -234,6 +250,9 @@ class Watchdog:
     def __init__(self,c,journal,ui,clock=time.time,boot=None):
         validate_config(c);self.c=c;self.journal=journal;self.ui=ui;self.clock=clock
         self.boot=clock() if boot is None else boot
+        # Observe the current episode at startup. This preserves the original
+        # startup grace without trusting a post author's timestamp.
+        self.journal.note_activity(activity(c['activity_db'])['episode'],self.boot)
 
     async def tick(self,manual_target=None,dry_run=False):
         now=self.clock();pending=self.journal.pending()
@@ -243,7 +262,8 @@ class Watchdog:
             self.journal.update(pending['id'],v['state'],now,v.get('detail',''),reply_id=v.get('reply_id'))
             return {'event':'reconciled_read_only','id':pending['id'],**v}
         a=activity(self.c['activity_db'])
-        age=now-max(a['last_at'],self.boot)
+        first_seen=self.journal.note_activity(a['episode'],now)
+        age=now-max(first_seen,self.boot)
         last=self.journal.latest()
         if not manual_target:
             if age<self.c['idle_seconds']:return {'event':'activity_or_startup_grace','age_seconds':round(age)}
