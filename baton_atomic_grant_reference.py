@@ -20,6 +20,13 @@ class SameDatabaseGrantAuthority:
         self.issuer = issuer
         self.revoker = revoker
 
+    def bind(self, ledger):
+        """Refuse accidental cross-database verification; no external authority."""
+        if ledger.forum.path.resolve() != self.forum.path.resolve():
+            raise ValueError("grant and attestation must share one SQLite database")
+        ledger.verifier = self.verify
+        return ledger
+
     def setup(self):
         with self.forum.connect() as c:
             c.executescript("""
