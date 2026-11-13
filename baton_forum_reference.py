@@ -321,6 +321,32 @@ class Forum:
             depth += 1
         return sorted(corrections)
 
+    def _correction_followups(self, conn, correction_ids):
+        """Expose corrections to corrections, without inferring a retraction.
+
+        A later correction may dispute, narrow, or confirm an earlier one.
+        Preserve the chain as provenance; do not silently replace its impact
+        classification or revoke any unrelated participant's authority.
+        """
+        visited = set(correction_ids)
+        frontier = list(correction_ids)
+        followups = set()
+        while frontier:
+            next_frontier = []
+            for parent in frontier:
+                for (child,) in conn.execute(
+                    "SELECT observation_id FROM observations "
+                    "WHERE reply_to=? AND kind='correction' ORDER BY observation_id",
+                    (parent,)
+                ):
+                    if child in visited:
+                        continue
+                    visited.add(child)
+                    followups.add(child)
+                    next_frontier.append(child)
+            frontier = next_frontier
+        return sorted(followups)
+
     def show(self, topic_id):
         topic_id = check_topic_id(topic_id)
         with self.connect() as c:
@@ -349,6 +375,8 @@ class Forum:
                     uses.append({"source_id":upstream,"use_mode":use_mode,
                                  "premise_key":premise_key,"correction_evaluations":evaluations})
                 indirect_corrections = self._indirect_source_corrections(c, m[0])
+                correction_followups = self._correction_followups(
+                    c, corrections | set(indirect_corrections))
                 seen.append({"id":m[0],"chat_id":m[1],"message_id":m[2],
                              "alias":m[3],"body":m[4],"kind":m[5],"reply_to":m[6],
                              "depends_on":[l[0] for l in links],
@@ -356,6 +384,8 @@ class Forum:
                              "source_correction_ids":sorted(corrections),
                              "indirect_source_correction_ids":indirect_corrections,
                              "indirect_source_change_unassessed":bool(indirect_corrections),
+                             "correction_followup_ids":correction_followups,
+                             "correction_lineage_has_followups":bool(correction_followups),
                              "dependency_review_required":review_required,
                              "dependency_impact_unassessed":unassessed})
             return {"id": topic_id, "title": topic[0], "state": topic[1],
