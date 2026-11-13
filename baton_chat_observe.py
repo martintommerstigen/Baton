@@ -64,7 +64,10 @@ def inspect_delivery_script(message):
             text = top.map(n => n.innerText || '').join('\n\n');
           }
           return {role, id, text};
-        }).filter(turn => turn.role && normalized(turn.text))
+        }).filter(turn => turn.role)
+          // Preserve empty-text turns as adjacency barriers. Image-only user
+          // turns and unreadable assistant turns must not vanish and make a
+          // later unrelated assistant appear adjacent to a Baton request.
           .filter(turn => {
             // Native clients may repeat one logical turn in two DOM fragments.
             // Deduplicate only by a genuine ID, never by message text.
