@@ -1,7 +1,7 @@
 {
   "schema": "eik-github-pr-lifecycle-index/v1",
   "snapshot_date_utc": "2026-11-13",
-  "collection": "13 Nov 2026 06:28 UTC full public Baton PR refresh: 90 PRs, 94 branches; private GTRCM excluded.",
+  "collection": "13 Nov 2026 fresh REST PR and branch refresh: 91 Baton PRs, 95 branches; non-atomic.",
   "scope": "Public Baton only; private GTRCM PR metadata intentionally omitted",
   "interpretation": [
     "This is PR lifecycle metadata, not a full code review or complete commit history.",
@@ -15,16 +15,17 @@
     "2026-11-13 source return: R81V PR #150 is stacked on R80V; Baton PR #88 is stacked on PR #83 and prevents empty role-bearing DOM turns from disappearing during reply correlation. Neither is merged or installed. 445 branch tips and 231 PRs were freshly enumerated; no full commit histories or independent new-LLM blind test.",
     "2026-11-13 02:43 UTC incremental check: new PR head SHAs and states fetched live; older entries preserved from previous complete REST snapshot. Stacked draft bases must be read before a newer PR; neither CI nor draft PR is deployed code.",
     "13 Nov 2026 PR #92: legacy correction/premise verdicts are not automatically scoped to downstream dependency edges; reviewer source evidence does not authenticate or authorize the reviewer. Draft stacked on PR #85, not installed Greg.",
-    "13 Nov 2026 PR #93 adds source-keyed parallel per-edge assessments; disagreement remains explicit and no source observation authenticates reviewer authority. Reference-only stacked draft, not installed Greg."
+    "13 Nov 2026 PR #93 adds source-keyed parallel per-edge assessments; disagreement remains explicit and no source observation authenticates reviewer authority. Reference-only stacked draft, not installed Greg.",
+    "13 Nov 2026: Baton PR #95 (stacked on #94) separates untrusted use proposals from Core-verifier-gated attestations; source tests and CI do not establish a production authenticator, installation or live peer contact."
   ],
   "repositories": [
     {
       "summary": {
         "repository": "martintommerstigen/Baton",
-        "branch_count": 94,
-        "pr_count": 90,
-        "open": 77,
-        "open_draft": 77,
+        "branch_count": 95,
+        "pr_count": 91,
+        "open": 78,
+        "open_draft": 78,
         "open_ready": 0,
         "merged": 5,
         "closed_unmerged": 8,
@@ -34,6 +35,23 @@
         ]
       },
       "pull_requests": [
+        {
+          "number": 95,
+          "title": "Draft: separate untrusted source-use proposals from scoped attestations",
+          "url": "https://github.com/martintommerstigen/Baton/pull/95",
+          "state": "open",
+          "draft": true,
+          "merged": false,
+          "created_at": "2026-11-13T06:40:08Z",
+          "updated_at": "2026-11-13T06:40:20Z",
+          "closed_at": null,
+          "merged_at": null,
+          "base_ref": "research/ashild-use-instance-assessments-2026-11-13",
+          "head_ref": "research/ashild-attested-use-proposals-2026-11-13",
+          "pr_head_sha": "6a956ce6d00431172c53c5940494bc578c8da082",
+          "branch_tip_sha": "6a956ce6d00431172c53c5940494bc578c8da082",
+          "pr_head_matches_branch_tip": true
+        },
         {
           "number": 94,
           "title": "Draft: distinguish repeated source-use occurrences before assigning correction verdicts",
@@ -195,7 +213,7 @@
           "draft": true,
           "merged": false,
           "created_at": "2026-11-12T22:26:18Z",
-          "updated_at": "2026-11-13T06:05:49Z",
+          "updated_at": "2026-11-13T06:40:41Z",
           "closed_at": null,
           "merged_at": null,
           "base_ref": "feature/action-authorization-fence-2026-11-12",
@@ -535,13 +553,13 @@
           "draft": true,
           "merged": false,
           "created_at": "2026-11-11T15:31:00Z",
-          "updated_at": "2026-11-13T05:39:02Z",
+          "updated_at": "2026-11-13T06:31:32Z",
           "closed_at": null,
           "merged_at": null,
           "base_ref": "main",
           "head_ref": "docs/eik-repository-onboarding-2026-11-11",
-          "pr_head_sha": "81efb3fdc8cff6f50501b61afc6a131548c57a28",
-          "branch_tip_sha": "81efb3fdc8cff6f50501b61afc6a131548c57a28",
+          "pr_head_sha": "b643ae1af0f7faf8091d0d7cde688dac18932e22",
+          "branch_tip_sha": "b643ae1af0f7faf8091d0d7cde688dac18932e22",
           "pr_head_matches_branch_tip": true
         },
         {
