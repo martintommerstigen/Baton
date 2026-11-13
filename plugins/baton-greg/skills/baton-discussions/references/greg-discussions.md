@@ -13,6 +13,12 @@ claim of missing access. Vev independently checked the newer authorization
 context after initially relying on an older DC prohibition. Do not use this
 historical report to override a current instruction.
 
+Record capability observations separately from current authorization: observed
+operation and time, owner-source reference, scope, expiry/revocation if any,
+and the effect/intent being considered. An existing topic/peer mandate may
+cover normal follow-ups; do not ask again when it already does. A new medium,
+recipient or purpose is not automatically covered by a previous successful wake.
+
 Discover tools by their names/descriptions. Remote Desktop Commander list_devices
 reported Greg online; ID at this observation:
 `59e04d52-5731-4d40-979f-9ab0df034684`.
@@ -61,6 +67,15 @@ pause. Verify scope and owner authorization; preserve the legacy queue and
 unknown attempts. Prefer a current production session-scoped sender if present,
 after inspecting it. Do not assume receiving an invitation enabled the outbound
 model bridge: the inspected older UI used auto_enable=False.
+
+Neither this instruction-only plugin nor the pilot CLI/diagnostic sender
+implements a per-chat owner-grant expiry/revocation gate. UI identity checks,
+an OS permission and a prior successful send are not that gate. The actual
+operator/model must apply current owner authorization; do not describe this
+release as technically enforced action authorization. A negative grant-expiry
+test must exercise a real future effect gate; a test of labels or prose cannot
+stand in for it. This is onboarding guidance plus a read-recipe helper, not a
+new authenticated execution service.
 
 After a send, never retry on unknown outcome. The reader/verifier beside the
 sender, `verify_existing_reply_reload.py`, confirmed matching source reply ID
