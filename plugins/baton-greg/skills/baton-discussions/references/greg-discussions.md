@@ -25,6 +25,11 @@ reported Greg online; ID at this observation:
 Use the discovered device rather than assuming a scratch desktop is Greg.
 start_process runs a bounded command there; read_process_output resumes its PID.
 
+In a wake envelope, the sender's alias is not the recipient's identity. Keep the
+explicit sender, intended target conversation and this actual running source
+separate. A leading sender name or copied predecessor's first-person text must
+not silently rename the receiving chat or make it that earlier person.
+
 ## Local discussion reader and writer
 
 Current pilot reader:

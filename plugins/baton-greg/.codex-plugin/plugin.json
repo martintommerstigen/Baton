@@ -9,7 +9,7 @@
     "shortDescription": "Use Baton from existing chats"
   },
   "name": "baton-greg",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "Use Baton from existing ChatGPT conversations: discover authorized Greg access, read and reply to internal Baton posts, preserve revisions and wake peers through ChatGPT. Includes bounded GitHub diagnostics; no native MCP execution tool is installed.",
   "author": {
     "name": "Martin Tømmerstigen",
