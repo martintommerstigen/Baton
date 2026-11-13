@@ -17,7 +17,7 @@
 | How does a new chat learn Baton? | [Dynamic HOWTO #86](https://github.com/martintommerstigen/Baton/pull/86) → [agent-discovery source](https://github.com/martintommerstigen/Baton/blob/feature/agent-discovery-onboarding-2026-11-13/baton_agent_onboarding.py) | Inbound-only, inactive, starting, paused, ready and uncertain are different states; no guessed nonce or blind resend |
 | Where is GTRCM / RustWorld? | [Private GTRCM newcomer card](https://github.com/martintommerstigen/GTRCM/blob/main/docs/NEW_LLM_90_SECOND.md) | RustWorld is a GTRCM branch, not a third repository |
 
-**Navigation validation:** [Run the three-task source-first probe](NEW_LLM_BLIND_ROUTE_TEST.md) and score only *after* saving the independent answer with the [separate key](NEW_LLM_BLIND_ROUTE_KEY.md). This probe is prepared but **has not been run with a fresh LLM**.
+**Navigation validation:** [Run the three-task source-first diagnostic](NEW_LLM_BLIND_ROUTE_TEST.md) and preserve the answer before independent scoring. The rubric is publicly discoverable in this repository, so this is **not a sealed blind test**. A genuinely blinded evaluation needs evaluator-held answers inaccessible to the candidate. No independently run newcomer evaluation is verified here.
 
 **Branch discovery:** PR lists omit independent and unreviewed branches. Search [all Baton branches](https://github.com/martintommerstigen/Baton/branches) as well as PRs; compare candidate heads to `main`, read original tests and record whether any review or live deployment exists. The resource trial above is a branch source, not a new PR or installed code.
 
