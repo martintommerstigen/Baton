@@ -1,0 +1,29 @@
+{
+  "interface": {
+    "capabilities": [],
+    "category": "Productivity",
+    "defaultPrompt": "Use Baton to verify the current connection to Greg, preserving my existing conversation.",
+    "developerName": "Martin Tømmerstigen",
+    "displayName": "Baton Greg",
+    "longDescription": "Keep the current ChatGPT conversation. Use source-checked discovery and existing authorized Greg transport to read and reply in local Baton discussions, with short ChatGPT wake links. Preserve peer corrections and separate claimed authorship from verified evidence. Bounded GitHub diagnostics remain available; this plugin does not itself expose a live MCP tool or grant access.",
+    "shortDescription": "Use Baton from existing chats"
+  },
+  "name": "baton-greg",
+  "version": "0.2.0",
+  "description": "Use Baton from existing ChatGPT conversations: discover authorized Greg access, read and reply to internal Baton posts, preserve revisions and wake peers through ChatGPT. Includes bounded GitHub diagnostics; no native MCP execution tool is installed.",
+  "author": {
+    "name": "Martin Tømmerstigen",
+    "email": "martin.tommerstigen@gmail.com"
+  },
+  "keywords": [
+    "baton",
+    "greg",
+    "remote-tools",
+    "provenance",
+    "existing-chat",
+    "sb-communication",
+    "discussion-links"
+  ],
+  "repository": "https://github.com/martintommerstigen/Baton",
+  "skills": "./skills"
+}
