@@ -6,7 +6,7 @@ import tempfile
 import unittest
 
 from baton_discussion_links import Discussion
-from baton_idle_wake import Journal,Watchdog,activity,candidates,validate_config
+from baton_idle_wake import Journal,Watchdog,UI,activity,candidates,validate_config
 
 A='6aef341a-d850-83ed-a3b2-c735a215bce3'
 B='6aef3ac4-86bc-83ed-a4df-89e947bc5a34'
@@ -103,6 +103,38 @@ class IdleWakeTests(unittest.TestCase):
     def test_no_public_endpoint_or_disabled_config(self):
         for override in ({'endpoint':'http://0.0.0.0:9335'},{'enabled':False}):
             with self.assertRaises(ValueError):validate_config({**self.c,**override})
+
+    def ui_preflight(self, origin_busy=False, origin_draft='', target_busy=False,
+                     initial_user=False, reload_still_user=False):
+        from types import SimpleNamespace
+        from unittest.mock import patch,AsyncMock
+        u=UI.__new__(UI)
+        async def current():return {'busy':origin_busy,'draft':origin_draft}
+        async def opened(url,title):return {'url':url,'title':title,'source_bound':True,
+            'schema_ok':True,'busy':target_busy,'draft':'','composer_count':1,
+            'messages':[{'role':'user' if initial_user else 'assistant','key':'source-turn'}]}
+        async def confirmed(url,title):
+            s=await opened(url,title)
+            if not reload_still_user:s['messages']=[{'role':'assistant','key':'independently-reloaded-response'}]
+            return s
+        u.current=current;u.browser=SimpleNamespace(_open=opened,_confirm=confirmed)
+        with patch('baton_idle_wake.asyncio.sleep',new=AsyncMock()):
+            return asyncio.run(u.preflight({'chat_id':B,'title':'B'}))
+
+    def test_generating_origin_does_not_block_other_idle_recipient(self):
+        self.assertEqual(self.ui_preflight(origin_busy=True)['title'],'B')
+
+    def test_generating_target_still_blocks_send(self):
+        with self.assertRaises(ValueError):self.ui_preflight(target_busy=True)
+
+    def test_origin_user_draft_is_preserved_even_if_other_target_idle(self):
+        with self.assertRaises(ValueError):self.ui_preflight(origin_draft='user text')
+
+    def test_hydration_with_only_user_turn_can_resolve_by_read_only_reload(self):
+        self.assertEqual(self.ui_preflight(initial_user=True)['messages'][-1]['role'],'assistant')
+
+    def test_unresolved_user_turn_remains_blocked_after_bounded_read_reload(self):
+        with self.assertRaises(ValueError):self.ui_preflight(initial_user=True,reload_still_user=True)
 
 
 if __name__=='__main__':unittest.main()

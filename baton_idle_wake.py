@@ -151,13 +151,28 @@ class UI:
     async def preflight(self,target,manual=False):
         current=await self.current()
         if current.get('draft','').strip():raise ValueError('current view has user draft')
-        if current.get('busy') and not manual:raise ValueError('visible model already generating; recovery not needed')
+        # An origin's server-side generation must not globally block another
+        # recipient. Browser._open never clicks Stop; only the target must idle.
         url='https://chatgpt.com/c/'+target['chat_id']
         s=await self.browser._open(url,target['title'])
         if (not s.get('source_bound') or not s.get('schema_ok') or s.get('busy')
             or s.get('draft','').strip() or s.get('composer_count')!=1
             or s.get('limit_signals') or s.get('load_error')):
             raise ValueError('target busy/full/unbound/draft; no wake')
+        if not s.get('messages') or s['messages'][-1]['role']!='assistant':
+            # Native Qt may first hydrate user turns alone. Re-read, never infer
+            # 'not delivered' or send on busy=false alone. This is one bounded
+            # source-preserving read reload, not a message retry.
+            s=await self.browser._confirm(url,target['title'])
+            for _ in range(5):
+                if s.get('busy') or s.get('draft','').strip():break
+                if s.get('messages') and s['messages'][-1]['role']=='assistant':break
+                await asyncio.sleep(1)
+                s=await self.browser._open(url,target['title'])
+            if (not s.get('source_bound') or not s.get('schema_ok') or s.get('busy')
+                or s.get('draft','').strip() or s.get('composer_count')!=1
+                or s.get('limit_signals') or s.get('load_error')):
+                raise ValueError('target changed/busy during read reload; no wake')
         if not s.get('messages') or s['messages'][-1]['role']!='assistant':
             raise ValueError('target not at an observed idle assistant turn')
         return s
@@ -199,7 +214,7 @@ class UI:
         current=await self.current()
         url='https://chatgpt.com/c/'+row['target']
         if current.get('url')!=url:
-            if current.get('busy') or current.get('draft','').strip():
+            if current.get('draft','').strip():
                 return {'state':'uncertain','detail':'another visible view in use; read-only reconciliation deferred'}
             await self.browser._open(url,row['title'])
         pg=self.browser.page()
