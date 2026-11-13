@@ -1,0 +1,29 @@
+# B5/B2: optional receive-only user service template. NOT installed on Greg.
+# Review and edit WorkingDirectory, sender IDs, routes and key paths locally.
+# Start only under a dedicated unprivileged user; never system-wide/root.
+# TLS certificate and key are provisioned locally in owner-only private paths.
+# No plaintext default: missing PEM files prevent service startup.
+[Unit]
+Description=Baton Remote authenticated receive-only ingress (no UI writes)
+After=network.target
+StartLimitIntervalSec=60
+StartLimitBurst=3
+
+[Service]
+Type=simple
+WorkingDirectory=%h/Baton
+Environment=PYTHONUNBUFFERED=1
+Environment=PYTHONDONTWRITEBYTECODE=1
+UMask=0077
+ExecStart=/usr/bin/python3 -m remote_security.http_ingress --database %h/.local/state/baton-remote/receipts.sqlite --token-file %h/.config/baton-remote/token --sender-key-file sender000=%h/.config/baton-remote/sender.key --target target000 --route sender000=target000 --port 8788 --tls-cert-file %h/.config/baton-remote/tls/server.crt --tls-key-file %h/.config/baton-remote/tls/server.key
+Restart=on-failure
+RestartSec=3
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=read-only
+ReadWritePaths=%h/.local/state/baton-remote
+RestrictAddressFamilies=AF_INET AF_UNIX
+
+[Install]
+WantedBy=default.target

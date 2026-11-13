@@ -1,0 +1,19 @@
+# B5/B2 — Ronja R4 transport hardening, 2026-11-10
+
+**Source boundary:** incremental review branch `research/ronja-remote-security-r4-2026-11-10` on top of Ronja R3 / PR #11. Coordination: Baton [issue #3](https://github.com/martintommerstigen/Baton/issues/3), [PR #4](https://github.com/martintommerstigen/Baton/pull/4), [forum #6](https://github.com/martintommerstigen/Baton/issues/6), project-map B5/B2, [GTRCM METHOD](https://github.com/martintommerstigen/GTRCM/blob/main/METHOD.md), and [RustWorld source map](https://github.com/martintommerstigen/GTRCM/tree/RustWorld). No edits to other worker branches or project-map registry.
+
+## Negative controls and corrections
+
+1. **Unbounded worker allocation:** `ThreadingHTTPServer` has no active-worker cap merely because `request_queue_size=8`. Slow clients can occupy many worker threads. The ingress now has 16 nonblocking semaphore slots. The 17th concurrent accepted socket is closed without spawning a worker. Slots are released after worker completion, including handler errors. Tests hold two workers, reject a third, then verify recovery. The listener remains bound only to `127.0.0.1`.
+2. **Ambiguous HTTP media headers:** duplicate `Content-Type` headers, including identical duplicates, are rejected before envelope admission. The server already rejects duplicate Host, Authorization and Content-Length.
+3. **Forged admission receipt:** before this change, any local process temporarily binding the expected loopback port could return the JSON `{"state":"accepted_not_delivered"}` with HTTP 202, causing the one-shot client to report admission without any SQLite COMMIT. A bearer token authenticates the client to the server; it does not authenticate the server to the client. The client now sends a fresh 128-bit random nonce and requires exactly one `X-Baton-Receipt-MAC`. The server signs only after successful durable admission, using a domain-separated HMAC-SHA256 over nonce, canonical envelope (including payload SHA-256) and exact admission state, with the existing sender key. Unsigned, wrong-key, stale-nonce, wrong-envelope and duplicate-MAC responses are rejected as `DeliveryUncertain`, **never automatically resent**. Existing nonce-less diagnostic HTTP requests retain unsigned legacy responses, but the one-shot client never trusts them.
+
+## Remaining threat boundary
+
+The MAC is **admission provenance**, not source completeness, ChatGPT UI delivery, a generated assistant turn or permission to resend. The client transmits its bearer token *before* authenticating the endpoint; a hostile local listener could capture that bearer and a signed request, even though it cannot forge a successful receipt without the sender HMAC key. Strong endpoint authentication *before disclosure* requires a separately reviewed mutual handshake, a peer-credential-checked Unix-domain socket, or equivalent authenticated channel. A same-UID attacker with access to key files remains outside the current isolation claim. A dedicated unprivileged service UID and private key paths remain essential.
+
+This is an **offline/hosted CI** security correction. The receiver is not installed on Greg; `PAUSE_UI_WRITES` is unchanged, and no existing ChatGPT A→B→C wake has been observed. Do not interpret `accepted_not_delivered` as `delivered`.
+
+## Verification and next falsifier
+
+Run `python -W error::ResourceWarning -m unittest discover -s tests -p 'test_*.py' -v`, and inspect the GitHub Actions run for this branch's final commit. Specific regressions: `tests/test_http_worker_bounds.py` and `tests/test_http_receipt_auth.py`. Hosted CI is `tested-simulated` only if the final run is successful. Test a malicious loopback listener that captures the bearer and replays the signed request to the real receiver before the client has verified the server; then design mutual authentication or a Unix socket with OS peer credentials, without any blind retry.
