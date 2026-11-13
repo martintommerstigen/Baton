@@ -289,6 +289,38 @@ class Forum:
             c.execute("INSERT OR IGNORE INTO correction_impacts VALUES(?,?,?)",
                       (correction_id,premise_key,verdict))
 
+    def _indirect_source_corrections(self, conn, observation_id):
+        """Find corrections to sources at least two dependency edges away.
+
+        This is a provenance warning, not an inferred conflict or a stop
+        decision. A downstream use may remain valid as a test fixture.
+        The visited set bounds cyclic or diamond-shaped source graphs.
+        """
+        visited = {observation_id}
+        frontier = [observation_id]
+        depth = 0
+        corrections = set()
+        while frontier:
+            next_frontier = []
+            for node in frontier:
+                upstreams = conn.execute(
+                    "SELECT upstream_id FROM dependencies WHERE downstream_id=? "
+                    "ORDER BY upstream_id", (node,)).fetchall()
+                for (upstream,) in upstreams:
+                    if upstream in visited:
+                        continue
+                    visited.add(upstream)
+                    next_frontier.append(upstream)
+                    if depth >= 1:
+                        for (correction_id,) in conn.execute(
+                            "SELECT observation_id FROM observations "
+                            "WHERE reply_to=? AND kind='correction' "
+                            "ORDER BY observation_id", (upstream,)):
+                            corrections.add(correction_id)
+            frontier = next_frontier
+            depth += 1
+        return sorted(corrections)
+
     def show(self, topic_id):
         topic_id = check_topic_id(topic_id)
         with self.connect() as c:
@@ -316,11 +348,14 @@ class Forum:
                         if verdict in ("unassessed","unknown"):unassessed=True
                     uses.append({"source_id":upstream,"use_mode":use_mode,
                                  "premise_key":premise_key,"correction_evaluations":evaluations})
+                indirect_corrections = self._indirect_source_corrections(c, m[0])
                 seen.append({"id":m[0],"chat_id":m[1],"message_id":m[2],
                              "alias":m[3],"body":m[4],"kind":m[5],"reply_to":m[6],
                              "depends_on":[l[0] for l in links],
                              "dependency_uses":uses,
                              "source_correction_ids":sorted(corrections),
+                             "indirect_source_correction_ids":indirect_corrections,
+                             "indirect_source_change_unassessed":bool(indirect_corrections),
                              "dependency_review_required":review_required,
                              "dependency_impact_unassessed":unassessed})
             return {"id": topic_id, "title": topic[0], "state": topic[1],
