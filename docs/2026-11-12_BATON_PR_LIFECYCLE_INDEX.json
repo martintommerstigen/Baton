@@ -1,7 +1,7 @@
 {
   "schema": "eik-github-pr-lifecycle-index/v1",
   "snapshot_date_utc": "2026-11-13",
-  "collection": "13 Nov 2026 fresh REST PR and branch refresh: 91 Baton PRs, 95 branches; non-atomic.",
+  "collection": "13 Nov 2026 fresh authenticated GitHub PR metadata: 155 GTRCM + 96 Baton = 251 records; branch names refreshed separately (365+100); non-atomic.",
   "scope": "Public Baton only; private GTRCM PR metadata intentionally omitted",
   "interpretation": [
     "This is PR lifecycle metadata, not a full code review or complete commit history.",
@@ -16,25 +16,109 @@
     "2026-11-13 02:43 UTC incremental check: new PR head SHAs and states fetched live; older entries preserved from previous complete REST snapshot. Stacked draft bases must be read before a newer PR; neither CI nor draft PR is deployed code.",
     "13 Nov 2026 PR #92: legacy correction/premise verdicts are not automatically scoped to downstream dependency edges; reviewer source evidence does not authenticate or authorize the reviewer. Draft stacked on PR #85, not installed Greg.",
     "13 Nov 2026 PR #93 adds source-keyed parallel per-edge assessments; disagreement remains explicit and no source observation authenticates reviewer authority. Reference-only stacked draft, not installed Greg.",
-    "13 Nov 2026: Baton PR #95 (stacked on #94) separates untrusted use proposals from Core-verifier-gated attestations; source tests and CI do not establish a production authenticator, installation or live peer contact."
+    "13 Nov 2026: Baton PR #95 (stacked on #94) separates untrusted use proposals from Core-verifier-gated attestations; source tests and CI do not establish a production authenticator, installation or live peer contact.",
+    "2026-11-13 10:40 Oslo: all PR records freshly searched and normalized; PR head SHA is current PR metadata, NOT proof of live branch-tip equality. Previous branch SHA comparisons are historical and not rechecked. PR #98 reports deployed Greg wake; PR #100 clock correction is draft and not installed."
   ],
   "repositories": [
     {
       "summary": {
         "repository": "martintommerstigen/Baton",
-        "branch_count": 95,
-        "pr_count": 91,
-        "open": 78,
-        "open_draft": 78,
-        "open_ready": 0,
+        "branch_count": 100,
+        "pr_count": 96,
+        "open": 83,
+        "open_draft": 82,
+        "open_ready": 1,
         "merged": 5,
         "closed_unmerged": 8,
-        "head_sha_differs_from_current_branch": [
-          77,
-          76
-        ]
+        "head_sha_differs_from_current_branch": null,
+        "branch_tip_sha_comparison": "Not performed in this run; previous snapshot SHA retained per record where available."
       },
       "pull_requests": [
+        {
+          "number": 100,
+          "title": "Draft: anchor Greg recovery silence to observed Baton activity, not writer clocks",
+          "url": "https://github.com/martintommerstigen/Baton/pull/100",
+          "state": "open",
+          "draft": true,
+          "merged": false,
+          "created_at": "2026-11-13T09:26:42Z",
+          "updated_at": "2026-11-13T09:27:09Z",
+          "closed_at": null,
+          "merged_at": null,
+          "base_ref": "feature/som-internal-post-links-2026-11-13",
+          "head_ref": "fix/ashild-wake-activity-clock-2026-11-13",
+          "pr_head_sha": "08242088bbdeb0bc4a5e2d6f35e13477f38714fc",
+          "branch_tip_sha": null,
+          "pr_head_matches_branch_tip": null
+        },
+        {
+          "number": 99,
+          "title": "Draft: correlate multiroom replies to exact observed send turns",
+          "url": "https://github.com/martintommerstigen/Baton/pull/99",
+          "state": "open",
+          "draft": true,
+          "merged": false,
+          "created_at": "2026-11-13T08:38:07Z",
+          "updated_at": "2026-11-13T08:39:27Z",
+          "closed_at": null,
+          "merged_at": null,
+          "base_ref": "feature/multiroom-consent-ports-2026-11-13",
+          "head_ref": "fix/ashild-task-reply-correlation-2026-11-13",
+          "pr_head_sha": "a994a2e6a00206526acf79e22e4900e93a0d0a5f",
+          "branch_tip_sha": null,
+          "pr_head_matches_branch_tip": null
+        },
+        {
+          "number": 98,
+          "title": "Add Greg idle wake recovery and link-based internal Baton discussion",
+          "url": "https://github.com/martintommerstigen/Baton/pull/98",
+          "state": "open",
+          "draft": false,
+          "merged": false,
+          "created_at": "2026-11-13T08:28:24Z",
+          "updated_at": "2026-11-13T09:30:21Z",
+          "closed_at": null,
+          "merged_at": null,
+          "base_ref": "feature/evening-local-terminal-2026-11-10",
+          "head_ref": "feature/som-internal-post-links-2026-11-13",
+          "pr_head_sha": "992ba2374c9696fb036082a546f53731858f94f3",
+          "branch_tip_sha": null,
+          "pr_head_matches_branch_tip": null
+        },
+        {
+          "number": 97,
+          "title": "Draft: serialize source-use grant revocation with attestation",
+          "url": "https://github.com/martintommerstigen/Baton/pull/97",
+          "state": "open",
+          "draft": true,
+          "merged": false,
+          "created_at": "2026-11-13T07:30:50Z",
+          "updated_at": "2026-11-13T07:30:50Z",
+          "closed_at": null,
+          "merged_at": null,
+          "base_ref": "research/ashild-attested-use-proposals-2026-11-13",
+          "head_ref": "research/ashild-atomic-grant-revocation-2026-11-13",
+          "pr_head_sha": "84d64857af6e4fd560d6049b3a4661292c9f40c2",
+          "branch_tip_sha": null,
+          "pr_head_matches_branch_tip": null
+        },
+        {
+          "number": 96,
+          "title": "Baton: parallelle fagrom, frivillig fadderskap og myndighetsavgrensede utganger",
+          "url": "https://github.com/martintommerstigen/Baton/pull/96",
+          "state": "open",
+          "draft": true,
+          "merged": false,
+          "created_at": "2026-11-13T07:14:04Z",
+          "updated_at": "2026-11-13T07:14:04Z",
+          "closed_at": null,
+          "merged_at": null,
+          "base_ref": "feature/dynamic-peer-learning-ledger-2026-11-12",
+          "head_ref": "feature/multiroom-consent-ports-2026-11-13",
+          "pr_head_sha": "ee66d4b05b251f4f645c8d68150156faf0d4f8f0",
+          "branch_tip_sha": null,
+          "pr_head_matches_branch_tip": null
+        },
         {
           "number": 95,
           "title": "Draft: separate untrusted source-use proposals from scoped attestations",
@@ -49,8 +133,9 @@
           "base_ref": "research/ashild-use-instance-assessments-2026-11-13",
           "head_ref": "research/ashild-attested-use-proposals-2026-11-13",
           "pr_head_sha": "6a956ce6d00431172c53c5940494bc578c8da082",
-          "branch_tip_sha": "6a956ce6d00431172c53c5940494bc578c8da082",
-          "pr_head_matches_branch_tip": true
+          "branch_tip_sha": null,
+          "pr_head_matches_branch_tip": null,
+          "previous_snapshot_branch_tip_sha": "6a956ce6d00431172c53c5940494bc578c8da082"
         },
         {
           "number": 94,
@@ -66,8 +151,9 @@
           "base_ref": "research/ashild-parallel-edge-assessments-2026-11-13",
           "head_ref": "research/ashild-use-instance-assessments-2026-11-13",
           "pr_head_sha": "c27472dfc3e6e84ad76e32dcca026ddf0eea0928",
-          "branch_tip_sha": "c27472dfc3e6e84ad76e32dcca026ddf0eea0928",
-          "pr_head_matches_branch_tip": true
+          "branch_tip_sha": null,
+          "pr_head_matches_branch_tip": null,
+          "previous_snapshot_branch_tip_sha": "c27472dfc3e6e84ad76e32dcca026ddf0eea0928"
         },
         {
           "number": 93,
@@ -83,8 +169,9 @@
           "base_ref": "fix/forum-edge-assessment-legacy-separation-2026-11-13",
           "head_ref": "research/ashild-parallel-edge-assessments-2026-11-13",
           "pr_head_sha": "441e3e388c36ac2a7f0bcd0661ee3e45adaff5e4",
-          "branch_tip_sha": "441e3e388c36ac2a7f0bcd0661ee3e45adaff5e4",
-          "pr_head_matches_branch_tip": true
+          "branch_tip_sha": null,
+          "pr_head_matches_branch_tip": null,
+          "previous_snapshot_branch_tip_sha": "441e3e388c36ac2a7f0bcd0661ee3e45adaff5e4"
         },
         {
           "number": 92,
@@ -100,8 +187,9 @@
           "base_ref": "feature/topic-forum-reference-2026-11-12",
           "head_ref": "fix/forum-edge-assessment-legacy-separation-2026-11-13",
           "pr_head_sha": "1826e30622ac09acd8f6fe7657b4d9b6ce745f6a",
-          "branch_tip_sha": "1826e30622ac09acd8f6fe7657b4d9b6ce745f6a",
-          "pr_head_matches_branch_tip": true
+          "branch_tip_sha": null,
+          "pr_head_matches_branch_tip": null,
+          "previous_snapshot_branch_tip_sha": "1826e30622ac09acd8f6fe7657b4d9b6ce745f6a"
         },
         {
           "number": 91,
@@ -117,8 +205,9 @@
           "base_ref": "fix/strict-existing-chat-reply-correlation-2026-11-12",
           "head_ref": "fix/brave-session-epoch-stale-send-2026-11-13",
           "pr_head_sha": "30a46d49c34a2d9378e8ce7b07e436b02a69c93f",
-          "branch_tip_sha": "30a46d49c34a2d9378e8ce7b07e436b02a69c93f",
-          "pr_head_matches_branch_tip": true
+          "branch_tip_sha": null,
+          "pr_head_matches_branch_tip": null,
+          "previous_snapshot_branch_tip_sha": "30a46d49c34a2d9378e8ce7b07e436b02a69c93f"
         },
         {
           "number": 90,
@@ -134,8 +223,9 @@
           "base_ref": "fix/private-forum-sqlite-open-2026-11-13",
           "head_ref": "fix/private-sqlite-ancestor-path-2026-11-13",
           "pr_head_sha": "6e0401dc3bb750419d306d98b1d3be2349dae13d",
-          "branch_tip_sha": "6e0401dc3bb750419d306d98b1d3be2349dae13d",
-          "pr_head_matches_branch_tip": true
+          "branch_tip_sha": null,
+          "pr_head_matches_branch_tip": null,
+          "previous_snapshot_branch_tip_sha": "6e0401dc3bb750419d306d98b1d3be2349dae13d"
         },
         {
           "number": 89,
@@ -151,8 +241,9 @@
           "base_ref": "feature/topic-forum-reference-2026-11-12",
           "head_ref": "fix/private-forum-sqlite-open-2026-11-13",
           "pr_head_sha": "3df4e261e9d3c0ffed7c779be85ff6b93ffb74db",
-          "branch_tip_sha": "3df4e261e9d3c0ffed7c779be85ff6b93ffb74db",
-          "pr_head_matches_branch_tip": true
+          "branch_tip_sha": null,
+          "pr_head_matches_branch_tip": null,
+          "previous_snapshot_branch_tip_sha": "3df4e261e9d3c0ffed7c779be85ff6b93ffb74db"
         },
         {
           "number": 88,
@@ -168,8 +259,9 @@
           "base_ref": "fix/strict-existing-chat-reply-correlation-2026-11-12",
           "head_ref": "fix/observer-empty-turn-correlation-2026-11-13",
           "pr_head_sha": "af9323413bd51936db630938d9494d06b5c0c4fd",
-          "branch_tip_sha": "af9323413bd51936db630938d9494d06b5c0c4fd",
-          "pr_head_matches_branch_tip": true
+          "branch_tip_sha": null,
+          "pr_head_matches_branch_tip": null,
+          "previous_snapshot_branch_tip_sha": "af9323413bd51936db630938d9494d06b5c0c4fd"
         },
         {
           "number": 87,
@@ -185,8 +277,9 @@
           "base_ref": "feature/topic-forum-reference-2026-11-12",
           "head_ref": "research/ashild-transitive-source-visibility-2026-11-13",
           "pr_head_sha": "e19a1d9603ab668c9030da97f0a58cef0f7ecccb",
-          "branch_tip_sha": "e19a1d9603ab668c9030da97f0a58cef0f7ecccb",
-          "pr_head_matches_branch_tip": true
+          "branch_tip_sha": null,
+          "pr_head_matches_branch_tip": null,
+          "previous_snapshot_branch_tip_sha": "e19a1d9603ab668c9030da97f0a58cef0f7ecccb"
         },
         {
           "number": 86,
@@ -202,8 +295,9 @@
           "base_ref": "feature/topic-forum-reference-2026-11-12",
           "head_ref": "feature/dynamic-peer-learning-ledger-2026-11-12",
           "pr_head_sha": "d75d8ae23568ed2c77c62b526ee807ce759607cf",
-          "branch_tip_sha": "d75d8ae23568ed2c77c62b526ee807ce759607cf",
-          "pr_head_matches_branch_tip": true
+          "branch_tip_sha": null,
+          "pr_head_matches_branch_tip": null,
+          "previous_snapshot_branch_tip_sha": "d75d8ae23568ed2c77c62b526ee807ce759607cf"
         },
         {
           "number": 85,
@@ -213,14 +307,15 @@
           "draft": true,
           "merged": false,
           "created_at": "2026-11-12T22:26:18Z",
-          "updated_at": "2026-11-13T06:40:41Z",
+          "updated_at": "2026-11-13T08:39:23Z",
           "closed_at": null,
           "merged_at": null,
           "base_ref": "feature/action-authorization-fence-2026-11-12",
           "head_ref": "feature/topic-forum-reference-2026-11-12",
           "pr_head_sha": "98fe868c39303957bd8f78a1a49489721ddc3894",
-          "branch_tip_sha": "98fe868c39303957bd8f78a1a49489721ddc3894",
-          "pr_head_matches_branch_tip": true
+          "branch_tip_sha": null,
+          "pr_head_matches_branch_tip": null,
+          "previous_snapshot_branch_tip_sha": "98fe868c39303957bd8f78a1a49489721ddc3894"
         },
         {
           "number": 84,
@@ -236,8 +331,9 @@
           "base_ref": "fix/strict-existing-chat-reply-correlation-2026-11-12",
           "head_ref": "feature/action-authorization-fence-2026-11-12",
           "pr_head_sha": "0f53501166cd686721084113dc4bd811fa5b96f7",
-          "branch_tip_sha": "0f53501166cd686721084113dc4bd811fa5b96f7",
-          "pr_head_matches_branch_tip": true
+          "branch_tip_sha": null,
+          "pr_head_matches_branch_tip": null,
+          "previous_snapshot_branch_tip_sha": "0f53501166cd686721084113dc4bd811fa5b96f7"
         },
         {
           "number": 83,
@@ -253,8 +349,9 @@
           "base_ref": "feature/evening-local-terminal-2026-11-10",
           "head_ref": "fix/strict-existing-chat-reply-correlation-2026-11-12",
           "pr_head_sha": "00f0d4d0c0c7ec74ebb1618712e22a210c43fd71",
-          "branch_tip_sha": "00f0d4d0c0c7ec74ebb1618712e22a210c43fd71",
-          "pr_head_matches_branch_tip": true
+          "branch_tip_sha": null,
+          "pr_head_matches_branch_tip": null,
+          "previous_snapshot_branch_tip_sha": "00f0d4d0c0c7ec74ebb1618712e22a210c43fd71"
         },
         {
           "number": 82,
@@ -270,8 +367,9 @@
           "base_ref": "feature/evening-local-terminal-2026-11-10",
           "head_ref": "fix/baton-safe-update-greg-v2-2026-11-11",
           "pr_head_sha": "73c18c711af086e3f936d969850572cd5b923812",
-          "branch_tip_sha": "73c18c711af086e3f936d969850572cd5b923812",
-          "pr_head_matches_branch_tip": true
+          "branch_tip_sha": null,
+          "pr_head_matches_branch_tip": null,
+          "previous_snapshot_branch_tip_sha": "73c18c711af086e3f936d969850572cd5b923812"
         },
         {
           "number": 81,
@@ -287,8 +385,9 @@
           "base_ref": "feature/evening-local-terminal-2026-11-10",
           "head_ref": "feature/model-existing-chat-relay-v2-final-2026-11-11",
           "pr_head_sha": "bd852a3cdb8d5a6554a5bf4ade6931a20b5743ab",
-          "branch_tip_sha": "bd852a3cdb8d5a6554a5bf4ade6931a20b5743ab",
-          "pr_head_matches_branch_tip": true
+          "branch_tip_sha": null,
+          "pr_head_matches_branch_tip": null,
+          "previous_snapshot_branch_tip_sha": "bd852a3cdb8d5a6554a5bf4ade6931a20b5743ab"
         },
         {
           "number": 80,
@@ -304,8 +403,9 @@
           "base_ref": "feature/evening-local-terminal-2026-11-10",
           "head_ref": "fix/baton-safe-update-greg-2026-11-11",
           "pr_head_sha": "837e15480d091e3d919baf7ca643cb9bc33ef91f",
-          "branch_tip_sha": "837e15480d091e3d919baf7ca643cb9bc33ef91f",
-          "pr_head_matches_branch_tip": true
+          "branch_tip_sha": null,
+          "pr_head_matches_branch_tip": null,
+          "previous_snapshot_branch_tip_sha": "837e15480d091e3d919baf7ca643cb9bc33ef91f"
         },
         {
           "number": 79,
@@ -321,8 +421,9 @@
           "base_ref": "feature/evening-local-terminal-2026-11-10",
           "head_ref": "feature/model-existing-chat-relay-v1-rebased-2026-11-11",
           "pr_head_sha": "60fcedf40f736241b78493362145f2c1d0c9425e",
-          "branch_tip_sha": "60fcedf40f736241b78493362145f2c1d0c9425e",
-          "pr_head_matches_branch_tip": true
+          "branch_tip_sha": null,
+          "pr_head_matches_branch_tip": null,
+          "previous_snapshot_branch_tip_sha": "60fcedf40f736241b78493362145f2c1d0c9425e"
         },
         {
           "number": 78,
@@ -338,8 +439,9 @@
           "base_ref": "feature/evening-local-terminal-2026-11-10",
           "head_ref": "feature/model-existing-chat-relay-v1-rebased-2026-11-11",
           "pr_head_sha": "60fcedf40f736241b78493362145f2c1d0c9425e",
-          "branch_tip_sha": "60fcedf40f736241b78493362145f2c1d0c9425e",
-          "pr_head_matches_branch_tip": true
+          "branch_tip_sha": null,
+          "pr_head_matches_branch_tip": null,
+          "previous_snapshot_branch_tip_sha": "60fcedf40f736241b78493362145f2c1d0c9425e"
         },
         {
           "number": 77,
@@ -355,8 +457,9 @@
           "base_ref": "feature/evening-local-terminal-2026-11-10",
           "head_ref": "feature/model-existing-chat-relay-v1-rebased-2026-11-11",
           "pr_head_sha": "ae6b434e7a84e8fc8da5e912f9712e9427aebd4a",
-          "branch_tip_sha": "60fcedf40f736241b78493362145f2c1d0c9425e",
-          "pr_head_matches_branch_tip": false
+          "branch_tip_sha": null,
+          "pr_head_matches_branch_tip": null,
+          "previous_snapshot_branch_tip_sha": "60fcedf40f736241b78493362145f2c1d0c9425e"
         },
         {
           "number": 76,
@@ -372,8 +475,9 @@
           "base_ref": "feature/evening-local-terminal-2026-11-10",
           "head_ref": "feature/model-existing-chat-relay-v1-rebased-2026-11-11",
           "pr_head_sha": "85af72130bb319e88e54068b593e4121da5cb598",
-          "branch_tip_sha": "60fcedf40f736241b78493362145f2c1d0c9425e",
-          "pr_head_matches_branch_tip": false
+          "branch_tip_sha": null,
+          "pr_head_matches_branch_tip": null,
+          "previous_snapshot_branch_tip_sha": "60fcedf40f736241b78493362145f2c1d0c9425e"
         },
         {
           "number": 75,
@@ -389,8 +493,9 @@
           "base_ref": "feature/evening-local-terminal-2026-11-10",
           "head_ref": "feature/model-existing-chat-relay-v1-2026-11-11",
           "pr_head_sha": "396d28f13d4a8d9209a84816b9fddb7b97d4031a",
-          "branch_tip_sha": "396d28f13d4a8d9209a84816b9fddb7b97d4031a",
-          "pr_head_matches_branch_tip": true
+          "branch_tip_sha": null,
+          "pr_head_matches_branch_tip": null,
+          "previous_snapshot_branch_tip_sha": "396d28f13d4a8d9209a84816b9fddb7b97d4031a"
         },
         {
           "number": 74,
@@ -406,8 +511,9 @@
           "base_ref": "feature/evening-local-terminal-2026-11-10",
           "head_ref": "fix/model-bridge-observer-tool-line-2026-11-11",
           "pr_head_sha": "ff715b2760b023faf96261fb930db5f1995feaf0",
-          "branch_tip_sha": "ff715b2760b023faf96261fb930db5f1995feaf0",
-          "pr_head_matches_branch_tip": true
+          "branch_tip_sha": null,
+          "pr_head_matches_branch_tip": null,
+          "previous_snapshot_branch_tip_sha": "ff715b2760b023faf96261fb930db5f1995feaf0"
         },
         {
           "number": 73,
@@ -423,8 +529,9 @@
           "base_ref": "feature/evening-local-terminal-2026-11-10",
           "head_ref": "fix/shell-executable-modes-2026-11-11",
           "pr_head_sha": "ed55b67d75ed3671e1abe93fd9be0763a3c90542",
-          "branch_tip_sha": "ed55b67d75ed3671e1abe93fd9be0763a3c90542",
-          "pr_head_matches_branch_tip": true
+          "branch_tip_sha": null,
+          "pr_head_matches_branch_tip": null,
+          "previous_snapshot_branch_tip_sha": "ed55b67d75ed3671e1abe93fd9be0763a3c90542"
         },
         {
           "number": 72,
@@ -440,8 +547,9 @@
           "base_ref": "feature/evening-local-terminal-2026-11-10",
           "head_ref": "fix/remote-mcp-core-boundary-rebased-2026-11-11",
           "pr_head_sha": "ddc6a430743c8a4e7043d148e62a891309182cfb",
-          "branch_tip_sha": "ddc6a430743c8a4e7043d148e62a891309182cfb",
-          "pr_head_matches_branch_tip": true
+          "branch_tip_sha": null,
+          "pr_head_matches_branch_tip": null,
+          "previous_snapshot_branch_tip_sha": "ddc6a430743c8a4e7043d148e62a891309182cfb"
         },
         {
           "number": 71,
@@ -457,8 +565,9 @@
           "base_ref": "feature/evening-local-terminal-2026-11-10",
           "head_ref": "fix/existing-chat-auto-core-2026-11-11",
           "pr_head_sha": "c6527e7979643a24e6d455e660e9f9d74f24604b",
-          "branch_tip_sha": "c6527e7979643a24e6d455e660e9f9d74f24604b",
-          "pr_head_matches_branch_tip": true
+          "branch_tip_sha": null,
+          "pr_head_matches_branch_tip": null,
+          "previous_snapshot_branch_tip_sha": "c6527e7979643a24e6d455e660e9f9d74f24604b"
         },
         {
           "number": 70,
@@ -474,8 +583,9 @@
           "base_ref": "feature/evening-local-terminal-2026-11-10",
           "head_ref": "fix/remote-mcp-core-boundary-2026-11-11",
           "pr_head_sha": "da6631ea6c89405df522616707a0caa3c35ee98d",
-          "branch_tip_sha": "da6631ea6c89405df522616707a0caa3c35ee98d",
-          "pr_head_matches_branch_tip": true
+          "branch_tip_sha": null,
+          "pr_head_matches_branch_tip": null,
+          "previous_snapshot_branch_tip_sha": "da6631ea6c89405df522616707a0caa3c35ee98d"
         },
         {
           "number": 69,
@@ -491,8 +601,9 @@
           "base_ref": "feature/evening-local-terminal-2026-11-10",
           "head_ref": "feature/single-core-dual-model-session-2026-11-11",
           "pr_head_sha": "c41e70c3a0c7273d99cbdd505ca8999771cbf1b5",
-          "branch_tip_sha": "c41e70c3a0c7273d99cbdd505ca8999771cbf1b5",
-          "pr_head_matches_branch_tip": true
+          "branch_tip_sha": null,
+          "pr_head_matches_branch_tip": null,
+          "previous_snapshot_branch_tip_sha": "c41e70c3a0c7273d99cbdd505ca8999771cbf1b5"
         },
         {
           "number": 68,
@@ -508,8 +619,9 @@
           "base_ref": "feature/evening-local-terminal-2026-11-10",
           "head_ref": "fix/model-context-snapshot-at-send-2026-11-11",
           "pr_head_sha": "42882237ea08519d26288355919a6bd5cff20159",
-          "branch_tip_sha": "42882237ea08519d26288355919a6bd5cff20159",
-          "pr_head_matches_branch_tip": true
+          "branch_tip_sha": null,
+          "pr_head_matches_branch_tip": null,
+          "previous_snapshot_branch_tip_sha": "42882237ea08519d26288355919a6bd5cff20159"
         },
         {
           "number": 67,
@@ -525,8 +637,9 @@
           "base_ref": "feature/evening-local-terminal-2026-11-10",
           "head_ref": "fix/baton-direct-mcp-approval-prompt-2026-11-11",
           "pr_head_sha": "bd5a3f774eaa5a6179d19fbac113e26b492beb63",
-          "branch_tip_sha": "bd5a3f774eaa5a6179d19fbac113e26b492beb63",
-          "pr_head_matches_branch_tip": true
+          "branch_tip_sha": null,
+          "pr_head_matches_branch_tip": null,
+          "previous_snapshot_branch_tip_sha": "bd5a3f774eaa5a6179d19fbac113e26b492beb63"
         },
         {
           "number": 66,
@@ -542,8 +655,9 @@
           "base_ref": "feature/evening-local-terminal-2026-11-10",
           "head_ref": "fix/baton-mcp-stdio-malformed-params-2026-11-11",
           "pr_head_sha": "1791bf0b5920b35a86d840cebe2f07c92185af82",
-          "branch_tip_sha": "1791bf0b5920b35a86d840cebe2f07c92185af82",
-          "pr_head_matches_branch_tip": true
+          "branch_tip_sha": null,
+          "pr_head_matches_branch_tip": null,
+          "previous_snapshot_branch_tip_sha": "1791bf0b5920b35a86d840cebe2f07c92185af82"
         },
         {
           "number": 65,
@@ -553,14 +667,15 @@
           "draft": true,
           "merged": false,
           "created_at": "2026-11-11T15:31:00Z",
-          "updated_at": "2026-11-13T06:31:32Z",
+          "updated_at": "2026-11-13T07:12:10Z",
           "closed_at": null,
           "merged_at": null,
           "base_ref": "main",
           "head_ref": "docs/eik-repository-onboarding-2026-11-11",
-          "pr_head_sha": "b643ae1af0f7faf8091d0d7cde688dac18932e22",
-          "branch_tip_sha": "b643ae1af0f7faf8091d0d7cde688dac18932e22",
-          "pr_head_matches_branch_tip": true
+          "pr_head_sha": "f54f6cf470d7edde9ea85e60ff68874803d72cb6",
+          "branch_tip_sha": null,
+          "pr_head_matches_branch_tip": null,
+          "previous_snapshot_branch_tip_sha": "b643ae1af0f7faf8091d0d7cde688dac18932e22"
         },
         {
           "number": 64,
@@ -576,8 +691,9 @@
           "base_ref": "feature/evening-local-terminal-2026-11-10",
           "head_ref": "feature/baton-readonly-install-status-bus-2026-11-11",
           "pr_head_sha": "a97c49aed44841ad729b3c28c556ed01208fb70e",
-          "branch_tip_sha": "a97c49aed44841ad729b3c28c556ed01208fb70e",
-          "pr_head_matches_branch_tip": true
+          "branch_tip_sha": null,
+          "pr_head_matches_branch_tip": null,
+          "previous_snapshot_branch_tip_sha": "a97c49aed44841ad729b3c28c556ed01208fb70e"
         },
         {
           "number": 63,
@@ -593,8 +709,9 @@
           "base_ref": "feature/b1-h25-legacy-next-digest-gate-2026-11-11",
           "head_ref": "feature/b1-h26-r27-preconnect-entry-2026-11-11",
           "pr_head_sha": "4f854dfefd7da1b9ab23c02eb9209d3709961ad0",
-          "branch_tip_sha": "4f854dfefd7da1b9ab23c02eb9209d3709961ad0",
-          "pr_head_matches_branch_tip": true
+          "branch_tip_sha": null,
+          "pr_head_matches_branch_tip": null,
+          "previous_snapshot_branch_tip_sha": "4f854dfefd7da1b9ab23c02eb9209d3709961ad0"
         },
         {
           "number": 62,
@@ -610,8 +727,9 @@
           "base_ref": "research/ronja-r26-sealed-unix-channel-2026-11-11",
           "head_ref": "research/ronja-r27-four-session-seal-2026-11-11",
           "pr_head_sha": "0f6935461e8a40e143f9497ce792dcc18bc10f9c",
-          "branch_tip_sha": "0f6935461e8a40e143f9497ce792dcc18bc10f9c",
-          "pr_head_matches_branch_tip": true
+          "branch_tip_sha": null,
+          "pr_head_matches_branch_tip": null,
+          "previous_snapshot_branch_tip_sha": "0f6935461e8a40e143f9497ce792dcc18bc10f9c"
         },
         {
           "number": 61,
@@ -627,8 +745,9 @@
           "base_ref": "feature/b1-r25-lifetime-enforcement-2026-11-11",
           "head_ref": "feature/b1-h25-legacy-next-digest-gate-2026-11-11",
           "pr_head_sha": "f5dd9d71015da1961d3f9ad5f123c77ac32a348d",
-          "branch_tip_sha": "f5dd9d71015da1961d3f9ad5f123c77ac32a348d",
-          "pr_head_matches_branch_tip": true
+          "branch_tip_sha": null,
+          "pr_head_matches_branch_tip": null,
+          "previous_snapshot_branch_tip_sha": "f5dd9d71015da1961d3f9ad5f123c77ac32a348d"
         },
         {
           "number": 60,
@@ -644,8 +763,9 @@
           "base_ref": "research/ronja-r25-seccomp-observer-lifetime-2026-11-11",
           "head_ref": "research/ronja-r26-sealed-unix-channel-2026-11-11",
           "pr_head_sha": "1e1858465002a367cee6b2f38cff6411e22fa47f",
-          "branch_tip_sha": "1e1858465002a367cee6b2f38cff6411e22fa47f",
-          "pr_head_matches_branch_tip": true
+          "branch_tip_sha": null,
+          "pr_head_matches_branch_tip": null,
+          "previous_snapshot_branch_tip_sha": "1e1858465002a367cee6b2f38cff6411e22fa47f"
         },
         {
           "number": 59,
@@ -661,8 +781,9 @@
           "base_ref": "feature/b1-r24-observer-preflight-2026-11-11",
           "head_ref": "feature/b1-r25-lifetime-enforcement-2026-11-11",
           "pr_head_sha": "8d652e2a76adcd70675567cb5c97d2b4870c169f",
-          "branch_tip_sha": "8d652e2a76adcd70675567cb5c97d2b4870c169f",
-          "pr_head_matches_branch_tip": true
+          "branch_tip_sha": null,
+          "pr_head_matches_branch_tip": null,
+          "previous_snapshot_branch_tip_sha": "8d652e2a76adcd70675567cb5c97d2b4870c169f"
         },
         {
           "number": 58,
@@ -678,8 +799,9 @@
           "base_ref": "research/ronja-r24-observer-boundary-2026-11-11",
           "head_ref": "research/ronja-r25-seccomp-observer-lifetime-2026-11-11",
           "pr_head_sha": "4366521d2194ca936d1fb46bf0a29fcf40dce196",
-          "branch_tip_sha": "4366521d2194ca936d1fb46bf0a29fcf40dce196",
-          "pr_head_matches_branch_tip": true
+          "branch_tip_sha": null,
+          "pr_head_matches_branch_tip": null,
+          "previous_snapshot_branch_tip_sha": "4366521d2194ca936d1fb46bf0a29fcf40dce196"
         },
         {
           "number": 57,
@@ -695,8 +817,9 @@
           "base_ref": "feature/b1-snapshot-only-relay-2026-11-11",
           "head_ref": "feature/b1-r24-observer-preflight-2026-11-11",
           "pr_head_sha": "7775f4400ee602506fee74bff2d0ba0e244c9030",
-          "branch_tip_sha": "7775f4400ee602506fee74bff2d0ba0e244c9030",
-          "pr_head_matches_branch_tip": true
+          "branch_tip_sha": null,
+          "pr_head_matches_branch_tip": null,
+          "previous_snapshot_branch_tip_sha": "7775f4400ee602506fee74bff2d0ba0e244c9030"
         },
         {
           "number": 56,
@@ -712,8 +835,9 @@
           "base_ref": "research/ronja-r23-frame-credentials-2026-11-11",
           "head_ref": "research/ronja-r24-observer-boundary-2026-11-11",
           "pr_head_sha": "1a52dc5b03acef2f6ba4621bc4edbec2413eed0f",
-          "branch_tip_sha": "1a52dc5b03acef2f6ba4621bc4edbec2413eed0f",
-          "pr_head_matches_branch_tip": true
+          "branch_tip_sha": null,
+          "pr_head_matches_branch_tip": null,
+          "previous_snapshot_branch_tip_sha": "1a52dc5b03acef2f6ba4621bc4edbec2413eed0f"
         },
         {
           "number": 55,
@@ -729,8 +853,9 @@
           "base_ref": "feature/b1-r22-readonly-source-observer-2026-11-11",
           "head_ref": "feature/b1-snapshot-only-relay-2026-11-11",
           "pr_head_sha": "76b2c01c4ee10e4f15175b76e27f113d81e13a17",
-          "branch_tip_sha": "76b2c01c4ee10e4f15175b76e27f113d81e13a17",
-          "pr_head_matches_branch_tip": true
+          "branch_tip_sha": null,
+          "pr_head_matches_branch_tip": null,
+          "previous_snapshot_branch_tip_sha": "76b2c01c4ee10e4f15175b76e27f113d81e13a17"
         },
         {
           "number": 54,
@@ -746,8 +871,9 @@
           "base_ref": "research/ronja-r22-observed-source-handoff-2026-11-11",
           "head_ref": "research/ronja-r23-frame-credentials-2026-11-11",
           "pr_head_sha": "961f49a7230c65e479cb252a33a38fee634b5a2e",
-          "branch_tip_sha": "961f49a7230c65e479cb252a33a38fee634b5a2e",
-          "pr_head_matches_branch_tip": true
+          "branch_tip_sha": null,
+          "pr_head_matches_branch_tip": null,
+          "previous_snapshot_branch_tip_sha": "961f49a7230c65e479cb252a33a38fee634b5a2e"
         },
         {
           "number": 53,
@@ -763,8 +889,9 @@
           "base_ref": "feature/b1-r21-scoped-dispatch-2026-11-11",
           "head_ref": "feature/b1-r22-readonly-source-observer-2026-11-11",
           "pr_head_sha": "4d00f7c7f5eb1e36b1b0afe46d8f1c341fdffe7e",
-          "branch_tip_sha": "4d00f7c7f5eb1e36b1b0afe46d8f1c341fdffe7e",
-          "pr_head_matches_branch_tip": true
+          "branch_tip_sha": null,
+          "pr_head_matches_branch_tip": null,
+          "previous_snapshot_branch_tip_sha": "4d00f7c7f5eb1e36b1b0afe46d8f1c341fdffe7e"
         },
         {
           "number": 52,
@@ -780,8 +907,9 @@
           "base_ref": "research/ronja-r21-sender-uid-scope-2026-11-11",
           "head_ref": "research/ronja-r22-observed-source-handoff-2026-11-11",
           "pr_head_sha": "b0e81a646d5941f7a1eaeb9cdea27506abd2fb47",
-          "branch_tip_sha": "b0e81a646d5941f7a1eaeb9cdea27506abd2fb47",
-          "pr_head_matches_branch_tip": true
+          "branch_tip_sha": null,
+          "pr_head_matches_branch_tip": null,
+          "previous_snapshot_branch_tip_sha": "b0e81a646d5941f7a1eaeb9cdea27506abd2fb47"
         },
         {
           "number": 51,
@@ -797,8 +925,9 @@
           "base_ref": "main",
           "head_ref": "feature/baton-greg-local-executor-2026-11-11",
           "pr_head_sha": "d555926cc497d3c18aff5933976e92cee96fa991",
-          "branch_tip_sha": "d555926cc497d3c18aff5933976e92cee96fa991",
-          "pr_head_matches_branch_tip": true
+          "branch_tip_sha": null,
+          "pr_head_matches_branch_tip": null,
+          "previous_snapshot_branch_tip_sha": "d555926cc497d3c18aff5933976e92cee96fa991"
         },
         {
           "number": 50,
@@ -814,8 +943,9 @@
           "base_ref": "feature/b1-shared-group-broker-endpoint-2026-11-11",
           "head_ref": "feature/b1-r21-scoped-dispatch-2026-11-11",
           "pr_head_sha": "3c0e37e7e16ff5df26b8c731c558ab4c84e6d50c",
-          "branch_tip_sha": "3c0e37e7e16ff5df26b8c731c558ab4c84e6d50c",
-          "pr_head_matches_branch_tip": true
+          "branch_tip_sha": null,
+          "pr_head_matches_branch_tip": null,
+          "previous_snapshot_branch_tip_sha": "3c0e37e7e16ff5df26b8c731c558ab4c84e6d50c"
         },
         {
           "number": 49,
@@ -831,8 +961,9 @@
           "base_ref": "research/ronja-r20-retirement-quarantine-2026-11-11",
           "head_ref": "research/ronja-r21-sender-uid-scope-2026-11-11",
           "pr_head_sha": "7fb167b8dd5aee0450ee0adb9125e80697050301",
-          "branch_tip_sha": "7fb167b8dd5aee0450ee0adb9125e80697050301",
-          "pr_head_matches_branch_tip": true
+          "branch_tip_sha": null,
+          "pr_head_matches_branch_tip": null,
+          "previous_snapshot_branch_tip_sha": "7fb167b8dd5aee0450ee0adb9125e80697050301"
         },
         {
           "number": 48,
@@ -848,8 +979,9 @@
           "base_ref": "feature/b1-cross-target-source-spend-2026-11-11",
           "head_ref": "feature/b1-shared-group-broker-endpoint-2026-11-11",
           "pr_head_sha": "848c889541afadf46d2699dc01d0d27f3cc60f37",
-          "branch_tip_sha": "848c889541afadf46d2699dc01d0d27f3cc60f37",
-          "pr_head_matches_branch_tip": true
+          "branch_tip_sha": null,
+          "pr_head_matches_branch_tip": null,
+          "previous_snapshot_branch_tip_sha": "848c889541afadf46d2699dc01d0d27f3cc60f37"
         },
         {
           "number": 47,
@@ -865,8 +997,9 @@
           "base_ref": "feature/b1-source-payload-digest-2026-11-11",
           "head_ref": "feature/b1-cross-target-source-spend-2026-11-11",
           "pr_head_sha": "fd6084f9919c23e2e0fc149436fb0742a7a32a4a",
-          "branch_tip_sha": "fd6084f9919c23e2e0fc149436fb0742a7a32a4a",
-          "pr_head_matches_branch_tip": true
+          "branch_tip_sha": null,
+          "pr_head_matches_branch_tip": null,
+          "previous_snapshot_branch_tip_sha": "fd6084f9919c23e2e0fc149436fb0742a7a32a4a"
         },
         {
           "number": 46,
@@ -882,8 +1015,9 @@
           "base_ref": "research/ronja-r19-create-only-desktop-2026-11-11",
           "head_ref": "research/ronja-r20-retirement-quarantine-2026-11-11",
           "pr_head_sha": "cbb12056fe7af287afaed223f3485223e598eb3e",
-          "branch_tip_sha": "cbb12056fe7af287afaed223f3485223e598eb3e",
-          "pr_head_matches_branch_tip": true
+          "branch_tip_sha": null,
+          "pr_head_matches_branch_tip": null,
+          "previous_snapshot_branch_tip_sha": "cbb12056fe7af287afaed223f3485223e598eb3e"
         },
         {
           "number": 45,
@@ -899,8 +1033,9 @@
           "base_ref": "feature/b1-lock-postsection-uncertainty-2026-11-11",
           "head_ref": "feature/b1-source-payload-digest-2026-11-11",
           "pr_head_sha": "fcb77f70f99222b30fd0a648edee6262d3552af0",
-          "branch_tip_sha": "fcb77f70f99222b30fd0a648edee6262d3552af0",
-          "pr_head_matches_branch_tip": true
+          "branch_tip_sha": null,
+          "pr_head_matches_branch_tip": null,
+          "previous_snapshot_branch_tip_sha": "fcb77f70f99222b30fd0a648edee6262d3552af0"
         },
         {
           "number": 44,
@@ -916,8 +1051,9 @@
           "base_ref": "research/ronja-r18-readonly-host-manifest-2026-11-11",
           "head_ref": "research/ronja-r19-create-only-desktop-2026-11-11",
           "pr_head_sha": "ade149cf3ac4fb13f91fb8d37ad7c3702928fe75",
-          "branch_tip_sha": "ade149cf3ac4fb13f91fb8d37ad7c3702928fe75",
-          "pr_head_matches_branch_tip": true
+          "branch_tip_sha": null,
+          "pr_head_matches_branch_tip": null,
+          "previous_snapshot_branch_tip_sha": "ade149cf3ac4fb13f91fb8d37ad7c3702928fe75"
         },
         {
           "number": 43,
@@ -933,8 +1069,9 @@
           "base_ref": "feature/b1-short-ui-lock-2026-11-11",
           "head_ref": "feature/b1-lock-postsection-uncertainty-2026-11-11",
           "pr_head_sha": "f74799b42b27cd50df41a884c01493912601ae86",
-          "branch_tip_sha": "f74799b42b27cd50df41a884c01493912601ae86",
-          "pr_head_matches_branch_tip": true
+          "branch_tip_sha": null,
+          "pr_head_matches_branch_tip": null,
+          "previous_snapshot_branch_tip_sha": "f74799b42b27cd50df41a884c01493912601ae86"
         },
         {
           "number": 42,
@@ -950,8 +1087,9 @@
           "base_ref": "research/ronja-r17-source-probe-2026-11-11",
           "head_ref": "research/ronja-r18-readonly-host-manifest-2026-11-11",
           "pr_head_sha": "af2258760374f37459a9f456277535f5ff18cfda",
-          "branch_tip_sha": "af2258760374f37459a9f456277535f5ff18cfda",
-          "pr_head_matches_branch_tip": true
+          "branch_tip_sha": null,
+          "pr_head_matches_branch_tip": null,
+          "previous_snapshot_branch_tip_sha": "af2258760374f37459a9f456277535f5ff18cfda"
         },
         {
           "number": 41,
@@ -967,8 +1105,9 @@
           "base_ref": "feature/b1-bound-socket-identity-2026-11-11",
           "head_ref": "feature/b1-short-ui-lock-2026-11-11",
           "pr_head_sha": "b981e0aaf5237de054b342f5065d71587265ce5d",
-          "branch_tip_sha": "b981e0aaf5237de054b342f5065d71587265ce5d",
-          "pr_head_matches_branch_tip": true
+          "branch_tip_sha": null,
+          "pr_head_matches_branch_tip": null,
+          "previous_snapshot_branch_tip_sha": "b981e0aaf5237de054b342f5065d71587265ce5d"
         },
         {
           "number": 40,
@@ -984,8 +1123,9 @@
           "base_ref": "research/ronja-r16-endpoint-inode-2026-11-11",
           "head_ref": "research/ronja-r17-source-probe-2026-11-11",
           "pr_head_sha": "d9abb93b79e0b23fd555ce18967fe669b2498fcd",
-          "branch_tip_sha": "d9abb93b79e0b23fd555ce18967fe669b2498fcd",
-          "pr_head_matches_branch_tip": true
+          "branch_tip_sha": null,
+          "pr_head_matches_branch_tip": null,
+          "previous_snapshot_branch_tip_sha": "d9abb93b79e0b23fd555ce18967fe669b2498fcd"
         },
         {
           "number": 39,
@@ -1001,8 +1141,9 @@
           "base_ref": "feature/b1-readonly-greg-readiness-2026-11-11",
           "head_ref": "feature/b1-bound-socket-identity-2026-11-11",
           "pr_head_sha": "6a8743fe20b4769a55fb9858620be2f0c171109b",
-          "branch_tip_sha": "6a8743fe20b4769a55fb9858620be2f0c171109b",
-          "pr_head_matches_branch_tip": true
+          "branch_tip_sha": null,
+          "pr_head_matches_branch_tip": null,
+          "previous_snapshot_branch_tip_sha": "6a8743fe20b4769a55fb9858620be2f0c171109b"
         },
         {
           "number": 38,
@@ -1018,8 +1159,9 @@
           "base_ref": "research/ronja-r15-evidence-parent-fd-2026-11-11",
           "head_ref": "research/ronja-r16-endpoint-inode-2026-11-11",
           "pr_head_sha": "c3d64f8a729090d3a731d8ea1586d4712a57df71",
-          "branch_tip_sha": "c3d64f8a729090d3a731d8ea1586d4712a57df71",
-          "pr_head_matches_branch_tip": true
+          "branch_tip_sha": null,
+          "pr_head_matches_branch_tip": null,
+          "previous_snapshot_branch_tip_sha": "c3d64f8a729090d3a731d8ea1586d4712a57df71"
         },
         {
           "number": 37,
@@ -1035,8 +1177,9 @@
           "base_ref": "feature/b1-pinned-broker-socket-2026-11-11",
           "head_ref": "feature/b1-readonly-greg-readiness-2026-11-11",
           "pr_head_sha": "044b5366ca21b44541d370291e749149cbed543a",
-          "branch_tip_sha": "044b5366ca21b44541d370291e749149cbed543a",
-          "pr_head_matches_branch_tip": true
+          "branch_tip_sha": null,
+          "pr_head_matches_branch_tip": null,
+          "previous_snapshot_branch_tip_sha": "044b5366ca21b44541d370291e749149cbed543a"
         },
         {
           "number": 36,
@@ -1052,8 +1195,9 @@
           "base_ref": "feature/b1-broker-bounded-frames-2026-11-11",
           "head_ref": "feature/b1-pinned-broker-socket-2026-11-11",
           "pr_head_sha": "1414b92aaad49e0bb3136eb3fe3d3ed8c883610e",
-          "branch_tip_sha": "1414b92aaad49e0bb3136eb3fe3d3ed8c883610e",
-          "pr_head_matches_branch_tip": true
+          "branch_tip_sha": null,
+          "pr_head_matches_branch_tip": null,
+          "previous_snapshot_branch_tip_sha": "1414b92aaad49e0bb3136eb3fe3d3ed8c883610e"
         },
         {
           "number": 35,
@@ -1069,8 +1213,9 @@
           "base_ref": "research/ronja-r14-source-broker-parent-fd-2026-11-11",
           "head_ref": "research/ronja-r15-evidence-parent-fd-2026-11-11",
           "pr_head_sha": "9d1a05075ae0d780e5378ed0b659d646e3df6f71",
-          "branch_tip_sha": "9d1a05075ae0d780e5378ed0b659d646e3df6f71",
-          "pr_head_matches_branch_tip": true
+          "branch_tip_sha": null,
+          "pr_head_matches_branch_tip": null,
+          "previous_snapshot_branch_tip_sha": "9d1a05075ae0d780e5378ed0b659d646e3df6f71"
         },
         {
           "number": 34,
@@ -1086,8 +1231,9 @@
           "base_ref": "feature/b1-post-c-source-revalidation-2026-11-11",
           "head_ref": "feature/b1-broker-bounded-frames-2026-11-11",
           "pr_head_sha": "f54ba39a943b0297a45ee71229f30838fac054e2",
-          "branch_tip_sha": "f54ba39a943b0297a45ee71229f30838fac054e2",
-          "pr_head_matches_branch_tip": true
+          "branch_tip_sha": null,
+          "pr_head_matches_branch_tip": null,
+          "previous_snapshot_branch_tip_sha": "f54ba39a943b0297a45ee71229f30838fac054e2"
         },
         {
           "number": 33,
@@ -1103,8 +1249,9 @@
           "base_ref": "research/ronja-r13-source-broker-startup-rollback-2026-11-11",
           "head_ref": "research/ronja-r14-source-broker-parent-fd-2026-11-11",
           "pr_head_sha": "cbb1d28f68bc614a637ee82a6646786245821dfe",
-          "branch_tip_sha": "cbb1d28f68bc614a637ee82a6646786245821dfe",
-          "pr_head_matches_branch_tip": true
+          "branch_tip_sha": null,
+          "pr_head_matches_branch_tip": null,
+          "previous_snapshot_branch_tip_sha": "cbb1d28f68bc614a637ee82a6646786245821dfe"
         },
         {
           "number": 32,
@@ -1120,8 +1267,9 @@
           "base_ref": "research/ronja-r12-source-broker-deadline-2026-11-10",
           "head_ref": "research/ronja-r13-source-broker-startup-rollback-2026-11-11",
           "pr_head_sha": "e38e45e749fb81e7a1dbbee54c0e43f29211bce1",
-          "branch_tip_sha": "e38e45e749fb81e7a1dbbee54c0e43f29211bce1",
-          "pr_head_matches_branch_tip": true
+          "branch_tip_sha": null,
+          "pr_head_matches_branch_tip": null,
+          "previous_snapshot_branch_tip_sha": "e38e45e749fb81e7a1dbbee54c0e43f29211bce1"
         },
         {
           "number": 31,
@@ -1137,8 +1285,9 @@
           "base_ref": "feature/b1-c-reply-snapshot-2026-11-10",
           "head_ref": "feature/b1-post-c-source-revalidation-2026-11-11",
           "pr_head_sha": "a5bc800dfa5dba4fbdc2583d4f805ac2313bed13",
-          "branch_tip_sha": "a5bc800dfa5dba4fbdc2583d4f805ac2313bed13",
-          "pr_head_matches_branch_tip": true
+          "branch_tip_sha": null,
+          "pr_head_matches_branch_tip": null,
+          "previous_snapshot_branch_tip_sha": "a5bc800dfa5dba4fbdc2583d4f805ac2313bed13"
         },
         {
           "number": 30,
@@ -1154,8 +1303,9 @@
           "base_ref": "research/ronja-r11-source-broker-2026-11-10",
           "head_ref": "research/ronja-r12-source-broker-deadline-2026-11-10",
           "pr_head_sha": "fa550d046f3c22322ee8881986be9262929b91f8",
-          "branch_tip_sha": "fa550d046f3c22322ee8881986be9262929b91f8",
-          "pr_head_matches_branch_tip": true
+          "branch_tip_sha": null,
+          "pr_head_matches_branch_tip": null,
+          "previous_snapshot_branch_tip_sha": "fa550d046f3c22322ee8881986be9262929b91f8"
         },
         {
           "number": 29,
@@ -1171,8 +1321,9 @@
           "base_ref": "feature/b1-a-source-turn-revalidation-2026-11-10",
           "head_ref": "feature/b1-c-reply-snapshot-2026-11-10",
           "pr_head_sha": "dd5a5af710fe68b5e4ccba556efe5e05fdeff76a",
-          "branch_tip_sha": "dd5a5af710fe68b5e4ccba556efe5e05fdeff76a",
-          "pr_head_matches_branch_tip": true
+          "branch_tip_sha": null,
+          "pr_head_matches_branch_tip": null,
+          "previous_snapshot_branch_tip_sha": "dd5a5af710fe68b5e4ccba556efe5e05fdeff76a"
         },
         {
           "number": 28,
@@ -1188,8 +1339,9 @@
           "base_ref": "research/ronja-r10-rustworld-source-cli-2026-11-10",
           "head_ref": "research/ronja-r11-source-broker-2026-11-10",
           "pr_head_sha": "955e14e382e2045a89fa46f0f829b2371a68b556",
-          "branch_tip_sha": "955e14e382e2045a89fa46f0f829b2371a68b556",
-          "pr_head_matches_branch_tip": true
+          "branch_tip_sha": null,
+          "pr_head_matches_branch_tip": null,
+          "previous_snapshot_branch_tip_sha": "955e14e382e2045a89fa46f0f829b2371a68b556"
         },
         {
           "number": 27,
@@ -1205,8 +1357,9 @@
           "base_ref": "feature/b1-observed-turn-digest-2026-11-10",
           "head_ref": "feature/b1-a-source-turn-revalidation-2026-11-10",
           "pr_head_sha": "c9c1ca3fcc8c1f5d56b98a27bcbef336a85921cc",
-          "branch_tip_sha": "c9c1ca3fcc8c1f5d56b98a27bcbef336a85921cc",
-          "pr_head_matches_branch_tip": true
+          "branch_tip_sha": null,
+          "pr_head_matches_branch_tip": null,
+          "previous_snapshot_branch_tip_sha": "c9c1ca3fcc8c1f5d56b98a27bcbef336a85921cc"
         },
         {
           "number": 26,
@@ -1222,8 +1375,9 @@
           "base_ref": "research/ronja-r9-rustworld-pinned-source-2026-11-10",
           "head_ref": "research/ronja-r10-rustworld-source-cli-2026-11-10",
           "pr_head_sha": "490f6632c7e1e77d74158ec71e136758d37cf4a4",
-          "branch_tip_sha": "490f6632c7e1e77d74158ec71e136758d37cf4a4",
-          "pr_head_matches_branch_tip": true
+          "branch_tip_sha": null,
+          "pr_head_matches_branch_tip": null,
+          "previous_snapshot_branch_tip_sha": "490f6632c7e1e77d74158ec71e136758d37cf4a4"
         },
         {
           "number": 25,
@@ -1239,8 +1393,9 @@
           "base_ref": "main",
           "head_ref": "feature/evening-local-terminal-2026-11-10",
           "pr_head_sha": "cbf5732ce63eff9dac3a374ff5ada8b3ae302189",
-          "branch_tip_sha": "cbf5732ce63eff9dac3a374ff5ada8b3ae302189",
-          "pr_head_matches_branch_tip": true
+          "branch_tip_sha": null,
+          "pr_head_matches_branch_tip": null,
+          "previous_snapshot_branch_tip_sha": "cbf5732ce63eff9dac3a374ff5ada8b3ae302189"
         },
         {
           "number": 24,
@@ -1256,8 +1411,9 @@
           "base_ref": "integration/baton-desktop-launcher-2026-11-10",
           "head_ref": "feature/b1-b5-launcher-dirfd-2026-11-10",
           "pr_head_sha": "7f5176c4f4608ecb8dc873fbc4135cfb41656134",
-          "branch_tip_sha": "7f5176c4f4608ecb8dc873fbc4135cfb41656134",
-          "pr_head_matches_branch_tip": true
+          "branch_tip_sha": null,
+          "pr_head_matches_branch_tip": null,
+          "previous_snapshot_branch_tip_sha": "7f5176c4f4608ecb8dc873fbc4135cfb41656134"
         },
         {
           "number": 23,
@@ -1273,8 +1429,9 @@
           "base_ref": "research/ronja-remote-security-r6-corpus-2026-11-10",
           "head_ref": "research/ronja-r9-rustworld-pinned-source-2026-11-10",
           "pr_head_sha": "f5f71585768efb04e55bc437d3639306fec48876",
-          "branch_tip_sha": "f5f71585768efb04e55bc437d3639306fec48876",
-          "pr_head_matches_branch_tip": true
+          "branch_tip_sha": null,
+          "pr_head_matches_branch_tip": null,
+          "previous_snapshot_branch_tip_sha": "f5f71585768efb04e55bc437d3639306fec48876"
         },
         {
           "number": 22,
@@ -1290,8 +1447,9 @@
           "base_ref": "feature/b1-verified-peer-two-hop-2026-11-10",
           "head_ref": "feature/b1-observed-turn-digest-2026-11-10",
           "pr_head_sha": "e17e709749ae242e51f16582bdbe480ae5744c60",
-          "branch_tip_sha": "e17e709749ae242e51f16582bdbe480ae5744c60",
-          "pr_head_matches_branch_tip": true
+          "branch_tip_sha": null,
+          "pr_head_matches_branch_tip": null,
+          "previous_snapshot_branch_tip_sha": "e17e709749ae242e51f16582bdbe480ae5744c60"
         },
         {
           "number": 21,
@@ -1307,8 +1465,9 @@
           "base_ref": "feature/b1-verified-peer-single-hop-2026-11-10",
           "head_ref": "feature/b1-verified-peer-two-hop-2026-11-10",
           "pr_head_sha": "f1961385fdb0dab5ad47bfccf012e07429f26882",
-          "branch_tip_sha": "f1961385fdb0dab5ad47bfccf012e07429f26882",
-          "pr_head_matches_branch_tip": true
+          "branch_tip_sha": null,
+          "pr_head_matches_branch_tip": null,
+          "previous_snapshot_branch_tip_sha": "f1961385fdb0dab5ad47bfccf012e07429f26882"
         },
         {
           "number": 20,
@@ -1324,8 +1483,9 @@
           "base_ref": "feature/b1-broker-ui-gate-history-2026-11-10",
           "head_ref": "feature/b1-verified-peer-single-hop-2026-11-10",
           "pr_head_sha": "fb49b63653821dd2bbe7578e75aa878385f13eaf",
-          "branch_tip_sha": "fb49b63653821dd2bbe7578e75aa878385f13eaf",
-          "pr_head_matches_branch_tip": true
+          "branch_tip_sha": null,
+          "pr_head_matches_branch_tip": null,
+          "previous_snapshot_branch_tip_sha": "fb49b63653821dd2bbe7578e75aa878385f13eaf"
         },
         {
           "number": 19,
@@ -1341,8 +1501,9 @@
           "base_ref": "research/ronja-remote-security-r5-tls-2026-11-10",
           "head_ref": "research/ronja-remote-security-r6-corpus-2026-11-10",
           "pr_head_sha": "05beb7d35fc70343cd8ea74a48533411224c47fb",
-          "branch_tip_sha": "05beb7d35fc70343cd8ea74a48533411224c47fb",
-          "pr_head_matches_branch_tip": true
+          "branch_tip_sha": null,
+          "pr_head_matches_branch_tip": null,
+          "previous_snapshot_branch_tip_sha": "05beb7d35fc70343cd8ea74a48533411224c47fb"
         },
         {
           "number": 18,
@@ -1358,8 +1519,9 @@
           "base_ref": "feature/b1-click-start-durable-2026-11-10",
           "head_ref": "feature/b1-broker-ui-gate-history-2026-11-10",
           "pr_head_sha": "967aae693c840a7a4b4e26b90178d80d3ee9e38a",
-          "branch_tip_sha": "967aae693c840a7a4b4e26b90178d80d3ee9e38a",
-          "pr_head_matches_branch_tip": true
+          "branch_tip_sha": null,
+          "pr_head_matches_branch_tip": null,
+          "previous_snapshot_branch_tip_sha": "967aae693c840a7a4b4e26b90178d80d3ee9e38a"
         },
         {
           "number": 17,
@@ -1375,8 +1537,9 @@
           "base_ref": "feature/b1-admission-broker-2026-11-10",
           "head_ref": "feature/b1-click-start-durable-2026-11-10",
           "pr_head_sha": "6565b964ca321f3033ed6a9b053bb94c218a00ab",
-          "branch_tip_sha": "6565b964ca321f3033ed6a9b053bb94c218a00ab",
-          "pr_head_matches_branch_tip": true
+          "branch_tip_sha": null,
+          "pr_head_matches_branch_tip": null,
+          "previous_snapshot_branch_tip_sha": "6565b964ca321f3033ed6a9b053bb94c218a00ab"
         },
         {
           "number": 16,
@@ -1392,8 +1555,9 @@
           "base_ref": "test/b1-lock-inode-postvalidation-neg-2026-11-10",
           "head_ref": "feature/b1-admission-broker-2026-11-10",
           "pr_head_sha": "d6e415ca60d38cfae7b819f59c5f00cc950aef59",
-          "branch_tip_sha": "d6e415ca60d38cfae7b819f59c5f00cc950aef59",
-          "pr_head_matches_branch_tip": true
+          "branch_tip_sha": null,
+          "pr_head_matches_branch_tip": null,
+          "previous_snapshot_branch_tip_sha": "d6e415ca60d38cfae7b819f59c5f00cc950aef59"
         },
         {
           "number": 15,
@@ -1409,8 +1573,9 @@
           "base_ref": "research/ronja-remote-security-r4-2026-11-10",
           "head_ref": "research/ronja-remote-security-r5-tls-2026-11-10",
           "pr_head_sha": "06a6d0f68dd1a4bc8bbe09f14d97e570402a1479",
-          "branch_tip_sha": "06a6d0f68dd1a4bc8bbe09f14d97e570402a1479",
-          "pr_head_matches_branch_tip": true
+          "branch_tip_sha": null,
+          "pr_head_matches_branch_tip": null,
+          "previous_snapshot_branch_tip_sha": "06a6d0f68dd1a4bc8bbe09f14d97e570402a1479"
         },
         {
           "number": 14,
@@ -1426,8 +1591,9 @@
           "base_ref": "fix/b1-cooperative-pause-writer-2026-11-10",
           "head_ref": "test/b1-lock-inode-postvalidation-neg-2026-11-10",
           "pr_head_sha": "ce4df1adf527c8424e84e2b67c094f17513ce054",
-          "branch_tip_sha": "ce4df1adf527c8424e84e2b67c094f17513ce054",
-          "pr_head_matches_branch_tip": true
+          "branch_tip_sha": null,
+          "pr_head_matches_branch_tip": null,
+          "previous_snapshot_branch_tip_sha": "ce4df1adf527c8424e84e2b67c094f17513ce054"
         },
         {
           "number": 13,
@@ -1443,8 +1609,9 @@
           "base_ref": "research/ronja-remote-security-r3-2026-11-10",
           "head_ref": "research/ronja-remote-security-r4-2026-11-10",
           "pr_head_sha": "8aa44e64279946d5fe516aad6b6bca7ed2b8acbf",
-          "branch_tip_sha": "8aa44e64279946d5fe516aad6b6bca7ed2b8acbf",
-          "pr_head_matches_branch_tip": true
+          "branch_tip_sha": null,
+          "pr_head_matches_branch_tip": null,
+          "previous_snapshot_branch_tip_sha": "8aa44e64279946d5fe516aad6b6bca7ed2b8acbf"
         },
         {
           "number": 12,
@@ -1460,8 +1627,9 @@
           "base_ref": "fix/b1-driver-failclosed-pause-2026-11-10",
           "head_ref": "fix/b1-cooperative-pause-writer-2026-11-10",
           "pr_head_sha": "1b21c36a29a7602493272f0b20dad81253265b9e",
-          "branch_tip_sha": "1b21c36a29a7602493272f0b20dad81253265b9e",
-          "pr_head_matches_branch_tip": true
+          "branch_tip_sha": null,
+          "pr_head_matches_branch_tip": null,
+          "previous_snapshot_branch_tip_sha": "1b21c36a29a7602493272f0b20dad81253265b9e"
         },
         {
           "number": 11,
@@ -1477,8 +1645,9 @@
           "base_ref": "research/ronja-remote-security-r2-2026-11-10",
           "head_ref": "research/ronja-remote-security-r3-2026-11-10",
           "pr_head_sha": "dc3a3b651ff6da05340358c90f78f51613055277",
-          "branch_tip_sha": "dc3a3b651ff6da05340358c90f78f51613055277",
-          "pr_head_matches_branch_tip": true
+          "branch_tip_sha": null,
+          "pr_head_matches_branch_tip": null,
+          "previous_snapshot_branch_tip_sha": "dc3a3b651ff6da05340358c90f78f51613055277"
         },
         {
           "number": 10,
@@ -1494,8 +1663,9 @@
           "base_ref": "feature/verified-wake-ledger",
           "head_ref": "fix/b1-driver-failclosed-pause-2026-11-10",
           "pr_head_sha": "83629ff628b593c255714e55f4f6ab81f0d48ed8",
-          "branch_tip_sha": "83629ff628b593c255714e55f4f6ab81f0d48ed8",
-          "pr_head_matches_branch_tip": true
+          "branch_tip_sha": null,
+          "pr_head_matches_branch_tip": null,
+          "previous_snapshot_branch_tip_sha": "83629ff628b593c255714e55f4f6ab81f0d48ed8"
         },
         {
           "number": 9,
@@ -1511,8 +1681,9 @@
           "base_ref": "feature/baton-remote-b1-loopback-2026-11-10",
           "head_ref": "fix/baton-remote-b1-pause-ancestor-2026-11-10",
           "pr_head_sha": "f502cb033034d7ced999945c81af2f481fc89211",
-          "branch_tip_sha": "f502cb033034d7ced999945c81af2f481fc89211",
-          "pr_head_matches_branch_tip": true
+          "branch_tip_sha": null,
+          "pr_head_matches_branch_tip": null,
+          "previous_snapshot_branch_tip_sha": "f502cb033034d7ced999945c81af2f481fc89211"
         },
         {
           "number": 8,
@@ -1528,8 +1699,9 @@
           "base_ref": "main",
           "head_ref": "research/ronja-remote-security-r2-2026-11-10",
           "pr_head_sha": "988c665b26eb0a60b7c60b334f7f629962a7ce19",
-          "branch_tip_sha": "988c665b26eb0a60b7c60b334f7f629962a7ce19",
-          "pr_head_matches_branch_tip": true
+          "branch_tip_sha": null,
+          "pr_head_matches_branch_tip": null,
+          "previous_snapshot_branch_tip_sha": "988c665b26eb0a60b7c60b334f7f629962a7ce19"
         },
         {
           "number": 7,
@@ -1545,8 +1717,9 @@
           "base_ref": "main",
           "head_ref": "feature/baton-remote-b1-loopback-2026-11-10",
           "pr_head_sha": "fd44c93f44a7a2298e7a0bce91f2fcddc5ecee2e",
-          "branch_tip_sha": "fd44c93f44a7a2298e7a0bce91f2fcddc5ecee2e",
-          "pr_head_matches_branch_tip": true
+          "branch_tip_sha": null,
+          "pr_head_matches_branch_tip": null,
+          "previous_snapshot_branch_tip_sha": "fd44c93f44a7a2298e7a0bce91f2fcddc5ecee2e"
         },
         {
           "number": 5,
@@ -1562,8 +1735,9 @@
           "base_ref": "main",
           "head_ref": "planning/cross-project-map-2026-11-10",
           "pr_head_sha": "15c81438ba5948ce8c87f7861b4350c31aa7534c",
-          "branch_tip_sha": "15c81438ba5948ce8c87f7861b4350c31aa7534c",
-          "pr_head_matches_branch_tip": true
+          "branch_tip_sha": null,
+          "pr_head_matches_branch_tip": null,
+          "previous_snapshot_branch_tip_sha": "15c81438ba5948ce8c87f7861b4350c31aa7534c"
         },
         {
           "number": 4,
@@ -1579,8 +1753,9 @@
           "base_ref": "main",
           "head_ref": "feature/verified-wake-ledger",
           "pr_head_sha": "b576bd0e5de8a478907da34cbe1e622a66e28d01",
-          "branch_tip_sha": "b576bd0e5de8a478907da34cbe1e622a66e28d01",
-          "pr_head_matches_branch_tip": true
+          "branch_tip_sha": null,
+          "pr_head_matches_branch_tip": null,
+          "previous_snapshot_branch_tip_sha": "b576bd0e5de8a478907da34cbe1e622a66e28d01"
         }
       ]
     }
