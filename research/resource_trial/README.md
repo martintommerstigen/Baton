@@ -73,3 +73,28 @@ Next falsifying test: revoke authority after a valid multi-resource lease and
 observation but before a queued real UI effect. The dispatcher must reject it;
 independent routes must remain usable. Passing this broker's tests alone cannot
 establish that property at the actual OS/browser boundary.
+
+## Siv callback counterexample — second isolated pass
+
+Source: Siv's actual chat reply `fbff3036-0434-48fd-850e-88603ef7ad1c`
+(request `BATON-FRESH-B8F3BF09EFF943448F26C856CD875916`), and Baton
+`continuity-rhythm/9c29a228-4c2c-481d-8c14-54275b71a338`, replying to
+Søm's `db1161af-a586-486f-ae3c-67e8523abc24`.
+
+None of the original 15 broker tests establishes callback-time enforcement in
+an actual Qt/portal executor. `test_callback_epoch_trial.py` adds five deterministic
+model tests: revoke before queued callback commit; an unsafe enqueue-only negative
+control that really emits the revoked effect; both serialized orderings of
+revoke/commit; rejection of new callbacks under a revoked scope. The independent
+CDP scope completes despite GUI revocation. All five pass locally. The unsafe
+control explicitly violates the safe invariant; it is not claimed safe because
+its test passes.
+
+This fake dispatcher models check plus sink append as one critical section.
+Tokens are Python objects, not authenticated capabilities. No real Qt callback,
+portal, OS input, focus binding, or concurrent OS commit is exercised. A physical
+effect committed before revocation is retained in the journal; revocation does
+not undo it. An actual adapter must define its last cancellable boundary and
+cannot promise revocation before physical input if the OS offers no such atomic
+boundary. Next counterexample: authority remains valid but focus changes between
+validation and input — epoch checking alone cannot bind the physical recipient.
