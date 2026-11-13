@@ -36,7 +36,7 @@
   const start = root.getElementById("start");
   const stop = root.getElementById("stop");
   const status = root.getElementById("status");
-  const session = {chat:null,nonce:null,pending:false,seen:new Set()};
+  const session = {chat:null,nonce:null,epoch:0,pending:false,seen:new Set()};
   const randomId = () => {
     const bytes = new Uint8Array(16);
     crypto.getRandomValues(bytes);
@@ -49,6 +49,7 @@
   };
   const note = text => { status.textContent = text; };
   const clearSession = reason => {
+    session.epoch++;
     session.chat = null;
     session.nonce = null;
     session.pending = false;
@@ -116,10 +117,16 @@
     if (!session.nonce || !session.chat || chatId()!==session.chat) {
       throw Error("Samtalen er endret");
     }
+    // Capture the operation owner, not merely the currently active chat.
+    // Stop + re-arm in the SAME /c/ must not let an old async send resume.
+    const epoch=session.epoch, nonce=session.nonce, chat=session.chat;
+    const stillOwned=()=>session.epoch===epoch && session.nonce===nonce &&
+      session.chat===chat && chatId()===chat;
     if (typeof text!=="string" || !text.trim() || text.length>3900) {
       throw Error("Melding er for lang");
     }
     await freshWritePermission();
+    if (!stillOwned()) throw Error("Foreldet Baton-økt; ingen sending");
     const editor = findEditor();
     if (!editor) throw Error("Fant ikke ChatGPT-meldingsfeltet");
     const isArea = editor.tagName==="TEXTAREA";
@@ -143,9 +150,9 @@
     if (norm(read())!==norm(text)) throw Error("Meldingsfeltet kunne ikke verifiseres");
     const form=editor.closest("form");
     for (let attempt=0;attempt<9;attempt++) {
-      if (!session.nonce || chatId()!==session.chat)
-        throw Error("Samtalen ble endret før sending");
+      if (!stillOwned()) throw Error("Foreldet Baton-økt før sending");
       await new Promise(resolve=>setTimeout(resolve,400));
+      if (!stillOwned()) throw Error("Foreldet Baton-økt før sending");
       if (norm(read())!==norm(text)) throw Error("Utkast endret: ingen sending");
       const selectors=[
         "#composer-submit-button",'button[data-testid="send-button"]',
@@ -166,7 +173,7 @@
       }
       if (choices.length!==1) continue;
       await freshWritePermission();
-      if (!session.nonce || chatId()!==session.chat ||
+      if (!stillOwned() ||
           norm(read())!==norm(text) || !visible(choices[0]) || choices[0].disabled)
         throw Error("Endret status etter sikkerhetssjekk; ingen sending");
       choices[0].click(); // EXACTLY ONE click; transport receipt is uncertain.
@@ -225,15 +232,19 @@
       if (chatId()!==r.chat_id || !/^[0-9a-f]{32}$/.test(r.nonce)) {
         clearSession("Uventet samtale eller økt");return;
       }
+      session.epoch++;
       session.chat=r.chat_id;
       session.nonce=r.nonce;
       session.seen.clear();
       start.disabled=true;
       stop.disabled=false;
       note("Baton koblet til. Tester skriving i denne chatten ...");
+      const sendEpoch=session.epoch;
       sendViaComposer(bootstrap(r.nonce,r.cwd || "/home/olliver"))
-        .then(()=>note("Testmelding forsøkt sendt. Venter på modellens verktøykall ..."))
-        .catch(e=>note("ChatGPT-felt: "+e.message));
+        .then(()=>{if(session.epoch===sendEpoch)
+          note("Testmelding forsøkt sendt. Venter på modellens verktøykall ...");})
+        .catch(e=>{if(session.epoch===sendEpoch)
+          note("ChatGPT-felt: "+e.message);});
     } else if (r.op==="tool_result") {
       if (!session.nonce || r.chat_id!==session.chat ||
           typeof r.frame!=="string" ||
@@ -241,10 +252,13 @@
         clearSession("Ugyldig Baton-resultat");return;
       }
       note("Greg svarte. Sender resultatet tilbake til denne samtalen ...");
+      const sendEpoch=session.epoch;
       sendViaComposer(r.frame)
-        .then(()=>{session.pending=false;
+        .then(()=>{if(session.epoch!==sendEpoch) return;
+          session.pending=false;
           note("Resultat forsøkt sendt. Klar for neste verktøykall.");})
-        .catch(e=>{session.pending=false;
+        .catch(e=>{if(session.epoch!==sendEpoch) return;
+          session.pending=false;
           note("Resultat kunne ikke sendes: "+e.message+" (ikke forsøkt på nytt)");});
     } else if (r.op==="stopped") {
       clearSession("Baton stanset");
