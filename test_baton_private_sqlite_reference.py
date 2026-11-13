@@ -117,6 +117,19 @@ class PrivateSqliteTests(unittest.TestCase):
                 store.init()
         self.assertFalse((child / "db.sqlite3").exists())
 
+    def test_nested_alias_rejected_before_parent_mkdir_side_effect(self):
+        real = self.root / "existing-real"
+        real.mkdir(mode=0o700)
+        alias = self.root / "alias-to-real"
+        alias.symlink_to(real, target_is_directory=True)
+        path = alias / "not-yet-created" / "db.sqlite3"
+        for store in self.stores(path):
+            with self.assertRaisesRegex(ValueError, "ancestor"):
+                store.init()
+        # init() must not create a directory through the alias before
+        # its later sqlite3.connect preflight has a chance to reject it.
+        self.assertFalse((real / "not-yet-created").exists())
+
     def test_dotdot_path_component_rejected_before_open(self):
         real = self.root / "traversal-parent"
         real.mkdir(mode=0o700)
