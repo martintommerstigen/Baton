@@ -67,3 +67,14 @@ Baton has an isolated, testable candidate for source-backed HOWTO and FAQ inside
 See docs/2026-11-13-dynamic-howto-faq-and-new-chat-onboarding.md. Source: baton_help_catalog.py, baton_help_ui.py, baton_onboarding.py. Offscreen regression: test_baton_help_catalog.py and test_baton_help_ui.py.
 
 This branch does not activate tools automatically, remove PAUSE_UI_WRITES, update the installed pinned release, or claim that the ChatGPT model remains active between replies.
+
+
+## Samtalerom og kanaler (isoleret kandidat 2026-11-13)
+
+Baton har nå en **referanseimplementasjon** av flere parallelle faglige tråder og ressursavgrensede skriverunder, med et lokalt «Samtaler og kanaler»-vindu. Den bruker de eksisterende `Forum`, `Floor` og `ActionFence`-mekanismene og skiller diskusjon fra myndighet og ekstern effekt. Nye samtaler kan representeres som *invitasjonsutkast*, uten arvede eksterne rettigheter. En oppføring i databasen betyr ikke at en ny ChatGPT-chat faktisk er opprettet eller at en modell kjører.
+
+`baton_outbound_ports_reference.py` har en **avgrenset Ruben/Baton-køport** som krever en separat, autentisert, eksakt fullmakt før den kan gjøre én køsendingsforespørsel. Køaksept er ikke ChatGPT-levering eller modellrespons. `messenger_personal` lager kun utkast for menneskelig kontroll. Messenger Page og Ruben ChatGPT mangler fortsatt nødvendige konto-/samtalekoblinger.
+
+Kildebevarte innvendinger fra Spire og Lodd er omsatt til negative tester av skjulte kompetanserangeringer, irrelevante vurderinger ved ressursfordeling, fadderlåsing og myndighetsforsterkning gjennom sammensatte forslag. Se `docs/2026-11-13-multiroom-consent-and-ports.md` og `test_baton_multiroom_reference.py`, `test_baton_outbound_ports_reference.py` og `test_baton_multiroom_ui.py`.
+
+Denne kandidaten endrer ikke den aktive, pinna Baton-utgaven eller `PAUSE_UI_WRITES`; den er ikke en produksjonsklar flerkjøringsplanlegger.
