@@ -36,7 +36,7 @@ class CoordinationTests(unittest.TestCase):
                                       target_chat_id=target,
                                       text="Frivillig invitasjon til faglig kritikk")
 
-    def _receipt(self,filename,chat,message,body):
+    def _receipt(self,filename,chat,message,body,parent=None):
         obj={
             "status":"reply_observed_in_exact_chat",
             "target_url":"https://chatgpt.com/c/"+chat,
@@ -49,8 +49,19 @@ class CoordinationTests(unittest.TestCase):
                 "target_url":"https://chatgpt.com/c/"+chat
             }
         }
+        if parent is not None:
+            obj["reply_to_user_turn_id"] = parent
+            obj["independent_reload_verified"]["reply_to_user_turn_id"] = parent
         f=self.c.receipts/filename;f.write_text(json.dumps(obj))
         return f
+
+    def _unknown(self, task, now, run, token, topic="parenting"):
+        self._draft(task,V,topic)
+        self.assertTrue(self.c.decide(task,V,True))
+        claim=self.c.claim(task,run,token,now,ttl=3)
+        self.assertIsNotNone(claim)
+        self.assertTrue(self.c.mark_attempt(
+            task,run,token,claim["generation"],now,ui_paused=False))
 
     def test_threads_can_run_at_once_on_different_resources(self):
         self._draft("task-vev",V)
@@ -239,13 +250,95 @@ class CoordinationTests(unittest.TestCase):
         one=self.c.claim("task",R1,K1,101)
         self.c.mark_attempt("task",R1,K1,one["generation"],101,ui_paused=False)
         message="ab123456-ab12-ab12-ab12-123456789012"
-        good=self._receipt("good.json",V,message,"Verified reply from Vev")
+        parent="aaaa1111-aaaa-4aaa-8aaa-aaaaaaaaaaaa"
+        self.c.bind_observed_send("task","action-task",parent)
+        good=self._receipt("good.json",V,message,"Verified reply from Vev",parent)
         ok=self.c.verified_reply("task",good)
         self.assertEqual(ok["status"],"reply_verified")
         self.assertEqual(ok["reply_message_id"],message)
         self.assertEqual(self.c.overview()["tasks"]["reply_verified"],1)
         with self.assertRaises(ValueError):
             self.c.verified_reply("task",good)
+
+    def test_two_tasks_same_chat_topic_one_reply_cannot_close_both(self):
+        self._unknown("task-one",101,R1,K1)
+        self._unknown("task-two",105,R2,K2)
+        u1="00000001-0000-4000-8000-000000000001"
+        u2="00000002-0000-4000-8000-000000000002"
+        a1="00000003-0000-4000-8000-000000000003"
+        self.c.bind_observed_send("task-one","action-one",u1)
+        self.c.bind_observed_send("task-two","action-two",u2)
+        receipt=self._receipt("reply-one.json",V,a1,"Reply to first",u1)
+        self.assertEqual(self.c.verified_reply("task-one",receipt)["status"],"reply_verified")
+        with self.assertRaises(ValueError):
+            self.c.verified_reply("task-two",receipt)
+        self.assertEqual(self.c.overview()["tasks"]["reply_verified"],1)
+        self.assertEqual(self.c.overview()["tasks"]["effect_unknown"],1)
+
+    def test_reverse_arrival_of_two_distinct_replies_is_safe(self):
+        self._unknown("task-one",101,R1,K1)
+        self._unknown("task-two",105,R2,K2)
+        u1="00000011-0000-4000-8000-000000000011"
+        u2="00000012-0000-4000-8000-000000000012"
+        self.c.bind_observed_send("task-one","action-one",u1)
+        self.c.bind_observed_send("task-two","action-two",u2)
+        r1=self._receipt("reply-one.json",V,"00000013-0000-4000-8000-000000000013","First",u1)
+        r2=self._receipt("reply-two.json",V,"00000014-0000-4000-8000-000000000014","Second",u2)
+        self.assertEqual(self.c.verified_reply("task-two",r2)["status"],"reply_verified")
+        self.assertEqual(self.c.verified_reply("task-one",r1)["status"],"reply_verified")
+        self.assertEqual(self.c.overview()["tasks"]["reply_verified"],2)
+
+    def test_uncertain_first_send_does_not_borrow_later_task_reply(self):
+        self._unknown("task-one",101,R1,K1)
+        self._unknown("task-two",105,R2,K2)
+        u2="00000022-0000-4000-8000-000000000022"
+        self.c.bind_observed_send("task-two","action-two",u2)
+        r2=self._receipt("reply-two.json",V,"00000023-0000-4000-8000-000000000023","Only second",u2)
+        self.c.verified_reply("task-two",r2)
+        with self.assertRaises(ValueError):
+            self.c.verified_reply("task-one",r2)
+        self.assertEqual(self.c.overview()["tasks"]["effect_unknown"],1)
+
+    def test_legacy_reply_without_parent_never_closes_unknown(self):
+        self._unknown("task-one",101,R1,K1)
+        user_turn="00000031-0000-4000-8000-000000000031"
+        self.c.bind_observed_send("task-one","action-one",user_turn)
+        legacy=self._receipt("legacy.json",V,"00000032-0000-4000-8000-000000000032","No parent")
+        with self.assertRaises(ValueError):
+            self.c.verified_reply("task-one",legacy)
+        self.assertEqual(self.c.overview()["tasks"]["effect_unknown"],1)
+
+    def test_send_binding_replay_and_duplicate_turn_are_fenced(self):
+        self._unknown("task-one",101,R1,K1)
+        self._unknown("task-two",105,R2,K2)
+        u1="00000041-0000-4000-8000-000000000041"
+        u2="00000042-0000-4000-8000-000000000042"
+        first=self.c.bind_observed_send("task-one","action-one",u1)
+        self.assertFalse(first["replay"])
+        self.assertTrue(self.c.bind_observed_send("task-one","action-one",u1)["replay"])
+        with self.assertRaises(ValueError):
+            self.c.bind_observed_send("task-one","action-other",u1)
+        with self.assertRaises(ValueError):
+            self.c.bind_observed_send("task-two","action-two",u1)
+        with self.assertRaises(ValueError):
+            self.c.bind_observed_send("task-two","action-one",u2)
+        self.assertFalse(self.c.bind_observed_send("task-two","action-two",u2)["replay"])
+
+    def test_mismatched_independent_reload_parent_fails_closed(self):
+        self._unknown("task-one",101,R1,K1)
+        u1="00000051-0000-4000-8000-000000000051"
+        u2="00000052-0000-4000-8000-000000000052"
+        self.c.bind_observed_send("task-one","action-one",u1)
+        bad=self._receipt("bad-parent.json",V,"00000053-0000-4000-8000-000000000053","Wrong",u2)
+        with self.assertRaises(ValueError):
+            self.c.verified_reply("task-one",bad)
+        # A forged/mismatched reload field also fails at the receipt parser.
+        obj=json.loads(bad.read_text())
+        obj["independent_reload_verified"]["reply_to_user_turn_id"]=u1
+        bad.write_text(json.dumps(obj))
+        with self.assertRaises(ValueError):
+            self.c.verified_reply("task-one",bad)
+        self.assertEqual(self.c.overview()["tasks"]["effect_unknown"],1)
 
     def test_invalid_external_channels_not_promoted(self):
         with self.assertRaises(ValueError):
