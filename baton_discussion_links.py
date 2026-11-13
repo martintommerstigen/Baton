@@ -5,7 +5,6 @@ are NOT authenticated. Links are references, never credentials or effect grants.
 """
 import argparse
 from contextlib import contextmanager
-import getpass
 import json
 import os
 from pathlib import Path
