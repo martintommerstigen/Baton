@@ -156,6 +156,18 @@ class Forum:
                     PRIMARY KEY (downstream_id, upstream_id),
                     CHECK (downstream_id != upstream_id)
                 );
+                -- A downstream observation may use one upstream multiple ways.
+                -- Keep pair-keyed dependencies as immutable legacy evidence.
+                CREATE TABLE IF NOT EXISTS dependency_use_instances(
+                    use_id INTEGER PRIMARY KEY,
+                    downstream_id INTEGER NOT NULL REFERENCES observations(observation_id),
+                    upstream_id INTEGER NOT NULL REFERENCES observations(observation_id),
+                    use_key TEXT NOT NULL,
+                    use_mode TEXT NOT NULL,
+                    premise_key TEXT NOT NULL,
+                    UNIQUE(downstream_id,use_key),
+                    CHECK(downstream_id != upstream_id)
+                );
                 CREATE TABLE IF NOT EXISTS correction_impacts(
                     correction_id INTEGER NOT NULL REFERENCES observations(observation_id),
                     premise_key TEXT NOT NULL,
@@ -180,6 +192,14 @@ class Forum:
                     verdict TEXT NOT NULL CHECK(verdict IN ('conflicts','unaffected','unknown')),
                     PRIMARY KEY(correction_id,downstream_id,upstream_id,assessment_source_id),
                     CHECK(downstream_id != upstream_id)
+                );
+                -- Per-use verdicts never inherit pair-keyed legacy assessments.
+                CREATE TABLE IF NOT EXISTS dependency_use_assessment_events(
+                    correction_id INTEGER NOT NULL REFERENCES observations(observation_id),
+                    use_id INTEGER NOT NULL REFERENCES dependency_use_instances(use_id),
+                    assessment_source_id INTEGER NOT NULL REFERENCES observations(observation_id),
+                    verdict TEXT NOT NULL CHECK(verdict IN ('conflicts','unaffected','unknown')),
+                    PRIMARY KEY(correction_id,use_id,assessment_source_id)
                 );
                 CREATE TABLE IF NOT EXISTS proposals(
                     proposal_id TEXT PRIMARY KEY,
@@ -286,6 +306,74 @@ class Forum:
             c.execute("INSERT OR IGNORE INTO dependencies(downstream_id,upstream_id,use_mode,premise_key) VALUES(?,?,?,?)",
                       (downstream_id, upstream_id, use_mode, premise_key))
 
+    def add_dependency_use(self, downstream_id, upstream_id, *, use_key,
+                           use_mode="unspecified", premise_key="unspecified"):
+        """Create/replay one immutable source-use occurrence.
+
+        use_key is a caller-assigned stable key scoped to downstream_id, NOT
+        identity or authority. Two uses of one source remain distinct even
+        when their descriptors match. Legacy pair-keyed rows are untouched.
+        """
+        if (type(downstream_id) is not int or type(upstream_id) is not int
+                or downstream_id <= 0 or upstream_id <= 0
+                or downstream_id == upstream_id):
+            raise ValueError("invalid source-use endpoints")
+        if (not isinstance(use_key, str) or not PREMISE.fullmatch(use_key)
+                or use_mode not in USES or not isinstance(premise_key, str)
+                or not PREMISE.fullmatch(premise_key)):
+            raise ValueError("invalid source-use key or descriptor")
+        with self.connect() as c:
+            c.execute("BEGIN IMMEDIATE")
+            for post_id in (downstream_id, upstream_id):
+                if not c.execute("SELECT 1 FROM observations WHERE observation_id=?",
+                                 (post_id,)).fetchone():
+                    raise ValueError("source-use refers to nonexistent observation")
+            old = c.execute("""SELECT use_id,upstream_id,use_mode,premise_key
+                FROM dependency_use_instances WHERE downstream_id=? AND use_key=?""",
+                (downstream_id,use_key)).fetchone()
+            if old:
+                if old[1:] != (upstream_id,use_mode,premise_key):
+                    raise ValueError("cannot silently reinterpret a source-use key")
+                return old[0]
+            cur = c.execute("""INSERT INTO dependency_use_instances
+                (downstream_id,upstream_id,use_key,use_mode,premise_key)
+                VALUES(?,?,?,?,?)""",
+                (downstream_id,upstream_id,use_key,use_mode,premise_key))
+            return cur.lastrowid
+
+    def record_use_assessment(self, correction_id, use_id, verdict, assessment_source_id):
+        """Append a verdict for ONE use occurrence, not the entire A→B pair.
+
+        Source-bound observation is not authenticated reviewer authority.
+        Self-revision still needs an independently attested supersession.
+        """
+        if any(type(v) is not int or v <= 0
+               for v in (correction_id,use_id,assessment_source_id)):
+            raise ValueError("invalid source-use assessment reference")
+        if verdict not in IMPACTS:
+            raise ValueError("invalid source-use verdict")
+        with self.connect() as c:
+            c.execute("BEGIN IMMEDIATE")
+            use = c.execute("""SELECT upstream_id FROM dependency_use_instances
+                WHERE use_id=?""",(use_id,)).fetchone()
+            correction = c.execute("""SELECT kind,reply_to FROM observations
+                WHERE observation_id=?""",(correction_id,)).fetchone()
+            if not use or correction != ("correction",use[0]):
+                raise ValueError("correction does not correct this source-use")
+            if not c.execute("SELECT 1 FROM observations WHERE observation_id=?",
+                             (assessment_source_id,)).fetchone():
+                raise ValueError("assessment evidence missing")
+            prior = c.execute("""SELECT verdict FROM dependency_use_assessment_events
+                WHERE correction_id=? AND use_id=? AND assessment_source_id=?""",
+                (correction_id,use_id,assessment_source_id)).fetchone()
+            if prior:
+                if prior[0] != verdict:
+                    raise ValueError("same source cannot silently change its verdict")
+                return
+            c.execute("""INSERT INTO dependency_use_assessment_events
+                (correction_id,use_id,assessment_source_id,verdict) VALUES(?,?,?,?)""",
+                (correction_id,use_id,assessment_source_id,verdict))
+
     def record_impact(self, correction_id, premise_key, verdict):
         """Retain a legacy, UN-SCOPED premise assertion; never apply it to an edge.
 
@@ -367,22 +455,34 @@ class Forum:
                 WHERE topic_id=? ORDER BY observation_id""", (topic_id,)).fetchall()
             seen = []
             for m in messages:
-                links = list(c.execute("""SELECT upstream_id,use_mode,premise_key
-                    FROM dependencies WHERE downstream_id=? ORDER BY upstream_id""",(m[0],)))
+                legacy_links = [(None,None,upstream,mode,premise)
+                    for upstream,mode,premise in c.execute("""SELECT upstream_id,use_mode,premise_key
+                        FROM dependencies WHERE downstream_id=?""",(m[0],))]
+                instance_links = list(c.execute("""SELECT use_id,use_key,upstream_id,use_mode,premise_key
+                    FROM dependency_use_instances WHERE downstream_id=?""",(m[0],)))
+                links = sorted(legacy_links + instance_links,
+                               key=lambda link: (link[2],link[0] is not None,link[0] or 0))
                 uses=[];corrections=set();review_required=False;unassessed=False;disputed=False
-                for upstream,use_mode,premise_key in links:
+                for use_id,use_key,upstream,use_mode,premise_key in links:
                     evaluations=[]
                     for (correction_id,) in c.execute("""SELECT observation_id FROM observations
                             WHERE reply_to=? AND kind='correction' ORDER BY observation_id""",(upstream,)):
                         corrections.add(correction_id)
-                        old=list(c.execute("""SELECT assessment_source_id,verdict
-                            FROM dependency_assessments
-                            WHERE correction_id=? AND downstream_id=? AND upstream_id=?""",
-                            (correction_id,m[0],upstream)))
-                        new=list(c.execute("""SELECT assessment_source_id,verdict
-                            FROM dependency_assessment_events
-                            WHERE correction_id=? AND downstream_id=? AND upstream_id=?""",
-                            (correction_id,m[0],upstream)))
+                        if use_id is None:
+                            old=list(c.execute("""SELECT assessment_source_id,verdict
+                                FROM dependency_assessments
+                                WHERE correction_id=? AND downstream_id=? AND upstream_id=?""",
+                                (correction_id,m[0],upstream)))
+                            new=list(c.execute("""SELECT assessment_source_id,verdict
+                                FROM dependency_assessment_events
+                                WHERE correction_id=? AND downstream_id=? AND upstream_id=?""",
+                                (correction_id,m[0],upstream)))
+                        else:
+                            old=[]
+                            new=list(c.execute("""SELECT assessment_source_id,verdict
+                                FROM dependency_use_assessment_events
+                                WHERE correction_id=? AND use_id=?""",
+                                (correction_id,use_id)))
                         by_source={}
                         for source_id, source_verdict in old+new:
                             if source_id in by_source and by_source[source_id]!=source_verdict:
@@ -415,11 +515,12 @@ class Forum:
                         if "conflicts" in verdicts:review_required=True
                         if verdict=="disputed":disputed=True
                         if not assessments or "unknown" in verdicts:unassessed=True
-                    uses.append({"source_id":upstream,"use_mode":use_mode,
+                    uses.append({"use_id":use_id,"use_key":use_key,
+                                 "source_id":upstream,"use_mode":use_mode,
                                  "premise_key":premise_key,"correction_evaluations":evaluations})
                 seen.append({"id":m[0],"chat_id":m[1],"message_id":m[2],
                              "alias":m[3],"body":m[4],"kind":m[5],"reply_to":m[6],
-                             "depends_on":[l[0] for l in links],
+                             "depends_on":sorted({l[2] for l in links}),
                              "dependency_uses":uses,
                              "source_correction_ids":sorted(corrections),
                              "dependency_review_required":review_required,

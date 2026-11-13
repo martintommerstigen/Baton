@@ -6,12 +6,14 @@ on:
       - 'baton_forum_reference.py'
       - 'test_baton_forum_reference.py'
       - 'test_baton_forum_edge_assessments.py'
+      - 'test_baton_forum_use_instances.py'
       - '.github/workflows/baton-forum-edge-assessments.yml'
   pull_request:
     paths:
       - 'baton_forum_reference.py'
       - 'test_baton_forum_reference.py'
       - 'test_baton_forum_edge_assessments.py'
+      - 'test_baton_forum_use_instances.py'
       - '.github/workflows/baton-forum-edge-assessments.yml'
   workflow_dispatch:
 
@@ -27,4 +29,4 @@ jobs:
         with:
           persist-credentials: false
       - name: Forum regressions
-        run: python3 -m unittest -v test_baton_forum_reference test_baton_forum_edge_assessments
+        run: python3 -m unittest -v test_baton_forum_reference test_baton_forum_edge_assessments test_baton_forum_use_instances
