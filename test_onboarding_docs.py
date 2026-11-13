@@ -46,7 +46,7 @@ class OnboardingDocsTest(unittest.TestCase):
 
         with TemporaryDirectory() as temp:
             card = Path(temp) / "newcomer.md"
-            card.write_text("[Read the original][source]\\n\\n[source]: missing-original.md\\n", encoding="utf-8")
+            card.write_text("[Read the original][source]\n\n[source]: missing-original.md\n", encoding="utf-8")
             links = list(local_file_links(card))
             self.assertEqual(len(links), 1)
             self.assertEqual(links[0][0], "missing-original.md")
