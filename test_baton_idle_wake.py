@@ -78,6 +78,52 @@ class IdleWakeTests(unittest.TestCase):
         self.assertEqual(self.tick()['event'],'activity_or_startup_grace')
         self.idle();self.tick();self.assertEqual(len(self.ui.sends),2)
 
+    def test_other_topic_post_does_not_restart_continuity_idle_clock(self):
+        # A post elsewhere must not create a new continuity-rhythm episode.
+        self.d.thread('martin-discuss','Unrelated discussion')
+        original=activity(self.d.path,'continuity-rhythm')
+        self.now+=59
+        self.d.write('martin-discuss',B,'run-other',
+                     'Unrelated actual post at a different topic')
+        observed=activity(self.d.path,'continuity-rhythm')
+        self.assertEqual(original['episode'],observed['episode'])
+        self.assertEqual(original['recency'],observed['recency'])
+        self.now+=2
+        result=self.tick()
+        self.assertEqual(result['event'],'one_wake_attempt')
+        self.assertEqual(result['target'],B)
+
+    def test_other_topic_revisions_do_not_change_candidate_recency(self):
+        self.d.thread('martin-discuss','Unrelated discussion')
+        before=activity(self.d.path,'continuity-rhythm')
+        self.d.write('martin-discuss',B,'run-other-one','Unrelated A')
+        self.d.write('martin-discuss',C,'run-other-two','Unrelated B')
+        after=activity(self.d.path,'continuity-rhythm')
+        self.assertEqual(before['episode'],after['episode'])
+        self.assertEqual(before['recency'],after['recency'])
+        self.assertEqual(set(after['recency']),{A})
+
+    def test_own_topic_new_post_still_resets_idle_clock(self):
+        self.d.thread('martin-discuss','Unrelated discussion')
+        original=activity(self.d.path,'continuity-rhythm')
+        self.now+=59
+        self.d.write('martin-discuss',B,'run-other','Unrelated activity')
+        self.d.write('continuity-rhythm',C,'run-own','Real continuity reply')
+        after=activity(self.d.path,'continuity-rhythm')
+        self.assertNotEqual(original['episode'],after['episode'])
+        self.assertIn(C,after['recency'])
+        self.assertEqual(self.tick()['event'],'activity_or_startup_grace')
+        self.idle()
+        self.assertEqual(self.tick()['event'],'one_wake_attempt')
+
+    def test_missing_or_malformed_topic_fails_closed(self):
+        with self.assertRaises(ValueError):
+            activity(self.d.path,'missing-topic')
+        with self.assertRaises(ValueError):
+            activity(self.d.path,'invalid topic')
+        with self.assertRaises(TypeError):
+            activity(self.d.path)
+
     def test_future_dated_revision_does_not_suppress_recovery(self):
         # A local writer's future clock must not freeze a running watchdog.
         self.d.clock=lambda:self.now+1000000
