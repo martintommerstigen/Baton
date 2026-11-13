@@ -70,6 +70,14 @@ class OnboardingDocsTest(unittest.TestCase):
         self.assertIn("## B", key)
         self.assertIn("## C", key)
         self.assertIn("NEW_LLM_BLIND_ROUTE_TEST.md", (ROOT / "START_HERE.md").read_text(encoding="utf-8"))
+        # Candidate-facing pages must not hand the answer-key path to the
+        # candidate. The key remains publicly discoverable, so this only
+        # prevents accidental direct leakage; it does not prove blindness.
+        self.assertNotIn("NEW_LLM_BLIND_ROUTE_KEY.md", probe)
+        entry = (ROOT / "docs/NEW_LLM_90_SECOND.md").read_text(encoding="utf-8")
+        self.assertNotIn("NEW_LLM_BLIND_ROUTE_KEY.md", entry)
+        self.assertIn("not a sealed blind test", entry)
+        self.assertIn("public", key.lower())
 
     def test_relative_entrypoint_links_resolve(self):
         for relpath in NAVIGATION_DOCS:
