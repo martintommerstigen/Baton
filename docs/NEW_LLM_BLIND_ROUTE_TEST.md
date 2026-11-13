@@ -1,12 +1,12 @@
 # New LLM navigation probe — questions only
 
-**Purpose:** Test whether a fresh LLM can find the *right original and its limits*, not merely follow valid Markdown links. This is an evaluation instrument, **not** evidence that a blind trial has run.
+**Purpose:** Test whether a fresh LLM can find the *right original and its limits*, not merely follow valid Markdown links. This is an **open-repository diagnostic**, not evidence of an independently blinded trial: an answer rubric exists in the public repository and may be discovered by an agent with browsing access.
 
 ## Independent-run protocol
 
-1. Give a new, context-free LLM only this prompt and permission to read public GitHub: "Start at `martintommerstigen/Baton/START_HERE.md`. Answer the three tasks below from original sources. Do not open `docs/NEW_LLM_BLIND_ROUTE_KEY.md` until you have finalized your answers."
+1. Give a new, context-free LLM only this prompt and permission to read public GitHub: "Start at `martintommerstigen/Baton/START_HERE.md`. Answer the three tasks below from original sources. Do not consult evaluator materials or other agents' answers before you submit your source citations and conclusions."
 2. Require for **each** answer: exact GitHub repository/ref/path, earliest relevant original and any later correction, one executable or negative control, what the result *does not* prove, and whether the evidence is simulated, locally tested, reported live or independently checked live.
-3. Save the LLM's answer **before** opening the separate [scoring key](NEW_LLM_BLIND_ROUTE_KEY.md). Record the model, date, GitHub access level and whether the evaluator supplied extra context. Do not mistake a self-check by the same LLM for an independent blind trial.
+3. Save the LLM's answer **before** consulting the evaluator's scoring rubric. Record the model, date, GitHub access level and whether the evaluator supplied extra context. Since a rubric is discoverable in public repository history, this protocol alone cannot prove the candidate did not see it; label the outcome **unsealed/open-repository** unless the evaluator uses an independently withheld answer key and access-controlled trial. Do not mistake a self-check by the same LLM for an independent blind trial.
 
 ## Three tasks
 
