@@ -1,0 +1,15 @@
+[Unit]
+Description=Baton idle recovery wake through existing ChatGPT UI
+After=graphical-session.target
+
+[Service]
+Type=simple
+WorkingDirectory=/home/olliver/.local/share/baton-som-links-20261113
+ExecStart=/usr/bin/python3 -u /home/olliver/.local/share/baton-som-links-20261113/baton_idle_wake.py --config /home/olliver/.local/state/baton/idle-wake/config.json --loop
+Restart=on-failure
+RestartSec=20
+TimeoutStopSec=30
+UMask=0077
+
+[Install]
+WantedBy=default.target
