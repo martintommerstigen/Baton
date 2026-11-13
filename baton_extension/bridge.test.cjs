@@ -160,6 +160,43 @@ test("explicit Stop disconnects even when no command has been run",async()=>{
   assert.equal(h.start.disabled,false);
 });
 
+test("old bootstrap cannot resume after Stop and re-arm in SAME chat",async()=>{
+  const h=harness();
+  const newer="c".repeat(32);
+  h.controls.get("start")();
+  h.receive({ok:true,op:"armed",chat_id:CHAT,nonce:NONCE,cwd:"/home/olliver"});
+  // First permission callback has resolved, but the await continuation has
+  // not run. Stop and re-arm the same /c/ before flushing microtasks.
+  h.controls.get("stop")();
+  h.controls.get("start")();
+  h.receive({ok:true,op:"armed",chat_id:CHAT,nonce:newer,cwd:"/home/olliver"});
+  await flush();
+  assert.equal(h.sent.length,1,"only the new bootstrap may click Send");
+  assert.match(h.sent[0],/BATON_TOOL_V2 c{32} /);
+  assert.doesNotMatch(h.sent[0],/BATON_TOOL_V2 a{32} /);
+  assert.equal(h.writeChecks().length,3,
+    "old operation cannot borrow a second permission from new session");
+});
+
+test("old tool result cannot resume under a newly armed same-chat session",async()=>{
+  const h=harness();
+  const newer="d".repeat(32);
+  h.controls.get("start")();
+  h.receive({ok:true,op:"armed",chat_id:CHAT,nonce:NONCE,cwd:"/home/olliver"});
+  await flush();
+  assert.equal(h.sent.length,1);
+  h.receive({ok:true,op:"tool_result",chat_id:CHAT,request_id:REQ,
+    frame:"BATON_TOOL_RESULT_V1 "+NONCE+" "+REQ+"\\n"+
+      '{"exit_code":0,"output":"Greg"}\\nEND_BATON_TOOL_RESULT_V1'});
+  h.controls.get("stop")();
+  h.controls.get("start")();
+  h.receive({ok:true,op:"armed",chat_id:CHAT,nonce:newer,cwd:"/home/olliver"});
+  await flush();
+  assert.equal(h.sent.length,2,"old tool result must not click Send");
+  assert.match(h.sent[1],/BATON_TOOL_V2 d{32} /);
+  assert.doesNotMatch(h.sent[1],/BATON_TOOL_RESULT_V1/);
+});
+
 test("one Bootstrap send requires two distinct host safety checks",async()=>{
   const h=harness();
   h.controls.get("start")();
