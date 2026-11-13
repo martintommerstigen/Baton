@@ -1,0 +1,40 @@
+name: Baton private SQLite reference negative controls
+
+on:
+  push:
+    branches:
+      - fix/private-forum-sqlite-open-2026-11-13
+    paths:
+      - 'baton_private_sqlite_reference.py'
+      - 'baton_forum_reference.py'
+      - 'baton_continuity_floor_reference.py'
+      - 'test_baton_private_sqlite_reference.py'
+      - 'test_baton_forum_reference.py'
+      - 'test_baton_continuity_floor_reference.py'
+      - '.github/workflows/baton-private-sqlite-reference.yml'
+  pull_request:
+    paths:
+      - 'baton_private_sqlite_reference.py'
+      - 'baton_forum_reference.py'
+      - 'baton_continuity_floor_reference.py'
+      - 'test_baton_private_sqlite_reference.py'
+      - 'test_baton_forum_reference.py'
+      - 'test_baton_continuity_floor_reference.py'
+      - '.github/workflows/baton-private-sqlite-reference.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  private-sqlite:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Compile reference code
+        run: python3 -m py_compile baton_private_sqlite_reference.py baton_forum_reference.py baton_continuity_floor_reference.py test_baton_private_sqlite_reference.py
+      - name: Negative controls and reference regressions
+        run: python3 -m unittest -v test_baton_private_sqlite_reference.py test_baton_forum_reference.py test_baton_continuity_floor_reference.py
