@@ -78,6 +78,11 @@ def attach_baton_panel(window, view, page, *, initial_chat=None, initial_message
     onboarding_button = QPushButton("Kopier startkort til ny chat")
     onboarding_button.setObjectName("baton-copy-chat-onboarding")
     layout.addWidget(onboarding_button)
+    forum_button = QPushButton("Samtaler og kanaler · status og utkast")
+    forum_button.setObjectName("baton-open-multiroom")
+    from baton_multiroom_ui import show_multiroom_dialog
+    forum_button.clicked.connect(lambda: show_multiroom_dialog(window))
+    layout.addWidget(forum_button)
 
     layout.addWidget(QLabel("Melding fra Baton"))
     message = QPlainTextEdit()
@@ -313,6 +318,7 @@ def attach_baton_panel(window, view, page, *, initial_chat=None, initial_message
         "recipient": recipient, "message": message, "send": send,
         "status": status, "use_current": use_current, "open_target": open_target,
         "help": help_button, "onboarding": onboarding_button,
-        "access_state": access, "delivery_state": delivery, "access_timer": access_timer
+        "multiroom": forum_button, "access_state": access,
+        "delivery_state": delivery, "access_timer": access_timer
     }
     return dock
