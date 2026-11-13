@@ -1,7 +1,7 @@
 {
   "schema": "eik-github-pr-lifecycle-index/v1",
   "snapshot_date_utc": "2026-11-13",
-  "collection": "13 Nov 2026 03:30 UTC: prior full PR lifecycle snapshot plus live PR #91 and Baton documentation PR #65 refresh; 87 Baton PRs, non-atomic; other old PR metadata not all rechecked.",
+  "collection": "13 Nov 2026 incremental: 88 Baton PRs, 92 branches. New PR #92 head/state checked live; older PR metadata retained from dated snapshot, not exhaustively re-fetched.",
   "scope": "Public Baton only; private GTRCM PR metadata intentionally omitted",
   "interpretation": [
     "This is PR lifecycle metadata, not a full code review or complete commit history.",
@@ -13,16 +13,17 @@
     "Never infer authorization to operate Greg or wake another ChatGPT conversation from this index.",
     "PR #83 now includes Greg read-only safety audit, on-Greg detached worktree tests and PAUSE_UI_WRITES native-extension source repairs; old installed release not replaced, no verified live ChatGPT wake.",
     "2026-11-13 source return: R81V PR #150 is stacked on R80V; Baton PR #88 is stacked on PR #83 and prevents empty role-bearing DOM turns from disappearing during reply correlation. Neither is merged or installed. 445 branch tips and 231 PRs were freshly enumerated; no full commit histories or independent new-LLM blind test.",
-    "2026-11-13 02:43 UTC incremental check: new PR head SHAs and states fetched live; older entries preserved from previous complete REST snapshot. Stacked draft bases must be read before a newer PR; neither CI nor draft PR is deployed code."
+    "2026-11-13 02:43 UTC incremental check: new PR head SHAs and states fetched live; older entries preserved from previous complete REST snapshot. Stacked draft bases must be read before a newer PR; neither CI nor draft PR is deployed code.",
+    "13 Nov 2026 PR #92: legacy correction/premise verdicts are not automatically scoped to downstream dependency edges; reviewer source evidence does not authenticate or authorize the reviewer. Draft stacked on PR #85, not installed Greg."
   ],
   "repositories": [
     {
       "summary": {
         "repository": "martintommerstigen/Baton",
-        "branch_count": 91,
-        "pr_count": 87,
-        "open": 74,
-        "open_draft": 74,
+        "branch_count": 92,
+        "pr_count": 88,
+        "open": 75,
+        "open_draft": 75,
         "open_ready": 0,
         "merged": 5,
         "closed_unmerged": 8,
@@ -32,6 +33,23 @@
         ]
       },
       "pull_requests": [
+        {
+          "number": 92,
+          "title": "Draft: preserve legacy premise assertions without assigning downstream edge verdicts",
+          "url": "https://github.com/martintommerstigen/Baton/pull/92",
+          "state": "open",
+          "draft": true,
+          "merged": false,
+          "created_at": "2026-11-13T03:59:00Z",
+          "updated_at": "2026-11-13T03:59:00Z",
+          "closed_at": null,
+          "merged_at": null,
+          "base_ref": "feature/topic-forum-reference-2026-11-12",
+          "head_ref": "fix/forum-edge-assessment-legacy-separation-2026-11-13",
+          "pr_head_sha": "1826e30622ac09acd8f6fe7657b4d9b6ce745f6a",
+          "branch_tip_sha": "1826e30622ac09acd8f6fe7657b4d9b6ce745f6a",
+          "pr_head_matches_branch_tip": true
+        },
         {
           "number": 91,
           "title": "Draft: fence Brave composer sends across same-chat Stop/re-arm",
