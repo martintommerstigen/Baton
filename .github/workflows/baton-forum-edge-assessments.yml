@@ -9,6 +9,8 @@ on:
       - 'test_baton_forum_use_instances.py'
       - 'baton_use_claims_reference.py'
       - 'test_baton_use_claims_reference.py'
+      - 'baton_atomic_grant_reference.py'
+      - 'test_baton_atomic_grant_reference.py'
       - '.github/workflows/baton-forum-edge-assessments.yml'
   pull_request:
     paths:
@@ -18,6 +20,8 @@ on:
       - 'test_baton_forum_use_instances.py'
       - 'baton_use_claims_reference.py'
       - 'test_baton_use_claims_reference.py'
+      - 'baton_atomic_grant_reference.py'
+      - 'test_baton_atomic_grant_reference.py'
       - '.github/workflows/baton-forum-edge-assessments.yml'
   workflow_dispatch:
 
@@ -33,4 +37,4 @@ jobs:
         with:
           persist-credentials: false
       - name: Forum regressions
-        run: python3 -m unittest -v test_baton_forum_reference test_baton_forum_edge_assessments test_baton_forum_use_instances test_baton_use_claims_reference
+        run: python3 -m unittest -v test_baton_forum_reference test_baton_forum_edge_assessments test_baton_forum_use_instances test_baton_use_claims_reference test_baton_atomic_grant_reference
