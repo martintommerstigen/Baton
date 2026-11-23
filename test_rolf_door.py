@@ -73,6 +73,16 @@ class DoorTests(unittest.TestCase):
                 d=card();d[key]=bad
                 with self.assertRaises(ValueError):check_card(d)
 
+    def test_malformed_datatypes_isolate_corrupt_card(self):
+        self.write("good.json", card(B))
+        for name,key in (("bad_date.json", "source_date"), ("bad_policy.json", "contact_policy")):
+            obj=card(A)
+            obj[key]=["unhashable", "not a string"]
+            self.write(name,obj)
+        result=scan_cards(self.root)
+        self.assertEqual([x["chat_id"] for x in result["candidates"]],[B])
+        self.assertEqual(len(result["errors"]),2)
+
     def test_symlink_card_is_not_followed(self):
         self.write("a.json",card(A))
         (self.root/"shortcut.json").symlink_to(self.root/"a.json")
