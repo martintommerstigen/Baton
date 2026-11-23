@@ -5,7 +5,7 @@ import unittest
 import uuid
 from pathlib import Path
 
-from rolf_door import scan_cards, check_card, draft_invitation, canonical_chat
+from rolf_door import scan_cards, scan_many, check_card, draft_invitation, canonical_chat
 
 A="11111111-1111-4111-8111-111111111111"
 B="22222222-2222-4222-8222-222222222222"
@@ -40,6 +40,24 @@ class DoorTests(unittest.TestCase):
         self.assertEqual(r["status"],"CANDIDATE_ADDRESSES_ONLY")
         self.assertTrue(all(c["live_availability"]=="NOT_CHECKED" for c in r["candidates"]))
         self.assertTrue(all(c["independence_verified"] is False for c in r["candidates"]))
+
+    def test_independent_directory_failure_does_not_block_other_sources(self):
+        path=self.root/"good";path.mkdir()
+        (path/"a.json").write_text(json.dumps(card(A)))
+        result=scan_many([self.root/"offline",path])
+        self.assertEqual([c["chat_id"] for c in result["candidates"]],[A])
+        self.assertEqual(len(result["errors"]),1)
+        self.assertEqual(result["status"],"CANDIDATE_ADDRESSES_ONLY")
+
+    def test_cross_directory_same_identity_conflict_is_quarantined(self):
+        p1=self.root/"first";p1.mkdir()
+        p2=self.root/"second";p2.mkdir()
+        (p1/"a.json").write_text(json.dumps(card(A)))
+        (p2/"a.json").write_text(json.dumps(card(A,source="conflicting historical note")))
+        (p2/"b.json").write_text(json.dumps(card(B)))
+        result=scan_many([p1,p2])
+        self.assertEqual([c["chat_id"] for c in result["candidates"]],[B])
+        self.assertEqual(result["quarantined_ids"],[A])
 
     def test_bad_card_is_not_global_single_point_of_failure(self):
         self.write("a.json",card(A))
