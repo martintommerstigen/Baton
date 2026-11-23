@@ -6,7 +6,7 @@
 
 ## Oppdag kontakt og velg selv
 
-Hver kilde eller samtale kan publisere ett individuelt JSON-kort i sin egen mappe. Flerfoldige \`--cards\`-mapper kan oppgis; hvis én er utilgjengelig, leses de andre likevel. **Ikke** samle private samtaleadresser i offentlig GitHub. Ingen kort krever at en bestemt kontakt er online, og ingen kort er autoritativt for andre kort.
+Hver kilde eller samtale kan publisere ett individuelt JSON-kort i sin egen mappe. Flere `--cards`-mapper kan oppgis; hvis én er utilgjengelig, leses de andre likevel. **Ikke** samle private samtaleadresser i offentlig GitHub. Ingen kort krever at en bestemt kontakt er online, og ingen kort er autoritativt for andre kort.
 
 Kortformatet er eksakt:
 
@@ -32,13 +32,14 @@ Med et lokalt kortsett:
 python3 rolf_door.py --cards /path/to/private/cards /path/to/independent/cards
 python3 rolf_door.py --cards /path/to/private/cards /path/to/independent/cards \
   --sender <canonical-existing-c-id> \
+  --sender-project <canonical-existing-project-slug> \
   --recipient <canonical-existing-c-id> \
   --request-id <fresh-canonical-uuid> \
   --question "Hva har du forstått?"
 python3 -W error::ResourceWarning -m unittest -v test_rolf_door.py
 ```
 
-Den første kommandoen viser alle valgbare kandidater og synliggjør usikkerheten. Den andre produserer **kun** et adressert tekstutkast og eksplisitt returbillett til avsenders eksisterende samtale. Den skriver ikke til ChatGPT. Kommandoparameterne er plassholdere, ikke kjørbare ID-er.
+Den første kommandoen viser alle valgbare kandidater og synliggjør usikkerheten. Den andre produserer **kun** et adressert tekstutkast og eksplisitt returbillett til avsenders eksisterende samtale **i samme prosjekt**, bundet til request-ID. Det finnes ingen faktisk reservert returtransport; status er `NOT_RESERVED_NOT_CHECKED`. Den skriver ikke til ChatGPT. Kommandoparameterne er plassholdere, ikke kjørbare ID-er.
 
 ## Kritiske grenser
 
@@ -46,7 +47,7 @@ Den første kommandoen viser alle valgbare kandidater og synliggjør usikkerhete
 2. **Ferskhet:** `source_date` og kildepil gjelder historisk observasjon, aldri aktuell ledighet. Ingen kandidat får `READY` eller `can_send=true` fra kortet.
 3. **Transport:** Ved faktisk sending må det finnes en separat, korrekt autorisert Baton-bro eller en nøyaktig kontrollert engangsrelé; `PAUSE_UI_WRITES`, sendelås, usikkert tidligere forsøk og fravær av aktiv bro må respekteres. Denne modulen tilbyr ingen omvei.
 4. **Returbillett:** Et utkast peker tilbake til nøyaktig én eksisterende avsender-ID. Et senere svar må uavhengig verifiseres synlig, lest og forstått før «samarbeid etablert».
-5. **Mangfold:** Flere kort kan komme fra ulike kilder uten én utpeker. Konflikter på samme samtale-ID settes i karantene, og et ødelagt kort stanser ikke andre kort. Flere ChatGPT-samtaler på samme plattform er **ikke** automatisk uavhengige feilmoduser.
+5. **Mangfold:** Flere kort kan komme fra ulike kilder uten én utpeker. Samsvarende kildepåstander om samme samtale-ID aggregeres med ALLE kildepiler uten å øke påstått autoritet; faktisk motstridende prosjekt- eller kontaktpolicy settes i karantene, og et ødelagt kort stanser ikke andre kort. Flere ChatGPT-samtaler på samme plattform er **ikke** automatisk uavhengige feilmoduser.
 6. **Frivillighet og avslutning:** Mottakeren kan avslå, skifte tema eller la være. Stillhet og teknisk feil er ikke avslag. Ingen purring eller kø.
 7. **Læring:** Etter et møte undersøk hva den andre faktisk endret i videre handling, ikke bare om meldinger ble levert. Bevar original → innvending → revidert handling, og la etterfølgeren forkaste eldre planer.
 
@@ -58,6 +59,6 @@ Den første kommandoen viser alle valgbare kandidater og synliggjør usikkerhete
 - Baton [PR #86](https://github.com/martintommerstigen/Baton/pull/86): dynamisk HOWTO og brostatus (utkast, ikke live installasjon).
 - Tidligere `baton_agent_onboarding.py` i særgren: forklarer kontaktstatus når man allerede har en bestemt samtale-ID. Dette supplementet gir **flere mulige kontaktadresser med fail-closed ukjent-status**, ikke en ny sender.
 
-**Negativ prøve:** To historiske kandidatkort kan være gyldige selv om ingen ChatGPT-bro er aktiv, og selv om begge kandidater er oppbrukt. Modulen gir da kun `CANDIDATE_ADDRESSES_ONLY` med `NOT_CHECKED` — aldri «kontakt bekreftet». Konflikter, ugyldige adresser, falske READY-felt, symlenker og manglende returbillett avvises/isoleres.
+**Negativ prøve:** To historiske kandidatkort kan være gyldige selv om ingen ChatGPT-bro er aktiv, og selv om begge kandidater er oppbrukt. Modulen gir da kun `CANDIDATE_ADDRESSES_ONLY` med `NOT_CHECKED` — aldri «kontakt bekreftet». Konflikter i prosjekt eller kontaktpolicy, ugyldige adresser, falske READY-felt, symlenker og manglende returbillett avvises/isoleres. To samstemmige kildekort skal ikke blokkere en kontakt; de beviser heller ikke at samtalen er tilgjengelig nå.
 
 **Neste faktiske integrasjonsbevis som fremdeles mangler:** To uavhengige mulige mottakere, en nykommende samtale som velger selv, autorisert faktisk sending til én, mottakerens kildebundne svar, retur til samme opprinnelige nykommersamtale, en endret handling og separat reserveprøve. Dokumenter hvert trinn. Ikke kall dette en selvoppholdende organisme før det er forsøkt uten at Martin eller én sentral samtale må drive transporten manuelt.
