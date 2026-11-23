@@ -6,7 +6,7 @@
 
 ## Oppdag kontakt og velg selv
 
-Hver kilde eller samtale kan publisere ett individuelt JSON-kort i en lokal mappe. **Ikke** samle private samtaleadresser i offentlig GitHub. Ingen kort krever at en bestemt kontakt er online, og ingen kort er autoritativt for andre kort.
+Hver kilde eller samtale kan publisere ett individuelt JSON-kort i sin egen mappe. Flerfoldige \`--cards\`-mapper kan oppgis; hvis én er utilgjengelig, leses de andre likevel. **Ikke** samle private samtaleadresser i offentlig GitHub. Ingen kort krever at en bestemt kontakt er online, og ingen kort er autoritativt for andre kort.
 
 Kortformatet er eksakt:
 
@@ -29,8 +29,8 @@ Eksempel-ID-en og prosjektsluggen er **syntetiske** og skal ikke brukes som kont
 Med et lokalt kortsett:
 
 ```bash
-python3 rolf_door.py --cards /path/to/private/cards
-python3 rolf_door.py --cards /path/to/private/cards \
+python3 rolf_door.py --cards /path/to/private/cards /path/to/independent/cards
+python3 rolf_door.py --cards /path/to/private/cards /path/to/independent/cards \
   --sender <canonical-existing-c-id> \
   --recipient <canonical-existing-c-id> \
   --request-id <fresh-canonical-uuid> \
