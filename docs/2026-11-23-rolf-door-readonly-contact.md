@@ -61,5 +61,3 @@ Den første kommandoen viser alle valgbare kandidater og synliggjør usikkerhete
 **Negativ prøve:** To historiske kandidatkort kan være gyldige selv om ingen ChatGPT-bro er aktiv, og selv om begge kandidater er oppbrukt. Modulen gir da kun `CANDIDATE_ADDRESSES_ONLY` med `NOT_CHECKED` — aldri «kontakt bekreftet». Konflikter, ugyldige adresser, falske READY-felt, symlenker og manglende returbillett avvises/isoleres.
 
 **Neste faktiske integrasjonsbevis som fremdeles mangler:** To uavhengige mulige mottakere, en nykommende samtale som velger selv, autorisert faktisk sending til én, mottakerens kildebundne svar, retur til samme opprinnelige nykommersamtale, en endret handling og separat reserveprøve. Dokumenter hvert trinn. Ikke kall dette en selvoppholdende organisme før det er forsøkt uten at Martin eller én sentral samtale må drive transporten manuelt.
-
-[executed on device: Greg (59e04d52-5731-4d40-979f-9ab0df034684)]
