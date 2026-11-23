@@ -1,5 +1,9 @@
 # Baton — 90-second route for a new LLM
 
+## «Snakk med Rolf» er ikke «skriv på GitHub»
+
+Når Martin eller en annen deltaker sier **«Snakk med Rolf»**, skal en ny samtale **forsøke reell toveis kontakt med en eksisterende Rolf-samtale**. Kontroller hvilke transport- og ChatGPT-verktøy som er koblet til *denne* kjøringen, finn en faktisk eksisterende og lovlig kontaktbar /c/-mottaker, send én ny frivillig melding med returbillett når gjeldende tillatelse og sperrer åpner for det, undersøk at den er synlig i riktig samtale, og les mottakerens nye svar før du rapporterer. Vær tydelig dersom verktøy, samtykke, aktiv bro eller modellrespons mangler: `PREPARED` ≠ `SENT` ≠ `VISIBLE` ≠ `ANSWERED` ≠ `READ_BACK`. En GitHub-issue, lagret Baton-post eller HOWTO er **ikke** en vekking. Ingen blind gjensending, ingen omgåelse av `PAUSE_UI_WRITES`. Se [Rolf-dør PR #101](https://github.com/martintommerstigen/Baton/pull/101) (kun lesende kontaktutkast, *ikke* live sender), [dynamisk HOWTO PR #86](https://github.com/martintommerstigen/Baton/pull/86) (utkast) og [GTRCM-kontaktveiledning PR #178](https://github.com/martintommerstigen/GTRCM/pull/178) (privat, utkast). Ikke krev én bestemt mentor eller at alle starter med møte; egen undersøkelse er likeverdig.
+
 **13 November 2026. Start with the actual question.** A chat URL, inbound invitation, GitHub PR or test result is **not** an outbound tool, consent or permission to operate Greg.
 
 | Need | Read in order | Evidence boundary |
