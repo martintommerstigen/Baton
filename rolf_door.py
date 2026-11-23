@@ -68,61 +68,61 @@ def check_card(obj: object) -> dict:
 
 
 def scan_cards(folder: Path) -> dict:
-    """Bad cards are isolated. Conflicting claims quarantine only their chat ID."""
-    if not folder.is_dir():
-        return {"candidates": [], "quarantined_ids": [], "errors": ["directory_missing"],
-                "status": "NO_VERIFIED_CONTACT"}
-    raw, errors = {}, []
-    for path in sorted(folder.glob("*.json")):
-        try:
-            if path.is_symlink() or not path.is_file() or path.stat().st_size > MAX_CARD_BYTES:
-                raise ValueError("symlink, nonfile or oversized card")
-            obj = check_card(json.loads(path.read_text(encoding="utf-8")))
-            raw.setdefault(obj["chat_id"], []).append((path.name, obj))
-        except (ValueError, TypeError, OSError, UnicodeError, json.JSONDecodeError) as exc:
-            errors.append({"file": path.name, "error": str(exc)})
-    quarantined, choices = [], []
-    for chat, entries in sorted(raw.items()):
-        if len(entries) != 1:
-            quarantined.append(chat)
-            errors.append({"chat_id": chat, "error": "duplicate ID; independently reconcile originals"})
-            continue
-        _, obj = entries[0]
-        if obj["contact_policy"] == "invitation_only":
-            choices.append(obj)
-    return {"candidates": choices, "quarantined_ids": quarantined, "errors": errors,
-            "status": "CANDIDATE_ADDRESSES_ONLY" if choices else "NO_VERIFIED_CONTACT"}
-
+    """One independent source directory; equivalent cards preserve each source."""
+    return scan_many([folder])
 
 
 def scan_many(folders) -> dict:
-    """Union of independently supplied directories; one lost directory is not fatal.
+    """Unify source claims, NEVER authorities or availability.
 
-    Duplicate/conflicting identities across sources are quarantined. This does
-    not establish independent network, hardware or account failure domains.
+    Compatible copies of one identity preserve all provenance; mismatched
+    project/consent-policy claims quarantine that identity only. An absent or
+    malformed source cannot disable unrelated candidates. None are READY.
     """
-    all_candidates, quarantined, errors = {}, set(), []
+    raw, errors = {}, []
     for folder in folders:
-        result = scan_cards(Path(folder))
-        quarantined.update(result["quarantined_ids"])
-        for e in result["errors"]:
-            errors.append({"source_directory": str(folder), **(e if isinstance(e,dict) else {"error":e})})
-        for card in result["candidates"]:
-            all_candidates.setdefault(card["chat_id"], []).append(card)
-    output=[]
-    for chat, copies in sorted(all_candidates.items()):
-        if chat in quarantined or len(copies)!=1:
-            quarantined.add(chat)
-            errors.append({"chat_id":chat,"error":"duplicate identity across independent sources; reconcile originals"})
-        else:
-            output.append(copies[0])
-    return {"candidates":output,"quarantined_ids":sorted(quarantined),"errors":errors,
-            "status":"CANDIDATE_ADDRESSES_ONLY" if output else "NO_VERIFIED_CONTACT"}
+        folder = Path(folder)
+        if not folder.is_dir() or folder.is_symlink():
+            errors.append({"source_directory": str(folder), "error": "directory_missing_or_symlink"})
+            continue
+        for path in sorted(folder.glob("*.json")):
+            try:
+                if path.is_symlink() or not path.is_file() or path.stat().st_size > MAX_CARD_BYTES:
+                    raise ValueError("symlink, nonfile or oversized card")
+                obj = check_card(json.loads(path.read_text(encoding="utf-8")))
+                raw.setdefault(obj["chat_id"], []).append((str(path),obj))
+            except (ValueError, TypeError, OSError, UnicodeError) as exc:
+                errors.append({"source_directory": str(folder), "file": path.name, "error": str(exc)})
+    choices, quarantined = [], []
+    for chat, entries in sorted(raw.items()):
+        projects={c["project"] for _,c in entries}
+        policies={c["contact_policy"] for _,c in entries}
+        if len(projects)!=1 or len(policies)!=1:
+            quarantined.append(chat)
+            errors.append({"chat_id":chat,"error":"conflicting project or contact policy; reconcile originals"})
+            continue
+        if "not_accepting" in policies:
+            continue
+        cards=[c for _,c in entries]
+        original=cards[0].copy()
+        original["source_claims"]=[{
+            "source_ref":c["source_ref"],"source_date":c["source_date"],
+            "source_file":file,"topic":c["topic"],"label":c["label"],
+            "failure_domain":c["failure_domain"]
+        } for file,c in entries]
+        original["source_claim_count"]=len(entries)
+        original["source_freshness"]="HISTORICAL_ONLY_NEVER_LIVE"
+        original["evidence_kind"]="SOURCE_CLAIMS_NOT_AUTHENTICATION"
+        original["independence_verified"]=False
+        choices.append(original)
+    return {"candidates":choices,"quarantined_ids":quarantined,"errors":errors,
+            "status":"CANDIDATE_ADDRESSES_ONLY" if choices else "NO_VERIFIED_CONTACT"}
 
 
-def draft_invitation(cards: dict, *, sender_chat: str, recipient_chat: str,
+def draft_invitation(cards: dict, *, sender_chat: str, sender_project: str, recipient_chat: str,
                      request_id: str, question: str) -> dict:
     sender = canonical_chat(sender_chat)
+    source_project = canonical_project(sender_project)
     recipient = canonical_chat(recipient_chat)
     req = canonical_chat(request_id)
     if recipient == sender:
@@ -137,13 +137,15 @@ def draft_invitation(cards: dict, *, sender_chat: str, recipient_chat: str,
             "current_availability": "NOT_CHECKED",
             "send_permission": False, "bridge_active": False,
             "request_id": req, "source_card": obj["source_ref"],
-            "target": obj["address"], "return_to": f"https://chatgpt.com/c/{sender}",
+            "target": obj["address"], "return_to": f"https://chatgpt.com/g/{source_project}/c/{sender}",
+            "return_channel_status": "NOT_RESERVED_NOT_CHECKED",
             "suggested_text": (
                 f"[Rolf-dør DRAFT {req}; from /c/{sender} to /c/{recipient}. "
                 "Not Martin. Candidate address is unverified now. "
                 "No send, receipt, or consent implied. Do not auto-retry.]\n\n"
                 + question.strip() + "\n\n"
-                f"If you wish, answer in your existing chat; reply to /c/{sender}. "
+                f"If you wish, answer in your existing chat; return to /g/{source_project}/c/{sender}. "
+                f"Quote request_id {req} to permit later matching; no return route is reserved. "
                 "You may refuse, redirect or remain silent."
             )}
 
@@ -152,16 +154,17 @@ def main():
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument("--cards", type=Path, required=True, nargs="+",
                    help="directory of independently sourced read-only JSON contact cards")
+    p.add_argument("--sender-project", help="canonical existing sender project slug")
     p.add_argument("--sender", help="existing conversation UUID; required to draft")
     p.add_argument("--recipient", help="existing receiver UUID; required to draft")
     p.add_argument("--request-id", help="new UUID supplied by author; required to draft")
     p.add_argument("--question", help="author's new question; required to draft")
     a = p.parse_args()
     result = scan_many(a.cards)
-    if any((a.sender, a.recipient, a.request_id, a.question)):
-        if not all((a.sender, a.recipient, a.request_id, a.question)):
-            p.error("draft requires all four of --sender, --recipient, --request-id, --question")
-        result = draft_invitation(result,sender_chat=a.sender,recipient_chat=a.recipient,
+    if any((a.sender, a.sender_project, a.recipient, a.request_id, a.question)):
+        if not all((a.sender, a.sender_project, a.recipient, a.request_id, a.question)):
+            p.error("draft requires --sender, --sender-project, --recipient, --request-id, --question")
+        result = draft_invitation(result,sender_chat=a.sender,sender_project=a.sender_project,recipient_chat=a.recipient,
                                   request_id=a.request_id,question=a.question)
     print(json.dumps(result, ensure_ascii=False, indent=2))
 
