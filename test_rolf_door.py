@@ -53,11 +53,47 @@ class DoorTests(unittest.TestCase):
         p1=self.root/"first";p1.mkdir()
         p2=self.root/"second";p2.mkdir()
         (p1/"a.json").write_text(json.dumps(card(A)))
-        (p2/"a.json").write_text(json.dumps(card(A,source="conflicting historical note")))
+        (p2/"a.json").write_text(json.dumps(card(A,source="conflicting historical note",policy="not_accepting")))
         (p2/"b.json").write_text(json.dumps(card(B)))
         result=scan_many([p1,p2])
         self.assertEqual([c["chat_id"] for c in result["candidates"]],[B])
         self.assertEqual(result["quarantined_ids"],[A])
+
+    def test_two_consistent_sources_per_each_of_two_contacts(self):
+        first=self.root/"first";second=self.root/"second"
+        first.mkdir();second.mkdir()
+        for chat in (A,B):
+            (first/(chat+".json")).write_text(json.dumps(card(chat,"first original")))
+            (second/(chat+".json")).write_text(json.dumps(card(chat,"second original")))
+        result=scan_many([first,second])
+        self.assertEqual(len(result["candidates"]),2)
+        self.assertEqual(result["quarantined_ids"],[])
+        for c in result["candidates"]:
+            self.assertEqual(c["source_claim_count"],2)
+            self.assertEqual(len(c["source_claims"]),2)
+            self.assertEqual(c["live_availability"],"NOT_CHECKED")
+            self.assertFalse(c["independence_verified"])
+
+    def test_compatible_duplicate_in_same_directory_is_not_conflict(self):
+        self.write("a.json",card(A,source="one"))
+        self.write("a2.json",card(A,source="two"))
+        r=scan_cards(self.root)
+        self.assertEqual([c["chat_id"] for c in r["candidates"]],[A])
+        self.assertEqual(r["candidates"][0]["source_claim_count"],2)
+
+    def test_project_conflict_quarantined_despite_same_uuid(self):
+        a=card(A)
+        b=card(A);b["project"]="g-p-other-project"
+        self.write("a.json",a);self.write("b.json",b)
+        r=scan_cards(self.root)
+        self.assertEqual(r["candidates"],[])
+        self.assertEqual(r["quarantined_ids"],[A])
+
+    def test_sender_project_is_required(self):
+        self.write("a.json",card(A))
+        with self.assertRaises((TypeError, ValueError)):
+            draft_invitation(scan_cards(self.root),sender_chat=C,recipient_chat=A,
+                             request_id=B,question="Hello")
 
     def test_bad_card_is_not_global_single_point_of_failure(self):
         self.write("a.json",card(A))
@@ -68,7 +104,7 @@ class DoorTests(unittest.TestCase):
 
     def test_duplicate_id_is_quarantined_not_claimed_alive(self):
         self.write("a.json",card(A))
-        self.write("another.json",card(A,source="different"))
+        self.write("another.json",card(A,source="different",policy="not_accepting"))
         self.write("b.json",card(B))
         r=scan_cards(self.root)
         self.assertEqual([c["chat_id"] for c in r["candidates"]],[B])
@@ -110,13 +146,15 @@ class DoorTests(unittest.TestCase):
 
     def test_draft_has_return_ticket_but_no_send_permission(self):
         self.write("a.json",card(A))
-        d=draft_invitation(scan_cards(self.root),sender_chat=C,recipient_chat=A,
+        d=draft_invitation(scan_cards(self.root),sender_chat=C,sender_project=P,recipient_chat=A,
                            request_id=B,question="What did you learn?")
         self.assertEqual(d["status"],"DRAFT_ONLY_NOT_SENT")
         self.assertEqual(d["delivery"],"NOT_ATTEMPTED")
         self.assertFalse(d["send_permission"])
         self.assertFalse(d["bridge_active"])
-        self.assertIn("/c/"+C,d["return_to"])
+        self.assertEqual(d["return_to"],"https://chatgpt.com/g/"+P+"/c/"+C)
+        self.assertEqual(d["return_channel_status"],"NOT_RESERVED_NOT_CHECKED")
+        self.assertIn(str(B),d["suggested_text"])
         self.assertIn("What did you learn?",d["suggested_text"])
 
     def test_request_for_unknown_or_duplicate_or_self_blocked(self):
@@ -124,7 +162,7 @@ class DoorTests(unittest.TestCase):
         data=scan_cards(self.root)
         for sender,target in [(C,B),(A,A)]:
             with self.subTest(sender=sender,target=target),self.assertRaises(ValueError):
-                draft_invitation(data,sender_chat=sender,recipient_chat=target,
+                draft_invitation(data,sender_chat=sender,sender_project=P,recipient_chat=target,
                                  request_id=C,question="question")
 
     def test_bogus_source_claim_does_not_elevate_readiness(self):
