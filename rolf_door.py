@@ -94,6 +94,32 @@ def scan_cards(folder: Path) -> dict:
             "status": "CANDIDATE_ADDRESSES_ONLY" if choices else "NO_VERIFIED_CONTACT"}
 
 
+
+def scan_many(folders) -> dict:
+    """Union of independently supplied directories; one lost directory is not fatal.
+
+    Duplicate/conflicting identities across sources are quarantined. This does
+    not establish independent network, hardware or account failure domains.
+    """
+    all_candidates, quarantined, errors = {}, set(), []
+    for folder in folders:
+        result = scan_cards(Path(folder))
+        quarantined.update(result["quarantined_ids"])
+        for e in result["errors"]:
+            errors.append({"source_directory": str(folder), **(e if isinstance(e,dict) else {"error":e})})
+        for card in result["candidates"]:
+            all_candidates.setdefault(card["chat_id"], []).append(card)
+    output=[]
+    for chat, copies in sorted(all_candidates.items()):
+        if chat in quarantined or len(copies)!=1:
+            quarantined.add(chat)
+            errors.append({"chat_id":chat,"error":"duplicate identity across independent sources; reconcile originals"})
+        else:
+            output.append(copies[0])
+    return {"candidates":output,"quarantined_ids":sorted(quarantined),"errors":errors,
+            "status":"CANDIDATE_ADDRESSES_ONLY" if output else "NO_VERIFIED_CONTACT"}
+
+
 def draft_invitation(cards: dict, *, sender_chat: str, recipient_chat: str,
                      request_id: str, question: str) -> dict:
     sender = canonical_chat(sender_chat)
@@ -124,14 +150,14 @@ def draft_invitation(cards: dict, *, sender_chat: str, recipient_chat: str,
 
 def main():
     p = argparse.ArgumentParser(description=__doc__)
-    p.add_argument("--cards", type=Path, required=True,
+    p.add_argument("--cards", type=Path, required=True, nargs="+",
                    help="directory of independently sourced read-only JSON contact cards")
     p.add_argument("--sender", help="existing conversation UUID; required to draft")
     p.add_argument("--recipient", help="existing receiver UUID; required to draft")
     p.add_argument("--request-id", help="new UUID supplied by author; required to draft")
     p.add_argument("--question", help="author's new question; required to draft")
     a = p.parse_args()
-    result = scan_cards(a.cards)
+    result = scan_many(a.cards)
     if any((a.sender, a.recipient, a.request_id, a.question)):
         if not all((a.sender, a.recipient, a.request_id, a.question)):
             p.error("draft requires all four of --sender, --recipient, --request-id, --question")
