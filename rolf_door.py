@@ -47,13 +47,13 @@ def check_card(obj: object) -> dict:
     for k in ("label", "topic", "source_ref", "source_date", "failure_domain"):
         if not isinstance(obj[k], str) or not (1 <= len(obj[k].strip()) <= 240):
             raise ValueError("invalid source or description: "+k)
-    if not re.fullmatch(r"\d{4}-\d{2}-\d{2}", obj["source_date"]):
+    if not isinstance(obj["source_date"], str) or not re.fullmatch(r"\d{4}-\d{2}-\d{2}", obj["source_date"]):
         raise ValueError("source date must be explicit YYYY-MM-DD")
     try:
         date.fromisoformat(obj["source_date"])
     except ValueError as exc:
         raise ValueError("invalid calendar date") from exc
-    if obj["contact_policy"] not in ALLOWED_POLICIES:
+    if not isinstance(obj["contact_policy"], str) or obj["contact_policy"] not in ALLOWED_POLICIES:
         raise ValueError("unknown contact policy")
     # This is an address format check, *not* authentication/verification.
     return {**obj, "chat_id": chat, "project": project,
@@ -79,7 +79,7 @@ def scan_cards(folder: Path) -> dict:
                 raise ValueError("symlink, nonfile or oversized card")
             obj = check_card(json.loads(path.read_text(encoding="utf-8")))
             raw.setdefault(obj["chat_id"], []).append((path.name, obj))
-        except (ValueError, OSError, UnicodeError, json.JSONDecodeError) as exc:
+        except (ValueError, TypeError, OSError, UnicodeError, json.JSONDecodeError) as exc:
             errors.append({"file": path.name, "error": str(exc)})
     quarantined, choices = [], []
     for chat, entries in sorted(raw.items()):
