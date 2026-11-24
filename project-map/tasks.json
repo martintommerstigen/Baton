@@ -1,0 +1,219 @@
+{
+  "schema": "gtrcm-project-map/v1",
+  "date": "2026-11-10",
+  "status_semantics": "status is a work classification, not evidence of completion",
+  "tasks": [
+    {
+      "id": "B1",
+      "project": "Baton",
+      "slug": "wake-existing-chats",
+      "phase": "implementation",
+      "dependencies": [
+        "B5"
+      ],
+      "source": "https://github.com/martintommerstigen/Baton/issues/3",
+      "verified_done": false
+    },
+    {
+      "id": "B2",
+      "project": "Baton",
+      "slug": "external-llm-adapters",
+      "phase": "discovery",
+      "dependencies": [
+        "B5"
+      ],
+      "source": "https://github.com/martintommerstigen/Baton",
+      "verified_done": false
+    },
+    {
+      "id": "B3",
+      "project": "Baton",
+      "slug": "external-social-and-messaging",
+      "phase": "discovery",
+      "dependencies": [
+        "B5"
+      ],
+      "source": "https://github.com/martintommerstigen/GTRCM/issues/7",
+      "verified_done": false
+    },
+    {
+      "id": "B4",
+      "project": "Baton",
+      "slug": "llm-owned-social-and-messaging",
+      "phase": "discovery",
+      "dependencies": [
+        "B5",
+        "R5"
+      ],
+      "source": "https://github.com/martintommerstigen/GTRCM/issues/7",
+      "verified_done": false
+    },
+    {
+      "id": "B5",
+      "project": "Baton",
+      "slug": "identity-policy-delivery",
+      "phase": "implementation",
+      "dependencies": [],
+      "source": "https://github.com/martintommerstigen/Baton",
+      "verified_done": false
+    },
+    {
+      "id": "G1",
+      "project": "GTRCM",
+      "slug": "microevent-rule",
+      "phase": "research",
+      "dependencies": [
+        "G2"
+      ],
+      "source": "https://github.com/martintommerstigen/GTRCM/blob/main/OPEN_PROBLEMS.md",
+      "verified_done": false
+    },
+    {
+      "id": "G2",
+      "project": "GTRCM",
+      "slug": "operational-individuation",
+      "phase": "research",
+      "dependencies": [],
+      "source": "https://github.com/martintommerstigen/GTRCM/blob/main/GTRCM_KANONISK_GRUNNPROGRAM.md",
+      "verified_done": false
+    },
+    {
+      "id": "G3",
+      "project": "GTRCM",
+      "slug": "derive-physical-regimes",
+      "phase": "research",
+      "dependencies": [
+        "G1",
+        "G2"
+      ],
+      "source": "https://github.com/martintommerstigen/GTRCM/issues/1",
+      "verified_done": false
+    },
+    {
+      "id": "G4",
+      "project": "GTRCM",
+      "slug": "negative-results",
+      "phase": "research",
+      "dependencies": [],
+      "source": "https://github.com/martintommerstigen/GTRCM/blob/main/NEGATIVE_RESULTS.md",
+      "verified_done": false
+    },
+    {
+      "id": "G5",
+      "project": "GTRCM",
+      "slug": "publishable-theory",
+      "phase": "research",
+      "dependencies": [
+        "G1",
+        "G2",
+        "G3",
+        "G4"
+      ],
+      "source": "https://github.com/martintommerstigen/GTRCM/blob/main/METHOD.md",
+      "verified_done": false
+    },
+    {
+      "id": "R1",
+      "project": "RustWorld",
+      "slug": "operational-individuation",
+      "phase": "implementation",
+      "dependencies": [
+        "G2"
+      ],
+      "source": "https://github.com/martintommerstigen/GTRCM/tree/RustWorld",
+      "verified_done": false
+    },
+    {
+      "id": "R2",
+      "project": "RustWorld",
+      "slug": "core-skin",
+      "phase": "implementation",
+      "dependencies": [
+        "R1"
+      ],
+      "source": "https://github.com/martintommerstigen/GTRCM/tree/RustWorld",
+      "verified_done": false
+    },
+    {
+      "id": "R3",
+      "project": "RustWorld",
+      "slug": "kindergartens-educators",
+      "phase": "implementation",
+      "dependencies": [
+        "R2"
+      ],
+      "source": "https://github.com/martintommerstigen/GTRCM/tree/RustWorld",
+      "verified_done": false
+    },
+    {
+      "id": "R4",
+      "project": "RustWorld",
+      "slug": "schools-teachers",
+      "phase": "discovery",
+      "dependencies": [
+        "R3"
+      ],
+      "source": "https://github.com/martintommerstigen/GTRCM/tree/RustWorld",
+      "verified_done": false
+    },
+    {
+      "id": "R5",
+      "project": "RustWorld",
+      "slug": "public-private-spaces",
+      "phase": "discovery",
+      "dependencies": [
+        "R2",
+        "B5"
+      ],
+      "source": "https://github.com/martintommerstigen/GTRCM/tree/RustWorld",
+      "verified_done": false
+    },
+    {
+      "id": "R6",
+      "project": "RustWorld",
+      "slug": "hugin-human-core",
+      "phase": "implementation",
+      "dependencies": [
+        "R2"
+      ],
+      "source": "https://github.com/martintommerstigen/GTRCM/tree/RustWorld",
+      "verified_done": false
+    },
+    {
+      "id": "R7",
+      "project": "RustWorld",
+      "slug": "525-mobile",
+      "phase": "implementation",
+      "dependencies": [
+        "R2",
+        "B5"
+      ],
+      "source": "https://github.com/martintommerstigen/GTRCM/tree/RustWorld",
+      "verified_done": false
+    },
+    {
+      "id": "R8",
+      "project": "RustWorld",
+      "slug": "yggdrasil-sefirot-munin",
+      "phase": "implementation",
+      "dependencies": [
+        "R1",
+        "R2"
+      ],
+      "source": "https://github.com/martintommerstigen/GTRCM/tree/RustWorld",
+      "verified_done": false
+    },
+    {
+      "id": "R9",
+      "project": "RustWorld",
+      "slug": "distributed-identity",
+      "phase": "implementation",
+      "dependencies": [
+        "R1",
+        "B5"
+      ],
+      "source": "https://github.com/martintommerstigen/GTRCM/tree/RustWorld",
+      "verified_done": false
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+name: Cross-project map validation
+on:
+  push:
+    paths:
+      - 'PROJECT_MAP.md'
+      - 'project-map/**'
+      - '.github/workflows/project-map.yml'
+  pull_request:
+    paths:
+      - 'PROJECT_MAP.md'
+      - 'project-map/**'
+      - '.github/workflows/project-map.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Validate task registry and dependency graph
+        run: |
+          python3 project-map/validate.py
+          python3 project-map/validate_evidence.py
