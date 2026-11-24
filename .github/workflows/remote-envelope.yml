@@ -1,0 +1,29 @@
+name: Remote envelope regression
+on:
+  push:
+    paths:
+      - 'remote_security/**'
+      - 'tests/test_remote_*.py'
+      - 'tests/test_pause_guard.py'
+      - 'tests/test_http_*.py'
+      - 'tests/test_receipt_audit.py'
+      - '.github/workflows/remote-envelope.yml'
+  pull_request:
+    paths:
+      - 'remote_security/**'
+      - 'tests/test_remote_*.py'
+      - 'tests/test_pause_guard.py'
+      - 'tests/test_http_*.py'
+      - 'tests/test_receipt_audit.py'
+jobs:
+  unittest:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m compileall -q remote_security tests
+      - run: python -W error::ResourceWarning -m unittest discover -s tests -p 'test_*.py' -v
