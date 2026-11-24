@@ -1,0 +1,337 @@
+"""B5/B2 fixed-ID, read-only RustWorld source RPC over a local Unix socket.
+
+Only an explicitly authorized *different* non-root UID may request a fixed
+source ID. Never exposes arbitrary paths, commands, raw source or UI writes.
+This is local byte provenance, not Greg, physics, or ChatGPT attestation.
+"""
+from __future__ import annotations
+
+import argparse
+import json
+import os
+from pathlib import Path
+import re
+import signal
+import socket
+import stat
+import struct
+import time
+
+MAX_REQUEST = 4096
+# A per-recv timeout alone permits an authorized slow sender to monopolize
+# this single-threaded broker indefinitely by sending one byte at a time.
+READ_DEADLINE_SECONDS = 3.0
+ID = re.compile(r"[A-Za-z0-9_-]{8,64}\Z")
+
+
+class Rejected(ValueError):
+    pass
+
+
+def _pairs_unique(pairs):
+    result = {}
+    for key, value in pairs:
+        if key in result:
+            raise Rejected("duplicate JSON key")
+        result[key] = value
+    return result
+
+
+def _reject_constant(_):
+    raise Rejected("nonfinite JSON")
+
+
+def parse_request(raw, source_ids):
+    if type(raw) is not bytes or not 0 < len(raw) <= MAX_REQUEST or not raw.endswith(b"\n") or raw.count(b"\n") != 1:
+        raise Rejected("invalid request frame")
+    try:
+        value = json.loads(raw[:-1].decode("utf-8"), object_pairs_hook=_pairs_unique,
+                           parse_constant=_reject_constant)
+    except (ValueError, UnicodeError, RecursionError) as exc:
+        raise Rejected("invalid JSON") from exc
+    if (type(value) is not dict or set(value) != {"version", "action", "source_id", "job_id"}
+            or type(value["version"]) is not int or value["version"] != 1
+            or value["action"] not in ("capture", "audit")
+            or type(value["source_id"]) is not str or value["source_id"] not in source_ids
+            or type(value["job_id"]) is not str or not ID.fullmatch(value["job_id"])):
+        raise Rejected("request outside fixed source policy")
+    return value
+
+
+def _checked_parent(path):
+    """No symlink ancestors; final socket parent owned by service, group-x only."""
+    raw = os.fspath(path)
+    if type(raw) is not str or not raw.startswith("/") or any(x in ("", ".", "..") for x in raw.split("/")[1:]):
+        raise Rejected("noncanonical socket path")
+    p = Path(raw)
+    if p.name in ("", ".", ".."):
+        raise Rejected("socket basename required")
+    current = Path("/")
+    for part in p.parent.parts[1:]:
+        current = current / part
+        s = current.lstat()
+        if not stat.S_ISDIR(s.st_mode) or (s.st_mode & 0o022 and not (s.st_uid == 0 and s.st_mode & stat.S_ISVTX)):
+            raise Rejected("unsafe socket ancestor")
+    s = p.parent.lstat()
+    if s.st_uid != os.geteuid() or s.st_mode & 0o027 or not s.st_mode & stat.S_IXGRP:
+        raise Rejected("socket parent must be service-owned, non-world-accessible, group-traversable")
+    return p
+
+
+class SourceBroker:
+    """Single-threaded, bounded, one-request-per-connection source broker."""
+
+    def __init__(self, socket_path, allowed_uids, source_ids, capture, audit):
+        if os.name != "posix" or not hasattr(socket, "SO_PEERCRED") or os.geteuid() == 0:
+            raise Rejected("dedicated non-root Linux UID required")
+        if (type(allowed_uids) not in (set, frozenset) or not allowed_uids
+                or any(type(u) is not int or u <= 0 or u == os.geteuid() for u in allowed_uids)):
+            raise Rejected("explicit different non-root caller UIDs required")
+        if type(source_ids) not in (set, frozenset) or not source_ids:
+            raise Rejected("fixed source IDs required")
+        self.path = _checked_parent(socket_path)
+        # A checked pathname is not a stable directory capability: it can be
+        # renamed or replaced between validation and AF_UNIX bind().
+        parent = self.path.parent.lstat()
+        self.parent_identity = (parent.st_dev, parent.st_ino)
+        self.parent_fd = None
+        self.allowed_uids = frozenset(allowed_uids)
+        self.source_ids = frozenset(source_ids)
+        self.capture = capture
+        self.audit = audit
+        self.sock = None
+        self.inode = None
+
+    def _parent_unchanged(self):
+        """Verify that the public pathname still reaches the pinned directory."""
+        try:
+            _checked_parent(str(self.path))
+            current = self.path.parent.lstat()
+        except (OSError, Rejected):
+            return False
+        return (current.st_dev, current.st_ino) == self.parent_identity
+
+    def _stat_pinned(self, directory_fd):
+        return os.stat(self.path.name, dir_fd=directory_fd, follow_symlinks=False)
+
+    def _endpoint_unchanged(self):
+        """A stable parent inode does not guarantee the bound socket survived.
+
+        Fail closed if the public socket basename is unlinked, replaced or
+        permission-changed. This detects faults; it is not a same-UID sandbox.
+        """
+        if self.parent_fd is None or self.inode is None or not self._parent_unchanged():
+            return False
+        try:
+            current = self._stat_pinned(self.parent_fd)
+        except OSError:
+            return False
+        return (stat.S_ISSOCK(current.st_mode)
+                and current.st_uid == os.geteuid()
+                and (current.st_dev, current.st_ino) == self.inode
+                and current.st_mode & 0o777 == 0o660)
+
+    def start(self):
+        if self.sock is not None or self.parent_fd is not None:
+            raise Rejected("broker already started")
+        if not self._parent_unchanged():
+            raise Rejected("socket directory replaced before start")
+        # The kernel resolves the socket basename relative to this pinned fd.
+        # /proc/self/fd is Linux-specific, as is SO_PEERCRED above.
+        flags = os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW | getattr(os, "O_CLOEXEC", 0)
+        directory_fd = os.open(self.path.parent, flags)
+        sock = None
+        bound_inode = None
+        try:
+            directory = os.fstat(directory_fd)
+            if ((directory.st_dev, directory.st_ino) != self.parent_identity
+                    or not self._parent_unchanged()):
+                raise Rejected("socket directory changed during open")
+            try:
+                self._stat_pinned(directory_fd)
+            except FileNotFoundError:
+                pass
+            else:
+                raise Rejected("socket exists; never unlink an uncertain endpoint")
+            sock = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
+            old_umask = os.umask(0o117)
+            try:
+                sock.bind(f"/proc/self/fd/{directory_fd}/{self.path.name}")
+            finally:
+                os.umask(old_umask)
+            bound = self._stat_pinned(directory_fd)
+            if not stat.S_ISSOCK(bound.st_mode) or bound.st_uid != os.geteuid():
+                raise Rejected("unsafe bound socket")
+            bound_inode = (bound.st_dev, bound.st_ino)
+            os.chmod(self.path.name, 0o660, dir_fd=directory_fd, follow_symlinks=False)
+            st = self._stat_pinned(directory_fd)
+            if (not stat.S_ISSOCK(st.st_mode) or st.st_uid != os.geteuid()
+                    or (st.st_dev, st.st_ino) != bound_inode
+                    or st.st_mode & 0o007):
+                raise Rejected("unsafe bound socket")
+            sock.listen(4)
+            sock.settimeout(1.0)
+            if not self._parent_unchanged():
+                raise Rejected("socket directory moved during startup")
+            self.inode = bound_inode
+            self.parent_fd = directory_fd
+            self.sock = sock
+        except BaseException:
+            if sock is not None:
+                sock.close()
+            if bound_inode is not None:
+                try:
+                    current = self._stat_pinned(directory_fd)
+                    if (stat.S_ISSOCK(current.st_mode)
+                            and (current.st_dev, current.st_ino) == bound_inode):
+                        os.unlink(self.path.name, dir_fd=directory_fd)
+                except OSError:
+                    # An uncertain endpoint is never blindly replaced.
+                    pass
+            os.close(directory_fd)
+            raise
+
+    def _peer_uid(self, conn):
+        creds = conn.getsockopt(socket.SOL_SOCKET, socket.SO_PEERCRED, struct.calcsize("3i"))
+        if len(creds) != struct.calcsize("3i"):
+            raise Rejected("missing peer credentials")
+        pid, uid, _gid = struct.unpack("3i", creds)
+        if pid <= 0:
+            raise Rejected("invalid peer PID")
+        return uid
+
+    def _handle(self, conn):
+        if self.sock is None:
+            raise Rejected("not started")
+        conn.settimeout(3.0)
+        if self._peer_uid(conn) not in self.allowed_uids:
+            return  # reject BEFORE reading any request bytes
+        raw = bytearray()
+        deadline = time.monotonic() + READ_DEADLINE_SECONDS
+        while len(raw) <= MAX_REQUEST:
+            remaining = deadline - time.monotonic()
+            if remaining <= 0:
+                raise Rejected("absolute request deadline exceeded")
+            conn.settimeout(remaining)
+            part = conn.recv(min(1024, MAX_REQUEST + 1 - len(raw)))
+            if not part:
+                break
+            raw.extend(part)
+        try:
+            request = parse_request(bytes(raw), self.source_ids)
+            # A directory can be renamed while an accepted client trickles
+            # bytes. Do not enter a source backend after losing the endpoint.
+            if not self._endpoint_unchanged():
+                raise Rejected("socket endpoint changed before backend execution")
+            if request["action"] == "capture":
+                result = self.capture(request["source_id"], request["job_id"])
+            else:
+                result = self.audit(request["source_id"], request["job_id"])
+            if type(result) is not dict or type(result.get("state")) is not str:
+                raise Rejected("backend contract failure")
+            # A callback may have committed its receipt while the public
+            # endpoint disappeared. Do not report success or retry blindly.
+            if not self._endpoint_unchanged():
+                raise Rejected("socket endpoint changed during backend execution")
+            reply = result
+        except Exception:
+            # Even a post-reservation failure may have executed. Never retry.
+            reply = {"state": "rejected_or_uncertain_no_retry"}
+        encoded = (json.dumps(reply, sort_keys=True, separators=(",", ":"), allow_nan=False) + "\n").encode()
+        if len(encoded) > MAX_REQUEST:
+            encoded = b'{"state":"rejected_or_uncertain_no_retry"}\n'
+        conn.sendall(encoded)
+
+    def accept_once(self):
+        if not self._endpoint_unchanged():
+            raise Rejected("socket endpoint changed; stop serving")
+        conn, _ = self.sock.accept()
+        with conn:
+            # The directory may have moved *during* the blocking accept.
+            # Check before reading even a permitted peer's request bytes.
+            if not self._endpoint_unchanged():
+                return
+            try:
+                self._handle(conn)
+            except (OSError, TimeoutError, Rejected):
+                pass  # delivery uncertain; no retry
+
+    def close(self):
+        if self.sock is not None:
+            self.sock.close()
+            self.sock = None
+        if self.parent_fd is not None:
+            try:
+                st = self._stat_pinned(self.parent_fd)
+                if (self.inode is not None and stat.S_ISSOCK(st.st_mode)
+                        and (st.st_dev, st.st_ino) == self.inode):
+                    os.unlink(self.path.name, dir_fd=self.parent_fd)
+            except FileNotFoundError:
+                pass
+            finally:
+                os.close(self.parent_fd)
+                self.parent_fd = None
+                self.inode = None
+
+
+def main(argv=None):
+    from remote_security.pinned_source import capture_pinned_source
+    from remote_security.pinned_source_bundle import save_pinned_bundle, load_pinned_bundle
+    from remote_security.pinned_source_cli import PINNED_POLICY
+    from remote_security.research_jobs import ResearchJobs, _load_receipt_key
+    from remote_security.private_store import _validate_path
+
+    p = argparse.ArgumentParser(description="Fixed-ID RustWorld read-only local broker; no TCP, shell or UI")
+    for name in ("socket", "database", "receipt-key-file", "evidence-dir", "source-root"):
+        p.add_argument("--" + name, required=True)
+    p.add_argument("--allowed-uid", type=int, action="append", required=True)
+    args = p.parse_args(argv)
+    if os.geteuid() == 0:
+        p.error("root is forbidden")
+    evidence_dir = Path(args.evidence_dir)
+    _validate_path(evidence_dir / "evidence-check.json")
+    jobs = ResearchJobs(args.database, _load_receipt_key(args.receipt_key_file),
+                        {"RustWorld": ["sha256-echo"]})
+
+    def evidence_path(job_id):
+        if not ID.fullmatch(job_id):
+            raise Rejected("invalid job ID")
+        return evidence_dir / (job_id + ".json")
+
+    def capture(source_id, job_id):
+        bundle = capture_pinned_source(jobs, args.source_root, PINNED_POLICY, source_id, job_id)
+        saved = save_pinned_bundle(jobs, PINNED_POLICY, bundle, evidence_path(job_id))
+        return {"state": "completed_local_pinned_source", "source_id": source_id,
+                "job_id": job_id, "source_sha256": bundle["capture"]["content_sha256"],
+                "evidence_sha256": saved["sha256"]}
+
+    def audit(source_id, job_id):
+        checked = load_pinned_bundle(jobs, PINNED_POLICY, evidence_path(job_id))
+        c = checked["bundle"]["capture"]
+        if c["source_id"] != source_id or checked["bundle"]["job"]["receipt"]["job_id"] != job_id:
+            raise Rejected("audit source/job mismatch")
+        return {"state": "verified_local_pinned_source", "source_id": source_id,
+                "job_id": job_id, "source_sha256": c["content_sha256"],
+                "evidence_sha256": checked["evidence_sha256"]}
+
+    broker = SourceBroker(args.socket, set(args.allowed_uid), set(PINNED_POLICY), capture, audit)
+    broker.start()
+    stopped = False
+    def stop(_signum, _frame):
+        nonlocal stopped
+        stopped = True
+    signal.signal(signal.SIGTERM, stop)
+    signal.signal(signal.SIGINT, stop)
+    try:
+        while not stopped:
+            try:
+                broker.accept_once()
+            except socket.timeout:
+                continue
+    finally:
+        broker.close()
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
