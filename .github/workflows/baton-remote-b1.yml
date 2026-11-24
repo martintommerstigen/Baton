@@ -1,0 +1,27 @@
+name: Baton Remote B1 read-only transport
+on:
+  push:
+    paths:
+      - 'baton_remote_b1/**'
+      - 'test_baton_remote_b1.py'
+      - '.github/workflows/baton-remote-b1.yml'
+  pull_request:
+    paths:
+      - 'baton_remote_b1/**'
+      - 'test_baton_remote_b1.py'
+      - '.github/workflows/baton-remote-b1.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  offline-security:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Compile gateway and client
+        run: python3 -m compileall -q baton_remote_b1 test_baton_remote_b1.py
+      - name: Loopback transport and negative security tests
+        run: python3 -W error::ResourceWarning -m unittest -v test_baton_remote_b1
